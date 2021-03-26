@@ -246,6 +246,8 @@ public class LoginActivity extends BaseActivity {
                         //保存职位
                         localUserInfo.setUserJob(response.getUser_info().getIsDistri()+"");//为1、有分配权限
 
+
+ MainActivity.isOver = false;
                         ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
                         CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
                     } else {

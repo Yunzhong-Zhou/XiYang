@@ -3,23 +3,15 @@ package com.xiyang.xiyang;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 
 import com.hjq.toast.ToastUtils;
-import com.mob.pushsdk.MobPush;
-import com.mob.pushsdk.MobPushCustomMessage;
-import com.mob.pushsdk.MobPushNotifyMessage;
-import com.mob.pushsdk.MobPushReceiver;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
 import com.xdandroid.hellodaemon.DaemonEnv;
-import com.xiyang.xiyang.activity.WebContentActivity;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.utils.TraceServiceImpl;
 import com.xiyang.xiyang.utils.changelanguage.LanguageUtil;
@@ -100,9 +92,8 @@ public class MyApplication extends Application {
 
         //推送初始化
 //        MobSDK.init(mContext);
-
         //防止多进程注册多次  可以在MainActivity或者其他页面注册MobPushReceiver
-        String processName = getProcessName(this);
+        /*String processName = getProcessName(this);
         if (getPackageName().equals(processName)) {
             MobPush.addPushReceiver(new MobPushReceiver() {
                 @Override
@@ -172,11 +163,11 @@ public class MyApplication extends Application {
                             //订单详情
                             MyLogger.i(">>>>>>>>>symbol:" + msg.obj.toString());
 //                        Intent i2 = new Intent(context, PredictionDetailActivity_MPChart.class);
-                            /*Intent i2 = new Intent(mContext, PredictionDetailActivity.class);
+                            *//*Intent i2 = new Intent(mContext, PredictionDetailActivity.class);
                             bundle.putString("symbol", msg.obj.toString());
                             i2.putExtras(bundle);
                             i2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            mContext.startActivity(i2);*/
+                            mContext.startActivity(i2);*//*
                             break;
                         default:
                             break;
@@ -192,7 +183,9 @@ public class MyApplication extends Application {
                     return false;
                 }
             });
-        }
+        }*/
+
+
        /* Resources resources = getResources();
         // 获取应用内语言
         final Configuration configuration = resources.getConfiguration();

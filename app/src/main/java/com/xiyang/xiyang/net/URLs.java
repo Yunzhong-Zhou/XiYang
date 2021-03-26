@@ -136,7 +136,7 @@ public class URLs {
     /**
      * ********************************我的*****************************************
      */
-    public static final String Fragment4 = HOST + "/api/v1/user/get_user_info";
+    public static final String Fragment5 = HOST + "/api/v1/user/get_user_info";
     //修改个人信息
     public static final String ChageProfile = HOST + "/api/v1/user/user_setup";
     //修改手机号

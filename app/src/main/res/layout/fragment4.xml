@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/bg_head" />
+
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"
         android:layout_width="match_parent"
@@ -21,6 +27,277 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                //板块1
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
+                    app:hl_cornerRadius="15dp"
+                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowOffsetX="0dp"
+                    app:hl_shadowOffsetY="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_15_baise"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="20dp"
+                            android:visibility="gone"
+                            android:paddingRight="20dp">
+
+                            <LinearLayout
+                                android:id="@+id/ll_tab1_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:onClick="onClick"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_tab1_1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:drawablePadding="5dp"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="昨日"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <View
+                                    android:id="@+id/view1_1"
+                                    android:layout_width="56dp"
+                                    android:layout_height="2dp"
+                                    android:background="@color/green" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_tab1_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:onClick="onClick"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_tab1_2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:drawablePadding="5dp"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="今日"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <View
+                                    android:id="@+id/view1_2"
+                                    android:layout_width="56dp"
+                                    android:layout_height="2dp"
+                                    android:background="@color/green"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_tab1_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:onClick="onClick"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_tab1_3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:drawablePadding="5dp"
+                                    android:gravity="center"
+                                    android:padding="7dp"
+                                    android:text="本月"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <View
+                                    android:id="@+id/view1_3"
+                                    android:layout_width="56dp"
+                                    android:layout_height="2dp"
+                                    android:background="@color/green"
+                                    android:visibility="invisible" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv1_t"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="数据概览"
+                            android:paddingTop="13dp"
+                            android:paddingLeft="24dp"
+                            android:paddingBottom="7dp"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black1"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv1_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv1_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/qianblue"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="15dp"
+                            android:background="@drawable/yuanjiao_15_qianlan_bottom"/>
+
+
+                    </LinearLayout>
+
+                </com.lihang.ShadowLayout>
+
+                //板块2
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
+                    app:hl_cornerRadius="15dp"
+                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowOffsetX="0dp"
+                    app:hl_shadowOffsetY="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_15_baise"
+                        android:orientation="vertical">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv2_t"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="统计走势"
+                            android:paddingTop="13dp"
+                            android:paddingLeft="24dp"
+                            android:paddingBottom="7dp"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black1"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv2_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+
+                </com.lihang.ShadowLayout>
+
+                //板块3
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
+                    app:hl_cornerRadius="15dp"
+                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowOffsetX="0dp"
+                    app:hl_shadowOffsetY="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_15_baise"
+                        android:orientation="vertical">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv3_t"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </com.lihang.ShadowLayout>
+
+
+                //板块5
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
+                    app:hl_cornerRadius="15dp"
+                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowOffsetX="0dp"
+                    app:hl_shadowOffsetY="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_15_baise"
+                        android:orientation="vertical">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv5_t"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="新签门店"
+                            android:paddingTop="13dp"
+                            android:paddingLeft="24dp"
+                            android:paddingBottom="7dp"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black1"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv5_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+
+                </com.lihang.ShadowLayout>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

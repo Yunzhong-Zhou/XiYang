@@ -5,56 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.bumptech.glide.Glide;
 import com.cretin.tools.scancode.CaptureActivity;
-import com.cretin.tools.scancode.config.ScanConfig;
-import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.WebContentActivity;
+import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.base.BaseFragment;
-import com.xiyang.xiyang.net.URLs;
-import com.xiyang.xiyang.okhttp.CallBackUtil;
-import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.youth.banner.Banner;
-import com.youth.banner.indicator.CircleIndicator;
-import com.youth.banner.listener.OnBannerListener;
-import com.zaaach.citypicker.model.HotCity;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.Call;
-import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
 
 /**
  * Created by fafukeji01 on 2016/1/6.
- * 论坛
+ * 设备
  */
 public class Fragment3 extends BaseFragment {
 
@@ -89,6 +56,18 @@ public class Fragment3 extends BaseFragment {
        /* if (MainActivity.item == 2) {
             requestServer();
         }*/
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        MyLogger.i(">>>>>>>>setUserVisibleHint>>>" + isVisibleToUser);
+        if (MainActivity.isOver) {
+            if (getUserVisibleHint()) {//此处不能用isVisibleToUser进行判断，因为setUserVisibleHint会执行多次，而getUserVisibleHint才是判断真正是否可见的
+                if (MainActivity.item == 2) {
+                    requestServer();
+                }
+            }
+        }
     }
 
     @Override
@@ -162,11 +141,13 @@ public class Fragment3 extends BaseFragment {
        /* OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
             @Override
             public Fragment3Model onParseResponse(Call call, Response response) {
+            MainActivity.isOver = true;
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
+            MainActivity.isOver = true;
                 hideProgress();
                 showEmptyPage();
                 myToast(err);
@@ -175,7 +156,7 @@ public class Fragment3 extends BaseFragment {
             @Override
             public void onResponse(Fragment3Model response) {
                 hideProgress();
-
+MainActivity.isOver = true;
             }
         });*/
 

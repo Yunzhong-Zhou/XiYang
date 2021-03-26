@@ -22,7 +22,7 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by fafukeji01 on 2016/1/6.
- * 工作台
+ * 门店
  */
 public class Fragment2 extends BaseFragment {
     @Override
@@ -68,7 +68,18 @@ public class Fragment2 extends BaseFragment {
             requestServer();
         }*/
     }
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        MyLogger.i(">>>>>>>>setUserVisibleHint>>>" + isVisibleToUser);
+        if (MainActivity.isOver) {
+            if (getUserVisibleHint()) {//此处不能用isVisibleToUser进行判断，因为setUserVisibleHint会执行多次，而getUserVisibleHint才是判断真正是否可见的
+                if (MainActivity.item == 1) {
+                    requestServer();
+                }
+            }
+        }
+    }
     @Override
     protected void initView(View view) {
         findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
@@ -134,11 +145,13 @@ public class Fragment2 extends BaseFragment {
         /*OkhttpUtil.okHttpPost(URLs.Fragment2_TongJi, params, headerMap, new CallBackUtil<Fragment2_TongJiModel>() {
             @Override
             public Fragment2_TongJiModel onParseResponse(Call call, Response response) {
+            MainActivity.isOver = true;
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
+            MainActivity.isOver = true;
 //                hideProgress();
 //                showEmptyPage();
 //                myToast(err);
@@ -149,6 +162,7 @@ public class Fragment2 extends BaseFragment {
 //                hideProgress();
 
                 ((MainActivity) getActivity()).getNavigationBar().setMsgPointCount(1, response.getDai_shi_gong_sum());
+            MainActivity.isOver = true;
             }
         });*/
     }

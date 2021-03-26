@@ -57,15 +57,23 @@ public class MainActivity extends BaseActivity {
     private int[] selectIcon = {R.mipmap.tab1_1, R.mipmap.tab2_1, R.mipmap.tab3_1, R.mipmap.tab4_1, R.mipmap.tab5_1};
     private List<Fragment> fragments = new ArrayList<>();
 
+    public static boolean isOver = false;
     public static int item = 0;
     int isShowAd = 0;//是否显示弹窗
     //更新
     UpgradeModel model_up;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        isOver = false;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         item = 0;
+        isOver = false;
     }
 
     @Override
@@ -76,7 +84,7 @@ public class MainActivity extends BaseActivity {
 
         mImmersionBar.reset()
                 .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
-                .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+//                .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                 .init();
 
         FanPermissionUtils.with(MainActivity.this)
@@ -144,7 +152,7 @@ public class MainActivity extends BaseActivity {
                 .canScroll(false)    //Viewpager能否左右滑动
                 .smoothScroll(false)  //点击Tab  Viewpager切换是否有动画
                 .normalTextColor(getResources().getColor(R.color.tab_black))   //Tab未选中时字体颜色
-                .selectTextColor(getResources().getColor(R.color.tab_blue))   //Tab选中时字体颜色
+                .selectTextColor(getResources().getColor(R.color.tab_green))   //Tab选中时字体颜色
 //                .scaleType(ImageView.ScaleType.CENTER_INSIDE)  //同 ImageView的ScaleType
                 .navigationBackground(Color.parseColor("#ffffff"))   //导航栏背景色
 //                .textSizeType(EasyNavigationBar.TextSizeType.TYPE_DP)  //字体单位 建议使用DP  可切换SP
@@ -161,13 +169,14 @@ public class MainActivity extends BaseActivity {
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabSelectEvent(View view, int position) {
+                        //Tab点击事件  return true 页面不会切换
                         switch (position) {
                             case 0:
                                 MainActivity.item = 0;
 //                                mImmersionBar.getTag("common").init();
                                 mImmersionBar.reset()
-                                        .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
-                                        .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+//                                        .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
+//                                        .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                                         .init();
                                 break;
                             case 1:
@@ -176,7 +185,7 @@ public class MainActivity extends BaseActivity {
                                 mImmersionBar.reset()
 //                                        .statusBarColor(R.color.red)
                                         .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
-                                        .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+//                                        .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                                         .init();
                                 break;
                             case 2:
@@ -185,7 +194,7 @@ public class MainActivity extends BaseActivity {
                                 mImmersionBar.reset()
 //                                        .statusBarColor(R.color.white)
                                         .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题
-                                        .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+//                                        .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                                         .init();
                                 break;
                             case 3:
@@ -208,7 +217,8 @@ public class MainActivity extends BaseActivity {
                     }
 
                     @Override
-                    public boolean onTabReSelectEvent(View view, int position) {//重复点击
+                    public boolean onTabReSelectEvent(View view, int position) {
+                        //Tab重复点击事件
                         return false;
                     }
 

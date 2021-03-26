@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:scrollbars="none">
 
-
             <LinearLayout
+                android:id="@+id/headView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -32,7 +32,7 @@
                     android:onClick="onClick"
                     android:orientation="horizontal"
                     android:paddingLeft="37dp"
-                    android:paddingTop="50dp"
+                    android:paddingTop="30dp"
                     android:paddingRight="14dp"
                     android:paddingBottom="15dp">
 
@@ -236,7 +236,7 @@
                                 android:layout_weight="1"
                                 android:text="我的工单"
                                 android:textColor="@color/black2"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -270,7 +270,7 @@
                                 android:layout_weight="1"
                                 android:text="我的收益"
                                 android:textColor="@color/black2"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -303,7 +303,7 @@
                                 android:layout_weight="1"
                                 android:text="提现收益"
                                 android:textColor="@color/black2"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -336,7 +336,7 @@
                                 android:layout_weight="1"
                                 android:text="分润记录"
                                 android:textColor="@color/black2"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -369,7 +369,7 @@
                                 android:layout_weight="1"
                                 android:text="资料管理"
                                 android:textColor="@color/black2"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -402,7 +402,7 @@
                                 android:layout_weight="1"
                                 android:text="绑定银行卡"
                                 android:textColor="@color/black2"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -435,16 +435,9 @@
                                 android:layout_weight="1"
                                 android:text="设置中心"
                                 android:textColor="@color/black2"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@color/xian" />
                     </LinearLayout>
                     <!--//tab-->
                     -->
@@ -453,12 +446,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hl_cornerRadius="15dp"
-                        android:layout_marginLeft="17dp"
-                        android:layout_marginRight="17dp"
-                        android:layout_marginBottom="30dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="20dp"
                         app:hl_shadowColor="#000000"
-                        app:hl_shadowLimit="5dp"
+                        app:hl_shadowLimit="2dp"
                         app:hl_shadowOffsetX="0dp"
                         app:hl_shadowOffsetY="2dp">
 
@@ -548,6 +541,6 @@
 
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </com.liaoinstan.springview.widget.SpringView>
 </RelativeLayout>

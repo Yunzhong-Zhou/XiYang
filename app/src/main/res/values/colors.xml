@@ -11,7 +11,7 @@
     <color name="xian">#E7E7E7</color>
 
     <color name="tab_black">#4F4F4F</color>
-    <color name="tab_blue">#2DC3B5</color>
+    <color name="tab_green">#2DC3B5</color>
 
 
     <color name="bg_0">#072533</color>
@@ -30,7 +30,7 @@
     <color name="yellow_1">#E8D3A8</color>
     <color name="grey">#DDE1E2</color>
     <color name="blue">#2128C1</color>
-    <color name="qianblue">#44C7ED</color>
+    <color name="qianblue">#66DEFFFC</color>
     <color name="purple">#7C08C5</color>
     <color name="red">#C32D2D</color>
     <color name="red_1">#FE032C</color>
@@ -59,6 +59,7 @@
     <color name="pop_bg5">#122740</color>
     <!--选中-->
     <color name="pop_bg6">#193457</color>
+
     <!-- red -->
     <color name="red300">#f36c60</color>
     <color name="red500">#e51c23</color>
