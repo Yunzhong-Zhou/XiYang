@@ -63,7 +63,14 @@ public class Fragment4 extends BaseFragment {
     RecyclerView rv3_t;
     CommonAdapter<String> mAdapter3_t;
 
-
+    /**
+     * 板块4
+     */
+    int item4_t = 0,item4_1 = 0;
+    RecyclerView rv4_t, rv4_1;
+    CommonAdapter<String> mAdapter4_t;
+    List<Fragment4Model_P> list4_1 = new ArrayList<>();
+    CommonAdapter<Fragment4Model_P> mAdapter4_1;
     /**
      * 板块5
      */
@@ -172,6 +179,13 @@ public class Fragment4 extends BaseFragment {
         rv3_t = findViewByID_My(R.id.rv3_t);
         rv3_t.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
+        /**
+         * 板块4
+         */
+        rv4_t = findViewByID_My(R.id.rv4_t);
+        rv4_t.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        rv4_1 = findViewByID_My(R.id.rv4_1);
+        rv4_1.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         /**
          * 板块5
          */
@@ -668,6 +682,101 @@ public class Fragment4 extends BaseFragment {
             }
         });
         rv3_t.setAdapter(mAdapter3_t);
+
+        /**
+         * 板块4
+         */
+        List<String> h4 = new ArrayList<>();
+        h4.add("本月");
+        h4.add("上月");
+        mAdapter4_t = new CommonAdapter<String>
+                (getActivity(), R.layout.item_fragment4_t, h4) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                holder.setText(R.id.tv1, model);
+                View v1 = holder.getView(R.id.v1);
+                if (item4_t == position) {
+                    v1.setVisibility(View.VISIBLE);
+                } else {
+                    v1.setVisibility(View.INVISIBLE);
+                }
+            }
+        };
+        mAdapter4_t.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                item4_t = i;
+                mAdapter4_t.notifyDataSetChanged();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv4_t.setAdapter(mAdapter4_t);
+
+        list4_1.clear();
+        List<String> t4 = new ArrayList<>();
+        t4.add("新签门店利润");
+        t4.add("存量门店毛利润");
+        t4.add("总毛利润");
+        t4.add("新签BAT门店");
+        List<String> m4 = new ArrayList<>();
+        m4.add("¥10000.00");
+        m4.add("100");
+        m4.add("100");
+        m4.add("100");
+        List<String> n4 = new ArrayList<>();
+        n4.add("12.3");
+        n4.add("1.23");
+        n4.add("123");
+        n4.add("12.3");
+        List<String> z4 = new ArrayList<>();
+        z4.add("1");
+        z4.add("0");
+        z4.add("1");
+        z4.add("0");
+        for (int i = 0; i < t4.size(); i++) {
+            list4_1.add(new Fragment4Model_P(t4.get(i), m4.get(i), n4.get(i), z4.get(i)));
+        }
+
+        mAdapter4_1 = new CommonAdapter<Fragment4Model_P>
+                (getActivity(), R.layout.item_fragment4_3, list4_1) {
+            @Override
+            protected void convert(ViewHolder holder, Fragment4Model_P model, int position) {
+                View v1 = holder.getView(R.id.v1);
+                if (item4_1 == position) {
+                    v1.setVisibility(View.VISIBLE);
+                } else {
+                    v1.setVisibility(View.INVISIBLE);
+                }
+                holder.setText(R.id.tv1, model.getTitle());
+                holder.setText(R.id.tv2, model.getMoney());
+                TextView tv3 = holder.getView(R.id.tv3);
+                if (model.getZd().equals("1")) {
+                    tv3.setText("↑" + model.getNum() + "%");
+                    tv3.setTextColor(getResources().getColor(R.color.red));
+                } else {
+                    tv3.setText("↓" + model.getNum() + "%");
+                    tv3.setTextColor(getResources().getColor(R.color.green));
+                }
+            }
+        };
+        mAdapter4_1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                item4_1 = i;
+                mAdapter4_1.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv4_1.setAdapter(mAdapter4_1);
 
 
         /**
