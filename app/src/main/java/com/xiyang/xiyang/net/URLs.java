@@ -20,12 +20,12 @@ public class URLs {
     //headrs验证信息
     public static final String APIKEY = "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E";
     public static final String HVERSION = "1.0";
-    public static final String Accept	 = "application/json";
-    public static final String ClientType	 = "android";
+    public static final String Accept = "application/json";
+    public static final String ClientType = "android";
 
 
     //第一次加载
-    public static final String FristApp = HOST+"/api/v1/public/get_conf_info";
+    public static final String FristApp = HOST + "/api/v1/public/get_conf_info";
     //更新
     public static final String Upgrade = HOST + "/api/article/sys-upgrade";
     //引导页
@@ -41,27 +41,27 @@ public class URLs {
     //图片上传
     public static final String UpFile = HOST + "/apiupload/picture";
     //热门搜索
-    public static final String SearchHot = HOST+"/api/v1/public/hot_list_all";
+    public static final String SearchHot = HOST + "/api/v1/public/hot_list_all";
     //搜索
-    public static final String Search = HOST+"/api/v1/public/get_store_search_list";
+    public static final String Search = HOST + "/api/v1/public/get_store_search_list";
     //收藏
-    public static final String ShouChang = HOST+"/api/v1/user/user_collection_increase";
+    public static final String ShouChang = HOST + "/api/v1/user/user_collection_increase";
     //取消收藏
-    public static final String QuXiaoShouChang = HOST+"/api/v1/user/user_collection_del";
+    public static final String QuXiaoShouChang = HOST + "/api/v1/user/user_collection_del";
     //加入购物车
-    public static final String ADDShop = HOST+"/api/v1/public/user_cart_add";
+    public static final String ADDShop = HOST + "/api/v1/public/user_cart_add";
     //评价列表
-    public static final String PingJiaList = HOST+"/api/v1/public/get_goods_eval_list";
+    public static final String PingJiaList = HOST + "/api/v1/public/get_goods_eval_list";
     //服务分类列表
-    public static final String ServiceList_all = HOST+"/api/v1/public/service_list_all";
+    public static final String ServiceList_all = HOST + "/api/v1/public/service_list_all";
     /**
-    *********************************首页*****************************************
+     * ********************************首页*****************************************
      */
     public static final String Fragment1 = HOST + "/api/v1/techn/index_date";
     //商品列表
-    public static final String ProductList = HOST+"/api/v1/public/get_goods_list";
+    public static final String ProductList = HOST + "/api/v1/public/get_goods_list";
     //商品详情
-    public static final String ProductDetail= HOST+"/api/v1/public/get_goods_details";
+    public static final String ProductDetail = HOST + "/api/v1/public/get_goods_details";
     /**
      * ********************************工作台*****************************************
      */
@@ -98,11 +98,11 @@ public class URLs {
     //签到-记录
     public static final String SignIn_List = HOST + "/api/v1/techn/techn_signin_list_page";
     //预计完成时间
-    public static final String YuJiTime = HOST+"/api/v1/techn/save_estimate_time";
+    public static final String YuJiTime = HOST + "/api/v1/techn/save_estimate_time";
     //预计保养时间
-    public static final String BaoYangTime = HOST+"/api/v1/techn/set_maintain_time";
+    public static final String BaoYangTime = HOST + "/api/v1/techn/set_maintain_time";
     //修改服务内容
-    public static final String ChangeService = HOST+"/api/v1/techn/techn_sedan_order_service_modify_str";
+    public static final String ChangeService = HOST + "/api/v1/techn/techn_sedan_order_service_modify_str";
     /**
      * ********************************论坛*****************************************
      */
@@ -137,12 +137,14 @@ public class URLs {
      * ********************************我的*****************************************
      */
     public static final String Fragment5 = HOST + "/api/v1/user/get_user_info";
+    //银行卡设置
+    public static final String Collection = HOST + "/api/member/set-proceeds";
     //修改个人信息
     public static final String ChageProfile = HOST + "/api/v1/user/user_setup";
-    //修改手机号
-    public static final String ChagePhone = HOST + "/api/v1/user/binding_phone";
-    //修改支付密码
-    public static final String ChagePayPassWord = HOST + "/api/v1/techn/techn_pay_pwd";
+    //修改登录密码
+    public static final String ChangePassword = HOST + "/api/v1/user/binding_phone";
+    //交易密码
+    public static final String TransactionPassword = HOST + "/api/v1/techn/techn_pay_pwd";
     //解绑门店
     public static final String UnbundleStore = HOST + "/api/v1/techn/techn_unlock_store";
     //绑定银行卡、支付宝
@@ -180,13 +182,13 @@ public class URLs {
     //足迹列表
     public static final String Footprint = HOST + "/api/v1/user/user_footprint_list_page";
     //门店详情
-    public static final String StoreDetail = HOST+"/api/v1/public/get_store_details";
+    public static final String StoreDetail = HOST + "/api/v1/public/get_store_details";
     //问答
-    public static final String StoreDetail_WenDa = HOST+"/api/v1/public/user_store_ques_ans_list";
+    public static final String StoreDetail_WenDa = HOST + "/api/v1/public/user_store_ques_ans_list";
     //门店服务分类列表
-    public static final String ServiceList_Store = HOST+"/api/v1/public/get_store_service_content";
+    public static final String ServiceList_Store = HOST + "/api/v1/public/get_store_service_content";
     //回复问答
-    public static final String HuiDa = HOST+"/api/v1/public/user_store_ques_ans_add";
+    public static final String HuiDa = HOST + "/api/v1/public/user_store_ques_ans_add";
     //删除足迹
     public static final String DeleteFootprint = HOST + "/api/v1/user/user_footprint_del";
     //收藏列表
@@ -206,7 +208,7 @@ public class URLs {
     //添加服务
     public static final String ADDService = HOST + "/api/v1/techn/add_order_server";
     //店铺商品列表-选择商品
-    public static final String SelectGoods = HOST+"/api/v1/public/get_store_goods";
+    public static final String SelectGoods = HOST + "/api/v1/public/get_store_goods";
     //添加商品
     public static final String ADDGoods = HOST + "/api/v1/techn/add_order_server_goods";
     //添加商品-自助添加
@@ -232,11 +234,14 @@ public class URLs {
     //回复
     public static final String Reply = HOST + "/api/v1/techn/techn_eval_add_reply";
     //优惠券
-    public static final String Coupon = HOST+"/api/v1/user/user_coupon_list";
+    public static final String Coupon = HOST + "/api/v1/user/user_coupon_list";
     //使用优惠券
-    public static final String USE_Coupon = HOST+"/api/v1/techn/use_coupon";
-    /**拼接请求路径
-     *@PARAM URI
+    public static final String USE_Coupon = HOST + "/api/v1/techn/use_coupon";
+
+    /**
+     * 拼接请求路径
+     *
+     * @PARAM URI
      * @RETURN
      */
     public static String getURL(String uri) {

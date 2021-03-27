@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.MainActivity;
+import com.xiyang.xiyang.activity.SetUpActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment5Model;
 import com.xiyang.xiyang.net.URLs;
@@ -280,9 +281,11 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout14:
                 //绑定银行卡
+
                 break;
             case R.id.linearLayout15:
                 //设置中心
+                CommonUtil.gotoActivity(getActivity(), SetUpActivity.class);
                 break;
         }
     }

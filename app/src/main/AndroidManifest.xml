@@ -110,8 +110,20 @@
 
 
 
+        <!--我的-->
 
-
+        <activity
+            android:name=".activity.SetUpActivity"
+            android:label="设置中心" />
+        <activity
+            android:name=".activity.BankCardSettingActivity"
+            android:label="银行卡设置" />
+        <activity
+            android:name=".activity.SetTransactionPasswordActivity"
+            android:label="交易密码" />
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:label="登录密码" />
 
         <!--全面屏适配-->
         <!--<meta-data
