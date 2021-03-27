@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,9 +54,11 @@ import okhttp3.Response;
  * 登录
  */
 public class LoginActivity extends BaseActivity {
+    int type = 1;//1、验证码 2、密码
     String code = "";
     private EditText editText1, editText2;
     private TextView textView1, textView2,tv_yzm,tv_mima;
+    private RelativeLayout rl_mima,rl_yzm;
 
     private String phonenum = "", password = "";
 
@@ -105,6 +108,8 @@ public class LoginActivity extends BaseActivity {
 
         tv_yzm  = findViewByID_My(R.id.tv_yzm);
         tv_mima = findViewByID_My(R.id.tv_mima);
+        rl_mima = findViewByID_My(R.id.rl_mima);
+        rl_yzm = findViewByID_My(R.id.rl_yzm);
 
         iv_gouxuan = findViewByID_My(R.id.iv_gouxuan);
     }
@@ -195,9 +200,19 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_yzm:
                 //验证码
+                type = 1;//1、验证码 2、密码
+                tv_yzm.setBackgroundResource(R.drawable.yuanjiao_15_lvsejianbian);
+                tv_mima.setBackgroundResource(R.color.transparent);
+                rl_yzm.setVisibility(View.VISIBLE);
+                rl_mima.setVisibility(View.GONE);
                 break;
             case R.id.tv_mima:
-                //密码码
+                //密码
+                type = 2;//1、验证码 2、密码
+                tv_yzm.setBackgroundResource(R.color.transparent);
+                tv_mima.setBackgroundResource(R.drawable.yuanjiao_15_lvsejianbian);
+                rl_yzm.setVisibility(View.GONE);
+                rl_mima.setVisibility(View.VISIBLE);
                 break;
         }
     }

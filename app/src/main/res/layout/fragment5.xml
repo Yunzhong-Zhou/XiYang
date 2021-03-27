@@ -439,8 +439,6 @@
 
                         </LinearLayout>
                     </LinearLayout>
-                    <!--//tab-->
-                    -->
                     <com.lihang.ShadowLayout
                         android:id="@+id/mShadowLayout"
                         android:layout_width="match_parent"

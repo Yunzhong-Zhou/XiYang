@@ -24,7 +24,7 @@
     <string name="app_file">图片已经保存到手机根目录</string>
     <string name="app_yes">是</string>
     <string name="app_no">否</string>
-
+    <string name="app_error">读取图片失败</string>
     <!--验证码-->
     <string name="app_sendcode">获取验证码</string>
     <string name="app_sendcode_hint">验证码发送成功</string>
@@ -140,7 +140,17 @@
     <string name="password_h7">实名认证</string>
     <string name="password_h8">您暂未实名认证，是否前往认证？</string>
     <string name="password_h9">银行卡暂未设置，是否前往设置？</string>
-
+    <!--在线客服-->
+    <string name="onlineservice_title">联系客服</string>
+    <string name="onlineservice_hint">请输入您想要咨询的问题</string>
+    <string name="onlineservice_system1">手机厂商：</string>
+    <string name="onlineservice_system2">手机型号：</string>
+    <string name="onlineservice_system3">Android系统版本号：</string>
+    <string name="onlineservice_system4">本程序版本号：</string>
+    <string name="onlineservice_h1">常见问题</string>
+    <string name="onlineservice_h2">竭诚为您服务</string>
+    <string name="onlineservice_h3">服务热线：</string>
+    <string name="onlineservice_h4">联系客服</string>
 
     <!--忘记密码-->
     <string name="forgetpassword_h1">请输入手机号码</string>

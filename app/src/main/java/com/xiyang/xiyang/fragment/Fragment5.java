@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
+import com.xiyang.xiyang.activity.BankCardSettingActivity;
 import com.xiyang.xiyang.activity.MainActivity;
+import com.xiyang.xiyang.activity.MyIncomeActivity;
+import com.xiyang.xiyang.activity.MyProfileActivity;
 import com.xiyang.xiyang.activity.SetUpActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment5Model;
@@ -233,7 +236,7 @@ public class Fragment5 extends BaseFragment {
         switch (v.getId()) {
             case R.id.linearLayout1:
                 //个人资料
-//                CommonUtil.gotoActivity(getActivity(), PersonalSettingActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyProfileActivity.class);
                 break;
             case R.id.linearLayout2:
                 //我的商户
@@ -268,7 +271,7 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout10:
                 //我的收益
-//                CommonUtil.gotoActivity(getActivity(), AddMerchantActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyIncomeActivity.class,false);
                 break;
             case R.id.linearLayout11:
                 //提现收益
@@ -278,10 +281,11 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout13:
                 //资料管理
+                CommonUtil.gotoActivity(getActivity(), MyProfileActivity.class, false);
                 break;
             case R.id.linearLayout14:
                 //绑定银行卡
-
+                CommonUtil.gotoActivity(getActivity(), BankCardSettingActivity.class, false);
                 break;
             case R.id.linearLayout15:
                 //设置中心

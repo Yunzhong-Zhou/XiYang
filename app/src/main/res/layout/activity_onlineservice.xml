@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.xiyang.xiyang.view.LoadingLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <com.liaoinstan.springview.widget.SpringView
+            android:id="@+id/springView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@color/transparent"
+                android:dividerHeight="0dp"
+                android:listSelector="@color/transparent"
+                android:paddingBottom="10dp"
+                android:scrollbars="none"></ListView>
+
+        </com.liaoinstan.springview.widget.SpringView>
+
+    </com.xiyang.xiyang.view.LoadingLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/yuanjiao_5_baise"
+            android:hint="@string/onlineservice_hint"
+            android:imeOptions="actionSend"
+            android:singleLine="true"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black1"
+            android:textColorHint="@color/black3"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:src="@mipmap/online_addimg" />
+    </LinearLayout>
+</LinearLayout>

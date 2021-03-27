@@ -140,25 +140,25 @@ public class URLs {
     //银行卡设置
     public static final String Collection = HOST + "/api/member/set-proceeds";
     //修改个人信息
-    public static final String ChageProfile = HOST + "/api/v1/user/user_setup";
+    public static final String ChangeProfile = HOST + "/api/v1/user/user_setup";
     //修改登录密码
     public static final String ChangePassword = HOST + "/api/v1/user/binding_phone";
     //交易密码
     public static final String TransactionPassword = HOST + "/api/v1/techn/techn_pay_pwd";
-    //解绑门店
-    public static final String UnbundleStore = HOST + "/api/v1/techn/techn_unlock_store";
-    //绑定银行卡、支付宝
-    public static final String BindingAccount = HOST + "/api/v1/techn/with_account_increase";
-    //我的履历
-    public static final String MyResume = HOST + "/api/v1/techn/user_resume_list";
-    //添加履历
-    public static final String AddResume = HOST + "/api/v1/techn/user_resume_add";
-    //删除履历
-    public static final String DeleteResume = HOST + "/api/v1/techn/user_resume_del";
-    //修改履历
-    public static final String ChageResume = HOST + "/api/v1/techn/user_resume_modify";
-    //实名认证
-    public static final String Verified = HOST + "/api/v1/techn/techn_auth";
+    //我的收益
+    public static final String MyIncome = HOST + "/api/v1/techn/techn_unlock_store";
+    //提现
+    public static final String TakeCash = HOST + "/api/v1/techn/with_account_increase";
+    //提现详情
+    public static final String TakeCashDetail = HOST + "/api/v1/techn/user_resume_list";
+    //帮助列表
+    public static final String Help = HOST + "/api/v1/techn/user_resume_add";
+    //在线客服
+    public static final String OnlineService = HOST + "/api/v1/techn/user_resume_del";
+    //创建留言
+    public static final String AddMessage = HOST + "/api/v1/techn/user_resume_modify";
+    //关于我们
+    public static final String About = HOST + "/api/v1/techn/techn_auth";
     //意见反馈分类
     public static final String FeedBack_List = HOST + "/api/v1/public/get_feedback_classify_list";
     //意见反馈提交
