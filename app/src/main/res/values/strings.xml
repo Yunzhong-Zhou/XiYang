@@ -58,7 +58,7 @@
     <string name="app_type_quanbu">全部</string>
     <string name="app_type_zhuangtai">按状态</string>
     <string name="app_type_bizhong">按币种</string>
-    <string name="app_type_usdt">USDT</string>
+    <string name="app_type_sousuo">搜索</string>
     <string name="app_type_fil">FIL</string>
     <string name="app_type_paixu">按排序</string>
     <string name="app_type_leixing">类型</string>

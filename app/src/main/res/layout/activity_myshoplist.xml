@@ -30,9 +30,9 @@
                 android:drawableRight="@mipmap/down_black"
                 android:drawablePadding="5dp"
                 android:gravity="center"
-                android:text="@string/app_type_paixu"
+                android:text="@string/app_type_anshijian"
                 android:textColor="@color/black3"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
             <View
                 android:id="@+id/view1"
@@ -41,11 +41,6 @@
                 android:visibility="gone"
                 />
         </LinearLayout>
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="21dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/black3"/>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -65,9 +60,9 @@
                 android:drawableRight="@mipmap/down_black"
                 android:drawablePadding="5dp"
                 android:gravity="center"
-                android:text="@string/app_type_zhuangtai"
+                android:text="@string/app_type_anjine"
                 android:textColor="@color/black3"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
             <View
                 android:id="@+id/view2"
@@ -75,7 +70,62 @@
                 android:layout_height="3dp"
                 android:visibility="gone" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/down_black"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/app_type_anjine"
+                android:textColor="@color/black3"
+                android:textSize="14sp" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="66dp"
+                android:layout_height="3dp"
+                android:visibility="gone" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/down_black"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/app_type_anjine"
+                android:textColor="@color/black3"
+                android:textSize="14sp" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="66dp"
+                android:layout_height="3dp"
+                android:visibility="gone" />
+        </LinearLayout>
 
     </LinearLayout>
 

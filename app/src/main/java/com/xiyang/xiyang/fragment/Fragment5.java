@@ -15,7 +15,10 @@ import com.xiyang.xiyang.activity.BankCardSettingActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyIncomeActivity;
 import com.xiyang.xiyang.activity.MyProfileActivity;
+import com.xiyang.xiyang.activity.MyWorkListActivity;
 import com.xiyang.xiyang.activity.SetUpActivity;
+import com.xiyang.xiyang.activity.ShareProfitListActivity;
+import com.xiyang.xiyang.activity.TakeCashActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment5Model;
 import com.xiyang.xiyang.net.URLs;
@@ -268,6 +271,7 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout9:
                 //我的工单
+                CommonUtil.gotoActivity(getActivity(), MyWorkListActivity.class,false);
                 break;
             case R.id.linearLayout10:
                 //我的收益
@@ -275,9 +279,11 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout11:
                 //提现收益
+                CommonUtil.gotoActivity(getActivity(), TakeCashActivity.class, false);
                 break;
             case R.id.linearLayout12:
                 //分润记录
+                CommonUtil.gotoActivity(getActivity(), ShareProfitListActivity.class, false);
                 break;
             case R.id.linearLayout13:
                 //资料管理

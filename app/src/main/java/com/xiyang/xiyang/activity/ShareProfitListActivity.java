@@ -36,28 +36,26 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * Created by zyz on 2017/9/5.
- * 我的提现
+ * Created by Mr.Z on 2021/3/28.
+ * 分润记录
  */
-
-public class MyTakeCashActivity extends BaseActivity {
+public class ShareProfitListActivity extends BaseActivity {
     private RecyclerView recyclerView;
     List<MyTakeCashModel> list = new ArrayList<>();
     CommonAdapter<MyTakeCashModel> mAdapter;
     //筛选
-    private LinearLayout linearLayout1, linearLayout2;
-    private TextView textView1, textView2;
-    private View view1, view2;
+    private LinearLayout linearLayout1, linearLayout2,linearLayout3;
+    private TextView textView1, textView2,textView3;
+    private View view1, view2,view3;
     private LinearLayout pop_view;
     int page = 1;
     String sort = "desc", status = "";
     int i1 = 0;
     int i2 = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mytakecash);
+        setContentView(R.layout.activity_shareprofitlist);
     }
 
     @Override
@@ -100,14 +98,11 @@ public class MyTakeCashActivity extends BaseActivity {
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
         pop_view = findViewByID_My(R.id.pop_view);
-
-
     }
 
     @Override
     protected void initData() {
         requestServer();//获取数据
-
     }
 
     private void RequestList(Map<String, String> params) {
@@ -138,7 +133,7 @@ public class MyTakeCashActivity extends BaseActivity {
                         showEmptyPage();//空数据
                     } else {
                         mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_mytakecash, list) {
+                                (MyTakeCashActivity.this, R.layout.item_shareprofit, list) {
                             @Override
                             protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
                                 holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
@@ -245,7 +240,7 @@ public class MyTakeCashActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("提现记录");
+        titleView.setTitle("分润记录");
     }
 
     @Override
@@ -269,7 +264,7 @@ public class MyTakeCashActivity extends BaseActivity {
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyTakeCashActivity.this).inflate(
+        final View contentView = LayoutInflater.from(ShareProfitListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -296,7 +291,7 @@ public class MyTakeCashActivity extends BaseActivity {
         final List<String> list = new ArrayList<String>();
         list.add(getString(R.string.app_type_jiangxu));
         list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyTakeCashActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(ShareProfitListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -335,7 +330,7 @@ public class MyTakeCashActivity extends BaseActivity {
 
     private void showPopupWindow2(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyTakeCashActivity.this).inflate(
+        final View contentView = LayoutInflater.from(ShareProfitListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -365,7 +360,7 @@ public class MyTakeCashActivity extends BaseActivity {
         list.add(getString(R.string.app_type_yitongguo));
         list.add(getString(R.string.app_type_weitongguo));
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyTakeCashActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(ShareProfitListActivity.this, list);
         adapter.setSelectItem(i2);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

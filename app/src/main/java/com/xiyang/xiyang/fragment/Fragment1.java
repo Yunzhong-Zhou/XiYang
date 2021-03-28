@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
+import com.xiyang.xiyang.activity.AddContractActivity;
+import com.xiyang.xiyang.activity.AddShopActivity;
 import com.xiyang.xiyang.activity.MainActivity;
+import com.xiyang.xiyang.activity.MyShopListActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
@@ -275,11 +278,11 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout5:
                 //添加商户
-//                CommonUtil.gotoActivity(getActivity(), MyCollectionActivity.class);
+                CommonUtil.gotoActivity(getActivity(), AddShopActivity.class);
                 break;
             case R.id.linearLayout6:
                 //我的商户
-//                CommonUtil.gotoActivity(getActivity(), CouponActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
                 break;
             case R.id.linearLayout7:
                 //取消商户
@@ -290,7 +293,7 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout9:
                 //添加合同
-//                CommonUtil.gotoActivity(getActivity(), ComplaintListActivity.class);
+                CommonUtil.gotoActivity(getActivity(), AddContractActivity.class);
                 break;
             case R.id.linearLayout10:
                 //我的合同

@@ -135,6 +135,22 @@ public class TitleView extends FrameLayout {
         right_text.setText(str);
         right_text.setOnClickListener(listener);
     }
+    /**
+     * 显示右边的textview，并设置值
+     */
+    public void showRightTextview(String str,boolean isShowAdd, OnClickListener listener) {
+        right_text.setVisibility(View.VISIBLE);
+        if (isShowAdd){
+            btn_right.setVisibility(View.VISIBLE);
+        }else {
+            if (isShowAdd){
+                btn_right.setVisibility(View.GONE);
+            }
+        }
+
+        right_text.setText(str);
+        right_text.setOnClickListener(listener);
+    }
 
     /**
      * 显示右边的textview，并设置值

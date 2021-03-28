@@ -291,9 +291,6 @@ public class MyProfileActivity extends BaseActivity {
     /**
      * *****************************************选择图片********************************************
      */
-    /**
-     * *****************************************选择图片********************************************
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

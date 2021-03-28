@@ -8,7 +8,8 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="56dp">
+        android:layout_height="56dp"
+        android:background="@mipmap/bg_head">
         <!--左边按钮-->
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -36,33 +37,34 @@
         </RelativeLayout>
 
         <!--右边按钮-->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:layout_alignParentRight="true">
 
             <ImageView
                 android:id="@+id/right_btn"
-                android:layout_width="56dp"
-                android:layout_height="match_parent"
-                android:padding="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/ic_return"
-                android:visibility="invisible" />
+                android:paddingRight="7dp"
+                android:src="@mipmap/ic_add_white"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/right_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="16dp"
+                android:paddingRight="7dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="重庆"
+                android:text="右边按钮"
                 android:textColor="@color/white"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <!--中间文字-->
         <RelativeLayout
