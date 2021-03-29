@@ -108,14 +108,42 @@
         <activity
             android:name=".activity.MyShopListActivity"
             android:label="我的商户" />
+        <activity
+            android:name=".activity.CancelShopActivity"
+            android:label="取消商户-添加取消合同" />
 
         <activity
             android:name=".activity.AddContractActivity"
             android:label="添加合同" />
-
-
-
-
+        <activity
+            android:name=".activity.MyContractActivity"
+            android:label="我的合同" />
+        <activity
+            android:name=".activity.TransferShopActivity"
+            android:label="划转商户-申请商户划转" />
+        <activity
+            android:name=".activity.RenewContractActivity"
+            android:label="续签合同" />
+        <!--门店-->
+        <activity
+            android:name=".activity.AddStoreActivity"
+            android:label="添加门店" />
+        <activity
+            android:name=".activity.ChangeContractActivity"
+            android:label="调价合同" />
+        <activity
+            android:name=".activity.TransferStoreActivity"
+            android:label="划转门店-申请门店划转" />
+        <activity
+            android:name=".activity.MyStoreListActivity"
+            android:label="我的门店" />
+        <activity
+            android:name=".activity.StopStoreActivity"
+            android:label="关闭门店" />
+        <!--设备-->
+        <activity
+            android:name=".activity.MyDeviceListActivity"
+            android:label="我的设备" />
 
         <!--我的-->
         <activity

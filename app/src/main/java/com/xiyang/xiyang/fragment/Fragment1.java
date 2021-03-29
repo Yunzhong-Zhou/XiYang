@@ -11,17 +11,31 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddShopActivity;
+import com.xiyang.xiyang.activity.CancelShopActivity;
 import com.xiyang.xiyang.activity.MainActivity;
+import com.xiyang.xiyang.activity.MyContractActivity;
 import com.xiyang.xiyang.activity.MyShopListActivity;
+import com.xiyang.xiyang.activity.RenewContractActivity;
+import com.xiyang.xiyang.activity.TransferShopActivity;
 import com.xiyang.xiyang.base.BaseFragment;
+import com.xiyang.xiyang.model.Fragment1Model;
+import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.okhttp.CallBackUtil;
+import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -32,10 +46,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class Fragment1 extends BaseFragment {
     int type = 1;
     private RecyclerView recyclerView1, recyclerView2;
-//    List<Fragment1Model> list1 = new ArrayList<>();
-//    CommonAdapter<Fragment1Model> mAdapter1;
-//    List<Fragment1Model.CooperationShopListBean> list2 = new ArrayList<>();
-//    CommonAdapter<Fragment1Model.CooperationShopListBean> mAdapter2;
+    List<Fragment1Model> list1 = new ArrayList<>();
+    CommonAdapter<Fragment1Model> mAdapter1;
+    List<Fragment1Model> list2 = new ArrayList<>();
+    CommonAdapter<Fragment1Model> mAdapter2;
+    TextView tv_mymore;
 
     TextView textView1, textView2, textView3, textView4;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
@@ -122,6 +137,8 @@ public class Fragment1 extends BaseFragment {
         recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView2 = findViewByID_My(R.id.recyclerView2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
+        tv_mymore = findViewByID_My(R.id.tv_mymore);
+        tv_mymore.setOnClickListener(this);
 
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
@@ -187,7 +204,7 @@ public class Fragment1 extends BaseFragment {
     }
 
     private void Request(Map<String, String> params) {
-        /*OkhttpUtil.okHttpPost(URLs.Fragment1, params, headerMap, new CallBackUtil<Fragment1Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment1, params, headerMap, new CallBackUtil<Fragment1Model>() {
             @Override
             public Fragment1Model onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
@@ -198,7 +215,7 @@ public class Fragment1 extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 MainActivity.isOver = true;
                 hideProgress();
-                showEmptyPage();
+                showErrorPage();
                 myToast(err);
             }
 
@@ -206,23 +223,23 @@ public class Fragment1 extends BaseFragment {
             public void onResponse(Fragment1Model response) {
                 hideProgress();
 
-                mAdapter1 = new CommonAdapter<Fragment1Model_P>
+                mAdapter1 = new CommonAdapter<Fragment1Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment1Model_P model, int position) {
+                    protected void convert(ViewHolder holder, Fragment1Model model, int position) {
 
-                        holder.setText(R.id.tv1, model.getTitle());
-                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
+//                        holder.setText(R.id.tv1, model.getTitle());
+//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
                     }
                 };
                 recyclerView1.setAdapter(mAdapter1);
-                list2 = response.getCooperation_shop_list();
+//                list2 = response.getCooperation_shop_list();
                 if (list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<Fragment1Model.CooperationShopListBean>
+                    mAdapter2 = new CommonAdapter<Fragment1Model>
                             (getActivity(), R.layout.item_fragment1_2, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment1Model.CooperationShopListBean model, int position) {
-                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                        protected void convert(ViewHolder holder, Fragment1Model model, int position) {
+                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
                                     .load(OkHttpClientManager.IMGHOST + model.getCover())
                                     .fitCenter()
@@ -242,7 +259,7 @@ public class Fragment1 extends BaseFragment {
                             holder.setText(R.id.tv_name, model.getTitle());
                             holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
                             holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");
+                            holder.setText(R.id.tv_num, model.getNum() + "");*/
 
                         }
                     };
@@ -254,7 +271,7 @@ public class Fragment1 extends BaseFragment {
                 MainActivity.isOver = true;
 
             }
-        });*/
+        });
     }
 
     @Override
@@ -281,12 +298,13 @@ public class Fragment1 extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), AddShopActivity.class);
                 break;
             case R.id.linearLayout6:
+            case R.id.tv_mymore:
                 //我的商户
                 CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
                 break;
             case R.id.linearLayout7:
                 //取消商户
-//                CommonUtil.gotoActivity(getActivity(), MyCommentActivity.class);
+                CommonUtil.gotoActivity(getActivity(), CancelShopActivity.class);
                 break;
             case R.id.linearLayout8:
                 //修改商户
@@ -297,13 +315,15 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout10:
                 //我的合同
+                CommonUtil.gotoActivity(getActivity(), MyContractActivity.class);
                 break;
             case R.id.linearLayout11:
                 //划转商户
-//                CommonUtil.gotoActivity(getActivity(), AddMerchantActivity.class);
+                CommonUtil.gotoActivity(getActivity(), TransferShopActivity.class);
                 break;
             case R.id.linearLayout12:
                 //续签商户
+                CommonUtil.gotoActivity(getActivity(), RenewContractActivity.class);
                 break;
 
             case R.id.ll_tab1:

@@ -176,7 +176,7 @@ public class ShareProfitListActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
-                showErrorPage();
+//                showErrorPage();
                 hideProgress();
                 myToast(err);
                 page--;
@@ -184,7 +184,7 @@ public class ShareProfitListActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response) {
-                showContentPage();
+//                showContentPage();
                 onHttpResult();
                 MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
                 /*JSONObject jObj;

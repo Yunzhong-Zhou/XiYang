@@ -40,7 +40,7 @@ import okhttp3.Response;
  * Created by Mr.Z on 2021/3/28.
  * 我的商户
  */
-public class MyShopListActivity extends BaseActivity {
+public class MyStoreListActivity extends BaseActivity {
     private RecyclerView recyclerView;
     List<MyTakeCashModel> list = new ArrayList<>();
     CommonAdapter<MyTakeCashModel> mAdapter;
@@ -134,7 +134,7 @@ public class MyShopListActivity extends BaseActivity {
                         showEmptyPage();//空数据
                     } else {
                         mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_fragment1_2, list) {
+                                (MyTakeCashActivity.this, R.layout.item_fragment2_2, list) {
                             @Override
                             protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
                                 holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
@@ -241,11 +241,11 @@ public class MyShopListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("我的商户");
-        titleView.showRightTextview("添加商户",true, new View.OnClickListener() {
+        titleView.setTitle("我的门店");
+        titleView.showRightTextview("添加门店",true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(MyShopListActivity.this, AddShopActivity.class);
+                CommonUtil.gotoActivity(MyStoreListActivity.this, AddStoreActivity.class);
             }
         });
     }
@@ -271,7 +271,7 @@ public class MyShopListActivity extends BaseActivity {
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyShopListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(MyStoreListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -298,7 +298,7 @@ public class MyShopListActivity extends BaseActivity {
         final List<String> list = new ArrayList<String>();
         list.add(getString(R.string.app_type_jiangxu));
         list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyShopListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyStoreListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -337,7 +337,7 @@ public class MyShopListActivity extends BaseActivity {
 
     private void showPopupWindow2(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyShopListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(MyStoreListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -367,7 +367,7 @@ public class MyShopListActivity extends BaseActivity {
         list.add(getString(R.string.app_type_yitongguo));
         list.add(getString(R.string.app_type_weitongguo));
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyShopListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyStoreListActivity.this, list);
         adapter.setSelectItem(i2);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

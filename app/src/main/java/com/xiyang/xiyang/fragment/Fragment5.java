@@ -13,8 +13,11 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.BankCardSettingActivity;
 import com.xiyang.xiyang.activity.MainActivity;
+import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.MyIncomeActivity;
 import com.xiyang.xiyang.activity.MyProfileActivity;
+import com.xiyang.xiyang.activity.MyShopListActivity;
+import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.MyWorkListActivity;
 import com.xiyang.xiyang.activity.SetUpActivity;
 import com.xiyang.xiyang.activity.ShareProfitListActivity;
@@ -243,15 +246,15 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout2:
                 //我的商户
-//                CommonUtil.gotoActivity(getActivity(), VerifiedActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
                 break;
             case R.id.linearLayout3:
                 //我的门店
-//                CommonUtil.gotoActivity(getActivity(), MyPublishActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyStoreListActivity.class);
                 break;
             case R.id.linearLayout4:
                 //我的设备
-//                CommonUtil.gotoActivity(getActivity(), MyWalletActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyDeviceListActivity.class);
                 break;
             case R.id.linearLayout5:
                 //我的营收

@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="0"
-                    android:drawableLeft="@mipmap/ic_shop_gray"
+                    android:drawableLeft="@mipmap/ic_store_gray"
                     android:drawablePadding="6dp"
                     android:textStyle="bold"
                     android:textColor="@color/black3"

@@ -55,7 +55,7 @@ public class URLs {
     //服务分类列表
     public static final String ServiceList_all = HOST + "/api/v1/public/service_list_all";
     /**
-     * ********************************首页*****************************************
+     * ********************************商户*****************************************
      */
     public static final String Fragment1 = HOST + "/api/v1/techn/index_date";
     //商品列表
@@ -63,10 +63,9 @@ public class URLs {
     //商品详情
     public static final String ProductDetail = HOST + "/api/v1/public/get_goods_details";
     /**
-     * ********************************工作台*****************************************
+     * ********************************门店*****************************************
      */
-    //待接车
-    public static final String Fragment2_0 = HOST + "/api/v1/techn/techn_accept_order_list";
+    public static final String Fragment2 = HOST + "/api/v1/techn/techn_accept_order_list";
     //接车
     public static final String AddJieChe = HOST + "/api/v1/techn/techn_sedan_increase";
     //待分配
@@ -104,7 +103,7 @@ public class URLs {
     //修改服务内容
     public static final String ChangeService = HOST + "/api/v1/techn/techn_sedan_order_service_modify_str";
     /**
-     * ********************************论坛*****************************************
+     * ********************************设备*****************************************
      */
     public static final String Fragment3 = HOST + "/api/v1/techn/techn_forum_post_page_list";
     //发布活动
@@ -133,6 +132,10 @@ public class URLs {
     public static final String AddKuCunPeiJian = HOST + "/api/v1/techn/techn_parts_increase";
     //喜欢
     public static final String Like = HOST + "/api/v1/techn/techn_activity_fabulous";
+    /**
+     * ********************************数据*****************************************
+     */
+    public static final String Fragment4 = HOST + "/api/v1/techn/techn_forum_post_page_list";
     /**
      * ********************************我的*****************************************
      */
