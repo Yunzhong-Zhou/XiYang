@@ -129,6 +129,9 @@
             android:name=".activity.AddStoreActivity"
             android:label="添加门店" />
         <activity
+            android:name=".activity.SelectVisitActivity"
+            android:label="选择拜访" />
+        <activity
             android:name=".activity.ChangeContractActivity"
             android:label="调价合同" />
         <activity
@@ -141,6 +144,12 @@
             android:name=".activity.StopStoreActivity"
             android:label="关闭门店" />
         <!--设备-->
+        <activity
+            android:name=".activity.SelectServiceActivity"
+            android:label="选择设备" />
+        <activity
+            android:name=".activity.AddServiceActivity"
+            android:label="申领设备" />
         <activity
             android:name=".activity.MyDeviceListActivity"
             android:label="我的设备" />

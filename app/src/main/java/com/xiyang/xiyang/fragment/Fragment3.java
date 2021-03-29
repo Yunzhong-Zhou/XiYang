@@ -11,6 +11,7 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
+import com.xiyang.xiyang.activity.SelectServiceActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment1Model;
 import com.xiyang.xiyang.model.Fragment3Model;
@@ -289,7 +290,7 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout5:
                 //申领设备
-//                CommonUtil.gotoActivity(getActivity(), AddShopActivity.class);
+                CommonUtil.gotoActivity(getActivity(), SelectServiceActivity.class);
                 break;
             case R.id.linearLayout6:
                 //安装设备

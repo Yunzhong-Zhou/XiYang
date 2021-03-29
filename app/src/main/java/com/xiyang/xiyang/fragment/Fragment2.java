@@ -13,6 +13,7 @@ import com.xiyang.xiyang.activity.AddStoreActivity;
 import com.xiyang.xiyang.activity.ChangeContractActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
+import com.xiyang.xiyang.activity.SelectVisitActivity;
 import com.xiyang.xiyang.activity.StopStoreActivity;
 import com.xiyang.xiyang.activity.TransferStoreActivity;
 import com.xiyang.xiyang.base.BaseFragment;
@@ -296,6 +297,7 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.linearLayout6:
                 //拜访门店
+                CommonUtil.gotoActivity(getActivity(), SelectVisitActivity.class);
                 break;
             case R.id.linearLayout7:
                 //调价申请

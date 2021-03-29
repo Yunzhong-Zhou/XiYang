@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.lihang.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        app:hl_cornerRadius="8dp"
+        app:hl_shadowColor="#21555555"
+        app:hl_shadowHiddenTop="true"
+        app:hl_shadowLimit="1dp"
+        app:hl_shadowOffsetX="0dp"
+        app:hl_shadowOffsetY="1dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yuanjiao_8_baise"
+            android:drawableLeft="@mipmap/bg_selectvisit1"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="远程拜访>>"
+            android:textColor="@color/green"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+    </com.lihang.ShadowLayout>
+
+    <com.lihang.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        app:hl_cornerRadius="8dp"
+        app:hl_shadowColor="#21555555"
+        app:hl_shadowHiddenTop="true"
+        app:hl_shadowLimit="1dp"
+        app:hl_shadowOffsetX="0dp"
+        app:hl_shadowOffsetY="1dp">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yuanjiao_8_baise"
+            android:drawableLeft="@mipmap/bg_selectvisit2"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="上门拜访>>"
+            android:textColor="@color/green"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+    </com.lihang.ShadowLayout>
+
+    <com.lihang.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        app:hl_cornerRadius="8dp"
+        app:hl_shadowColor="#21555555"
+        app:hl_shadowHiddenTop="true"
+        app:hl_shadowLimit="1dp"
+        app:hl_shadowOffsetX="0dp"
+        app:hl_shadowOffsetY="1dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yuanjiao_8_baise"
+            android:drawableLeft="@mipmap/bg_selectvisit3"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="陌生拜访>>"
+            android:textColor="@color/green"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+    </com.lihang.ShadowLayout>
+
+</LinearLayout>
