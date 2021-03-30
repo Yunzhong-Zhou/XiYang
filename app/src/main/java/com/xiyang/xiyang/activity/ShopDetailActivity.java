@@ -27,6 +27,22 @@ public class ShopDetailActivity extends BaseActivity {
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
 
+    /**
+     *商户信息
+     */
+    LinearLayout ll_shopinfo,ll_shopedit;
+
+    /**
+     * 合同信息
+     */
+    LinearLayout ll_contract;
+
+    /**
+     * 门店信息
+     */
+    LinearLayout ll_store;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
