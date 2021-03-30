@@ -73,6 +73,10 @@ public abstract class CallBackUtil<T> {
                 MyLogger.i("数据返回onSeccess", string);
                 JSONObject mJsonObject = new JSONObject(string);
                 int result_code = mJsonObject.getInt("code");
+
+                //保存后台返回的最新时间戳
+                LocalUserInfo.getInstance(MyApplication.getContext()).setTime(mJsonObject.getString("serverTime"));
+
                 switch (result_code) {
                     case 0:
                         //数据请求成功-解析数据
@@ -135,6 +139,9 @@ public abstract class CallBackUtil<T> {
                         LocalUserInfo.getInstance(MyApplication.getContext()).setUserHash("");
                         CommonUtil.gotoActivity(MyApplication.getContext(), LoginActivity.class);
                         break;
+                    /*case 50007:
+                        //请求时误差时间超时
+                        break;*/
 
 //                    case 40004:
                         //TODO 没有数据、提交失败 （有冲突，走失败逻辑提示message信息，请求列表数据时，不要提示）

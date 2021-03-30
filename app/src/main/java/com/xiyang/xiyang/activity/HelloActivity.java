@@ -40,7 +40,6 @@ public class HelloActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
-
         //语言切换
         switch (LocalUserInfo.getInstance(this).getLanguage_Type()) {
             case "zh":

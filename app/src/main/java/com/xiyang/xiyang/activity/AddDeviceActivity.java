@@ -27,7 +27,7 @@ import okhttp3.Response;
  * Created by Mr.Z on 2021/3/28.
  * 申领设备
  */
-public class AddServiceActivity extends BaseActivity {
+public class AddDeviceActivity extends BaseActivity {
     int type = 1;//1、主机、2、4g模块 3、过滤网
     int page = 1;
     private RecyclerView recyclerView;
@@ -37,7 +37,7 @@ public class AddServiceActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addservice);
+        setContentView(R.layout.activity_adddevice);
     }
 
     @Override

@@ -109,6 +109,9 @@
             android:name=".activity.MyShopListActivity"
             android:label="我的商户" />
         <activity
+            android:name=".activity.ShopDetailActivity"
+            android:label="商户详情" />
+        <activity
             android:name=".activity.CancelShopActivity"
             android:label="取消商户-添加取消合同" />
 
@@ -145,15 +148,17 @@
             android:label="关闭门店" />
         <!--设备-->
         <activity
-            android:name=".activity.SelectServiceActivity"
+            android:name=".activity.SelectDeviceActivity"
             android:label="选择设备" />
         <activity
-            android:name=".activity.AddServiceActivity"
+            android:name=".activity.AddDeviceActivity"
             android:label="申领设备" />
         <activity
             android:name=".activity.MyDeviceListActivity"
             android:label="我的设备" />
-
+        <activity
+            android:name=".activity.DeviceDetailActivity"
+            android:label="设备详情" />
         <!--我的-->
         <activity
             android:name=".activity.MyWorkListActivity"

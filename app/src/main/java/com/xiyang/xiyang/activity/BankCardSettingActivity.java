@@ -125,9 +125,9 @@ public class BankCardSettingActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        showProgress(true, getString(R.string.app_loading2));
+        /*showProgress(true, getString(R.string.app_loading2));
         //获取收款设置
-        RequestGetCollection("?token=" + localUserInfo.getToken());
+        RequestGetCollection("?token=" + localUserInfo.getToken());*/
     }
 
     @Override
@@ -163,7 +163,7 @@ public class BankCardSettingActivity extends BaseActivity {
     }
 
     //获取收款设置
-    private void RequestGetCollection(String string) {
+    private void RequestGetCollection(HashMap<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.Collection, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
             @Override
             public BankCardSettingModel onParseResponse(Call call, Response response) {

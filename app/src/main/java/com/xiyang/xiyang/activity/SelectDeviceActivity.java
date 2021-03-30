@@ -11,11 +11,11 @@ import com.xiyang.xiyang.utils.CommonUtil;
  * Created by Mr.Z on 2021/3/29.
  * 选择设备
  */
-public class SelectServiceActivity extends BaseActivity {
+public class SelectDeviceActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selectservice);
+        setContentView(R.layout.activity_selectdevice);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SelectServiceActivity extends BaseActivity {
 
                 break;
         }
-        CommonUtil.gotoActivityWithData(SelectServiceActivity.this, AddServiceActivity.class, bundle);
+        CommonUtil.gotoActivityWithData(SelectDeviceActivity.this, AddDeviceActivity.class, bundle);
     }
 
     @Override

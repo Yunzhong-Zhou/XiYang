@@ -157,7 +157,7 @@
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
 
-                                <androidx.appcompat.widget.AppCompatEditText
+                                <EditText
                                     android:id="@+id/editText1"
                                     android:layout_width="match_parent"
                                     android:layout_height="70dp"
@@ -168,7 +168,7 @@
                                     android:textColor="@color/black2"
                                     android:textColorHint="@color/black3"
                                     android:textSize="20sp"
-                                    android:theme="@style/MyEditText" />
+                                    android:background="@drawable/edittext_bg" />
 
                             </RelativeLayout>
 
@@ -236,7 +236,7 @@
                                     android:textStyle="bold"
                                     android:textColor="@color/black2"
                                     android:textSize="14sp"
-                                    android:theme="@style/MyEditText" />
+                                    android:background="@drawable/edittext_bg" />
                             </LinearLayout>
 
                             <View
@@ -258,7 +258,7 @@
                                     android:textColor="@color/black1"
                                     android:visibility="gone" />
 
-                                <androidx.appcompat.widget.AppCompatEditText
+                                <EditText
                                     android:id="@+id/editText2"
                                     android:layout_width="match_parent"
                                     android:layout_height="70dp"
@@ -269,7 +269,7 @@
                                     android:textColorHint="@color/black3"
                                     android:textSize="14sp"
                                     android:textStyle="bold"
-                                    android:theme="@style/MyEditText" />
+                                    android:background="@drawable/edittext_bg" />
                             </LinearLayout>
 
                             <RelativeLayout
@@ -277,7 +277,7 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                                <androidx.appcompat.widget.AppCompatEditText
+                                <EditText
                                     android:id="@+id/editText3"
                                     android:layout_width="match_parent"
                                     android:layout_height="70dp"
@@ -289,7 +289,7 @@
                                     android:textColorHint="@color/black3"
                                     android:textSize="14sp"
                                     android:textStyle="bold"
-                                    android:theme="@style/MyEditText" />
+                                    android:background="@drawable/edittext_bg" />
 
                                 <TextView
                                     android:id="@+id/textView5"

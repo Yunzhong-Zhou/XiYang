@@ -34,6 +34,7 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.LocalUserInfo;
 import com.xiyang.xiyang.utils.TraceServiceImpl;
 
 import java.util.ArrayList;
@@ -235,7 +236,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
         //第一次启动获取数据
-        RequestFrist(params);
+//        RequestFrist(params);
         //更新
         Map<String, String> params = new HashMap<>();
         params.put("type", "1");
@@ -319,6 +320,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void RequestUpgrade(Map<String, String> params) {
+        //设置初始时间戳
+        LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis()+"");
+
         OkhttpUtil.okHttpPost(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
             public UpgradeModel onParseResponse(Call call, Response response) {

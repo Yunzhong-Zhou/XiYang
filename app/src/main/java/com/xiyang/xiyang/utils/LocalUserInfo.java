@@ -430,7 +430,7 @@ public class LocalUserInfo {
             return string;
         }
         return "";*/
-        return !TextUtils.isEmpty(string) ? string : "";
+        return !TextUtils.isEmpty(string) ? string : "0";
     }
 
     public String getToken() {

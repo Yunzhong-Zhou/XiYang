@@ -35,7 +35,7 @@
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/textView1"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -51,7 +51,7 @@
                     android:textColorHint="@color/black3"
                     android:textSize="12.5sp"
                     android:textStyle="bold"
-                    android:theme="@style/MyEditText" />
+                    android:background="@drawable/edittext_bg" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -83,7 +83,7 @@
                     android:textColorHint="@color/black3"
                     android:textSize="12.5sp"
                     android:textStyle="bold"
-                    android:theme="@style/MyEditText" />
+                    android:background="@drawable/edittext_bg" />
             </RelativeLayout>
 
             <TextView

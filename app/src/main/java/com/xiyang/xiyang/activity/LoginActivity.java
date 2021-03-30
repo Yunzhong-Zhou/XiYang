@@ -31,6 +31,7 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.LocalUserInfo;
 import com.xiyang.xiyang.utils.MyLogger;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,8 +58,8 @@ public class LoginActivity extends BaseActivity {
     int type = 1;//1、验证码 2、密码
     String code = "";
     private EditText editText1, editText2;
-    private TextView textView1, textView2,tv_yzm,tv_mima;
-    private RelativeLayout rl_mima,rl_yzm;
+    private TextView textView1, textView2, tv_yzm, tv_mima;
+    private RelativeLayout rl_mima, rl_yzm;
 
     private String phonenum = "", password = "";
 
@@ -106,7 +107,7 @@ public class LoginActivity extends BaseActivity {
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
 
-        tv_yzm  = findViewByID_My(R.id.tv_yzm);
+        tv_yzm = findViewByID_My(R.id.tv_yzm);
         tv_mima = findViewByID_My(R.id.tv_mima);
         rl_mima = findViewByID_My(R.id.rl_mima);
         rl_yzm = findViewByID_My(R.id.rl_yzm);
@@ -169,7 +170,6 @@ public class LoginActivity extends BaseActivity {
 //                    params.put("action", "1");//1为验证码登陆 2为第三方登陆
                     RequestLogin(params);//登录
                 }*/
-
                 CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
                 break;
             /*case R.id.image_wechat:
@@ -353,7 +353,10 @@ public class LoginActivity extends BaseActivity {
     }*/
 
     private void RequestUpgrade(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
+        //设置初始时间戳
+        LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis()+"");
+
+        OkhttpUtil.okHttpGet(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
             public UpgradeModel onParseResponse(Call call, Response response) {
                 return null;

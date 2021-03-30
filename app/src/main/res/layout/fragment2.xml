@@ -160,7 +160,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="8dp"
                     app:hl_cornerRadius="15dp"
-                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowColor="@color/bg_gray"
                     app:hl_shadowLimit="2dp"
                     app:hl_shadowOffsetX="0dp"
                     app:hl_shadowOffsetY="2dp"
@@ -394,7 +394,7 @@
                     app:hl_shadowHiddenTop="true"
                     android:layout_marginTop="8dp"
                     app:hl_cornerRadius="15dp"
-                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowColor="@color/bg_gray"
                     app:hl_shadowLimit="2dp"
                     app:hl_shadowOffsetX="0dp"
                     app:hl_shadowOffsetY="2dp">

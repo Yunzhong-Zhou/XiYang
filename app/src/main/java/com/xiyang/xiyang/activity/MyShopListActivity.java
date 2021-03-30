@@ -149,7 +149,7 @@ public class MyShopListActivity extends BaseActivity {
                             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                                 Bundle bundle1 = new Bundle();
                                 bundle1.putString("id", list.get(position).getId());
-                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, TakeCashDetailActivity.class, bundle1, false);
+                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, ShopDetailActivity.class, bundle1, false);
                             }
 
                             @Override

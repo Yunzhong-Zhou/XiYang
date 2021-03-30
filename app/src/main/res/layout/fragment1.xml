@@ -160,7 +160,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="8dp"
                     app:hl_cornerRadius="15dp"
-                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowColor="@color/bg_gray"
                     app:hl_shadowLimit="2dp"
                     app:hl_shadowOffsetX="0dp"
                     app:hl_shadowOffsetY="2dp"
@@ -393,7 +393,7 @@
                     app:hl_shadowHiddenTop="true"
                     android:layout_marginTop="8dp"
                     app:hl_cornerRadius="15dp"
-                    app:hl_shadowColor="#21555555"
+                    app:hl_shadowColor="@color/bg_gray"
                     app:hl_shadowLimit="2dp"
                     app:hl_shadowOffsetX="0dp"
                     app:hl_shadowOffsetY="2dp">
@@ -428,8 +428,7 @@
                                     android:padding="7dp"
                                     android:text="待签约"
                                     android:textColor="@color/black1"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:id="@+id/view1"
@@ -457,8 +456,7 @@
                                     android:padding="7dp"
                                     android:text="待审核"
                                     android:textColor="@color/black3"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:id="@+id/view2"
@@ -487,8 +485,7 @@
                                     android:padding="7dp"
                                     android:text="已驳回"
                                     android:textColor="@color/black3"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:id="@+id/view3"
@@ -517,8 +514,7 @@
                                     android:padding="7dp"
                                     android:text="已通过"
                                     android:textColor="@color/black3"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:id="@+id/view4"
