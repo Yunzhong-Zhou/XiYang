@@ -15,6 +15,7 @@ import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
 import com.xiyang.xiyang.activity.StopStoreActivity;
+import com.xiyang.xiyang.activity.StoreDetailActivity;
 import com.xiyang.xiyang.activity.TransferStoreActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment2Model;
@@ -27,7 +28,6 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -186,15 +186,72 @@ public class Fragment2 extends BaseFragment {
     @Override
     protected void initData() {
 //        requestServer();
+        for (int i = 0; i < 5; i++) {
+            list1.add(new Fragment2Model());
+            list2.add(new Fragment2Model());
+        }
+        mAdapter1 = new CommonAdapter<Fragment2Model>
+                (getActivity(), R.layout.item_fragment1_1, list1) {
+            @Override
+            protected void convert(ViewHolder holder, Fragment2Model model, int position) {
+
+//                        holder.setText(R.id.tv1, model.getTitle());
+//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
+            }
+        };
+        recyclerView1.setAdapter(mAdapter1);
+
+        if (list2.size() > 0) {
+            mAdapter2 = new CommonAdapter<Fragment2Model>
+                    (getActivity(), R.layout.item_fragment2_2, list2) {
+                @Override
+                protected void convert(ViewHolder holder, Fragment2Model model, int position) {
+                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(getActivity())
+                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
+                                    .fitCenter()
+                                    .apply(RequestOptions.bitmapTransform(new
+                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(imageView1);//加载图片
+                            ImageView imageView2 = holder.getView(R.id.imageView2);
+                            if (model.getStatus() == 1) {
+                                //待安装
+                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
+                            } else {
+                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
+                            }
+
+                            holder.setText(R.id.tv_name, model.getTitle());
+                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
+                            holder.setText(R.id.tv_addr, model.getAddress());
+                            holder.setText(R.id.tv_num, model.getNum() + "");*/
+
+                    holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+//                    bundle.putString("id",model.getId());
+                            CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                        }
+                    });
+
+                }
+            };
+            recyclerView2.setAdapter(mAdapter2);
+        } else {
+            showEmptyPage();
+        }
     }
 
     @Override
     public void requestServer() {
         super.requestServer();
-        this.showLoadingPage();
+       /* this.showLoadingPage();
         Map<String, String> params = new HashMap<>();
         params.put("u_token", localUserInfo.getToken());
-        Request(params);
+        Request(params);*/
     }
 
     private void Request(Map<String, String> params) {

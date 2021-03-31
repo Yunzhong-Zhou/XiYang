@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="2dp"
-                android:text="@string/settransactionpassword_h2"
+                android:text="门店名称"
                 android:textColor="@color/black1"
                 android:textSize="12.5sp"
                 android:textStyle="bold" />
@@ -36,10 +36,39 @@
                 android:layout_height="60dp"
                 android:focusable="false"
                 android:gravity="center_vertical|right"
-                android:hint="@string/settransactionpassword_h3"
-                android:inputType="phone"
-
+                android:hint="请输入门店名称"
                 android:paddingLeft="100dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black1"
+                android:textColorHint="@color/black3"
+                android:textSize="12.5sp"
+                android:textStyle="bold"
+                android:background="@drawable/edittext_bg" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2dp"
+                android:text="当前账户"
+                android:textColor="@color/black1"
+                android:textSize="12.5sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:focusable="false"
+                android:gravity="center_vertical|right"
+                android:hint="请输入当前账户"
+                android:paddingLeft="100dp"
+                android:inputType="phone"
                 android:paddingRight="10dp"
                 android:textColor="@color/black1"
                 android:textColorHint="@color/black3"
@@ -62,16 +91,15 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/black1"
                 android:textStyle="bold"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editText3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="@string/settransactionpassword_h5"
                 android:inputType="number"
                 android:textStyle="bold"
-                android:paddingLeft="100dp"
                 android:paddingRight="100dp"
                 android:singleLine="true"
                 android:textColor="@color/black1"
@@ -97,6 +125,12 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:background="@color/xian"
+                android:layout_toLeftOf="@id/textView1"/>
 
         </RelativeLayout>
 
@@ -110,60 +144,28 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
-                android:text="输入密码"
+                android:text="新账户"
                 android:textColor="@color/black1"
                 android:textStyle="bold"
                 android:layout_centerVertical="true"
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:hint="@string/settransactionpassword_h7"
-                android:gravity="center_vertical|right"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textStyle="bold"
-                android:paddingLeft="100dp"
-                android:textColor="@color/black1"
-                android:textColorHint="@color/black3"
-                android:textSize="12.5sp"
-                android:background="@drawable/edittext_bg" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:text="确认密码"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black1"
-                android:textStyle="bold"
                 android:visibility="visible" />
 
             <EditText
                 android:id="@+id/editText4"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="@string/settransactionpassword_h9"
-                android:inputType="textPassword"
+                android:hint="请输入新账号"
+                android:gravity="center_vertical|right"
+                android:inputType="phone"
                 android:singleLine="true"
                 android:textStyle="bold"
-                android:gravity="center_vertical|right"
                 android:paddingLeft="100dp"
                 android:textColor="@color/black1"
                 android:textColorHint="@color/black3"
                 android:textSize="12.5sp"
                 android:background="@drawable/edittext_bg" />
         </RelativeLayout>
+
 
         <TextView
             android:id="@+id/tv_confirm"
@@ -176,7 +178,7 @@
             android:layout_gravity="center"
             android:onClick="onClick"
             android:visibility="visible"
-            android:text="确认"
+            android:text="确认修改"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="18sp" />

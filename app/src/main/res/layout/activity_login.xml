@@ -43,35 +43,36 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/yuanjiao_20_heisetouming"
-                android:padding="6dp"
                 android:layout_gravity="center_horizontal"
-                >
+                android:background="@drawable/yuanjiao_20_heisetouming"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
                 <TextView
                     android:id="@+id/tv_yzm"
-                    android:onClick="onClick"
                     android:layout_width="113dp"
                     android:layout_height="30dp"
+                    android:background="@drawable/yuanjiao_15_lvsejianbian"
+                    android:gravity="center"
+                    android:onClick="onClick"
                     android:text="验证码登录"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:background="@drawable/yuanjiao_15_lvsejianbian"/>
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tv_mima"
-                    android:onClick="onClick"
                     android:layout_width="113dp"
                     android:layout_height="30dp"
+                    android:gravity="center"
+                    android:onClick="onClick"
                     android:text="密码登录"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
@@ -81,13 +82,13 @@
                     android:id="@+id/mShadowLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:hl_cornerRadius="20dp"
                     android:layout_marginLeft="17dp"
                     android:layout_marginRight="17dp"
                     android:layout_marginBottom="30dp"
-                    app:hl_shadowHiddenTop="true"
+                    app:hl_cornerRadius="20dp"
                     app:hl_shadowColor="#08A37C"
-                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="4dp"
                     app:hl_shadowOffsetX="0dp"
                     app:hl_shadowOffsetY="2dp">
 
@@ -108,16 +109,16 @@
                                 android:id="@+id/editText1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@drawable/edittext_bg"
                                 android:gravity="center_vertical"
                                 android:hint="请输入手机号"
                                 android:inputType="phone"
                                 android:paddingLeft="35dp"
                                 android:singleLine="true"
-                                android:textStyle="bold"
                                 android:textColor="@color/black2"
                                 android:textColorHint="@color/black3"
                                 android:textSize="12.5sp"
-                                android:background="@drawable/edittext_bg" />
+                                android:textStyle="bold" />
 
 
                             <ImageView
@@ -128,6 +129,7 @@
                                 android:padding="6dp"
                                 android:src="@mipmap/ic_login_zhanghu" />
                         </RelativeLayout>
+
                         <RelativeLayout
                             android:id="@+id/rl_mima"
                             android:layout_width="match_parent"
@@ -138,16 +140,16 @@
                                 android:id="@+id/editText3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@drawable/edittext_bg"
                                 android:gravity="center_vertical"
                                 android:hint="请输入密码"
                                 android:inputType="textPassword"
                                 android:paddingLeft="35dp"
                                 android:singleLine="true"
-                                android:textStyle="bold"
                                 android:textColor="@color/black2"
                                 android:textColorHint="@color/black3"
                                 android:textSize="12.5sp"
-                                android:background="@drawable/edittext_bg" />
+                                android:textStyle="bold" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -167,17 +169,17 @@
                                 android:id="@+id/editText2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:background="@drawable/edittext_bg"
                                 android:gravity="center_vertical"
                                 android:hint="请输入验证码"
                                 android:inputType="number"
                                 android:paddingLeft="35dp"
                                 android:paddingRight="80dp"
-                                android:textStyle="bold"
                                 android:singleLine="true"
                                 android:textColor="@color/black2"
                                 android:textColorHint="@color/black3"
                                 android:textSize="12.5sp"
-                                android:background="@drawable/edittext_bg" />
+                                android:textStyle="bold" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -221,16 +223,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/btn_img_login"
                     android:gravity="center"
                     android:onClick="onClick"
                     android:text="登录"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
 

@@ -12,6 +12,7 @@ import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddShopActivity;
 import com.xiyang.xiyang.activity.CancelShopActivity;
+import com.xiyang.xiyang.activity.ContractDetailActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyContractActivity;
 import com.xiyang.xiyang.activity.MyShopListActivity;
@@ -204,6 +205,15 @@ public class Fragment1 extends BaseFragment {
 
 //                        holder.setText(R.id.tv1, model.getTitle());
 //                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
+                holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+//                    bundle.putString("id",model.getId());
+                        CommonUtil.gotoActivityWithData(getActivity(), ContractDetailActivity.class, bundle, false);
+                    }
+                });
+
             }
         };
         recyclerView1.setAdapter(mAdapter1);
