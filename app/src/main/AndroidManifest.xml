@@ -166,6 +166,9 @@
             android:name=".activity.AddDeviceActivity"
             android:label="申领设备" />
         <activity
+            android:name=".activity.AddDeviceDetailActivity"
+            android:label="申领设备详情" />
+        <activity
             android:name=".activity.MyDeviceListActivity"
             android:label="我的设备" />
         <activity

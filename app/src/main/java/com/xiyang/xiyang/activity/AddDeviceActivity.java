@@ -1,16 +1,20 @@
 package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.AddServiceModel;
+import com.xiyang.xiyang.model.AddDeviceModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import org.json.JSONObject;
 
@@ -31,8 +35,10 @@ public class AddDeviceActivity extends BaseActivity {
     int type = 1;//1、主机、2、4g模块 3、过滤网
     int page = 1;
     private RecyclerView recyclerView;
-    List<AddServiceModel> list = new ArrayList<>();
-    CommonAdapter<AddServiceModel> mAdapter;
+    List<AddDeviceModel> list = new ArrayList<>();
+    CommonAdapter<AddDeviceModel> mAdapter;
+
+    TextView tv_num;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +77,60 @@ public class AddDeviceActivity extends BaseActivity {
                 RequestMyInvestmentListMore(string);*/
             }
         });
+        tv_num = findViewByID_My(R.id.tv_num);
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()){
+            case R.id.textView1:
+                //选择门店
+
+                break;
+            case R.id.tv_add:
+                //申领
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", type);
+                CommonUtil.gotoActivityWithData(AddDeviceActivity.this, AddDeviceDetailActivity.class, bundle);
+                break;
+        }
     }
 
     @Override
     protected void initData() {
         type = getIntent().getIntExtra("type", 1);
         requestServer();//获取数据
+
+        for (int i = 0; i < 5; i++) {
+            list.add(new AddDeviceModel());
+        }
+        mAdapter = new CommonAdapter<AddDeviceModel>
+                (AddDeviceActivity.this, R.layout.item_adddevice, list) {
+            @Override
+            protected void convert(ViewHolder holder, AddDeviceModel model, int position) {
+
+//                        holder.setText(R.id.tv1, model.getTitle());
+//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
+                //删除
+                holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list.remove(position);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+               /* holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+//                    bundle.putString("id",model.getId());
+                        CommonUtil.gotoActivityWithData(AddDeviceActivity.this, ContractDetailActivity.class, bundle, false);
+                    }
+                });*/
+            }
+        };
+        recyclerView.setAdapter(mAdapter);
     }
     private void RequestList(Map<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {

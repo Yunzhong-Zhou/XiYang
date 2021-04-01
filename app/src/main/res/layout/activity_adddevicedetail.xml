@@ -90,7 +90,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:drawableLeft="@mipmap/ic_shop_gray"
+                                    android:drawableLeft="@mipmap/ic_store_gray"
                                     android:drawablePadding="6dp"
                                     android:text="0"
                                     android:textColor="@color/black3"
@@ -106,7 +106,8 @@
                                     android:text="0"
                                     android:textColor="@color/green"
                                     android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
 
 
                             </LinearLayout>
@@ -164,7 +165,7 @@
                                 android:layout_weight="1"
                                 android:drawablePadding="5dp"
                                 android:gravity="center"
-                                android:text="商户信息"
+                                android:text="基本信息"
                                 android:textColor="@color/black1"
                                 android:textSize="14sp" />
 
@@ -190,7 +191,7 @@
                                 android:layout_weight="1"
                                 android:drawablePadding="5dp"
                                 android:gravity="center"
-                                android:text="合同信息"
+                                android:text="申领信息"
                                 android:textColor="@color/black3"
                                 android:textSize="14sp" />
 
@@ -217,7 +218,7 @@
                                 android:layout_weight="1"
                                 android:drawablePadding="5dp"
                                 android:gravity="center"
-                                android:text="审核合同"
+                                android:text="安装记录"
                                 android:textColor="@color/black3"
                                 android:textSize="14sp" />
 
@@ -232,10 +233,10 @@
                     </LinearLayout>
                 </com.lihang.ShadowLayout>
 
-                //商户信息-已审核
+                //基本信息
 
                 <LinearLayout
-                    android:id="@+id/ll_shopinfo"
+                    android:id="@+id/ll_jibeninfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -283,7 +284,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡\n执照图片"
+                                    android:text="门店名称\n申请数量\n创建时间\n事务ID"
                                     android:textColor="@color/black3"
                                     android:textSize="12.5sp"
                                     android:textStyle="bold" />
@@ -294,35 +295,68 @@
                                     android:layout_weight="1"
                                     android:gravity="right"
                                     android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡"
+                                    android:text="门店名称\n申请数量\n创建时间\n事务ID"
                                     android:textColor="@color/black2"
                                     android:textSize="12.5sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
-                            <ImageView
-                                android:layout_width="107dp"
-                                android:layout_height="107dp"
-                                android:layout_marginLeft="40dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@mipmap/ic_add_gray" />
+                        </LinearLayout>
 
+                    </com.lihang.ShadowLayout>
+
+                    <com.lihang.ShadowLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="visible"
+                        app:hl_cornerRadius="12dp"
+                        app:hl_shadowColor="@color/bg_gray"
+                        app:hl_shadowHiddenTop="true"
+                        app:hl_shadowLimit="2dp"
+                        app:hl_shadowOffsetX="0dp"
+                        app:hl_shadowOffsetY="2dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/yuanjiao_12_baise"
+                            android:orientation="vertical"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:paddingTop="15dp"
+                                android:paddingBottom="10dp"
+                                android:text="已选设备"
+                                android:textColor="@color/black1"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_yixuan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
 
                     </com.lihang.ShadowLayout>
 
                 </LinearLayout>
-
-                //合同信息
+                //申领信息
 
                 <LinearLayout
-                    android:id="@+id/ll_contract"
+                    android:id="@+id/ll_shenling"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <!--合同基本信息-->
                     <com.lihang.ShadowLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -351,7 +385,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
-                                android:text="基本信息"
+                                android:text="申领信息"
                                 android:textColor="@color/black1"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -365,59 +399,93 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡\n合同文件\n执照图片"
+                                    android:text="申领方式"
                                     android:textColor="@color/black3"
                                     android:textSize="12.5sp"
                                     android:textStyle="bold" />
 
-                                <LinearLayout
+                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:orientation="vertical">
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:lineSpacingExtra="14dp"
-                                        android:gravity="right"
-                                        android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡"
-                                        android:textColor="@color/black2"
-                                        android:textSize="12.5sp"
-                                        android:textStyle="bold" />
-                                    <TextView
-                                        android:id="@+id/tv_liulan"
-                                        android:onClick="onClick"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="浏览>>"
-                                        android:gravity="right"
-                                        android:paddingTop="12dp"
-                                        android:paddingBottom="10dp"
-                                        android:textColor="@color/green"
-                                        android:textSize="12.5sp"
-                                        android:textStyle="bold" />
-                                </LinearLayout>
-
+                                    android:drawableRight="@mipmap/ic_down_black"
+                                    android:drawablePadding="3dp"
+                                    android:gravity="right"
+                                    android:lineSpacingExtra="14dp"
+                                    android:paddingBottom="12dp"
+                                    android:text="请选择申领方式"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
-                            <ImageView
-                                android:layout_width="107dp"
-                                android:layout_height="107dp"
-                                android:layout_marginLeft="40dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@mipmap/ic_add_gray" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingExtra="14dp"
+                                    android:text="收货人\n收货人联系方式"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:lineSpacingExtra="14dp"
+                                    android:text="收货人\n收货人联系方式"
+                                    android:textColor="@color/black2"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingExtra="14dp"
+                                    android:text="收货人地址"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/edittext_bg"
+                                    android:gravity="right"
+                                    android:hint="请输入收货人地址"
+                                    android:onClick="onClick"
+                                    android:paddingTop="12dp"
+                                    android:paddingBottom="12dp"
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
                     </com.lihang.ShadowLayout>
-                    <!--物流信息-->
+
                     <com.lihang.ShadowLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="0dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:hl_cornerRadius="12dp"
                         app:hl_shadowColor="@color/bg_gray"
                         app:hl_shadowHiddenTop="true"
@@ -453,7 +521,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:lineSpacingExtra="14dp"
-                                    android:text="回收方式\n签收人\n签收人电话\n物流地址"
+                                    android:text="快递公司"
                                     android:textColor="@color/black3"
                                     android:textSize="12.5sp"
                                     android:textStyle="bold" />
@@ -462,33 +530,140 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:gravity="right"
+                                    android:drawableRight="@mipmap/ic_down_black"
+                                    android:drawablePadding="3dp"
+                                    android:gravity="right|center_vertical"
                                     android:lineSpacingExtra="14dp"
-                                    android:text="回收方式\n签收人\n签收人电话\n物流地址"
-                                    android:textColor="@color/black2"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:text="请选择快递公司"
+                                    android:textColor="@color/black3"
                                     android:textSize="12.5sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:lineSpacingExtra="14dp"
+                                    android:text="物流单号"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/edittext_bg"
+                                    android:gravity="right"
+                                    android:hint="请输入物流单号"
+                                    android:onClick="onClick"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/tv_qianshou"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="30dp"
+                                android:background="@drawable/btn_img1"
+                                android:gravity="center"
+                                android:onClick="onClick"
+                                android:text="确认签收"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
                     </com.lihang.ShadowLayout>
 
                 </LinearLayout>
-                //审核合同
+                //安装信息
 
                 <LinearLayout
-                    android:id="@+id/ll_shenhe"
+                    android:id="@+id/ll_anzhuang"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="gone">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_shenhe"
+                        android:id="@+id/rv_anzhuang"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="总安装数量："
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:paddingLeft="20dp"
+                            android:textColor="@color/black3"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black1"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="已安装数量："
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:paddingLeft="20dp"
+                            android:textColor="@color/black3"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="0"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black1"/>
+                        <TextView
+                            android:id="@+id/tv_shuaxin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="20dp"
+                            android:paddingLeft="19dp"
+                            android:paddingRight="19dp"
+                            android:background="@drawable/yuanjiao_20_lvsejianbian"
+                            android:gravity="center"
+                            android:onClick="onClick"
+                            android:text="刷新"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 

@@ -11,12 +11,10 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddShopActivity;
-import com.xiyang.xiyang.activity.CancelShopActivity;
 import com.xiyang.xiyang.activity.ContractDetailActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyContractActivity;
 import com.xiyang.xiyang.activity.MyShopListActivity;
-import com.xiyang.xiyang.activity.RenewContractActivity;
 import com.xiyang.xiyang.activity.ShopDetailActivity;
 import com.xiyang.xiyang.activity.TransferShopActivity;
 import com.xiyang.xiyang.base.BaseFragment;
@@ -344,6 +342,7 @@ public class Fragment1 extends BaseFragment {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.linearLayout1:
                 //运维商户
@@ -372,15 +371,19 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout7:
                 //取消商户
-                CommonUtil.gotoActivity(getActivity(), CancelShopActivity.class);
+                bundle.putInt("item_hetong",6);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class,bundle);
+//                CommonUtil.gotoActivity(getActivity(), CancelShopActivity.class);
                 break;
             case R.id.linearLayout8:
                 //修改商户
-
+                bundle.putInt("item_hetong",4);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class,bundle);
                 break;
             case R.id.linearLayout9:
                 //添加合同
-                CommonUtil.gotoActivity(getActivity(), AddContractActivity.class);
+                bundle.putInt("item_hetong", 1);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
                 break;
             case R.id.linearLayout10:
                 //我的合同
@@ -392,7 +395,9 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout12:
                 //续签商户
-                CommonUtil.gotoActivity(getActivity(), RenewContractActivity.class);
+                bundle.putInt("item_hetong",5);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class,bundle);
+//                CommonUtil.gotoActivity(getActivity(), RenewContractActivity.class);
                 break;
 
             case R.id.ll_tab1:

@@ -245,7 +245,9 @@ public class MyContractActivity extends BaseActivity {
         titleView.showRightTextview("添加合同",true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(MyContractActivity.this, AddContractActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("item_hetong",1);
+                CommonUtil.gotoActivityWithData(MyContractActivity.this, AddContractActivity.class,bundle);
             }
         });
     }

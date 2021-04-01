@@ -11,16 +11,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/yuanjiao_12_baise_huisebiankuang"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="70dp"
+            android:background="@drawable/yuanjiao_12_baise_huisebiankuang"
+            android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
             <RelativeLayout
+                android:id="@+id/rl_hetongleixing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -29,30 +30,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="选择类型"
+                    android:text="选择合同类型"
                     android:textColor="@color/black1"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/textView1"
+                    android:id="@+id/tv_hetongleixing"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
                     android:drawableRight="@mipmap/ic_next_black"
                     android:drawablePadding="10dp"
+                    android:focusable="false"
                     android:gravity="center_vertical|right"
                     android:hint="请选择合同类型"
-                    android:focusable="false"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"
                     android:textColorHint="@color/black3"
                     android:textSize="12.5sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/edittext_bg" />
+                    android:textStyle="bold" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_xuanzeshanghu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -67,24 +69,25 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/textView2"
+                    android:id="@+id/tv_xuanzeshanghu"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
                     android:drawableRight="@mipmap/ic_next_black"
                     android:drawablePadding="10dp"
+                    android:focusable="false"
                     android:gravity="center_vertical|right"
                     android:hint="请选择商户"
-                    android:focusable="false"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"
                     android:textColorHint="@color/black3"
                     android:textSize="12.5sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/edittext_bg" />
+                    android:textStyle="bold" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_xuanzemendian"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -99,13 +102,225 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/textView3"
+                    android:id="@+id/tv_xuanzemendian"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@mipmap/ic_next_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择门店"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shanghumingcheng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="商户名称"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shanghumingcheng"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入商户名称"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shanghuzhanghao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="商户账号"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shanghuzhanghao"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入商户账号"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shanghulianxiren"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="商户联系人"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shanghulianxiren"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入联系人名称"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_lianxirendianhua"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="联系人电话"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_lianxirendianhua"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入联系人电话"
+                    android:paddingLeft="100dp"
+                    android:inputType="phone"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_gongsimingcheng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="公司名称"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_gongsimingcheng"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入公司名称"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_yinyezhizhaohao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="营业执照号"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_yinyezhizhaohao"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入营业执照号"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shanghuhangye"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="商户行业"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shanghuhangye"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:drawableRight="@mipmap/ic_next_black"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:hint="请选择门店"
+                    android:hint="请选择商户行业"
                     android:focusable="false"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
@@ -117,6 +332,7 @@
                     android:background="@drawable/edittext_bg" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_suozaichengshi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -125,19 +341,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="新增数量"
+                    android:text="所在城市"
                     android:textColor="@color/black1"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/textView4"
+                    android:id="@+id/tv_suozaichengshi"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_next_black"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:hint="请输入新增数量"
+                    android:hint="请选择所在城市"
+                    android:focusable="false"
                     android:onClick="onClick"
-                    android:inputType="number"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"
@@ -147,6 +365,828 @@
                     android:background="@drawable/edittext_bg" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_xiangxidizhi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="详细地址"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_xiangxidizhi"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入详细地址"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shougexiaoshi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="首个小时"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shougexiaoshi"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入首个小时"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_jichujijia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="基础计价"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_jichujijia"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入基础计价"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_meirifengding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="每日封顶"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_meirifengding"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入每日封顶"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_mianfeishichang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="免费时长"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_mianfeishichang"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入免费时长"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_jifeidanyuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="计费单元"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_jifeidanyuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择计费单元"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_mendianjiajia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="门店加价"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_mendianjiajia"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入门店加价"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_mendianfengding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="门店封顶"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_mendianfengding"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入门店封顶"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_tiaojialiyou"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="调价理由"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_tiaojialiyou"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入调价理由"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_zhuanchumendian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择转出门店"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_zhuanchumendian"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_next_black"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择转出门店"
+                    android:focusable="false"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_zhuanrumendian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择转入门店"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_zhuanrumendian"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_next_black"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择转入门店"
+                    android:focusable="false"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_zhuanchushebei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="转出设备数"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_zhuanchushebei"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入转出设备数"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shebeishuliang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="设备数量"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shebeishuliang"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入设备数量"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_jianshaoyuanyin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="减少原因"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_jianshaoyuanyin"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:hint="请选择减少原因"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_tuihuicangku"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="退回仓库"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_tuihuicangku"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:hint="请选择退回仓库"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_huishoufangshi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="回收方式"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_huishoufangshi"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:hint="请选择回收方式"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shoujianren"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="收件人"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shoujianren"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入收件人"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shoujiandianhua"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="收件电话"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shoujiandianhua"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入收件电话"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shoujiandizhi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="收件地址"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shoujiandizhi"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入收件地址"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_xinzengshuliang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="新增数量"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_xinzengshuliang"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入新增数量"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_qianyueqixian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="签约期限"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_qianyueqixian"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:hint="请选择签约期限"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_xuqiannianxian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="续签年限"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_xuqiannianxian"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择续签年限"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_shifoudujia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="是否独家"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_shifoudujia"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择是否独家"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_qianyueshijian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="签约时间"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_qianyueshijian"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:drawableRight="@mipmap/ic_next_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:hint="请选择签约时间"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_xuqianshijian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="续签时间"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_xuqianshijian"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center_vertical|right"
+                    android:drawableRight="@mipmap/ic_next_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:hint="请选择续签时间"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_xuanzeyuanyin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择原因"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/tv_xuanzeyuanyin"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择原因"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_hetongwenjian"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -161,39 +1201,58 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/textView5"
+                    android:id="@+id/tv_hetongwenjian"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
                     android:drawableRight="@mipmap/ic_next_black"
                     android:drawablePadding="10dp"
+                    android:focusable="false"
                     android:gravity="center_vertical|right"
                     android:hint="请选择合同文件"
-                    android:focusable="false"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"
                     android:textColorHint="@color/black3"
                     android:textSize="12.5sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/edittext_bg" />
+                    android:textStyle="bold" />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="执照上传"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black1"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="28dp"
+                android:background="@mipmap/ic_add_gray"
+                android:onClick="onClick" />
 
             <TextView
                 android:id="@+id/tv_confirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="50dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/btn_img1"
                 android:gravity="center"
-                android:layout_gravity="center"
                 android:onClick="onClick"
-                android:visibility="visible"
-                android:text="确认添加"
+                android:text="确认提交"
                 android:textColor="@color/white"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textSize="18sp" />
+                android:visibility="visible" />
 
         </LinearLayout>
 

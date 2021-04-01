@@ -28,39 +28,43 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/30.
- * 商户详情
+ * 申领设备详情
  */
-public class ShopDetailActivity extends BaseActivity {
-    int type = 1;
+public class AddDeviceDetailActivity extends BaseActivity {
+
+    int type = 1, type_device = 1;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
 
-    /**
-     * 商户信息
-     */
-    LinearLayout ll_shopinfo, ll_shopedit;
 
     /**
-     * 合同信息
+     * 基本信息
      */
-    LinearLayout ll_contract;
-    RecyclerView rv_contract;
-    List<Fragment2Model> list_contract = new ArrayList<>();
-    CommonAdapter<Fragment2Model> mAdapter_contract;
+    LinearLayout ll_jibeninfo;
+    RecyclerView rv_yixuan;
+    List<Fragment2Model> list_yixuan = new ArrayList<>();
+    CommonAdapter<Fragment2Model> mAdapter_yixuan;
 
     /**
-     * 门店信息
+     * 申领信息
      */
-    LinearLayout ll_store;
-    RecyclerView rv_store;
-    List<Fragment2Model> list_store = new ArrayList<>();
-    CommonAdapter<Fragment2Model> mAdapter_store;
+    LinearLayout ll_shenling;
+
+
+    /**
+     * 安装记录
+     */
+    LinearLayout ll_anzhuang;
+    RecyclerView rv_anzhuang;
+    List<Fragment2Model> list_anzhuang = new ArrayList<>();
+    CommonAdapter<Fragment2Model> mAdapter_anzhuang;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shopdetail);
+        setContentView(R.layout.activity_adddevicedetail);
     }
 
     @Override
@@ -96,46 +100,35 @@ public class ShopDetailActivity extends BaseActivity {
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
         /**
-         *商户信息
+         *基本信息
          */
-        ll_shopinfo = findViewByID_My(R.id.ll_shopinfo);
-        ll_shopedit = findViewByID_My(R.id.ll_shopedit);
-
+        ll_jibeninfo = findViewByID_My(R.id.ll_jibeninfo);
+        rv_yixuan = findViewByID_My(R.id.rv_yixuan);
+        rv_yixuan.setLayoutManager(new LinearLayoutManager(this));
 
         /**
-         * 合同信息
+         * 申领信息
          */
-        ll_contract = findViewByID_My(R.id.ll_contract);
-        rv_contract = findViewByID_My(R.id.rv_contract);
-        rv_contract.setLayoutManager(new LinearLayoutManager(this));
+        ll_shenling = findViewByID_My(R.id.ll_shenling);
+
         /**
-         * 门店信息
+         * 安装记录
          */
-        ll_store = findViewByID_My(R.id.ll_store);
-        rv_store = findViewByID_My(R.id.rv_store);
-        rv_store.setLayoutManager(new LinearLayoutManager(this));
+        ll_anzhuang = findViewByID_My(R.id.ll_anzhuang);
+        rv_anzhuang = findViewByID_My(R.id.rv_anzhuang);
+        rv_anzhuang.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_addcontract:
-                //添加合同
-                Bundle bundle = new Bundle();
-                bundle.putInt("item_hetong",1);
-                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AddContractActivity.class,bundle);
+            case R.id.tv_qianshou:
+                //签收
+//                CommonUtil.gotoActivity(AddDeviceDetailActivity.this, MyContractActivity.class);
                 break;
-            case R.id.tv_morecontract:
-                //合同-查看更多
-                CommonUtil.gotoActivity(ShopDetailActivity.this, MyContractActivity.class);
-                break;
-            case R.id.tv_addstore:
-                //添加门店
-                CommonUtil.gotoActivity(ShopDetailActivity.this, AddStoreActivity.class);
-                break;
-            case R.id.tv_morestore:
-                //门店-查看更多
-                CommonUtil.gotoActivity(ShopDetailActivity.this, MyShopListActivity.class);
+            case R.id.tv_shuaxin:
+                //刷新
+//                CommonUtil.gotoActivity(AddDeviceDetailActivity.this, AddContractActivity.class);
                 break;
             case R.id.ll_tab1:
                 //待拜访
@@ -157,12 +150,14 @@ public class ShopDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        type_device = getIntent().getIntExtra("type", 1);
+
         for (int i = 0; i < 5; i++) {
-            list_contract.add(new Fragment2Model());
-            list_store.add(new Fragment2Model());
+            list_yixuan.add(new Fragment2Model());
+            list_anzhuang.add(new Fragment2Model());
         }
-        mAdapter_contract = new CommonAdapter<Fragment2Model>
-                (ShopDetailActivity.this, R.layout.item_shopdetail_contract, list_contract) {
+        mAdapter_yixuan = new CommonAdapter<Fragment2Model>
+                (AddDeviceDetailActivity.this, R.layout.item_adddevicedetail_yixuan, list_yixuan) {
             @Override
             protected void convert(ViewHolder holder, Fragment2Model model, int position) {
                             /*ImageView imageView1 = holder.getView(R.id.imageView1);
@@ -192,15 +187,15 @@ public class ShopDetailActivity extends BaseActivity {
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
 //                    bundle.putString("id",model.getId());
-                        CommonUtil.gotoActivityWithData(ShopDetailActivity.this, ContractDetailActivity.class, bundle, false);
+                        CommonUtil.gotoActivityWithData(AddDeviceDetailActivity.this, ContractDetailActivity.class, bundle, false);
                     }
                 });
 
             }
         };
-        rv_contract.setAdapter(mAdapter_contract);
-        mAdapter_store = new CommonAdapter<Fragment2Model>
-                (ShopDetailActivity.this, R.layout.item_fragment2_2, list_store) {
+        rv_yixuan.setAdapter(mAdapter_yixuan);
+        mAdapter_anzhuang = new CommonAdapter<Fragment2Model>
+                (AddDeviceDetailActivity.this, R.layout.item_adddevicedetail_anzhuang, list_anzhuang) {
             @Override
             protected void convert(ViewHolder holder, Fragment2Model model, int position) {
                             /*ImageView imageView1 = holder.getView(R.id.imageView1);
@@ -230,13 +225,13 @@ public class ShopDetailActivity extends BaseActivity {
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
 //                    bundle.putString("id",model.getId());
-                        CommonUtil.gotoActivityWithData(ShopDetailActivity.this, StoreDetailActivity.class, bundle, false);
+                        CommonUtil.gotoActivityWithData(AddDeviceDetailActivity.this, StoreDetailActivity.class, bundle, false);
                     }
                 });
 
             }
         };
-        rv_store.setAdapter(mAdapter_store);
+        rv_anzhuang.setAdapter(mAdapter_anzhuang);
 
 
     }
@@ -265,7 +260,17 @@ public class ShopDetailActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("商户详情");
+        switch (type_device) {
+            case 1:
+                titleView.setTitle("申领净化器主机");
+                break;
+            case 2:
+                titleView.setTitle("申领4G模块");
+                break;
+            case 3:
+                titleView.setTitle("申领过滤网");
+                break;
+        }
     }
 
     private void changeUI() {
@@ -278,10 +283,9 @@ public class ShopDetailActivity extends BaseActivity {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
 
-                ll_shopinfo.setVisibility(View.VISIBLE);
-//                ll_shopedit.setVisibility(View.GONE);
-                ll_contract.setVisibility(View.GONE);
-                ll_store.setVisibility(View.GONE);
+                ll_jibeninfo.setVisibility(View.VISIBLE);
+                ll_shenling.setVisibility(View.GONE);
+                ll_anzhuang.setVisibility(View.GONE);
 
                 /*if (list1.size() > 0) {
                     showContentPage();
@@ -299,10 +303,9 @@ public class ShopDetailActivity extends BaseActivity {
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
 
-                ll_shopinfo.setVisibility(View.GONE);
-                ll_shopedit.setVisibility(View.GONE);
-                ll_contract.setVisibility(View.VISIBLE);
-                ll_store.setVisibility(View.GONE);
+                ll_jibeninfo.setVisibility(View.GONE);
+                ll_shenling.setVisibility(View.VISIBLE);
+                ll_anzhuang.setVisibility(View.GONE);
 
                 break;
             case 3:
@@ -313,10 +316,9 @@ public class ShopDetailActivity extends BaseActivity {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
 
-                ll_shopinfo.setVisibility(View.GONE);
-                ll_shopedit.setVisibility(View.GONE);
-                ll_contract.setVisibility(View.GONE);
-                ll_store.setVisibility(View.VISIBLE);
+                ll_jibeninfo.setVisibility(View.GONE);
+                ll_shenling.setVisibility(View.GONE);
+                ll_anzhuang.setVisibility(View.VISIBLE);
 
                 break;
 
