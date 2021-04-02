@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
-    int item_hetong;
+    int item_hetong = 1;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,
@@ -154,12 +154,14 @@ public class AddContractActivity extends BaseActivity {
         list_hetong.add("调价合同");
 
         item_hetong = getIntent().getIntExtra("item_hetong",1);
+        tv_hetongleixing.setText(list_hetong.get(item_hetong));
+        titleView.setTitle(list_hetong.get(item_hetong));
         changeUI();
     }
 
     @Override
     protected void updateView() {
-        titleView.setTitle("添加合同");
+
     }
 
 
@@ -196,6 +198,7 @@ public class AddContractActivity extends BaseActivity {
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                         item_hetong = position;
                         tv_hetongleixing.setText(list_hetong.get(position));
+                        titleView.setTitle(list_hetong.get(position));
                         adapter.notifyDataSetChanged();
                         changeUI();
                         dialog.dismiss();
@@ -209,6 +212,7 @@ public class AddContractActivity extends BaseActivity {
                 });
                 rv_list.setAdapter(adapter);
                 break;
+
         }
     }
 

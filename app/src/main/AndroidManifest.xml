@@ -138,6 +138,15 @@
             android:name=".activity.SelectVisitActivity"
             android:label="选择拜访" />
         <activity
+            android:name=".activity.AddVisitActivity"
+            android:label="拜访" />
+        <activity
+            android:name=".activity.MyVisitListActivity"
+            android:label="我的拜访列表" />
+        <activity
+            android:name=".activity.VisitDetailActivity"
+            android:label="拜访详情" />
+        <activity
             android:name=".activity.ChangeContractActivity"
             android:label="调价合同" />
         <activity
@@ -158,6 +167,13 @@
         <activity
             android:name=".activity.ChangeStoreActivity"
             android:label="修改门店信息" />
+        <activity
+            android:name=".activity.RoomNoManagementActivity"
+            android:label="房号管理" />
+        <activity
+            android:name=".activity.AddRoomNoManagementActivity"
+            android:label="添加房号管理" />
+
         <!--设备-->
         <activity
             android:name=".activity.SelectDeviceActivity"
@@ -168,6 +184,12 @@
         <activity
             android:name=".activity.AddDeviceDetailActivity"
             android:label="申领设备详情" />
+        <activity
+            android:name=".activity.InstallDeviceActivity"
+            android:label="安装设备" />
+        <activity
+            android:name=".activity.ChangeTieDeviceActivity"
+            android:label="换绑设备" />
         <activity
             android:name=".activity.MyDeviceListActivity"
             android:label="我的设备" />

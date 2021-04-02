@@ -123,7 +123,7 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.linearLayout2:
                 //房号
-//                CommonUtil.gotoActivity(StoreDetailActivity.this, MyDeviceListActivity.class);
+                CommonUtil.gotoActivity(StoreDetailActivity.this, RoomNoManagementActivity.class);
                 break;
             case R.id.linearLayout3:
                 //员工

@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
+import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.DeviceDetailActivity;
+import com.xiyang.xiyang.activity.InstallDeviceActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.SelectDeviceActivity;
@@ -352,7 +354,7 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout6:
                 //安装设备
-
+                CommonUtil.gotoActivity(getActivity(), InstallDeviceActivity.class);
                 break;
             case R.id.linearLayout7:
                 //调试设备
@@ -360,10 +362,11 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //回收设备
+
                 break;
             case R.id.linearLayout9:
                 //设备换绑
-//                CommonUtil.gotoActivity(getActivity(), AddContractActivity.class);
+                CommonUtil.gotoActivity(getActivity(), ChangeTieDeviceActivity.class);
                 break;
             case R.id.linearLayout10:
                 //设备报失

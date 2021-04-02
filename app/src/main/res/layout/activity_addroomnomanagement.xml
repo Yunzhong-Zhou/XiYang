@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/headView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    app:hl_cornerRadius="8dp"
+                    app:hl_shadowColor="@color/bg_gray"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowOffsetX="0dp"
+                    app:hl_shadowOffsetY="2dp">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_8_baise"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="7dp">
+
+                        <RelativeLayout
+                            android:layout_width="100dp"
+                            android:layout_height="69dp"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="53dp"
+                                android:layout_height="49dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentBottom="true" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Name"
+                                android:textColor="@color/black1"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_shop"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:drawableLeft="@mipmap/ic_shop_gray"
+                                    android:drawablePadding="6dp"
+                                    android:text="0"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_num"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@mipmap/ic_money_green"
+                                    android:drawablePadding="6dp"
+                                    android:text="0"
+                                    android:textColor="@color/green"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:visibility="gone" />
+
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_addr"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:drawableLeft="@mipmap/ic_addr_gray"
+                                android:drawablePadding="6dp"
+                                android:text="addr"
+                                android:textColor="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </com.lihang.ShadowLayout>
+
+                <com.lihang.ShadowLayout
+                    android:id="@+id/shadowLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="visible"
+                    app:hl_cornerRadius="12dp"
+                    app:hl_shadowColor="@color/bg_gray"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowOffsetX="0dp"
+                    app:hl_shadowOffsetY="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_12_baise"
+                        android:orientation="vertical"
+                        android:paddingLeft="22dp"
+                        android:paddingRight="22dp"
+                        android:paddingBottom="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="15dp"
+                            android:text="信息筛选"
+                            android:textColor="@color/black1"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayout1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="选择区域"
+                                android:textColor="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/textView1"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@drawable/edittext_bg"
+                                android:drawableRight="@mipmap/ic_down_black"
+                                android:drawablePadding="10dp"
+                                android:focusable="false"
+                                android:gravity="center_vertical|right"
+                                android:hint="请选择区域"
+                                android:onClick="onClick"
+                                android:paddingLeft="100dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/black2"
+                                android:textColorHint="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayout2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="选择楼栋"
+                                android:textColor="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/textView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@drawable/edittext_bg"
+                                android:drawableRight="@mipmap/ic_down_black"
+                                android:drawablePadding="10dp"
+                                android:focusable="false"
+                                android:gravity="center_vertical|right"
+                                android:hint="请选择楼栋"
+                                android:onClick="onClick"
+                                android:paddingLeft="100dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/black2"
+                                android:textColorHint="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayout3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="选择楼层"
+                                android:textColor="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/textView3"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@drawable/edittext_bg"
+                                android:drawableRight="@mipmap/ic_down_black"
+                                android:drawablePadding="10dp"
+                                android:focusable="false"
+                                android:gravity="center_vertical|right"
+                                android:hint="请选择楼层"
+                                android:onClick="onClick"
+                                android:paddingLeft="100dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/black2"
+                                android:textColorHint="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                </com.lihang.ShadowLayout>
+
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="visible"
+                    app:hl_cornerRadius="12dp"
+                    app:hl_shadowColor="@color/bg_gray"
+                    app:hl_shadowHiddenTop="true"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_shadowOffsetX="0dp"
+                    app:hl_shadowOffsetY="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao_12_baise"
+                        android:orientation="vertical"
+                        android:paddingLeft="22dp"
+                        android:paddingRight="22dp"
+                        android:paddingBottom="14dp">
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="15dp"
+                            android:text="区域添加"
+                            android:textColor="@color/black1"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/editText1"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@drawable/edittext_bg"
+                                android:gravity="center_vertical"
+                                android:hint="请输入区域名称"
+                                android:onClick="onClick"
+                                android:paddingRight="100dp"
+                                android:textColor="@color/black2"
+                                android:textColorHint="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_add"
+                                android:onClick="onClick"
+                                android:layout_width="67dp"
+                                android:layout_height="23dp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:text="添加"
+                                android:gravity="center"
+                                android:background="@drawable/yuanjiao_12_lvsejianbian"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/tv_confirm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="50dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/btn_img1"
+                            android:gravity="center"
+                            android:onClick="onClick"
+                            android:text="确认保存"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </com.lihang.ShadowLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </com.liaoinstan.springview.widget.SpringView>
+
+</LinearLayout>

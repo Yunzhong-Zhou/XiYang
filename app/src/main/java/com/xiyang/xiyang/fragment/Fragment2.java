@@ -9,8 +9,9 @@ import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
+import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddStoreActivity;
-import com.xiyang.xiyang.activity.ChangeContractActivity;
+import com.xiyang.xiyang.activity.ContractDetailActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
@@ -197,6 +198,15 @@ public class Fragment2 extends BaseFragment {
 
 //                        holder.setText(R.id.tv1, model.getTitle());
 //                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
+                holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+//                    bundle.putString("id",model.getId());
+                        CommonUtil.gotoActivityWithData(getActivity(), ContractDetailActivity.class, bundle, false);
+                    }
+                });
+
             }
         };
         recyclerView1.setAdapter(mAdapter1);
@@ -327,6 +337,7 @@ public class Fragment2 extends BaseFragment {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.linearLayout1:
                 //总门店
@@ -358,7 +369,9 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.linearLayout7:
                 //调价申请
-                CommonUtil.gotoActivity(getActivity(), ChangeContractActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), ChangeContractActivity.class);
+                bundle.putInt("item_hetong", 7);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
                 break;
             case R.id.linearLayout8:
                 //划转门店
