@@ -24,6 +24,8 @@ import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import org.json.JSONObject;
 
@@ -104,6 +106,34 @@ public class MyShopListActivity extends BaseActivity {
     @Override
     protected void initData() {
         requestServer();//获取数据
+
+        for (int i = 0; i < 5; i++) {
+            list.add(new MyTakeCashModel());
+        }
+        mAdapter = new CommonAdapter<MyTakeCashModel>
+                (MyShopListActivity.this, R.layout.item_fragment1_2, list) {
+            @Override
+            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
+                /*holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
+                holder.setText(R.id.textView2, model.getCreated_at());//时间
+                holder.setText(R.id.textView3, "-"+model.getMoney());//money
+                holder.setText(R.id.textView4, model.getStatus_title());//状态*/
+            }
+        };
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("id", list.get(position).getId());
+                CommonUtil.gotoActivityWithData(MyShopListActivity.this, ShopDetailActivity.class, bundle1, false);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
     private void RequestList(Map<String, String> params) {
@@ -124,7 +154,6 @@ public class MyShopListActivity extends BaseActivity {
             public void onResponse(String response) {
                 showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
                 JSONObject jObj;
                 /*try {
                     jObj = new JSONObject(response);
