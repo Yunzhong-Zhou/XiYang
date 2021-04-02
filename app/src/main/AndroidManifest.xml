@@ -159,6 +159,9 @@
             android:name=".activity.StoreDetailActivity"
             android:label="门店详情" />
         <activity
+            android:name=".activity.MoveDeviceActivity"
+            android:label="设备移位" />
+        <activity
             android:name=".activity.StopStoreActivity"
             android:label="关闭门店" />
         <activity

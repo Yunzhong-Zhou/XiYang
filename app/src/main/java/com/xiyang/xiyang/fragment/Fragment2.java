@@ -11,6 +11,7 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddStoreActivity;
+import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.ContractDetailActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
@@ -379,7 +380,7 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.linearLayout9:
                 //设备变更
-//                CommonUtil.gotoActivity(getActivity(), AddContractActivity.class);
+                CommonUtil.gotoActivity(getActivity(), ChangeTieDeviceActivity.class);
                 break;
             case R.id.linearLayout10:
                 //门店纠错

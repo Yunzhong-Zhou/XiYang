@@ -16,18 +16,18 @@ import com.xiyang.xiyang.utils.MyLogger;
 
 /**
  * Created by Mr.Z on 2021/4/2.
- * 换绑设备
+ * 设备移位
  */
-public class ChangeTieDeviceActivity extends BaseActivity {
+public class MoveDeviceActivity extends BaseActivity {
     LinearLayout ll_scan;
     TextView iv_scan;
     TextView tv_scan;
-    EditText tv_anzhuangshanghu, tv_anzhuangmendian, tv_xuanzefanghao;
+    EditText tv_dangqianfanghao, tv_xuanzefanghao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_changetiedevice);
+        setContentView(R.layout.activity_movedevice);
     }
 
     @Override
@@ -35,8 +35,7 @@ public class ChangeTieDeviceActivity extends BaseActivity {
         ll_scan = findViewByID_My(R.id.ll_scan);
         iv_scan = findViewByID_My(R.id.iv_scan);
         tv_scan = findViewByID_My(R.id.tv_scan);
-        tv_anzhuangshanghu = findViewByID_My(R.id.tv_anzhuangshanghu);
-        tv_anzhuangmendian = findViewByID_My(R.id.tv_anzhuangmendian);
+        tv_dangqianfanghao = findViewByID_My(R.id.tv_dangqianfanghao);
         tv_xuanzefanghao = findViewByID_My(R.id.tv_xuanzefanghao);
 
     }
@@ -62,14 +61,14 @@ public class ChangeTieDeviceActivity extends BaseActivity {
                 break;
             case R.id.tv_xuanzefanghao:
                 //选择房号
-                CommonUtil.gotoActivity(ChangeTieDeviceActivity.this, RoomNoManagementActivity.class);
+                CommonUtil.gotoActivity(MoveDeviceActivity.this, RoomNoManagementActivity.class);
                 break;
         }
     }
 
     @Override
     protected void updateView() {
-        titleView.setTitle("换绑设备");
+        titleView.setTitle("设备移位");
     }
 
     @Override

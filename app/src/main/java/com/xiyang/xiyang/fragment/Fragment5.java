@@ -13,7 +13,6 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.BankCardSettingActivity;
 import com.xiyang.xiyang.activity.MainActivity;
-import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.MyIncomeActivity;
 import com.xiyang.xiyang.activity.MyProfileActivity;
 import com.xiyang.xiyang.activity.MyShopListActivity;
@@ -246,15 +245,15 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout2:
                 //我的商户
-                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
                 break;
             case R.id.linearLayout3:
                 //我的门店
-                CommonUtil.gotoActivity(getActivity(), MyStoreListActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), MyStoreListActivity.class);
                 break;
             case R.id.linearLayout4:
                 //我的设备
-                CommonUtil.gotoActivity(getActivity(), MyDeviceListActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), MyDeviceListActivity.class);
                 break;
             case R.id.linearLayout5:
                 //我的营收
@@ -262,15 +261,15 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout6:
                 //待签商户
-//                CommonUtil.gotoActivity(getActivity(), CouponActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
                 break;
             case R.id.linearLayout7:
                 //代装门店
-//                CommonUtil.gotoActivity(getActivity(), MyCommentActivity.class);
+                CommonUtil.gotoActivity(getActivity(), MyStoreListActivity.class);
                 break;
             case R.id.linearLayout8:
-                //代理工单
-//                CommonUtil.gotoActivity(getActivity(), ComplaintListActivity.class);
+                //代接工单
+                CommonUtil.gotoActivity(getActivity(), MyWorkListActivity.class);
                 break;
             case R.id.linearLayout9:
                 //我的工单

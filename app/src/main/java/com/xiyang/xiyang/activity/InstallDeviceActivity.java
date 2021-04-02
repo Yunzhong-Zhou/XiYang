@@ -11,6 +11,7 @@ import com.cretin.tools.scancode.CaptureActivity;
 import com.cretin.tools.scancode.config.ScanConfig;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 
 /**
@@ -58,6 +59,10 @@ public class InstallDeviceActivity extends BaseActivity {
                 //ScanConfig 也可以不配置 默认都是打开
                 CaptureActivity.launch(this, config);
 
+                break;
+            case R.id.tv_xuanzefanghao:
+                //选择房号
+                CommonUtil.gotoActivity(InstallDeviceActivity.this, RoomNoManagementActivity.class);
                 break;
         }
     }

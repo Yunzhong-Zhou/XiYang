@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
+import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.DeviceDetailActivity;
 import com.xiyang.xiyang.activity.InstallDeviceActivity;
@@ -327,6 +328,7 @@ public class Fragment3 extends BaseFragment {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.linearLayout1:
                 //总设备
@@ -357,23 +359,25 @@ public class Fragment3 extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), InstallDeviceActivity.class);
                 break;
             case R.id.linearLayout7:
-                //调试设备
+                //调试设备 - 设备控制（小程序）
 //                CommonUtil.gotoActivity(getActivity(), MyCommentActivity.class);
+
                 break;
             case R.id.linearLayout8:
                 //回收设备
-
+                bundle.putInt("item_hetong", 2);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
                 break;
             case R.id.linearLayout9:
                 //设备换绑
                 CommonUtil.gotoActivity(getActivity(), ChangeTieDeviceActivity.class);
                 break;
             case R.id.linearLayout10:
-                //设备报失
+                //设备报失-工单
 //                CommonUtil.gotoActivity(getActivity(), MyContractActivity.class);
                 break;
             case R.id.linearLayout11:
-                //设备故障
+                //设备故障-工单
 //                CommonUtil.gotoActivity(getActivity(), AddMerchantActivity.class);
                 break;
             case R.id.linearLayout12:

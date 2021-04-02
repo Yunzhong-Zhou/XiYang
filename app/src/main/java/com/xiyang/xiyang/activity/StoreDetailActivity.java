@@ -131,7 +131,7 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.linearLayout4:
                 //移位
-//                CommonUtil.gotoActivity(StoreDetailActivity.this, MyDeviceListActivity.class);
+                CommonUtil.gotoActivity(StoreDetailActivity.this, MoveDeviceActivity.class);
                 break;
             case R.id.tv_change1:
                 //修改账号
