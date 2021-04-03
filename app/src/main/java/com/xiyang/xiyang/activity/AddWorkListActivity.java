@@ -47,65 +47,41 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 拜访
+ * 创建工单
  */
-public class AddVisitActivity extends BaseActivity {
-    List<String> list_visit = new ArrayList<>();
+public class AddWorkListActivity extends BaseActivity {
+    List<String> list_work = new ArrayList<>();
     int type = 0;
-    RelativeLayout rl_xuanzefangshi, rl_xuanzemendian, rl_baifangjilu, rl_yingyeqingkuang, rl_hezuofengxian,
-            rl_baifangmendian, rl_baifangrenyuan, rl_lianxidianhua, rl_baifangshijian, rl_mendiandizhi,
-            rl_baifangfangshi, rl_shifouyixiang, rl_baifanglianxiren, rl_baifangyuanyin, rl_baifangfankui,
-            rl_shanghujingdui, rl_buchongshuoming;
-    EditText tv_xuanzefangshi, tv_xuanzemendian, tv_baifangjilu, tv_yingyeqingkuang, tv_hezuofengxian,
-            tv_baifangmendian, tv_baifangrenyuan, tv_lianxidianhua, tv_baifangshijian, tv_mendiandizhi,
-            tv_baifangfangshi, tv_shifouyixiang, tv_baifanglianxiren, tv_baifangyuanyin, tv_baifangfankui,
-            tv_shanghujingdui, tv_buchongshuoming;
+    RelativeLayout rl_gongdanleixing, rl_xuanzedingdan, rl_shebeiguzhang, rl_xuanzemendian, rl_dingdanwenti,
+            rl_guzhangleixing, rl_qitashuoming;
+    EditText tv_gongdanleixing, tv_xuanzedingdan, tv_shebeiguzhang, tv_xuanzemendian, tv_dingdanwenti,
+            tv_guzhangleixing, tv_qitashuoming;
     ImageView imageView1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addvisit);
+        setContentView(R.layout.activity_addwroklist);
     }
 
     @Override
     protected void initView() {
-        rl_xuanzefangshi = findViewByID_My(R.id.rl_xuanzefangshi);
+        rl_gongdanleixing = findViewByID_My(R.id.rl_gongdanleixing);
         rl_xuanzemendian = findViewByID_My(R.id.rl_xuanzemendian);
-        rl_baifangjilu = findViewByID_My(R.id.rl_baifangjilu);
-        rl_yingyeqingkuang = findViewByID_My(R.id.rl_yingyeqingkuang);
-        rl_hezuofengxian = findViewByID_My(R.id.rl_hezuofengxian);
-        rl_baifangmendian = findViewByID_My(R.id.rl_baifangmendian);
-        rl_baifangrenyuan = findViewByID_My(R.id.rl_baifangrenyuan);
-        rl_lianxidianhua = findViewByID_My(R.id.rl_lianxidianhua);
-        rl_baifangshijian = findViewByID_My(R.id.rl_baifangshijian);
-        rl_baifangfangshi = findViewByID_My(R.id.rl_baifangfangshi);
-        rl_shifouyixiang = findViewByID_My(R.id.rl_shifouyixiang);
-        rl_baifanglianxiren = findViewByID_My(R.id.rl_baifanglianxiren);
-        rl_mendiandizhi = findViewByID_My(R.id.rl_mendiandizhi);
-        rl_baifangyuanyin = findViewByID_My(R.id.rl_baifangyuanyin);
-        rl_baifangfankui = findViewByID_My(R.id.rl_baifangfankui);
-        rl_shanghujingdui = findViewByID_My(R.id.rl_shanghujingdui);
-        rl_buchongshuoming = findViewByID_My(R.id.rl_buchongshuoming);
+        rl_xuanzedingdan = findViewByID_My(R.id.rl_xuanzedingdan);
+        rl_shebeiguzhang = findViewByID_My(R.id.rl_shebeiguzhang);
+        rl_dingdanwenti = findViewByID_My(R.id.rl_dingdanwenti);
+        rl_guzhangleixing = findViewByID_My(R.id.rl_guzhangleixing);
+        rl_qitashuoming = findViewByID_My(R.id.rl_qitashuoming);
 
-        tv_xuanzefangshi = findViewByID_My(R.id.tv_xuanzefangshi);
+        tv_gongdanleixing = findViewByID_My(R.id.tv_gongdanleixing);
         tv_xuanzemendian = findViewByID_My(R.id.tv_xuanzemendian);
-        tv_baifangjilu = findViewByID_My(R.id.tv_baifangjilu);
-        tv_yingyeqingkuang = findViewByID_My(R.id.tv_yingyeqingkuang);
-        tv_hezuofengxian = findViewByID_My(R.id.tv_hezuofengxian);
-        tv_baifangmendian = findViewByID_My(R.id.tv_baifangmendian);
-        tv_baifangrenyuan = findViewByID_My(R.id.tv_baifangrenyuan);
-        tv_lianxidianhua = findViewByID_My(R.id.tv_lianxidianhua);
-        tv_baifangshijian = findViewByID_My(R.id.tv_baifangshijian);
-        tv_baifangfangshi = findViewByID_My(R.id.tv_baifangfangshi);
-        tv_shifouyixiang = findViewByID_My(R.id.tv_shifouyixiang);
-        tv_baifanglianxiren = findViewByID_My(R.id.tv_baifanglianxiren);
-        tv_mendiandizhi = findViewByID_My(R.id.tv_mendiandizhi);
-        tv_baifangyuanyin = findViewByID_My(R.id.tv_baifangyuanyin);
-        tv_baifangfankui = findViewByID_My(R.id.tv_baifangfankui);
-        tv_shanghujingdui = findViewByID_My(R.id.tv_shanghujingdui);
-        tv_buchongshuoming = findViewByID_My(R.id.tv_buchongshuoming);
+        tv_xuanzedingdan = findViewByID_My(R.id.tv_xuanzedingdan);
+        tv_shebeiguzhang = findViewByID_My(R.id.tv_shebeiguzhang);
+        tv_dingdanwenti = findViewByID_My(R.id.tv_dingdanwenti);
+        tv_guzhangleixing = findViewByID_My(R.id.tv_guzhangleixing);
+        tv_qitashuoming = findViewByID_My(R.id.tv_qitashuoming);
         imageView1 = findViewByID_My(R.id.imageView1);
 
 
@@ -113,13 +89,13 @@ public class AddVisitActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        list_visit.add("远程拜访");
-        list_visit.add("上门拜访");
-        list_visit.add("陌生拜访");
+        list_work.add("设备工单");
+        list_work.add("订单工单");
+        list_work.add("其他工单");
 
         type = getIntent().getIntExtra("type", 0);
-        tv_xuanzefangshi.setText(list_visit.get(type));
-        titleView.setTitle(list_visit.get(type));
+        tv_gongdanleixing.setText(list_work.get(type));
+        titleView.setTitle(list_work.get(type));
 
         changeUI();
     }
@@ -133,8 +109,8 @@ public class AddVisitActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.tv_xuanzefangshi:
-                //选择合同类型
+            case R.id.tv_gongdanleixing:
+                //选择工单类型
                 dialog.contentView(R.layout.dialog_list)
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -146,7 +122,7 @@ public class AddVisitActivity extends BaseActivity {
                 RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
                 rv_list.setLayoutManager(new LinearLayoutManager(this));
                 CommonAdapter<String> adapter = new CommonAdapter<String>
-                        (AddVisitActivity.this, R.layout.item_help, list_visit) {
+                        (AddWorkListActivity.this, R.layout.item_help, list_work) {
                     @Override
                     protected void convert(ViewHolder holder, String model, int position) {
                         TextView tv = holder.getView(R.id.textView1);
@@ -161,8 +137,8 @@ public class AddVisitActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                         type = position;
-                        tv_xuanzefangshi.setText(list_visit.get(position));
-                        titleView.setTitle(list_visit.get(position));
+                        tv_gongdanleixing.setText(list_work.get(position));
+                        titleView.setTitle(list_work.get(position));
                         adapter.notifyDataSetChanged();
                         changeUI();
                         dialog.dismiss();
@@ -179,7 +155,7 @@ public class AddVisitActivity extends BaseActivity {
 
             case R.id.tv_baifangjilu:
                 //拜访记录
-                CommonUtil.gotoActivity(AddVisitActivity.this,MyVisitListActivity.class);
+                CommonUtil.gotoActivity(AddWorkListActivity.this,MyVisitListActivity.class);
                 break;
 
         }
@@ -308,48 +284,27 @@ public class AddVisitActivity extends BaseActivity {
 
 
     private void changeUI() {
-        rl_xuanzefangshi.setVisibility(View.VISIBLE);
-        rl_xuanzemendian.setVisibility(View.GONE);
-        rl_baifangjilu.setVisibility(View.GONE);
-        rl_yingyeqingkuang.setVisibility(View.GONE);
-        rl_hezuofengxian.setVisibility(View.GONE);
-        rl_baifangmendian.setVisibility(View.GONE);
-        rl_baifangrenyuan.setVisibility(View.GONE);
-        rl_lianxidianhua.setVisibility(View.GONE);
-        rl_baifangshijian.setVisibility(View.GONE);
-        rl_baifangfangshi.setVisibility(View.GONE);
-        rl_shifouyixiang.setVisibility(View.GONE);
-        rl_baifanglianxiren.setVisibility(View.GONE);
-        rl_mendiandizhi.setVisibility(View.GONE);
-        rl_baifangyuanyin.setVisibility(View.GONE);
-        rl_baifangfankui.setVisibility(View.GONE);
-        rl_shanghujingdui.setVisibility(View.GONE);
-        rl_buchongshuoming.setVisibility(View.VISIBLE);
+        rl_gongdanleixing.setVisibility(View.VISIBLE);
+        rl_xuanzemendian.setVisibility(View.VISIBLE);
+        rl_xuanzedingdan.setVisibility(View.GONE);
+        rl_shebeiguzhang.setVisibility(View.GONE);
+        rl_dingdanwenti.setVisibility(View.GONE);
+        rl_guzhangleixing.setVisibility(View.GONE);
+        rl_qitashuoming.setVisibility(View.VISIBLE);
         switch (type) {
             case 0:
-                //远程拜访
+                //设备工单
+                rl_shebeiguzhang.setVisibility(View.VISIBLE);
+                rl_guzhangleixing.setVisibility(View.VISIBLE);
+                break;
             case 1:
-                //上门拜访
-                rl_xuanzemendian.setVisibility(View.VISIBLE);
-                rl_baifangjilu.setVisibility(View.VISIBLE);
-                rl_yingyeqingkuang.setVisibility(View.VISIBLE);
-                rl_hezuofengxian.setVisibility(View.VISIBLE);
-                rl_baifangfangshi.setVisibility(View.VISIBLE);
-
-                rl_baifanglianxiren.setVisibility(View.VISIBLE);
-                rl_baifangyuanyin.setVisibility(View.VISIBLE);
-                rl_baifangfankui.setVisibility(View.VISIBLE);
-                rl_shanghujingdui.setVisibility(View.VISIBLE);
+                //订单工单
+                rl_xuanzedingdan.setVisibility(View.VISIBLE);
+                rl_dingdanwenti.setVisibility(View.VISIBLE);
                 break;
             case 2:
-                //陌生拜访
-                rl_baifangmendian.setVisibility(View.VISIBLE);
-                rl_baifangrenyuan.setVisibility(View.VISIBLE);
-                rl_lianxidianhua.setVisibility(View.VISIBLE);
-                rl_baifangshijian.setVisibility(View.VISIBLE);
-                rl_mendiandizhi.setVisibility(View.VISIBLE);
-                rl_baifangfangshi.setVisibility(View.VISIBLE);
-                rl_shifouyixiang.setVisibility(View.VISIBLE);
+                //其他工单
+
                 break;
         }
     }

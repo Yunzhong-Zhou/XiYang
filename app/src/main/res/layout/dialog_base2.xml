@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="40dp"
         android:background="@drawable/yuanjiao_5_baise"
         android:gravity="center"
         android:orientation="vertical">
@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:padding="14dp">
+            android:padding="14dp"
+            android:visibility="gone">
 
 
             <TextView
@@ -42,10 +43,13 @@
             android:layout_marginRight="26dp"
             android:gravity="center"
             android:lineSpacingExtra="5dp"
-            android:paddingBottom="14dp"
-            android:text=""
-            android:textColor="@color/black1"
-            android:textSize="14sp" />
+            android:paddingLeft="14dp"
+            android:paddingTop="32dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="44dp"
+            android:text="title"
+            android:textColor="@color/black2"
+            android:textSize="16sp" />
 
         <View
             android:layout_width="match_parent"
@@ -56,36 +60,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="30dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:background="@drawable/yuanjiao_20_lvsejianbian"
                 android:clickable="true"
                 android:gravity="center"
-                android:padding="14dp"
+                android:paddingLeft="28dp"
+                android:paddingTop="8dp"
+                android:paddingRight="28dp"
+                android:paddingBottom="8dp"
                 android:text="@string/app_confirm"
-                android:textColor="@color/green"
-                android:textSize="16sp" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/black5" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:background="@drawable/yuanjiaobiankuang_20_lvse"
                 android:clickable="true"
                 android:gravity="center"
-                android:padding="14dp"
+                android:paddingLeft="28dp"
+                android:paddingTop="8dp"
+                android:paddingRight="28dp"
+                android:paddingBottom="8dp"
                 android:text="@string/app_cancel"
                 android:textColor="@color/green"
-                android:textSize="16sp" />
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>
@@ -96,6 +117,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:padding="8dp"
-        android:visibility="gone"
-        android:src="@mipmap/ic_delete" />
+        android:src="@mipmap/ic_delete"
+        android:visibility="gone" />
 </LinearLayout>

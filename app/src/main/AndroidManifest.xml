@@ -176,6 +176,12 @@
         <activity
             android:name=".activity.AddRoomNoManagementActivity"
             android:label="添加房号管理" />
+        <activity
+            android:name=".activity.StaffManagementActivity"
+            android:label="员工管理" />
+        <activity
+            android:name=".activity.AddStaffActivity"
+            android:label="添加员工" />
 
         <!--设备-->
         <activity
@@ -193,6 +199,12 @@
         <activity
             android:name=".activity.ChangeTieDeviceActivity"
             android:label="换绑设备" />
+        <activity
+            android:name=".activity.DebugDeviceActivity"
+            android:label="调试设备" />
+        <activity
+            android:name=".activity.AddWorkListActivity"
+            android:label="创建工单" />
         <activity
             android:name=".activity.MyDeviceListActivity"
             android:label="我的设备" />

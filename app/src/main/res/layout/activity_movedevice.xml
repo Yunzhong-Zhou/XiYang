@@ -152,7 +152,7 @@
                 android:background="@drawable/btn_img1"
                 android:gravity="center"
                 android:onClick="onClick"
-                android:text="确认换绑"
+                android:text="确认移位"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"

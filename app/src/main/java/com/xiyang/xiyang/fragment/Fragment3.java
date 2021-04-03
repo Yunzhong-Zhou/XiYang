@@ -10,7 +10,9 @@ import android.widget.TextView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
+import com.xiyang.xiyang.activity.AddWorkListActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
+import com.xiyang.xiyang.activity.DebugDeviceActivity;
 import com.xiyang.xiyang.activity.DeviceDetailActivity;
 import com.xiyang.xiyang.activity.InstallDeviceActivity;
 import com.xiyang.xiyang.activity.MainActivity;
@@ -360,8 +362,7 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout7:
                 //调试设备 - 设备控制（小程序）
-//                CommonUtil.gotoActivity(getActivity(), MyCommentActivity.class);
-
+                CommonUtil.gotoActivity(getActivity(), DebugDeviceActivity.class);
                 break;
             case R.id.linearLayout8:
                 //回收设备
@@ -374,11 +375,15 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout10:
                 //设备报失-工单
-//                CommonUtil.gotoActivity(getActivity(), MyContractActivity.class);
+                bundle.putInt("type", 0);
+                bundle.putInt("type_guzhang", 0);
+                CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);
                 break;
             case R.id.linearLayout11:
                 //设备故障-工单
-//                CommonUtil.gotoActivity(getActivity(), AddMerchantActivity.class);
+                bundle.putInt("type", 0);
+                bundle.putInt("type_guzhang", 1);
+                CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);
                 break;
             case R.id.linearLayout12:
                 //设备定位
