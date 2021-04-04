@@ -12,8 +12,8 @@
     <LinearLayout
         android:id="@+id/headView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
@@ -29,20 +29,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_centerInParent="true"
             android:gravity="center"
+            android:layout_marginLeft="29dp"
             android:text="门店详情"
             android:textColor="@color/white"
             android:textSize="19sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/right_btn"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+        <TextView
+            android:id="@+id/right_btn1"
+            android:layout_width="70dp"
+            android:layout_height="26dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/yuanjiaobiankuang_8_baise"
+            android:gravity="center"
             android:onClick="onClick"
-            android:padding="20dp"
-            android:scaleType="fitCenter"
-            android:visibility="invisible" />
+            android:text="立即指派"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -215,11 +220,11 @@
 
                             <LinearLayout
                                 android:id="@+id/linearLayout1"
-                                android:onClick="onClick"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:onClick="onClick"
                                 android:orientation="vertical"
                                 android:paddingTop="18dp"
                                 android:paddingBottom="18dp">
@@ -239,11 +244,11 @@
 
                             <LinearLayout
                                 android:id="@+id/linearLayout2"
-                                android:onClick="onClick"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:onClick="onClick"
                                 android:orientation="vertical"
                                 android:paddingTop="18dp"
                                 android:paddingBottom="18dp">
@@ -263,11 +268,11 @@
 
                             <LinearLayout
                                 android:id="@+id/linearLayout3"
-                                android:onClick="onClick"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:onClick="onClick"
                                 android:orientation="vertical"
                                 android:paddingTop="18dp"
                                 android:paddingBottom="18dp">
@@ -287,11 +292,11 @@
 
                             <LinearLayout
                                 android:id="@+id/linearLayout4"
-                                android:onClick="onClick"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:onClick="onClick"
                                 android:orientation="vertical"
                                 android:paddingTop="18dp"
                                 android:paddingBottom="18dp">
@@ -497,12 +502,12 @@
 
                                 <TextView
                                     android:id="@+id/tv_change1"
-                                    android:onClick="onClick"
                                     android:layout_width="64dp"
                                     android:layout_height="28dp"
                                     android:layout_marginRight="10dp"
                                     android:background="@drawable/yuanjiaobiankuang_7_lvse"
                                     android:gravity="center"
+                                    android:onClick="onClick"
                                     android:text="修改账号"
                                     android:textColor="@color/green"
                                     android:textSize="12.5sp"
@@ -510,12 +515,12 @@
 
                                 <TextView
                                     android:id="@+id/tv_change2"
-                                    android:onClick="onClick"
                                     android:layout_width="64dp"
                                     android:layout_height="28dp"
                                     android:layout_marginLeft="10dp"
                                     android:background="@drawable/yuanjiaobiankuang_7_lvse"
                                     android:gravity="center"
+                                    android:onClick="onClick"
                                     android:text="修改信息"
                                     android:textColor="@color/green"
                                     android:textSize="12.5sp"

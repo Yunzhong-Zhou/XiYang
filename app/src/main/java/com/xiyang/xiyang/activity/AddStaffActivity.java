@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.bumptech.glide.Glide;
@@ -45,10 +46,11 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 /**
  * Created by fafukeji01 on 2017/5/8.
- * 我的资料
+ * 添加员工
  */
 
 public class AddStaffActivity extends BaseActivity {
+    int type = 1;
     MyProfileModel model;
     List<SmsCodeListModel.LangListBean> list = new ArrayList<>();
     //选择图片及上传
@@ -57,7 +59,10 @@ public class AddStaffActivity extends BaseActivity {
 
     ImageView imageView1;
 //    TextView textView1;
-    EditText editText1, editText2;
+
+    RelativeLayout rl_xingming,rl_xingbie,rl_zhanghao,rl_lianxidianhua,rl_bumen,rl_leixing;
+    EditText tv_xingming,tv_xingbie,tv_zhanghao,tv_lianxidianhua,tv_bumen,tv_leixing;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +95,7 @@ public class AddStaffActivity extends BaseActivity {
 
         imageView1 = findViewByID_My(R.id.imageView1);
 //        textView1 = findViewByID_My(R.id.textView1);
-        editText1 = findViewByID_My(R.id.editText1);
-        editText2 = findViewByID_My(R.id.editText2);
+
 
         /*editText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -140,7 +144,7 @@ public class AddStaffActivity extends BaseActivity {
         /*String string3 = "?lang_type=" + localUserInfo.getLanguage_Type();
         RequestSmsCodeList(string3);//手机号国家代码集合*/
 //        textView1.setText("+" + localUserInfo.getMobile_State_Code() + "  " + localUserInfo.getPhonenumber());
-        editText1.setText(localUserInfo.getNickname());
+//        editText1.setText(localUserInfo.getNickname());
 //        editText2.setText(localUserInfo.getInvuteCode());
 //        editText2.setText(localUserInfo.getEmail());
 
@@ -188,9 +192,9 @@ public class AddStaffActivity extends BaseActivity {
                 //手机号
 //                textView1.setText("+" + localUserInfo.getMobile_State_Code() + "  " + response.getMobile());
                 //昵称
-                editText1.setText(response.getNickname());
+//                editText1.setText(response.getNickname());
                 //邮箱
-                editText2.setText(response.getEmail());
+//                editText2.setText(response.getEmail());
 
 
                 localUserInfo.setPhoneNumber(response.getMobile());
@@ -199,11 +203,11 @@ public class AddStaffActivity extends BaseActivity {
                 localUserInfo.setEmail(response.getEmail());
                 localUserInfo.setUserImage(response.getHead());
 
-                if (response.getNickname_update() == 2) {
+                /*if (response.getNickname_update() == 2) {
                     editText1.setFocusable(false);
                 } else {
                     editText1.setFocusable(true);
-                }
+                }*/
             }
         });
     }
@@ -285,7 +289,7 @@ public class AddStaffActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("资料管理");
+        titleView.setTitle("添加员工");
     }
 
     /**

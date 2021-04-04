@@ -63,6 +63,20 @@
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:visibility="gone" />
+            <TextView
+                android:id="@+id/right_txt_btn"
+                android:layout_width="70dp"
+                android:layout_height="26dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/yuanjiaobiankuang_8_baise"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="立即指派"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!--中间文字-->

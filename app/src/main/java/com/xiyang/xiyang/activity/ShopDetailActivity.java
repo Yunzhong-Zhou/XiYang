@@ -266,6 +266,12 @@ public class ShopDetailActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("商户详情");
+        titleView.showRightTxtBtn("立即指派", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.gotoActivity(ShopDetailActivity.this,AssignActivity.class);
+            }
+        });
     }
 
     private void changeUI() {

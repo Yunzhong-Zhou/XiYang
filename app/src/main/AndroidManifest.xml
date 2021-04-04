@@ -98,6 +98,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.MainActivity_m"
+            android:label="主页"
+            android:theme="@style/DefaultCityPickerTheme">
+            <!--点击通知默认打开-->
+            <intent-filter>
+                <action android:name="${applicationId}.default.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".activity.LoginActivity"
             android:label="登录" />
 
@@ -130,6 +141,19 @@
         <activity
             android:name=".activity.RenewContractActivity"
             android:label="续签合同" />
+        <!--管理-->
+        <activity
+            android:name=".activity.DispatchActivity"
+            android:label="分派" />
+        <activity
+            android:name=".activity.AssignActivity"
+            android:label="指派" />
+        <activity
+            android:name=".activity.AdjustmentActivity"
+            android:label="调整" />
+        <activity
+            android:name=".activity.MyCityActivity"
+            android:label="我的城市" />
         <!--门店-->
         <activity
             android:name=".activity.AddStoreActivity"
@@ -182,7 +206,9 @@
         <activity
             android:name=".activity.AddStaffActivity"
             android:label="添加员工" />
-
+        <activity
+            android:name=".activity.StaffDetailActivity"
+            android:label="员工详情" />
         <!--设备-->
         <activity
             android:name=".activity.SelectDeviceActivity"
@@ -205,6 +231,9 @@
         <activity
             android:name=".activity.AddWorkListActivity"
             android:label="创建工单" />
+        <activity
+            android:name=".activity.WorkListDetailActivity"
+            android:label="工单详情" />
         <activity
             android:name=".activity.MyDeviceListActivity"
             android:label="我的设备" />

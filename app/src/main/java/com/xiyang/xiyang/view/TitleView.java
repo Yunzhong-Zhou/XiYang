@@ -22,7 +22,7 @@ import com.xiyang.xiyang.R;
 public class TitleView extends FrameLayout {
     private Activity mActivity; // 当前activity
     private ImageView btn_left, btn_right;
-    private TextView tv_title, left_text, right_text;
+    private TextView tv_title, left_text, right_text,right_txt_btn;
     private EditText et_search;
     private RelativeLayout rl_title;
 
@@ -52,6 +52,7 @@ public class TitleView extends FrameLayout {
         et_search = (EditText) findViewById(R.id.et_search);
         left_text = (TextView) findViewById(R.id.left_text);
         right_text = (TextView) findViewById(R.id.right_text);
+        right_txt_btn = findViewById(R.id.right_txt_btn);
         setBack(null);
     }
 
@@ -134,6 +135,14 @@ public class TitleView extends FrameLayout {
         btn_right.setVisibility(View.GONE);
         right_text.setText(str);
         right_text.setOnClickListener(listener);
+    }
+    /**
+     * 显示右边的textview，并设置值
+     */
+    public void showRightTxtBtn(String str, OnClickListener listener) {
+        right_txt_btn.setVisibility(View.VISIBLE);
+        right_txt_btn.setText(str);
+        right_txt_btn.setOnClickListener(listener);
     }
     /**
      * 显示右边的textview，并设置值

@@ -75,6 +75,7 @@
                     android:background="@color/xian" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_xingming"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -91,7 +92,7 @@
                         android:visibility="visible" />
 
                     <EditText
-                        android:id="@+id/editText1"
+                        android:id="@+id/tv_xingming"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/edittext_bg"
@@ -106,8 +107,8 @@
                         android:textSize="12.5sp"
                         android:textStyle="bold" />
                 </RelativeLayout>
-
                 <RelativeLayout
+                    android:id="@+id/rl_xingbie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -117,20 +118,88 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="手机号"
+                        android:text="性别"
                         android:textColor="@color/black1"
                         android:textSize="12.5sp"
                         android:textStyle="bold"
                         android:visibility="visible" />
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/tv_xingbie"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:focusable="false"
+                        android:drawableRight="@mipmap/ic_down_black"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical|right"
+                        android:hint="请选择性别"
+                        android:inputType="textPassword"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_zhanghao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="账号"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_zhanghao"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/edittext_bg"
                         android:focusable="false"
                         android:gravity="center_vertical|right"
-                        android:hint="请输入手机号"
+                        android:hint="请输入账号"
+                        android:inputType="textPassword"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_lianxidianhua"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="联系电话"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_lianxidianhua"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:focusable="false"
+                        android:gravity="center_vertical|right"
+                        android:hint="请输入联系电话"
                         android:inputType="textPassword"
                         android:padding="14dp"
                         android:singleLine="true"
@@ -141,6 +210,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_bumen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -157,13 +227,48 @@
                         android:visibility="visible" />
 
                     <EditText
-                        android:id="@+id/editText3"
+                        android:id="@+id/tv_bumen"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/edittext_bg"
                         android:focusable="false"
                         android:gravity="center_vertical|right"
                         android:hint="请输入所在部门"
+                        android:inputType="textPassword"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_leixing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="类型"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_leixing"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:focusable="false"
+                        android:drawableRight="@mipmap/ic_down_black"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical|right"
+                        android:hint="请选择类型"
                         android:inputType="textPassword"
                         android:padding="14dp"
                         android:singleLine="true"

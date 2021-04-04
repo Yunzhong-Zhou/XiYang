@@ -52,6 +52,7 @@ public class StoreDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storedetail);
+
         findViewById(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(this), 0, 0);
     }
 
@@ -116,6 +117,9 @@ public class StoreDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.left_btn:
                 finish();
+                break;
+            case R.id.right_btn1:
+                CommonUtil.gotoActivity(StoreDetailActivity.this,AssignActivity.class);
                 break;
             case R.id.linearLayout1:
                 //设备

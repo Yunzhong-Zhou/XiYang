@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/yuanjiao_12_baise_huisebiankuang"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择BDM"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择BDM"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择用户"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择用户"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="当前CM"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择当前CM"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择CM"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择CM"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="验证码"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入验证码"
+                    android:inputType="number"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="180dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+
+                <TextView
+                    android:id="@+id/tv_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:onClick="onClick"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="8dp"
+                    android:singleLine="true"
+                    android:text="@string/app_sendcode"
+                    android:textColor="@color/black2"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="27dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/tv_code"
+                    android:background="@color/xian" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginTop="10dp"
+                android:text="注意事项： 调整角色前需要将该角色之后负责的所有工作移接之后才能调整； 如CM需要将该CM所负责的城市全部转移给其他的CM之后才能 调整"
+                android:textColor="@color/red"/>
+
+            <TextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/btn_img1"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="确认调整"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>
