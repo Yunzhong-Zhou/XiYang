@@ -117,12 +117,18 @@ public class ContractDetailActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.tv_liulan:
                 //查看图片
                 PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ContractDetailActivity.this,
                         URLs.IMGHOST + "");
                 photoShowDialog.show();
+                break;
+            case R.id.tv_shenpi:
+                //立即审批
+                bundle.putString("id", "");
+                CommonUtil.gotoActivityWithData(ContractDetailActivity.this, ApproveContractActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
                 //商户信息
@@ -154,14 +160,14 @@ public class ContractDetailActivity extends BaseActivity {
                 //隐藏最前和最后的竖线
                 View view_top = holder.getView(R.id.view_top);
                 View view_bottom = holder.getView(R.id.view_bottom);
-                if (position == 0){
+                if (position == 0) {
                     view_top.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     view_top.setVisibility(View.VISIBLE);
                 }
-                if (position == (list_shenhe.size() -1)){
+                if (position == (list_shenhe.size() - 1)) {
                     view_bottom.setVisibility(View.GONE);
-                }else {
+                } else {
                     view_bottom.setVisibility(View.VISIBLE);
                 }
                 //横向图片
@@ -169,9 +175,9 @@ public class ContractDetailActivity extends BaseActivity {
                 /*for (String s : model1.getGoods_info().getImgArr()) {
                     list_img.add(URLs.IMGHOST + s);
                 }*/
-                list_img.add(URLs.IMGHOST +"");
-                list_img.add(URLs.IMGHOST +"");
-                list_img.add(URLs.IMGHOST +"");
+                list_img.add(URLs.IMGHOST + "");
+                list_img.add(URLs.IMGHOST + "");
+                list_img.add(URLs.IMGHOST + "");
                 RecyclerView rv = holder.getView(R.id.rv);
                 LinearLayoutManager llm1 = new LinearLayoutManager(ContractDetailActivity.this);
                 llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局

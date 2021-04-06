@@ -170,8 +170,8 @@ public class LoginActivity extends BaseActivity {
 //                    params.put("action", "1");//1为验证码登陆 2为第三方登陆
                     RequestLogin(params);//登录
                 }*/
-//                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-                CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
+                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+//                CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
                 break;
             /*case R.id.image_wechat:
                 //微信登录

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddStaffActivity;
+import com.xiyang.xiyang.activity.AdjustmentListActivity;
 import com.xiyang.xiyang.activity.DispatchActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyCityActivity;
@@ -326,11 +327,11 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout10:
                 //调整角色
-//                CommonUtil.gotoActivity(getActivity(), MyContractActivity.class);
+                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
                 break;
             case R.id.linearLayout11:
                 //调整BDM
-//                CommonUtil.gotoActivity(getActivity(), TransferShopActivity.class);
+                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
                 break;
             case R.id.linearLayout12:
                 //我的城市

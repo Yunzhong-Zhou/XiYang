@@ -42,7 +42,7 @@ public class SetUpActivity extends BaseActivity {
                 break;
             case R.id.textView3:
                 //登录密码
-                CommonUtil.gotoActivity(this, ChangePasswordActivity.class, false);
+                CommonUtil.gotoActivity(this, ForgetPasswordActivity.class, false);
                 break;
             case R.id.textView4:
                 //个人资料

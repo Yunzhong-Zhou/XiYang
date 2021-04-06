@@ -141,6 +141,9 @@
         <activity
             android:name=".activity.RenewContractActivity"
             android:label="续签合同" />
+        <activity
+            android:name=".activity.ApproveContractActivity"
+            android:label="审核合同" />
         <!--管理-->
         <activity
             android:name=".activity.DispatchActivity"
@@ -283,7 +286,6 @@
         <activity
             android:name=".activity.ChangePasswordActivity"
             android:label="登录密码" />
-
 
 
         <!--全面屏适配-->
