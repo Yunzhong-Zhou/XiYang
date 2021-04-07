@@ -61,11 +61,27 @@ public class MyChooseImages {
                     getImageByCamera.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
                     activity.startActivityForResult(getImageByCamera, REQUEST_CODE_CAPTURE_CAMEIA);
 
+                    /*PictureSelector.create(activity)
+                            .openCamera(PictureMimeType.ofImage())
+                            .loadImageEngine(GlideEngine.createGlideEngine()) // 请参考Demo GlideEngine.java
+                            .isEnableCrop(true)// 是否裁剪
+                            .withAspectRatio(1, 1)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                            .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                            .circleDimmedLayer(false)// 是否圆形裁剪
+                            .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
+                            .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
+                            .cutOutQuality(90)// 裁剪输出质量 默认100
+                            .minimumCompressSize(100)// 小于多少kb的图片不压缩
+                            .isCompress(true)// 是否压缩
+                            .compressQuality(60)// 图片压缩后输出质量 0~ 100
+                            .forResult(PictureConfig.REQUEST_CAMERA);*/
+
                 }
                 else {
                     Toast.makeText(activity, activity.getString(R.string.app_card), Toast.LENGTH_LONG).show();
                 }
                 dlg.cancel();
+
             }
         });
         TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
@@ -79,4 +95,6 @@ public class MyChooseImages {
             }
         });
     }
+
+
 }

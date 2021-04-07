@@ -8,14 +8,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -408,129 +401,6 @@ public class CommonUtil {
                 .getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         return display.getHeight();
-    }
-
-
-    /**
-     * 获得一个UUID
-     *
-     * @return String UUID  不唯一
-     */
-    public static String getUUID() {
-        String s = UUID.randomUUID().toString();
-        //去掉“-”符号 
-        return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24);
-    }
-
-    /**
-     * 获得一个IMEI
-     *
-     * @return String IMEI
-     */
-    public static String getIMEI(Context context) {
-
-        /*TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-        }
-        String IMEI = tm.getDeviceId();*/
-
-        String androidId = Settings.System.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-
-
-        /*String  deviceInfo = new StringBuilder()
-                .append(Build.BOARD).append("#")
-                .append(Build.BRAND).append("#")
-                //CPU_ABI，这个值和appp使用的so库是arm64-v8a还是armeabi-v7a有关，舍弃
-                //.append(Build.CPU_ABI).append("#")
-                .append(Build.DEVICE).append("#")
-                .append(Build.DISPLAY).append("#")
-                .append(Build.HOST).append("#")
-                .append(Build.ID).append("#")
-                .append(Build.MANUFACTURER).append("#")
-                .append(Build.MODEL).append("#")
-                .append(Build.PRODUCT).append("#")
-                .append(Build.TAGS).append("#")
-                .append(Build.TYPE).append("#")
-                .append(Build.USER).append("#")
-                .toString();
-        try {
-            //22a49a46-b39e-36d1-b75f-a0d0b9c72d6c
-            return UUID.nameUUIDFromBytes(deviceInfo.getBytes("utf8")).toString();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String androidId = Settings.System.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);*/
-
-        return androidId;
-    }
-
-    /**
-     * 判断当前设备是否是真机。如果返回TRUE，则当前是真机，不是返回FALSE
-     *
-     * @return
-     */
-    public static boolean isRealMachine() {
-        String BOARD = android.os.Build.BOARD;
-        String BOOTLOADER = android.os.Build.BOOTLOADER;
-        String BRAND = android.os.Build.BRAND;
-        String DEVICE = android.os.Build.DEVICE;
-        String HARDWARE = android.os.Build.HARDWARE;
-        String MODEL = android.os.Build.MODEL;
-        String PRODUCT = android.os.Build.PRODUCT;
-        if (BOARD == "unknown" || BOOTLOADER == "unknown"
-                || BRAND == "generic" || DEVICE == "generic"
-                || MODEL == "sdk" || PRODUCT == "sdk"
-                || HARDWARE == "goldfish") {
-            Log.v("Result:", "Find Emulator by EmulatorBuild!");
-            return true;
-        }
-        Log.v("Result:", "Not Find Emulator by EmulatorBuild!");
-        return false;
-    }
-
-    /**
-     * 判断是否存在光传感器来判断是否为模拟器 部分真机也不存在温度和压力传感器。其余传感器模拟器也存在。
-     *
-     * @return false 为模拟器
-     */
-    public static boolean notHasLightSensorManager(Context context) {
-        SensorManager sensorManager = (SensorManager) context
-                .getSystemService(Context.SENSOR_SERVICE);
-        Sensor sensor8 = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); // 光
-        if (null == sensor8) {
-            MyLogger.i("", "光传感器判定为false");
-            return false;
-        } else {
-            MyLogger.i("", "光传感器判定为true");
-            return true;
-        }
-    }
-
-    /**
-     * 判断手机有无Gps
-     */
-    public static boolean hasGPSDevice(Context context) {
-        final LocationManager mgr = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (mgr == null) {
-            return false;
-        } else {
-            final List<String> providers = mgr.getAllProviders();
-            if (providers == null) {
-                return false;
-            } else {
-                return providers.contains(LocationManager.GPS_PROVIDER);
-            }
-        }
     }
 
     /**

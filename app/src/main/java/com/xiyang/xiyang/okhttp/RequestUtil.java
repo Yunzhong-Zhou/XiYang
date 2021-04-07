@@ -2,14 +2,15 @@ package com.xiyang.xiyang.okhttp;
 
 import android.text.TextUtils;
 
-import com.xiyang.xiyang.MyApplication;
-import com.xiyang.xiyang.utils.LocalUserInfo;
+import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.utils.MyLogger;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import okio.Sink;
 class RequestUtil {
     private String mMetyodType;//请求方式，目前只支持get和post
     private String mUrl;//接口
+    private Map<String, String> mMyMap = new HashMap<>();
     private Map<String, String> mParamsMap;//键值对类型的参数，只有这一种情况下区分post和get。
     private String mJsonStr;//json类型的参数，post方式
     private File mFile;//文件的参数，post方式,只有一个文件
@@ -93,6 +95,7 @@ class RequestUtil {
      * 创建OKhttpClient实例。
      */
     private void getInstance() {
+        MyLogger.i("Headr：" + mHeaderMap);
         /**
          * 客户端首先需要对请求的参数的字段排序，然后遍历参数进行字符串拼接，最后和给定token进行MD5签名: 客户端请求参数为name=123&account=1232131,
          * step1: ksort("name=123&account=1232131&timestamp");
@@ -103,19 +106,23 @@ class RequestUtil {
          *
          * step4: 在接口地址附带签名参数name=123&account=1232131&sign=xxxx&timestamp=xxxxxx
          */
-//        MyLogger.i(">>>>>>>>旧Map："+sortMapByKey(mParamsMap));
-//        MyLogger.i(">>>>>>>>排序："+sortMapByKey(mParamsMap));
-//        MyLogger.i(">>>>>>>>转换："+transMapToString(sortMapByKey(mParamsMap)));
-//        MyLogger.i(">>>>>>>>token："+ LocalUserInfo.getInstance(MyApplication.getContext()).getToken());
-//        MyLogger.i(">>>>>>>>MD5加密："+MD5(LocalUserInfo.getInstance(MyApplication.getContext()).getToken()+transMapToString(sortMapByKey(mParamsMap))));
-//        MyLogger.i(">>>>>>>>本地时间："+System.currentTimeMillis());
-//        MyLogger.i(">>>>>>>>最新系统时间："+LocalUserInfo.getInstance(MyApplication.getContext()).getTime());
-//        MyLogger.i(">>>>>>>>误差时间："+Math.abs(Long.valueOf(LocalUserInfo.getInstance(MyApplication.getContext()).getTime())-System.currentTimeMillis()));
-        mParamsMap.put("_sign", md5(LocalUserInfo.getInstance(MyApplication.getContext()).getToken()+transMapToString(sortMapByKey(mParamsMap))));//签名参数，附带在url后面 ,此值由签名验证计算得到
-        mParamsMap.put("_timestamp", System.currentTimeMillis()+Math.abs(Long.valueOf(LocalUserInfo.getInstance(MyApplication.getContext()).getTime())-System.currentTimeMillis()) + "");//时间戳，毫秒， 此值应该为客户端时间戳+与服务端误差时间， 与服务端误差时间可以通过接口每次返回的serverTimestamp和本地时间戳进行计算
-//        mParamsMap.put("_timestamp", System.currentTimeMillis()+"");
-//        MyLogger.i(">>>>>提交数据"+mParamsMap);
+//        MyLogger.i(">>>>>>>>本地时间：" + System.currentTimeMillis());
+//        MyLogger.i(">>>>>>>>最新系统时间：" + LocalUserInfo.getInstance(MyApplication.getContext()).getTime());
+//        MyLogger.i(">>>>>>>>误差时间：" + Math.abs(Long.valueOf(LocalUserInfo.getInstance(MyApplication.getContext()).getTime()) - System.currentTimeMillis()));
+//        String timestamp = System.currentTimeMillis() + Math.abs(Long.valueOf(LocalUserInfo.getInstance(MyApplication.getContext()).getTime()) - System.currentTimeMillis()) + "";
+        String timestamp = System.currentTimeMillis()+"";
 
+        mParamsMap.put("_timestamp", timestamp);
+//        mParamsMap.put("token", URLs.APIKEY);
+
+       /* MyLogger.i(">>>>>>>>旧Map：" + mParamsMap);
+        MyLogger.i(">>>>>>>>排序：" + sortMapByKey(mParamsMap));
+        MyLogger.i(">>>>>>>>转换：" + transMapToString(sortMapByKey(mParamsMap)));
+        MyLogger.i(">>>>>>>>token：" + URLs.APIKEY + transMapToString(sortMapByKey(mParamsMap)));
+        MyLogger.i(">>>>>>>>MD5加密：" + md5(URLs.APIKEY + transMapToString(sortMapByKey(mParamsMap))));*/
+
+        mMyMap.put("_sign", md5(URLs.APIKEY + transMapToString(sortMapByKey(mParamsMap))));//签名参数，附带在url后面 ,此值由签名验证计算得到
+        mMyMap.put("_timestamp", timestamp);//时间戳，毫秒， 此值应该为客户端时间戳+与服务端误差时间， 与服务端误差时间可以通过接口每次返回的serverTimestamp和本地时间戳进行计算
 
         mOkHttpClient = new OkHttpClient();
         mRequestBuilder = new Request.Builder();
@@ -128,12 +135,15 @@ class RequestUtil {
                     setGetParams();
                     break;
                 case OkhttpUtil.METHOD_POST:
+                    repackaging();
                     mRequestBuilder.post(getRequestBody());
                     break;
                 case OkhttpUtil.METHOD_PUT:
+                    repackaging();
                     mRequestBuilder.put(getRequestBody());
                     break;
                 case OkhttpUtil.METHOD_DELETE:
+                    repackaging();
                     mRequestBuilder.delete(getRequestBody());
                     break;
             }
@@ -178,12 +188,19 @@ class RequestUtil {
      */
     private void setGetParams() {
         if (mParamsMap != null) {
+            mParamsMap.remove("_timestamp");
             mUrl = mUrl + "?";
             for (String key : mParamsMap.keySet()) {
                 mUrl = mUrl + key + "=" + mParamsMap.get(key) + "&";
             }
+
+            for (String key : mMyMap.keySet()) {
+                mUrl = mUrl + key + "=" + mMyMap.get(key) + "&";
+            }
             mUrl = mUrl.substring(0, mUrl.length() - 1);
         }
+        MyLogger.i("URL：" + mUrl);
+        MyLogger.i("提交数据：" + mParamsMap);
     }
 
 
@@ -281,7 +298,6 @@ class RequestUtil {
             }
         }
     }
-
 
     void execute() {
         mOkHttpClient.newCall(mOkHttpRequest).enqueue(new Callback() {
@@ -384,7 +400,7 @@ class RequestUtil {
      * * @return
      *      
      */
-    public static Map<String, String> sortMapByKey(Map<String, String> map) {
+    private Map<String, String> sortMapByKey(Map<String, String> map) {
         if (map == null || map.isEmpty()) {
             return null;
         }
@@ -405,27 +421,29 @@ class RequestUtil {
      * 传入参数:map
      * 返回值:String 形如 username‘chenziwen^password‘1234
      */
-    public static String transMapToString(Map map){
+    private String transMapToString(Map map) {
         java.util.Map.Entry entry;
         StringBuffer sb = new StringBuffer();
-        for(Iterator iterator = map.entrySet().iterator(); iterator.hasNext();)
-        {
-            entry = (java.util.Map.Entry)iterator.next();
+        if (map != null) {
+            for (Iterator iterator = map.entrySet().iterator(); iterator.hasNext(); ) {
+                entry = (java.util.Map.Entry) iterator.next();
 //            sb.append(entry.getKey().toString()).append( "‘" ).append(null==entry.getValue()?"":
 //                    entry.getValue().toString()).append (iterator.hasNext() ? "^" : "");
-            sb.append(entry.getKey().toString()).append( "" ).append(null==entry.getValue()?"":
-                    entry.getValue().toString()).append (iterator.hasNext() ? "" : "");
+                sb.append(entry.getKey().toString()).append("").append(null == entry.getValue() ? "" :
+                        entry.getValue().toString()).append(iterator.hasNext() ? "" : "");
 
+            }
         }
         return sb.toString();
     }
 
     /**
      * MD5加密
+     *
      * @param string
      * @return
      */
-    public static String md5(String string) {
+    private String md5(String string) {
         if (TextUtils.isEmpty(string)) {
             return "";
         }
@@ -448,4 +466,20 @@ class RequestUtil {
         return "";
     }
 
+
+    /**
+     * 重组封装
+     */
+    private void repackaging(){
+        mParamsMap.remove("_timestamp");
+
+        mUrl = mUrl + "?";
+        for (String key : mMyMap.keySet()) {
+            mUrl = mUrl + key + "=" + mMyMap.get(key) + "&";
+        }
+        mUrl = mUrl.substring(0, mUrl.length() - 1);
+
+        MyLogger.i("URL：" + mUrl);
+        MyLogger.i("提交数据：" + mParamsMap);
+    }
 }

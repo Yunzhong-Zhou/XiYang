@@ -7,12 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.lahm.library.EasyProtectorLib;
-import com.lahm.library.EmulatorCheckCallback;
 import com.xiyang.xiyang.MyApplication;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.utils.LocalUserInfo;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.utils.changelanguage.LanguageType;
 import com.xiyang.xiyang.utils.changelanguage.LanguageUtil;
 import com.xiyang.xiyang.utils.changelanguage.SpUtil;
@@ -76,10 +73,11 @@ public class HelloActivity extends Activity {
         Boolean user_first = setting.getBoolean("FIRST", true);
 
         //判断是否为真机
-        /*if (!CommonUtil.notHasLightSensorManager(HelloActivity.this)){
+       /* if (!DeviceUtils.isEmulator()){
             finish();
         }*/
 
+        /*implementation 'com.lahm.library:easy-protector-release:1.1.2'
         boolean isMoNiQi = EasyProtectorLib.checkIsRunningInEmulator(this, new EmulatorCheckCallback() {
             @Override
             public void findEmulator(String emulatorInfo) {
@@ -88,7 +86,7 @@ public class HelloActivity extends Activity {
         });
         if (isMoNiQi == true) {//是模拟器
             finish();
-        }
+        }*/
 
 
         // 如果是第一次启动，则先进入功能引导页

@@ -34,11 +34,9 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
-import com.xiyang.xiyang.utils.LocalUserInfo;
 import com.xiyang.xiyang.utils.TraceServiceImpl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -64,6 +62,7 @@ public class MainActivity extends BaseActivity {
     //更新
     UpgradeModel model_up;
 
+    Timer timer = null;
     @Override
     protected void onResume() {
         super.onResume();
@@ -73,6 +72,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
         item = 0;
         isOver = false;
     }
@@ -235,22 +237,37 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        //第一次启动获取数据
-//        RequestFrist(params);
+        RequestUpLoadToken(params);
+        /*//获取上传文件token - 20分钟更新一次
+        if (timer == null) {
+            timer = new Timer();
+        }
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            // 执行的方法
+                RequestUpLoadToken(params);
+            }
+        }, 20*60*1000);*/
+
+
+
         //更新
-        Map<String, String> params = new HashMap<>();
+        /*Map<String, String> params = new HashMap<>();
         params.put("type", "1");
-        RequestUpgrade(params);//检查更新
+        RequestUpgrade(params);//检查更新*/
     }
 
     @Override
     protected void updateView() {
         titleView.setVisibility(View.GONE);
     }
+
     public EasyNavigationBar getNavigationBar() {
 //使用       ((MainActivity) getActivity()).getNavigationBar().setMsgPointCount(1, response.getDai_shi_gong_sum());
         return navigationBar;
     }
+
     /**
      * 双击退出函数
      */
@@ -292,37 +309,32 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 第一次启动需要获取的数据
+     * 获取上传文件token
      *
      * @param params
      */
-    private void RequestFrist(Map<String, String> params) {
-        /*OkhttpUtil.okHttpPost(URLs.FristApp, params, headerMap, new CallBackUtil<FristAppModel>() {
+    private void RequestUpLoadToken(Map<String, String> params) {
+        //设置初始时间戳
+//        LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis() + "");
+
+        OkhttpUtil.okHttpGet(URLs.UpLoadToken, params, headerMap, new CallBackUtil<String>() {
             @Override
-            public FristAppModel onParseResponse(Call call, Response response) {
+            public String onParseResponse(Call call, Response response) {
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
-//                hideProgress();
-//                myToast(err);
             }
 
             @Override
-            public void onResponse(FristAppModel response) {
-//                hideProgress();
-                localUserInfo.setKfuserhash(response.getConf_info().getKf_info().getUserHash());
-                localUserInfo.setKfhead(URLs.IMGHOST + response.getConf_info().getKf_info().getHeadPortrait());
-                localUserInfo.setKfname(response.getConf_info().getKf_info().getUserName());
+            public void onResponse(String response) {
+//                localUserInfo.setUpLoadToken(response.getConf_info().getKf_info().getUserHash());
             }
-        });*/
+        });
     }
 
     private void RequestUpgrade(Map<String, String> params) {
-        //设置初始时间戳
-        LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis()+"");
-
         OkhttpUtil.okHttpPost(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
             public UpgradeModel onParseResponse(Call call, Response response) {

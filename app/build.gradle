@@ -101,6 +101,12 @@ dependencies {
 //    implementation 'com.squareup.okhttp:okhttp:2.7.5'
 //    implementation 'com.alibaba:fastjson:1.2.68'
 
+    //千牛上传文件图片
+    implementation 'com.qiniu:qiniu-android-sdk:8.2.0'
+
+    //图片选择器
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
+
     //加载网络图片
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
@@ -182,6 +188,8 @@ dependencies {
 
     //工具类 https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
     implementation 'com.blankj:utilcodex:1.30.5'
+    //检测手机XP/调试/多开/模拟器/root (上面工具类已包含)
+//    implementation 'com.lahm.library:easy-protector-release:1.1.2'
 
     //格式化银行卡号 并识别出所属银行
 //    implementation 'com.lsh.bankcardnum:banknumformatlibrary:1.0.2'
@@ -211,8 +219,7 @@ dependencies {
 
     //折线图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    //检测手机XP/调试/多开/模拟器/root
-    implementation 'com.lahm.library:easy-protector-release:1.1.2'
+
     //android 保活
     implementation 'com.xdandroid:hellodaemon:+'
 

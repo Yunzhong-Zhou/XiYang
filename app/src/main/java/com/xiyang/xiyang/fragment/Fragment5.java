@@ -230,10 +230,10 @@ public class Fragment5 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
 //        this.showLoadingPage();
-        showProgress(true, getString(R.string.app_loading));
+        /*showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
         params.put("u_token", localUserInfo.getToken());
-        requestCenter(params);
+        requestCenter(params);*/
     }
 
     @Override

@@ -139,9 +139,15 @@ public abstract class CallBackUtil<T> {
                         LocalUserInfo.getInstance(MyApplication.getContext()).setUserHash("");
                         CommonUtil.gotoActivity(MyApplication.getContext(), LoginActivity.class);
                         break;
-                    /*case 50007:
+                    case 50007:
                         //请求时误差时间超时
-                        break;*/
+                        mMainHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                onFailure(call, null, "签名验证时间戳误差大，请刷新再试");
+                            }
+                        });
+                        break;
 
 //                    case 40004:
                         //TODO 没有数据、提交失败 （有冲突，走失败逻辑提示message信息，请求列表数据时，不要提示）

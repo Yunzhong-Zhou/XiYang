@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xiyang.xiyang">
+
     <!--网络权限问题-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--用于获取运营商信息，用于支持提供运营商信息相关的接口-->

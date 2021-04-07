@@ -7,94 +7,61 @@ import java.io.Serializable;
  */
 public class LoginModel implements Serializable {
     /**
-     * id : 6d3f2f6a08905ad516c3c2f94d1c629b
-     * mobile_state_code : 86
-     * mobile : 18306043086
-     * head : /upload/head/2018-06-23/40cc0f5b3c57b84f92993a30763d1395.jpg
-     * merchant : 1
-     * pay : 2
-     * gather : 2
-     * nickname : 18306043086
-     * invite_code : 433787
-     * integrity_grade : 3
-     * fresh_token : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2ZDNmMmY2YTA4OTA1YWQ1MTZjM2MyZjk0ZDFjNjI5YiIsImlzcyI6Imh0dHA6XC9cLzE5Mi4xNjguMC4xODhcL2FwaVwvbWVtYmVyXC9sb2dpbiIsImlhdCI6MTUyOTk5OTY4NCwiZXhwIjoxNTMwMDg2MDg0LCJuYmYiOjE1Mjk5OTk2ODQsImp0aSI6IjU5ZWM2N2QwMTExMzBhNWUxNzg5NDUwMzYyMjAyZDIyIn0.NSjUrNdSnlYdACExZuT03Rg8FbJelird3IpgT1jwImA
+     * accessToken : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjAuMTA0XC9hcHBcL3VzZXJcL2xvZ2luXC9wYXNzd29yZCIsImlhdCI6MTYxNzc5MTA2MCwiZXhwIjoxNjM1NzkxMDYwLCJuYmYiOjE2MTc3OTEwNjAsImp0aSI6InRUVHRaZXdxZ0o3ak9tQjMiLCJzdWIiOjEzLCJwcnYiOiI2YmU1Zjk1Y2RkNWUwNTZlOTA3NzVkZDQ2MjZkMTI3MzEwODNlMzM0In0.nxjaOcpxJ2cHtxVkhvoCLvyphkmKiJg5Oyy_waGQcUY
+     * tokenType : bearer
+     * expiresIn : 18000000
+     * roleType : 1
+     * level : 0
+     * nickname : http://192.168.0.103/head/head.png
+     * head : admin8
      */
 
-    private String id;
-    private String mobile_state_code;
-    private String mobile;
-    private String head;
-    private int merchant;
-    private int pay;
-    private int gather;
+    private String accessToken;
+    private String tokenType;
+    private String expiresIn;
+    private String roleType;
+    private String level;
     private String nickname;
-    private String invite_code;
-    private int integrity_grade;
-    private String fresh_token;
-    private int status;
+    private String head;
 
-    public int getStatus() {
-        return status;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public String getId() {
-        return id;
+    public String getTokenType() {
+        return tokenType;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 
-    public String getMobile_state_code() {
-        return mobile_state_code;
+    public String getExpiresIn() {
+        return expiresIn;
     }
 
-    public void setMobile_state_code(String mobile_state_code) {
-        this.mobile_state_code = mobile_state_code;
+    public void setExpiresIn(String expiresIn) {
+        this.expiresIn = expiresIn;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getRoleType() {
+        return roleType;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
     }
 
-    public String getHead() {
-        return head;
+    public String getLevel() {
+        return level;
     }
 
-    public void setHead(String head) {
-        this.head = head;
-    }
-
-    public int getMerchant() {
-        return merchant;
-    }
-
-    public void setMerchant(int merchant) {
-        this.merchant = merchant;
-    }
-
-    public int getPay() {
-        return pay;
-    }
-
-    public void setPay(int pay) {
-        this.pay = pay;
-    }
-
-    public int getGather() {
-        return gather;
-    }
-
-    public void setGather(int gather) {
-        this.gather = gather;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getNickname() {
@@ -105,27 +72,11 @@ public class LoginModel implements Serializable {
         this.nickname = nickname;
     }
 
-    public String getInvite_code() {
-        return invite_code;
+    public String getHead() {
+        return head;
     }
 
-    public void setInvite_code(String invite_code) {
-        this.invite_code = invite_code;
-    }
-
-    public int getIntegrity_grade() {
-        return integrity_grade;
-    }
-
-    public void setIntegrity_grade(int integrity_grade) {
-        this.integrity_grade = integrity_grade;
-    }
-
-    public String getFresh_token() {
-        return fresh_token;
-    }
-
-    public void setFresh_token(String fresh_token) {
-        this.fresh_token = fresh_token;
+    public void setHead(String head) {
+        this.head = head;
     }
 }

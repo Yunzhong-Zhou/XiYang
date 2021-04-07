@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.cy.dialog.BaseDialog;
 import com.maning.updatelibrary.InstallUtils;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -57,7 +58,7 @@ import okhttp3.Response;
 public class LoginActivity extends BaseActivity {
     int type = 1;//1、验证码 2、密码
     String code = "";
-    private EditText editText1, editText2;
+    private EditText editText1, editText2, editText3;
     private TextView textView1, textView2, tv_yzm, tv_mima;
     private RelativeLayout rl_mima, rl_yzm;
 
@@ -103,6 +104,7 @@ public class LoginActivity extends BaseActivity {
 
         editText1 = findViewByID_My(R.id.editText1);
         editText2 = findViewByID_My(R.id.editText2);
+        editText3 = findViewByID_My(R.id.editText3);
 
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
@@ -117,9 +119,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        Map<String, String> params = new HashMap<>();
+        /*Map<String, String> params = new HashMap<>();
         params.put("type", "1");
-        RequestUpgrade(params);//检查更新
+        RequestUpgrade(params);//检查更新*/
 
         /*byte[] mBytes = null;
         String mString = "{阿达大as家阿sdf什顿附asd件好久}";
@@ -148,29 +150,36 @@ public class LoginActivity extends BaseActivity {
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
                     params.put("user_phone", phonenum);
-//                    params.put("type", "1");
+                    params.put("type", "1");
                     RequestCode(params);//获取验证码
                 }
                 break;
 
             case R.id.textView2:
                 //确认登录
-                /*if (match()) {
+                if (match()) {
+//                    LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis() + "");
+
                     textView2.setClickable(false);
                     this.showProgress(true, "正在登录，请稍候...");
-                    params.put("user_phone", phonenum);
-                    params.put("vcode", password);
-                    params.put("t_token", "");
-                    params.put("head_portrait", "");
-                    params.put("action", "1");//1为验证码登陆 2为第三方登陆
-                    //测试数据
-//                    params.put("user_phone", "18203048656");
-//                    params.put("vcode", "155119");
-//                    params.put("devicName", "asd");
+//                    params.put("user_phone", phonenum);
+//                    params.put("vcode", password);
+//                    params.put("t_token", "");
+//                    params.put("head_portrait", "");
 //                    params.put("action", "1");//1为验证码登陆 2为第三方登陆
-                    RequestLogin(params);//登录
-                }*/
-                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+                    //测试数据
+                    if (type == 1) {
+//                        params.put("username", "admin8");
+//                        params.put("code", "123456");
+//                        RequestLogin1(params);//登录
+                    } else {
+                        params.put("username", "admin8");
+                        params.put("password", "123456");
+                        RequestLogin2(params);//登录
+                    }
+
+                }
+//                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
 //                CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
                 break;
             /*case R.id.image_wechat:
@@ -219,8 +228,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     //登录
-    private void RequestLogin(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Login, params, headerMap, new CallBackUtil<LoginModel>() {
+    private void RequestLogin2(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Login2, params, headerMap, new CallBackUtil<LoginModel>() {
             @Override
             public LoginModel onParseResponse(Call call, Response response) {
                 return null;
@@ -230,48 +239,37 @@ public class LoginActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 textView2.setClickable(true);
-//                myToast("密码错误，请重新输入");
-                if (!err.equals("")) {
-                    myToast(err);
-                }
+                myToast(err);
+
             }
 
             @Override
             public void onResponse(LoginModel response) {
                 textView2.setClickable(true);
                 hideProgress();
-                //判断一下是否为技师端
-                /*if (response.getUser_info().getIsTechn() == 1) {
-                    //保存Token
-                    localUserInfo.setToken(response.getUser_info().getUToken());
-                    if (response.getUser_info().getUserPhone() != null && !response.getUser_info().getUserPhone().equals("0")) {
 
-                        localUserInfo.setUserHash(response.getUser_info().getUserHash());
-                        //保存userid
-                        localUserInfo.setUserId(response.getUser_info().getUserId());
-                        //保存电话号码
-                        localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
-                        //保存是否认证
+                //保存Token
+                localUserInfo.setToken(response.getAccessToken());
+                //保存userid
+//                    localUserInfo.setUserId(response.get);
+                //保存电话号码
+//                    localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
+                //保存是否认证
 //                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
-                        //保存昵称
-                        localUserInfo.setNickname(response.getUser_info().getUserName());
-                        //保存头像
-                        localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
-                        //保存y_store_id
-                        localUserInfo.setBelongid(response.getUser_info().getYStoreId());
-                        //保存职位
-                        localUserInfo.setUserJob(response.getUser_info().getIsDistri()+"");//为1、有分配权限
+                //保存昵称
+                localUserInfo.setNickname(response.getNickname());
+                //保存头像
+                localUserInfo.setUserImage(response.getHead());
+                //保存职位
+                localUserInfo.setUserJob(response.getTokenType());//1、BD
 
-
- MainActivity.isOver = false;
-                        ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                        CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-                    } else {
-                        CommonUtil.gotoActivity(LoginActivity.this, BindingPhoneActivity.class, false);
-                    }
+                MainActivity.isOver = false;
+                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
+                if (response.getRoleType().equals("1")) {
+                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
                 } else {
-                    showToast("请使用技师端账号登录");
-                }*/
+                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
+                }
             }
         });
     }
@@ -309,11 +307,20 @@ public class LoginActivity extends BaseActivity {
             myToast("请输入手机号");
             return false;
         }
-        password = editText2.getText().toString().trim();
-        if (TextUtils.isEmpty(password)) {
-            myToast("请输入验证码");
-            return false;
+        if (type == 1) {
+            code = editText2.getText().toString().trim();
+            if (TextUtils.isEmpty(code)) {
+                myToast("请输入验证码");
+                return false;
+            }
+        } else {
+            password = editText3.getText().toString().trim();
+            if (TextUtils.isEmpty(password)) {
+                myToast("请输入验证码");
+                return false;
+            }
         }
+
        /* if (!isGouXuan) {
             myToast("请阅读并同意《用户协议》");
             return false;
@@ -355,7 +362,7 @@ public class LoginActivity extends BaseActivity {
 
     private void RequestUpgrade(Map<String, String> params) {
         //设置初始时间戳
-        LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis()+"");
+        LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis() + "");
 
         OkhttpUtil.okHttpGet(URLs.Upgrade, params, headerMap, new CallBackUtil<UpgradeModel>() {
             @Override
@@ -671,7 +678,7 @@ public class LoginActivity extends BaseActivity {
                     params.put("t_token", openid);
                     params.put("head_portrait", headimgurl);
                     params.put("action", "2");//1为验证码登陆 2为第三方登陆
-                    RequestLogin(params);//微信登录
+                    RequestLogin2(params);//微信登录
 
                 } catch (JSONException e) {
                     e.printStackTrace();

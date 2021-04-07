@@ -17,6 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.MyProfileModel;
@@ -28,10 +31,11 @@ import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +55,10 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class MyProfileActivity extends BaseActivity {
     MyProfileModel model;
     List<SmsCodeListModel.LangListBean> list = new ArrayList<>();
+
+
     //选择图片及上传
+    private UploadManager uploadManager;
     ArrayList<String> listFileNames;
     ArrayList<File> listFiles;
 
@@ -64,12 +71,14 @@ public class MyProfileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myprofile);
 
+        //new一个uploadManager类
+        uploadManager = new UploadManager();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -223,6 +232,8 @@ public class MyProfileActivity extends BaseActivity {
             case R.id.linearLayout1:
                 //头像
                 MyChooseImages.showPhotoDialog(MyProfileActivity.this);
+
+
                 break;
             case R.id.tv_confirm:
                 //退出登录
@@ -298,6 +309,14 @@ public class MyProfileActivity extends BaseActivity {
             Uri uri = null;
             String imagePath = null;
             switch (requestCode) {
+               /* case PictureConfig.REQUEST_CAMERA:
+                    // 结果回调-相机
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    if (selectList.size()>0){
+                        imagePath = selectList.get(0).getCutPath();
+                    }
+
+                    break;*/
                 case REQUEST_CODE_CAPTURE_CAMEIA:
                     //相机
                     uri = Uri.parse("");
@@ -343,10 +362,12 @@ public class MyProfileActivity extends BaseActivity {
 //                listFileNames = new ArrayList<>();
 //                listFileNames.add("head");
 
-                Uri uri1 = Uri.parse("");
-                /*uri1 = Uri.fromFile(new File(imagePath));
+                /*Uri uri1 = Uri.parse("");
+                uri1 = Uri.fromFile(new File(imagePath));
                 File file1 = new File(FileUtil.getPath(this, uri1));*/
+
                 File file1 = new File(imagePath);
+
                 listFiles = new ArrayList<>();
                 File newFile = null;
                 try {
@@ -354,12 +375,26 @@ public class MyProfileActivity extends BaseActivity {
                     listFiles.add(newFile);
 //                    MyLogger.i(">>>>>选择图片结果>>>>>>>>>" + listFileNames.toString() + ">>>>>>" + listFiles.toString());
 
-                    Map<String, File> fileMap = new HashMap<>();
+                    uploadManager.put(newFile, "picture", localUserInfo.getUpLoadToken(),
+                            new UpCompletionHandler() {
+                                @Override
+                                public void complete(String key, ResponseInfo info, JSONObject res) {
+                                    //res 包含 hash、key 等信息，具体字段取决于上传策略的设置
+                                    if(info.isOK()) {
+                                        //上传成功
+
+                                    } else {
+                                       myToast(info.error);
+                                    }
+                                }
+                            }, null);
+
+                   /* Map<String, File> fileMap = new HashMap<>();
 //                    fileMap.put("picture", newFile);
                     Map<String, String> params = new HashMap<>();
                     params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
 //                    RequestUpFile(fileMap, params);
-                    RequestUpFile(params, listFiles, "picture");
+                    RequestUpFile(params, listFiles, "picture");*/
 
                 } catch (IOException e) {
                     e.printStackTrace();
