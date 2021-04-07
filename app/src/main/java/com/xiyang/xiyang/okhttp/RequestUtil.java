@@ -2,7 +2,10 @@ package com.xiyang.xiyang.okhttp;
 
 import android.text.TextUtils;
 
+import com.xiyang.xiyang.MyApplication;
 import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.LocalUserInfo;
 import com.xiyang.xiyang.utils.MyLogger;
 
 import java.io.File;
@@ -95,6 +98,11 @@ class RequestUtil {
      * 创建OKhttpClient实例。
      */
     private void getInstance() {
+        mHeaderMap.put("Accept", URLs.Accept);//客户端接受响应参数类型，接口调用设置成application/json
+        mHeaderMap.put("Authorization", LocalUserInfo.getInstance(MyApplication.getContext()).getTokenType()+" "+LocalUserInfo.getInstance(MyApplication.getContext()).getToken());//登录token,如果没有此值为空，如果设备端获取证书，此项可不填
+        mHeaderMap.put("Client-Type", URLs.ClientType);//客户端类型，h5-web,wechat-微信小程序,zhifubao-支付宝小程序,android-安卓，ios-苹果
+        mHeaderMap.put("Clinet-Os", CommonUtil.getSystemVersion());//客户端系统或内核版本
+        mHeaderMap.put("X-Version", URLs.XVERSION);//当前版本号（后台定）
         MyLogger.i("Headr：" + mHeaderMap);
         /**
          * 客户端首先需要对请求的参数的字段排序，然后遍历参数进行字符串拼接，最后和给定token进行MD5签名: 客户端请求参数为name=123&account=1232131,

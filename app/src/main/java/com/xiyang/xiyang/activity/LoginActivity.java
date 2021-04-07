@@ -250,8 +250,8 @@ public class LoginActivity extends BaseActivity {
 
                 //保存Token
                 localUserInfo.setToken(response.getAccessToken());
-                //保存userid
-//                    localUserInfo.setUserId(response.get);
+                //保存Token类型
+                localUserInfo.setTokenType(response.getTokenType());
                 //保存电话号码
 //                    localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
                 //保存是否认证

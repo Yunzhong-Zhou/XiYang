@@ -17,6 +17,7 @@ public class LocalUserInfo {
     public static final String Time = "time";//时间戳
     public static final String Token = "token";//token
     public static final String UpLoadToken = "uploadToken";//uploadToken
+    public static final String TokenType = "TokenType";//Token类型
     public static final String UserType = "userType";//用户类型
     public static final String Version = "version";//版本号
     public static final String USERNAME = "userName";//用户名
@@ -90,7 +91,11 @@ public class LocalUserInfo {
         editor.putString(UpLoadToken, string);
         editor.commit();
     }
-
+    //设置Token类型
+    public void setTokenType(String string) {
+        editor.putString(TokenType, string);
+        editor.commit();
+    }
     //设置用户类型
     public void setUserType(String string) {
         editor.putString(UserType, string);
@@ -447,7 +452,10 @@ public class LocalUserInfo {
         String string = getString(UpLoadToken);
         return !TextUtils.isEmpty(string) ? string : "";
     }
-
+    public String getTokenType() {
+        String string = getString(TokenType);
+        return !TextUtils.isEmpty(string) ? string : "";
+    }
     public String getUserType() {
         String string = getString(UserType);
         return !TextUtils.isEmpty(string) ? string : "";

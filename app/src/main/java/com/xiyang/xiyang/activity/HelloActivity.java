@@ -116,7 +116,7 @@ public class HelloActivity extends Activity {
      * 然后重新启动MainActivity
      */
     private void enterHomeActivity() {
-        if (LocalUserInfo.getInstance(HelloActivity.this).getUserId().equals("")) {
+        if (LocalUserInfo.getInstance(HelloActivity.this).getToken().equals("")) {
             Intent intent = new Intent(this, LoginActivity.class);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

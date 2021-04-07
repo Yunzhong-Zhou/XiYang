@@ -21,8 +21,6 @@ import com.hjq.toast.ToastUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.MyApplication;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.net.URLs;
-import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.LocalUserInfo;
 import com.xiyang.xiyang.utils.changelanguage.LanguageUtil;
 import com.xiyang.xiyang.utils.changelanguage.SpUtil;
@@ -124,11 +122,11 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
         //        headerMap.put("apikey", URLs.APIKEY);
 //        headerMap.put("hversion", URLs.HVERSION);
 
-        headerMap.put("Accept", URLs.Accept);//客户端接受响应参数类型，接口调用设置成application/json
-        headerMap.put("Authorization", localUserInfo.getToken());//登录token,如果没有此值为空，如果设备端获取证书，此项可不填
+        /*headerMap.put("Accept", URLs.Accept);//客户端接受响应参数类型，接口调用设置成application/json
+        headerMap.put("Authorization", localUserInfo.getTokenType()+" "+localUserInfo.getToken());//登录token,如果没有此值为空，如果设备端获取证书，此项可不填
         headerMap.put("Client-Type", URLs.ClientType);//客户端类型，h5-web,wechat-微信小程序,zhifubao-支付宝小程序,android-安卓，ios-苹果
         headerMap.put("Clinet-Os", CommonUtil.getSystemVersion());//客户端系统或内核版本
-        headerMap.put("X-Version", URLs.XVERSION);//当前版本号（后台定）
+        headerMap.put("X-Version", URLs.XVERSION);//当前版本号（后台定）*/
 
 
 
