@@ -1,5 +1,9 @@
 package com.xiyang.xiyang.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -9,18 +13,29 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.utils.FileUtil;
+import com.xiyang.xiyang.utils.MyChooseImages;
+import com.xiyang.xiyang.utils.MyLogger;
+import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
+import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
+import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 /**
  * Created by Mr.Z on 2021/3/28.
@@ -153,7 +168,7 @@ public class AddContractActivity extends BaseActivity {
         list_hetong.add("取消合同");
         list_hetong.add("调价合同");
 
-        item_hetong = getIntent().getIntExtra("item_hetong",1);
+        item_hetong = getIntent().getIntExtra("item_hetong", 1);
         tv_hetongleixing.setText(list_hetong.get(item_hetong));
         titleView.setTitle(list_hetong.get(item_hetong));
         changeUI();
@@ -213,6 +228,14 @@ public class AddContractActivity extends BaseActivity {
                 rv_list.setAdapter(adapter);
                 break;
 
+            case R.id.tv_hetongwenjian:
+                //选取合同文件
+                FileUtil.selectPDFFile(AddContractActivity.this, list_hetong.get(item_hetong));
+                break;
+            case R.id.iv_add:
+                //上传图片
+                MyChooseImages.showPhotoDialog(AddContractActivity.this);
+                break;
         }
     }
 
@@ -341,6 +364,93 @@ public class AddContractActivity extends BaseActivity {
                 rl_tiaojialiyou.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            File pdffile = null;
+            File imgfile = null;
+            String imgpath = null;
+            Uri uri = null;
+            switch (requestCode) {
+                case SELECT_PDF_FILE:
+                    //选取PDF文件
+                    uri = data.getData();
+                    String pdfpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath+">>>>>后缀名："+FileUtils.getFileExtension(pdfpath));
+                    if (pdfpath != null) {
+                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")){
+                            pdffile = new File(pdfpath);
+                        }else {
+                            myToast("请选择PDF文件上传");
+                            return;
+                        }
+                    }
+                    break;
+                case REQUEST_CODE_CAPTURE_CAMEIA:
+                    //相机
+                    uri = Uri.parse("");
+                    uri = Uri.fromFile(new File(MyChooseImages.imagepath));
+                    imgpath = uri.getPath();
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    break;
+                case REQUEST_CODE_PICK_IMAGE:
+                    //相册
+                    uri = data.getData();
+                    imgpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    break;
+
+            }
+
+            showProgress(true, "正在上传...");
+            //上传pdf文件
+            if (pdffile != null) {
+                new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                    @Override
+                    public void complete(boolean isok, String result, String url) {
+                        hideProgress();
+                        if (isok) {
+                            MyLogger.i(">>>>上传文件路径：" + url);
+                        } else {
+                            myToast(result);
+                        }
+                    }
+                };
+            }
+            if (imgpath != null) {
+//                imgfile = new File(uri.getPath());
+                //压缩
+                Bitmap bitmap= BitmapFactory.decodeFile(imgpath);
+                imgfile = FileUtil.bytesToImageFile(AddContractActivity.this,
+                        ImageUtils.compressByQuality(bitmap,50));
+
+                new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                    @Override
+                    public void complete(boolean isok, String result, String url) {
+                        hideProgress();
+                        if (isok) {
+                            MyLogger.i(">>>>上传文件路径：" + url);
+                                /*Glide.with(MyProfileActivity.this)
+                                        .load(url)
+                                        .centerCrop()
+                                        .apply(RequestOptions.bitmapTransform(new
+                                                RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.headimg)//加载失败
+                                        .into(imageView1);//加载图片*/
+
+                        } else {
+                            myToast(result);
+                        }
+                    }
+                };
+            }
+
+
         }
     }
 

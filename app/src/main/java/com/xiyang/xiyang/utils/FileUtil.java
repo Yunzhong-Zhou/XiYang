@@ -1,6 +1,7 @@
 package com.xiyang.xiyang.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+
+import com.hjq.toast.ToastUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -427,4 +430,53 @@ public class FileUtil {
         return null;
     }
 
+    /**
+     * 选取手机中的pdf文件
+     */
+    public static void selectPDFFile(Activity context,String fileName){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        if (Build.VERSION.SDK_INT >= 24) {
+            // 适配android7.0 ，不能直接访问原路径
+            // 需要对intent 授权
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // 重新构造Uri：content://
+            File imagePath = new File(context.getFilesDir(), "docs");
+            if (!imagePath.exists()) {
+                imagePath.mkdirs();
+            }
+            File newFile = new File(imagePath, fileName+".pdf");
+            Uri uri = FileProvider.getUriForFile(context, context.getPackageName()+".fileprovider", newFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }
+//        intent.setType("pdf/*");//    file/*
+        intent.setType("application/pdf");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //显示文件管理器列表
+        try {
+            context.startActivityForResult(Intent.createChooser(intent, "请选择一个要上传的文件"), Constant.SELECT_PDF_FILE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            ToastUtils.show("请安装文件管理器");
+        }
+    }
+
+    /**
+     * 图片 bytes转File
+     * @param context
+     * @param bytes
+     * @return
+     */
+    public static File bytesToImageFile(Activity context,byte[] bytes) {
+        try {
+            File file = new File(FileUtil.getImageDownloadDir(context) + System.currentTimeMillis() + ".png");
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bytes, 0, bytes.length);
+            fos.flush();
+            fos.close();
+
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

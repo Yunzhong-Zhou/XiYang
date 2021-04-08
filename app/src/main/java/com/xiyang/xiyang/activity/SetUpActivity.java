@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.FileUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.FileUtil;
 
 /**
  * Created by Mr.Z on 2020/12/10.
@@ -72,6 +74,9 @@ public class SetUpActivity extends BaseActivity {
                                 localUserInfo.setWalletaddr("");
                                 localUserInfo.setEmail("");
                                 localUserInfo.setUserImage("");
+
+                                //清除文件-压缩过的文件、拍照的文件
+                                FileUtils.deleteFilesInDir(FileUtil.getImageDownloadDir(SetUpActivity.this));
 
                                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
                                 CommonUtil.gotoActivity(SetUpActivity.this, LoginActivity.class, true);

@@ -187,7 +187,7 @@ dependencies {
     implementation 'com.github.MZCretin:FanPermission:1.0.0'
 
     //工具类 https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
-    implementation 'com.blankj:utilcodex:1.30.5'
+    implementation 'com.blankj:utilcodex:1.30.6'
     //检测手机XP/调试/多开/模拟器/root (上面工具类已包含)
 //    implementation 'com.lahm.library:easy-protector-release:1.1.2'
 

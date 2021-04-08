@@ -237,7 +237,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        RequestUpLoadToken(params);
+
         /*//获取上传文件token - 20分钟更新一次
         if (timer == null) {
             timer = new Timer();
@@ -306,32 +306,6 @@ public class MainActivity extends BaseActivity {
 //            ActivityUtils.finishAllActivities();//结束所有 Activity
             AppUtils.exitApp();//退出APP
         }
-    }
-
-    /**
-     * 获取上传文件token
-     *
-     * @param params
-     */
-    private void RequestUpLoadToken(Map<String, String> params) {
-        //设置初始时间戳
-//        LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis() + "");
-
-        OkhttpUtil.okHttpGet(URLs.UpLoadToken, params, headerMap, new CallBackUtil<String>() {
-            @Override
-            public String onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-            }
-
-            @Override
-            public void onResponse(String response) {
-//                localUserInfo.setUpLoadToken(response.getConf_info().getKf_info().getUserHash());
-            }
-        });
     }
 
     private void RequestUpgrade(Map<String, String> params) {
