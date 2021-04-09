@@ -5,9 +5,9 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.108";//图片地址
-    public static String HOST = "http://192.168.0.108";//接口地址
-    public static String KFHOST = "http://192.168.0.108";//客服地址
+    public static String IMGHOST = "http://192.168.0.102";//图片地址
+    public static String HOST = "http://192.168.0.102";//接口地址
+    public static String KFHOST = "http://192.168.0.102";//客服地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址

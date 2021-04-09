@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.ImageUtils;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
@@ -154,7 +155,6 @@ public class AddContractActivity extends BaseActivity {
         tv_confirm = findViewByID_My(R.id.tv_confirm);
         iv_add = findViewByID_My(R.id.iv_add);
 
-
     }
 
     @Override
@@ -186,48 +186,25 @@ public class AddContractActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_hetongleixing:
                 //选择合同类型
-                dialog.contentView(R.layout.dialog_list)
-                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT))
-                        .animType(BaseDialog.AnimInType.BOTTOM)
-                        .canceledOnTouchOutside(true)
-                        .gravity(Gravity.TOP)
-                        .dimAmount(0.5f)
-                        .show();
-                RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
-                rv_list.setLayoutManager(new LinearLayoutManager(this));
-                CommonAdapter<String> adapter = new CommonAdapter<String>
-                        (AddContractActivity.this, R.layout.item_help, list_hetong) {
-                    @Override
-                    protected void convert(ViewHolder holder, String model, int position) {
-                        TextView tv = holder.getView(R.id.textView1);
-                        tv.setText(model);
-                        if (item_hetong == position)
-                            tv.setTextColor(getResources().getColor(R.color.green));
-                        else
-                            tv.setTextColor(getResources().getColor(R.color.black1));
-                    }
-                };
-                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                        item_hetong = position;
-                        tv_hetongleixing.setText(list_hetong.get(position));
-                        titleView.setTitle(list_hetong.get(position));
-                        adapter.notifyDataSetChanged();
-                        changeUI();
-                        dialog.dismiss();
-
-                    }
-
-                    @Override
-                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        return false;
-                    }
-                });
-                rv_list.setAdapter(adapter);
+                dialogList_hetong();
                 break;
 
+            case R.id.tv_shifoudujia:
+                //是否独家
+
+                break;
+
+
+            case R.id.tv_qianyueshijian:
+                //签约时间
+                CommonUtil.selectDate2YMD(AddContractActivity.this,
+                        "请选择签约时间",tv_qianyueshijian,tv_qianyueshijian.getText().toString().trim());
+                break;
+            case R.id.tv_xuqianshijian:
+                //续签时间
+                CommonUtil.selectDate2YMD(AddContractActivity.this,
+                        "请选择续签时间",tv_xuqianshijian,tv_xuqianshijian.getText().toString().trim());
+                break;
             case R.id.tv_hetongwenjian:
                 //选取合同文件
                 FileUtil.selectPDFFile(AddContractActivity.this, list_hetong.get(item_hetong));
@@ -239,6 +216,96 @@ public class AddContractActivity extends BaseActivity {
         }
     }
 
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            File pdffile = null;
+            File imgfile = null;
+            String imgpath = null;
+            Uri uri = null;
+            switch (requestCode) {
+                case SELECT_PDF_FILE:
+                    //选取PDF文件
+                    uri = data.getData();
+                    String pdfpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath+">>>>>后缀名："+FileUtils.getFileExtension(pdfpath));
+                    if (pdfpath != null) {
+                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")){
+                            pdffile = new File(pdfpath);
+                        }else {
+                            myToast("请选择PDF文件上传");
+                            return;
+                        }
+                    }
+                    break;
+                case REQUEST_CODE_CAPTURE_CAMEIA:
+                    //相机
+                    uri = Uri.parse("");
+                    uri = Uri.fromFile(new File(MyChooseImages.imagepath));
+                    imgpath = uri.getPath();
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    break;
+                case REQUEST_CODE_PICK_IMAGE:
+                    //相册
+                    uri = data.getData();
+                    imgpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    break;
+
+            }
+
+            showProgress(true, "正在上传...");
+            //上传pdf文件
+            if (pdffile != null) {
+                new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                    @Override
+                    public void complete(boolean isok, String result, String url) {
+                        hideProgress();
+                        if (isok) {
+                            MyLogger.i(">>>>上传文件路径：" + url);
+                        } else {
+                            myToast(result);
+                        }
+                    }
+                };
+            }
+            if (imgpath != null) {
+//                imgfile = new File(uri.getPath());
+                //压缩
+                Bitmap bitmap= BitmapFactory.decodeFile(imgpath);
+                imgfile = FileUtil.bytesToImageFile(AddContractActivity.this,
+                        ImageUtils.compressByQuality(bitmap,50));
+
+                new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                    @Override
+                    public void complete(boolean isok, String result, String url) {
+                        hideProgress();
+                        if (isok) {
+                            MyLogger.i(">>>>上传文件路径：" + url);
+                                /*Glide.with(MyProfileActivity.this)
+                                        .load(url)
+                                        .centerCrop()
+                                        .apply(RequestOptions.bitmapTransform(new
+                                                RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.headimg)//加载失败
+                                        .into(imageView1);//加载图片*/
+
+                        } else {
+                            myToast(result);
+                        }
+                    }
+                };
+            }
+        }
+    }
+
+    /**
+     * 改变UI布局
+     */
     private void changeUI() {
         rl_hetongleixing.setVisibility(View.VISIBLE);
         rl_xuanzeshanghu.setVisibility(View.GONE);
@@ -366,92 +433,49 @@ public class AddContractActivity extends BaseActivity {
                 break;
         }
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            File pdffile = null;
-            File imgfile = null;
-            String imgpath = null;
-            Uri uri = null;
-            switch (requestCode) {
-                case SELECT_PDF_FILE:
-                    //选取PDF文件
-                    uri = data.getData();
-                    String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath+">>>>>后缀名："+FileUtils.getFileExtension(pdfpath));
-                    if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")){
-                            pdffile = new File(pdfpath);
-                        }else {
-                            myToast("请选择PDF文件上传");
-                            return;
-                        }
-                    }
-                    break;
-                case REQUEST_CODE_CAPTURE_CAMEIA:
-                    //相机
-                    uri = Uri.parse("");
-                    uri = Uri.fromFile(new File(MyChooseImages.imagepath));
-                    imgpath = uri.getPath();
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
-                    break;
-                case REQUEST_CODE_PICK_IMAGE:
-                    //相册
-                    uri = data.getData();
-                    imgpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
-                    break;
-
+    /**
+     * 选择合同
+     */
+    private void dialogList_hetong(){
+        dialog.contentView(R.layout.dialog_list)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.TOP)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AddContractActivity.this, R.layout.item_help, list_hetong) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (item_hetong == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_hetong = position;
+                tv_hetongleixing.setText(list_hetong.get(position));
+                titleView.setTitle(list_hetong.get(position));
+                adapter.notifyDataSetChanged();
+                changeUI();
+                dialog.dismiss();
             }
 
-            showProgress(true, "正在上传...");
-            //上传pdf文件
-            if (pdffile != null) {
-                new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
             }
-            if (imgpath != null) {
-//                imgfile = new File(uri.getPath());
-                //压缩
-                Bitmap bitmap= BitmapFactory.decodeFile(imgpath);
-                imgfile = FileUtil.bytesToImageFile(AddContractActivity.this,
-                        ImageUtils.compressByQuality(bitmap,50));
-
-                new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                                /*Glide.with(MyProfileActivity.this)
-                                        .load(url)
-                                        .centerCrop()
-                                        .apply(RequestOptions.bitmapTransform(new
-                                                RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
-                                        .placeholder(R.mipmap.loading)//加载站位图
-                                        .error(R.mipmap.headimg)//加载失败
-                                        .into(imageView1);//加载图片*/
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
-            }
-
-
-        }
+        });
+        rv_list.setAdapter(adapter);
     }
 
 }

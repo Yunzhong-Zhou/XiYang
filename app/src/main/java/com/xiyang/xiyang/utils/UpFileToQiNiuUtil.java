@@ -64,7 +64,6 @@ public abstract class UpFileToQiNiuUtil {
     }
 
     private void upload(Context mContext, File uploadFile, String keyname, String uploadToken) {
-
         //配置断点续传
         /*FileRecorder fileRecorder = null;
         try {
@@ -125,6 +124,5 @@ public abstract class UpFileToQiNiuUtil {
                     }
 
                 }, opt);
-
     }
 }
