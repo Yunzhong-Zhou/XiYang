@@ -57,7 +57,7 @@ import okhttp3.Response;
  */
 public class LoginActivity extends BaseActivity {
     int type = 1;//1、验证码 2、密码
-    String code = "";
+    String code = "",resultCode = "";
     private EditText editText1, editText2, editText3;
     private TextView textView1, textView2, tv_yzm, tv_mima;
     private RelativeLayout rl_mima, rl_yzm;
@@ -157,7 +157,7 @@ public class LoginActivity extends BaseActivity {
 
             case R.id.textView2:
                 //确认登录
-                if (match()) {
+                /*if (match()) {
 //                    LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis() + "");
 
                     textView2.setClickable(false);
@@ -178,8 +178,8 @@ public class LoginActivity extends BaseActivity {
                         RequestLogin2(params);//登录
                     }
 
-                }
-//                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+                }*/
+                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
 //                CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
                 break;
             /*case R.id.image_wechat:
@@ -569,15 +569,15 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        code = getIntent().getStringExtra("code");
-        MyLogger.i(">>>>>>>" + code);
-        if (code != null && !code.equals("")) {
+        resultCode = getIntent().getStringExtra("code");
+        MyLogger.i(">>>>>>>" + resultCode);
+        if (resultCode != null && !resultCode.equals("")) {
 
             this.showProgress(true, "正在获取微信登录参数，请稍候...");
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token"
                     + "?appid=" + "wx43d4928b7bbf4d5c"
                     + "&secret=" + "40629341d0e10ab69fbfe4a81c9d8a06"
-                    + "&code=" + code
+                    + "&code=" + resultCode
                     + "&grant_type=authorization_code";
             requestWeChat1(url);
 

@@ -13,6 +13,7 @@ import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddWorkListActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.DebugDeviceActivity;
+import com.xiyang.xiyang.activity.DeviceAddressActivity;
 import com.xiyang.xiyang.activity.DeviceDetailActivity;
 import com.xiyang.xiyang.activity.InstallDeviceActivity;
 import com.xiyang.xiyang.activity.MainActivity;
@@ -387,7 +388,7 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout12:
                 //设备定位
-
+                CommonUtil.gotoActivity(getActivity(), DeviceAddressActivity.class);
                 break;
 
             case R.id.ll_tab1:
