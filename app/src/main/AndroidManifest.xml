@@ -290,7 +290,9 @@
         <activity
             android:name=".activity.ChangePasswordActivity"
             android:label="登录密码" />
-
+        <activity
+            android:name=".activity.ForgetPasswordActivity"
+            android:label="登录密码" />
 
         <!--全面屏适配-->
         <!--<meta-data

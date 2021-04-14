@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
@@ -29,6 +28,7 @@ import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -48,7 +48,7 @@ public class MyProfileActivity extends BaseActivity {
     MyProfileModel model;
 
     ImageView imageView1;
-    EditText editText1, editText2,editText3,editText4,editText5,editText6;
+    EditText editText1, editText2, editText3, editText4, editText5, editText6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class MyProfileActivity extends BaseActivity {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-//                requestInfo("?token=" + localUserInfo.getToken());
+                requestInfo(params);
             }
 
             @Override
@@ -96,15 +96,14 @@ public class MyProfileActivity extends BaseActivity {
         Glide.with(MyProfileActivity.this)
                 .load(localUserInfo.getUserImage())
                 .centerCrop()
-                .apply(RequestOptions.bitmapTransform(new
-                        RoundedCorners(CommonUtil.dip2px(this, 10))))
+//                .apply(RequestOptions.bitmapTransform(new RoundedCorners(CommonUtil.dip2px(this, 10))))
                 .placeholder(R.mipmap.loading)//加载站位图
                 .error(R.mipmap.headimg)//加载失败
                 .into(imageView1);//加载图片
 
         //获取个人信息
-//        showProgress(true, getString(R.string.app_loading2));
-//        requestInfo("?token=" + localUserInfo.getToken());
+        showProgress(true, getString(R.string.app_loading2));
+        requestInfo(params);
     }
 
     private void requestInfo(Map<String, String> params) {
@@ -125,11 +124,10 @@ public class MyProfileActivity extends BaseActivity {
                 hideProgress();
                 model = response;
                 //头像
-                Glide.with(MyProfileActivity.this)
+                /*Glide.with(MyProfileActivity.this)
                         .load(URLs.IMGHOST + response.getHead())
                         .centerCrop()
-                        .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
+//                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.headimg)//加载失败
                         .into(imageView1);//加载图片
@@ -148,11 +146,7 @@ public class MyProfileActivity extends BaseActivity {
                 localUserInfo.setEmail(response.getEmail());
                 localUserInfo.setUserImage(response.getHead());
 
-                if (response.getNickname_update() == 2) {
-                    editText1.setFocusable(false);
-                } else {
-                    editText1.setFocusable(true);
-                }
+               */
             }
         });
     }
@@ -172,33 +166,6 @@ public class MyProfileActivity extends BaseActivity {
             case R.id.linearLayout1:
                 //头像
                 MyChooseImages.showPhotoDialog(MyProfileActivity.this);
-                break;
-            case R.id.tv_confirm:
-                //退出登录
-                showToast("确认退出登录吗？",
-                        getString(R.string.app_confirm),
-                        getString(R.string.app_cancel), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                localUserInfo.setUserId("");
-                                localUserInfo.setToken("");
-                                localUserInfo.setPhoneNumber("");
-                                localUserInfo.setNickname("");
-                                localUserInfo.setInvuteCode("");
-                                localUserInfo.setWalletaddr("");
-                                localUserInfo.setEmail("");
-                                localUserInfo.setUserImage("");
-
-                                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                                CommonUtil.gotoActivity(MyProfileActivity.this, LoginActivity.class, true);
-                            }
-                        }, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
                 break;
         }
     }
@@ -224,11 +191,11 @@ public class MyProfileActivity extends BaseActivity {
                     //选取PDF文件
                     uri = data.getData();
                     String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath+">>>>>后缀名："+FileUtils.getFileExtension(pdfpath));
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
                     if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")){
+                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
                             pdffile = new File(pdfpath);
-                        }else {
+                        } else {
                             myToast("请选择PDF文件上传");
                             return;
                         }
@@ -239,27 +206,28 @@ public class MyProfileActivity extends BaseActivity {
                     uri = Uri.parse("");
                     uri = Uri.fromFile(new File(MyChooseImages.imagepath));
                     imgpath = uri.getPath();
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
                     break;
                 case REQUEST_CODE_PICK_IMAGE:
                     //相册
                     uri = data.getData();
                     imgpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
                     break;
 
             }
             if (imgpath != null) {
+                showProgress(true, getString(R.string.app_loading1));
 //                imgfile = new File(uri.getPath());
                 //压缩
-                Bitmap bitmap= BitmapFactory.decodeFile(imgpath);
+                Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
                 imgfile = FileUtil.bytesToImageFile(MyProfileActivity.this,
-                        ImageUtils.compressByQuality(bitmap,50));
+                        ImageUtils.compressByQuality(bitmap, 50));
 
                 new UpFileToQiNiuUtil(MyProfileActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                     @Override
                     public void complete(boolean isok, String result, String url) {
-                        hideProgress();
+//                        hideProgress();
                         if (isok) {
                             MyLogger.i(">>>>上传文件路径：" + url);
                             localUserInfo.setUserImage(url);
@@ -272,6 +240,10 @@ public class MyProfileActivity extends BaseActivity {
                                     .error(R.mipmap.headimg)//加载失败
                                     .into(imageView1);//加载图片
 
+                            Map<String, String> params = new HashMap<>();
+                            params.put("head",url);
+                            RequestUpFile(params);
+
                         } else {
                             myToast(result);
                         }
@@ -280,5 +252,27 @@ public class MyProfileActivity extends BaseActivity {
             }
         }
 
+    }
+    private void RequestUpFile(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ChangeProfile, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                if (!err.equals("")) {
+                    showToast(err);
+                }
+            }
+
+            @Override
+            public void onResponse(String response) {
+//                myToast("头像修改成功");
+                hideProgress();
+            }
+        });
     }
 }

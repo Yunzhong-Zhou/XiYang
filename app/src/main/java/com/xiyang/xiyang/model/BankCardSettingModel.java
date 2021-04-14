@@ -9,126 +9,118 @@ import java.util.List;
 
 public class BankCardSettingModel implements Serializable {
     /**
-     * member : {"mobile_state_code":"86","mobile":"18306043086","bank_card_account":"","bank_card_proceeds_name":"","bank_title":"","bank_address":"","trade_password":""}
-     * bank_list : [{"title":"工商银行"},{"title":"农业银行"},{"title":"建设银行"},{"title":"中国银行"},{"title":"招商银行"},{"title":"交通银行"},{"title":"兴业银行"},{"title":"民生银行"},{"title":"光大银行"},{"title":"平安银行"},{"title":"中信银行"},{"title":"广发银行"},{"title":"上海浦东发展银行"},{"title":"中国邮政"}]
+     * isSetBank : 1
+     * bankList : [{"id":"1","name":"建设银行"},{"id":"2","name":"工商银行"}]
+     * banks : [{"id":"4","bankTitle":"工商银行","accountName":"阿斯顿","card":"45687588555885","icon":"gsyh.png"}]
      */
-    private int code;
 
-    public int getCode() {
-        return code;
+    private String isSetBank;
+    private List<BankListBean> bankList;
+    private List<BanksBean> banks;
+
+    public String getIsSetBank() {
+        return isSetBank;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-    private MemberBean member;
-    private List<BankListBean> bank_list;
-
-    public MemberBean getMember() {
-        return member;
+    public void setIsSetBank(String isSetBank) {
+        this.isSetBank = isSetBank;
     }
 
-    public void setMember(MemberBean member) {
-        this.member = member;
+    public List<BankListBean> getBankList() {
+        return bankList;
     }
 
-    public List<BankListBean> getBank_list() {
-        return bank_list;
+    public void setBankList(List<BankListBean> bankList) {
+        this.bankList = bankList;
     }
 
-    public void setBank_list(List<BankListBean> bank_list) {
-        this.bank_list = bank_list;
+    public List<BanksBean> getBanks() {
+        return banks;
     }
 
-    public static class MemberBean {
-        /**
-         * mobile_state_code : 86
-         * mobile : 18306043086
-         * bank_card_account :
-         * bank_card_proceeds_name :
-         * bank_title :
-         * bank_address :
-         * trade_password :
-         */
-
-        private String mobile_state_code;
-        private String mobile;
-        private String bank_card_account;
-        private String bank_card_proceeds_name;
-        private String bank_title;
-        private String bank_address;
-        private String trade_password;
-
-        public String getMobile_state_code() {
-            return mobile_state_code;
-        }
-
-        public void setMobile_state_code(String mobile_state_code) {
-            this.mobile_state_code = mobile_state_code;
-        }
-
-        public String getMobile() {
-            return mobile;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
-        }
-
-        public String getBank_card_account() {
-            return bank_card_account;
-        }
-
-        public void setBank_card_account(String bank_card_account) {
-            this.bank_card_account = bank_card_account;
-        }
-
-        public String getBank_card_proceeds_name() {
-            return bank_card_proceeds_name;
-        }
-
-        public void setBank_card_proceeds_name(String bank_card_proceeds_name) {
-            this.bank_card_proceeds_name = bank_card_proceeds_name;
-        }
-
-        public String getBank_title() {
-            return bank_title;
-        }
-
-        public void setBank_title(String bank_title) {
-            this.bank_title = bank_title;
-        }
-
-        public String getBank_address() {
-            return bank_address;
-        }
-
-        public void setBank_address(String bank_address) {
-            this.bank_address = bank_address;
-        }
-
-        public String getTrade_password() {
-            return trade_password;
-        }
-
-        public void setTrade_password(String trade_password) {
-            this.trade_password = trade_password;
-        }
+    public void setBanks(List<BanksBean> banks) {
+        this.banks = banks;
     }
 
     public static class BankListBean {
         /**
-         * title : 工商银行
+         * id : 1
+         * name : 建设银行
          */
 
-        private String title;
+        private String id;
+        private String name;
 
-        public String getTitle() {
-            return title;
+        public String getId() {
+            return id;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    public static class BanksBean {
+        /**
+         * id : 4
+         * bankTitle : 工商银行
+         * accountName : 阿斯顿
+         * card : 45687588555885
+         * icon : gsyh.png
+         */
+
+        private String id;
+        private String bankTitle;
+        private String accountName;
+        private String card;
+        private String icon;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getBankTitle() {
+            return bankTitle;
+        }
+
+        public void setBankTitle(String bankTitle) {
+            this.bankTitle = bankTitle;
+        }
+
+        public String getAccountName() {
+            return accountName;
+        }
+
+        public void setAccountName(String accountName) {
+            this.accountName = accountName;
+        }
+
+        public String getCard() {
+            return card;
+        }
+
+        public void setCard(String card) {
+            this.card = card;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
         }
     }
 }

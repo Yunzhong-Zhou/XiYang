@@ -247,7 +247,7 @@ public class ContractDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Collection, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
+        OkhttpUtil.okHttpGet(URLs.BankCard, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
             @Override
             public BankCardSettingModel onParseResponse(Call call, Response response) {
                 return null;

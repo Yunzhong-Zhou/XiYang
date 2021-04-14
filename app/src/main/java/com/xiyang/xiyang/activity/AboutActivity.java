@@ -56,12 +56,11 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void initData() {
         showProgress(true, getString(R.string.app_loading2));
-        /*Request("?token=" + localUserInfo.getToken()
-                + "&app_type=" + "1");*/
+        Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Help, params, headerMap, new CallBackUtil<AboutModel>() {
+        OkhttpUtil.okHttpGet(URLs.About, params, headerMap, new CallBackUtil<AboutModel>() {
             @Override
             public AboutModel onParseResponse(Call call, Response response) {
                 return null;

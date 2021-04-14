@@ -13,10 +13,6 @@ import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.MyLogger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,8 +66,8 @@ public class ForgetPasswordActivity extends BaseActivity {
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
                     params.put("mobile", localUserInfo.getPhonenumber());
-                    params.put("type", "4");
-                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
+                    params.put("type", "31");
+//                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                     RequestCode(params);//获取验证码
                 }
             }
@@ -84,9 +80,9 @@ public class ForgetPasswordActivity extends BaseActivity {
                     showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
 //                    params.put("qk", qk);
-                    params.put("trade_password", password1);//交易密码（不能小于6位数）
+                    params.put("password", password1);//交易密码（不能小于6位数）
                     params.put("code", code);//手机验证码
-                    params.put("token", localUserInfo.getToken());
+//                    params.put("token", localUserInfo.getToken());
                     RequestSetTransactionPassword(params);//设置交易密码
                 }
             }
@@ -110,9 +106,7 @@ public class ForgetPasswordActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 hideProgress();
-
                 time.start();
-                MyLogger.i(">>>>>>>>>发送验证码" + response);
                 myToast(getString(R.string.app_sendcode_hint));
             }
         });
@@ -120,7 +114,7 @@ public class ForgetPasswordActivity extends BaseActivity {
     }
 
     private void RequestSetTransactionPassword(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.TransactionPassword, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.ChangePassword, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -135,16 +129,15 @@ public class ForgetPasswordActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 hideProgress();
-                MyLogger.i(">>>>>>>>>设置交易密码" + response);
-//                myToast(getString(R.string.settransactionpassword_h11));
-                JSONObject jObj;
+                myToast("登录密码设置成功");
+                /*JSONObject jObj;
                 try {
                     jObj = new JSONObject(response);
                     myToast(jObj.getString("msg"));
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                }
+                }*/
                 finish();
             }
         });

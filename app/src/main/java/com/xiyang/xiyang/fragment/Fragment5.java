@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.BankCardSettingActivity;
@@ -121,12 +122,14 @@ public class Fragment5 extends BaseFragment {
         textView5 = findViewByID_My(R.id.textView5);
         textView6 = findViewByID_My(R.id.textView6);
 
-        /*Glide.with(getActivity())
-                .load(IMGHOST + localUserInfo.getUserImage())
+        textView1.setText(localUserInfo.getNickname());
+        textView2.setText(localUserInfo.getUserJob());
+        Glide.with(getActivity())
+                .load(localUserInfo.getUserImage())
                 .centerCrop()
                 .placeholder(R.mipmap.loading)//加载站位图
                 .error(R.mipmap.headimg)//加载失败
-                .into(imageView1);//加载图片*/
+                .into(imageView1);//加载图片
 
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
         linearLayout2 = findViewByID_My(R.id.linearLayout2);

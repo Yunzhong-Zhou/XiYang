@@ -106,9 +106,9 @@ public class HelpCenterActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-//        showProgress(true, getString(R.string.app_loading2));
+        showProgress(true, getString(R.string.app_loading2));
         //帮助列表
-//        RequestHelpList("?token=" + localUserInfo.getToken());
+        RequestHelpList(params);
     }
 
     private void RequestHelpList(Map<String, String> params) {

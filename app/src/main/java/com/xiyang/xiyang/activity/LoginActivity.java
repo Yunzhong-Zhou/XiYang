@@ -57,7 +57,7 @@ import okhttp3.Response;
  */
 public class LoginActivity extends BaseActivity {
     int type = 1;//1、验证码 2、密码
-    String code = "",resultCode = "";
+    String code = "", resultCode = "";
     private EditText editText1, editText2, editText3;
     private TextView textView1, textView2, tv_yzm, tv_mima;
     private RelativeLayout rl_mima, rl_yzm;
@@ -149,37 +149,32 @@ public class LoginActivity extends BaseActivity {
                     showProgress(true, "正在获取短信验证码...");
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("user_phone", phonenum);
-                    params.put("type", "1");
+                    params.put("mobile", phonenum);
+                    params.put("type", "30");
                     RequestCode(params);//获取验证码
                 }
                 break;
 
             case R.id.textView2:
                 //确认登录
-                /*if (match()) {
+                if (match()) {
 //                    LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis() + "");
-
                     textView2.setClickable(false);
+                    params.clear();
                     this.showProgress(true, "正在登录，请稍候...");
-//                    params.put("user_phone", phonenum);
-//                    params.put("vcode", password);
-//                    params.put("t_token", "");
-//                    params.put("head_portrait", "");
-//                    params.put("action", "1");//1为验证码登陆 2为第三方登陆
                     //测试数据
                     if (type == 1) {
-//                        params.put("username", "admin8");
-//                        params.put("code", "123456");
-//                        RequestLogin1(params);//登录
+                        params.put("mobile", phonenum);
+                        params.put("code", code);
+                        RequestLogin1(params);//登录
                     } else {
-                        params.put("username", "admin8");
-                        params.put("password", "123456");
+                        params.put("username", phonenum);
+                        params.put("password", password);
                         RequestLogin2(params);//登录
                     }
 
-                }*/
-                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+                }
+//                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
 //                CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
                 break;
             /*case R.id.image_wechat:
@@ -228,6 +223,53 @@ public class LoginActivity extends BaseActivity {
     }
 
     //登录
+    private void RequestLogin1(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Login1, params, headerMap, new CallBackUtil<LoginModel>() {
+            @Override
+            public LoginModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                textView2.setClickable(true);
+                myToast(err);
+
+            }
+
+            @Override
+            public void onResponse(LoginModel response) {
+                textView2.setClickable(true);
+                hideProgress();
+
+                //保存Token
+                localUserInfo.setToken(response.getAccessToken());
+                //保存Token类型
+                localUserInfo.setTokenType(response.getTokenType());
+                //保存电话号码
+                localUserInfo.setPhoneNumber(response.getMobile());
+                //保存是否认证
+//                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
+                //保存昵称
+                localUserInfo.setNickname(response.getNickname());
+                //保存头像
+                localUserInfo.setUserImage(response.getHead());
+                //保存职位
+                localUserInfo.setUserJob(response.getRoleType());//1、BD
+
+                MainActivity.isOver = false;
+                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
+                if (response.getRoleType().equals("1")) {
+                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+                } else {
+                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
+                }
+            }
+        });
+    }
+
+    //登录
     private void RequestLogin2(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.Login2, params, headerMap, new CallBackUtil<LoginModel>() {
             @Override
@@ -253,7 +295,7 @@ public class LoginActivity extends BaseActivity {
                 //保存Token类型
                 localUserInfo.setTokenType(response.getTokenType());
                 //保存电话号码
-//                    localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
+                localUserInfo.setPhoneNumber(response.getMobile());
                 //保存是否认证
 //                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
                 //保存昵称
@@ -261,7 +303,7 @@ public class LoginActivity extends BaseActivity {
                 //保存头像
                 localUserInfo.setUserImage(response.getHead());
                 //保存职位
-                localUserInfo.setUserJob(response.getTokenType());//1、BD
+                localUserInfo.setUserJob(response.getRoleType());//1、BD
 
                 MainActivity.isOver = false;
                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity

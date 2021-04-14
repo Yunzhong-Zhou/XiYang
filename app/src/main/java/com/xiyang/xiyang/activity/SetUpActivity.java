@@ -7,8 +7,16 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.okhttp.CallBackUtil;
+import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.FileUtil;
+
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2020/12/10.
@@ -66,20 +74,8 @@ public class SetUpActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 dialog.dismiss();
-                                localUserInfo.setUserId("");
-                                localUserInfo.setToken("");
-                                localUserInfo.setPhoneNumber("");
-                                localUserInfo.setNickname("");
-                                localUserInfo.setInvuteCode("");
-                                localUserInfo.setWalletaddr("");
-                                localUserInfo.setEmail("");
-                                localUserInfo.setUserImage("");
-
-                                //清除文件-压缩过的文件、拍照的文件
-                                FileUtils.deleteFilesInDir(FileUtil.getImageDownloadDir(SetUpActivity.this));
-
-                                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                                CommonUtil.gotoActivity(SetUpActivity.this, LoginActivity.class, true);
+                                showProgress(true, "正在注销登录，请稍候...");
+                                requestOut(params);
                             }
                         }, new View.OnClickListener() {
                             @Override
@@ -89,6 +85,41 @@ public class SetUpActivity extends BaseActivity {
                         });
                 break;
         }
+    }
+
+    private void requestOut(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.LoginOut, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                hideProgress();
+
+                localUserInfo.setUserId("");
+                localUserInfo.setToken("");
+                localUserInfo.setPhoneNumber("");
+                localUserInfo.setNickname("");
+                localUserInfo.setUserJob("");
+                localUserInfo.setTokenType("");
+                localUserInfo.setEmail("");
+                localUserInfo.setUserImage("");
+
+                //清除文件-压缩过的文件、拍照的文件
+                FileUtils.deleteFilesInDir(FileUtil.getImageDownloadDir(SetUpActivity.this));
+
+                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
+                CommonUtil.gotoActivity(SetUpActivity.this, LoginActivity.class, true);
+            }
+        });
     }
 
     @Override

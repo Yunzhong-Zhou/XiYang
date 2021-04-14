@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -179,35 +178,6 @@ public class AddStaffActivity extends BaseActivity {
             public void onResponse(MyProfileModel response) {
                 hideProgress();
                 model = response;
-                //头像
-                Glide.with(AddStaffActivity.this)
-                        .load(URLs.IMGHOST + response.getHead())
-                        .centerCrop()
-                        .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(AddStaffActivity.this, 10))))
-                        .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.headimg)//加载失败
-                        .into(imageView1);//加载图片
-
-                //手机号
-//                textView1.setText("+" + localUserInfo.getMobile_State_Code() + "  " + response.getMobile());
-                //昵称
-//                editText1.setText(response.getNickname());
-                //邮箱
-//                editText2.setText(response.getEmail());
-
-
-                localUserInfo.setPhoneNumber(response.getMobile());
-                localUserInfo.setNickname(response.getNickname());
-//                localUserInfo.setInvuteCode(response.getInvite_code());
-                localUserInfo.setEmail(response.getEmail());
-                localUserInfo.setUserImage(response.getHead());
-
-                /*if (response.getNickname_update() == 2) {
-                    editText1.setFocusable(false);
-                } else {
-                    editText1.setFocusable(true);
-                }*/
             }
         });
     }
@@ -227,33 +197,6 @@ public class AddStaffActivity extends BaseActivity {
             case R.id.linearLayout1:
                 //头像
                 MyChooseImages.showPhotoDialog(AddStaffActivity.this);
-                break;
-            case R.id.tv_confirm:
-                //退出登录
-                showToast("确认退出登录吗？",
-                        getString(R.string.app_confirm),
-                        getString(R.string.app_cancel), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                localUserInfo.setUserId("");
-                                localUserInfo.setToken("");
-                                localUserInfo.setPhoneNumber("");
-                                localUserInfo.setNickname("");
-                                localUserInfo.setInvuteCode("");
-                                localUserInfo.setWalletaddr("");
-                                localUserInfo.setEmail("");
-                                localUserInfo.setUserImage("");
-
-                                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                                CommonUtil.gotoActivity(AddStaffActivity.this, LoginActivity.class, true);
-                            }
-                        }, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
                 break;
         }
     }

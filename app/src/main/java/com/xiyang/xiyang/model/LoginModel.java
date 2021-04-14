@@ -7,20 +7,20 @@ import java.io.Serializable;
  */
 public class LoginModel implements Serializable {
     /**
-     * accessToken : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjAuMTA0XC9hcHBcL3VzZXJcL2xvZ2luXC9wYXNzd29yZCIsImlhdCI6MTYxNzc5MTA2MCwiZXhwIjoxNjM1NzkxMDYwLCJuYmYiOjE2MTc3OTEwNjAsImp0aSI6InRUVHRaZXdxZ0o3ak9tQjMiLCJzdWIiOjEzLCJwcnYiOiI2YmU1Zjk1Y2RkNWUwNTZlOTA3NzVkZDQ2MjZkMTI3MzEwODNlMzM0In0.nxjaOcpxJ2cHtxVkhvoCLvyphkmKiJg5Oyy_waGQcUY
+     * accessToken : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjAuMTA4XC9hcHBcL3VzZXJcL2xvZ2luXC9wYXNzd29yZCIsImlhdCI6MTYxODM4NzU1MywiZXhwIjoxNjIwMTg3NTUzLCJuYmYiOjE2MTgzODc1NTMsImp0aSI6IlZYeXFXQWJTNXJvR1g1VlciLCJzdWIiOjEyLCJwcnYiOiI2YmU1Zjk1Y2RkNWUwNTZlOTA3NzVkZDQ2MjZkMTI3MzEwODNlMzM0In0.z2_Hgn8kSyLFjQ5F_CP9XwQdaUb2TxrRAPxinmv0gNI
      * tokenType : bearer
-     * expiresIn : 18000000
-     * roleType : 1
-     * level : 0
-     * nickname : http://192.168.0.103/head/head.png
-     * head : admin8
+     * expiresIn : 1800000
+     * roleType : bd
+     * mobile : 18306043086
+     * nickname : admin3
+     * head : http://zhitiekj.oo/head/head.png
      */
 
     private String accessToken;
     private String tokenType;
     private String expiresIn;
     private String roleType;
-    private String level;
+    private String mobile;
     private String nickname;
     private String head;
 
@@ -56,12 +56,12 @@ public class LoginModel implements Serializable {
         this.roleType = roleType;
     }
 
-    public String getLevel() {
-        return level;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getNickname() {
