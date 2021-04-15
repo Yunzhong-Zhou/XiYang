@@ -492,7 +492,7 @@ public class LocalUserInfo {
 
     public String getUserJob() {
         String string = getString(USERJOB);
-        return !TextUtils.isEmpty(string) ? string : "";
+        return !TextUtils.isEmpty(string) ? string : "bd";
     }
 
     public String getBelongid() {

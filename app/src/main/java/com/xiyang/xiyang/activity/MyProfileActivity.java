@@ -263,15 +263,14 @@ public class MyProfileActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (!err.equals("")) {
-                    showToast(err);
-                }
+                myToast(err);
             }
 
             @Override
             public void onResponse(String response) {
 //                myToast("头像修改成功");
                 hideProgress();
+
             }
         });
     }

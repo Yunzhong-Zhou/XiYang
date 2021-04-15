@@ -1,14 +1,11 @@
 package com.xiyang.xiyang.activity;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -18,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.OnlineServiceAdapter;
@@ -26,22 +25,23 @@ import com.xiyang.xiyang.model.OnlineServiceModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
+import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import id.zelory.compressor.Compressor;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -86,17 +86,17 @@ public class OnlineServiceActivity extends BaseActivity {
                             imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                         }
 
-                       /* showProgress(true, getString(R.string.app_loading1));
-                        String[] filenames = new String[]{};
-                        File[] files = new File[]{};
-                        params.put("content", editText.getText().toString().trim());
-                        params.put("token", localUserInfo.getToken());
-                        params.put("software_version", CommonUtil.getVersionName(OnlineServiceActivity.this));
+                        showProgress(true, getString(R.string.app_loading1));
+                        Map<String, String> params = new HashMap<>();
+                        params.put("type","2");//1图片2文本
+                        params.put("message",editText.getText().toString().trim());
+                        RequestAddMessage(params);
+                        /*params.put("software_version", CommonUtil.getVersionName(OnlineServiceActivity.this));
                         params.put("facility", getString(R.string.onlineservice_system1) + CommonUtil.getDeviceBrand()
                                 + getString(R.string.onlineservice_system2) + CommonUtil.getSystemModel()
                                 + getString(R.string.onlineservice_system3) + CommonUtil.getSystemVersion() +
-                                getString(R.string.onlineservice_system4) + CommonUtil.getVersionName(OnlineServiceActivity.this));
-                        RequestAddMessage(filenames, files, params);//创建留言*/
+                                getString(R.string.onlineservice_system4) + CommonUtil.getVersionName(OnlineServiceActivity.this));*/
+                        RequestAddMessage(params);//创建留言
                     } else {
                         myToast(getString(R.string.onlineservice_hint));
                     }
@@ -118,46 +118,24 @@ public class OnlineServiceActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = page + 1;
-                /*String string = "?page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestOnlineServiceMore(string);*/
+                params.clear();
+                params.put("nextId","");
+                params.put("page",page+"");
+                params.put("count","10");
+                RequestOnlineServiceMore(params);
             }
 
             @Override
             public void onLoadmore() {
                 //加载更多
                 page = 1;
-                /*String string = "?page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestOnlineService(string);*/
-//                pullview.onFooterLoadFinish();
+                params.clear();
+                params.put("nextId","");
+                params.put("page",page+"");
+                params.put("count","10");
+                RequestOnlineService(params);
             }
         });
-        /*pullview.setOnHeaderRefreshListener(new AbPullToRefreshView.OnHeaderRefreshListener() {
-            @Override
-            public void onHeaderRefresh(AbPullToRefreshView view) {
-                //刷新
-                page = page + 1;
-                String string = "?page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestOnlineServiceMore(string);
-            }
-        });
-        pullview.setOnFooterLoadListener(new AbPullToRefreshView.OnFooterLoadListener() {
-            @Override
-            public void onFooterLoad(AbPullToRefreshView view) {
-                //加载更多
-                page = 1;
-                String string = "?page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestOnlineService(string);
-//                pullview.onFooterLoadFinish();
-            }
-        });*/
     }
 
     @Override
@@ -254,7 +232,6 @@ public class OnlineServiceActivity extends BaseActivity {
             public void onResponse(OnlineServiceModel response) {
                 hideProgress();
                 showContentPage();
-                MyLogger.i(">>>>>>>>>留言板列表" + response);
                 JSONObject jObj;
                 List<OnlineServiceModel.LeaveMessageListBean> list1 = new ArrayList<OnlineServiceModel.LeaveMessageListBean>();
                 list = new ArrayList<>();
@@ -299,7 +276,6 @@ public class OnlineServiceActivity extends BaseActivity {
             public void onResponse(OnlineServiceModel response) {
                 hideProgress();
                 showContentPage();
-                MyLogger.i(">>>>>>>>>留言板列表" + response);
                 JSONObject jObj;
                 List<OnlineServiceModel.LeaveMessageListBean> list1_1 = new ArrayList<OnlineServiceModel.LeaveMessageListBean>();
                 list1_1 = response.getLeave_message_list();
@@ -326,68 +302,6 @@ public class OnlineServiceActivity extends BaseActivity {
             }
         });
     }
-    /**
-     * 上传文件 map 方式 暂时不用，用下面list方式
-     *
-     * @param fileMap
-     * @param params
-     */
-    private void RequestUpFile(Map<String, File> fileMap, Map<String, String> params) {
-        OkhttpUtil.okHttpUploadMapFile(URLs.AddMessage, fileMap, "image", params, headerMap, new CallBackUtil() {
-            @Override
-            public Object onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-                hideProgress();
-                if (!err.equals("")) {
-                    showToast(err);
-                }
-            }
-
-            @Override
-            public void onResponse(Object response) {
-//                myToast("头像修改成功");
-            }
-        });
-    }
-
-    /**
-     * 上传文件 list 方式
-     *
-     * @param params
-     * @param fileList
-     * @param fileKey
-     */
-    private void RequestUpFile(Map<String, String> params, List<File> fileList, String fileKey) {
-        OkhttpUtil.okHttpUploadListFile(URLs.AddMessage, params, fileList, fileKey, "image", headerMap, new CallBackUtil<String>() {
-            @Override
-            public String onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-                hideProgress();
-                if (!err.equals("")) {
-                    showToast(err);
-                }
-            }
-
-            @Override
-            public void onResponse(String response) {
-//                myToast("头像修改成功");
-                editText.setText("");
-                page = 1;
-                /*String string = "?page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestOnlineService(string);*/
-            }
-        });
-    }
 
 
     @Override
@@ -399,12 +313,13 @@ public class OnlineServiceActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-//        showProgress(true, getString(R.string.app_loading2));
+        showProgress(true, getString(R.string.app_loading2));
         page = 1;
-        /*String string = "?page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestOnlineService(string);*/
+        params.clear();
+        params.put("nextId","");
+        params.put("page",page+"");
+        params.put("count","10");
+        RequestOnlineService(params);
     }
 
     public void onHttpResult() {
@@ -416,88 +331,91 @@ public class OnlineServiceActivity extends BaseActivity {
     /**
      * *****************************************选择图片********************************************
      */
-    //选择图片及上传
-    ArrayList<String> listFileNames;
-    ArrayList<File> listFiles;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            File pdffile = null;
+            File imgfile = null;
+            String imgpath = null;
             Uri uri = null;
-            String imagePath = null;
             switch (requestCode) {
+                case SELECT_PDF_FILE:
+                    //选取PDF文件
+                    uri = data.getData();
+                    String pdfpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
+                    if (pdfpath != null) {
+                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
+                            pdffile = new File(pdfpath);
+                        } else {
+                            myToast("请选择PDF文件上传");
+                            return;
+                        }
+                    }
+                    break;
                 case REQUEST_CODE_CAPTURE_CAMEIA:
                     //相机
                     uri = Uri.parse("");
                     uri = Uri.fromFile(new File(MyChooseImages.imagepath));
-                    imagePath = uri.getPath();
+                    imgpath = uri.getPath();
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
                     break;
                 case REQUEST_CODE_PICK_IMAGE:
                     //相册
                     uri = data.getData();
-                    //处理得到的url
-                    ContentResolver cr = this.getContentResolver();
-                    Cursor cursor = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        cursor = cr.query(uri, null, null, null, null, null);
-                        if (cursor != null) {
-                            cursor.moveToFirst();
-                            try {
-                                imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                myToast(getString(R.string.app_error));
-                            } finally {
-                                if (cursor != null)
-                                    cursor.close();
-                            }
-                        }
-
-                    } else {
-                        imagePath = uri.getPath();
-                    }
+                    imgpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
                     break;
+
             }
-            if (uri != null) {
-                MyLogger.i(">>>>>>>>>>获取到的图片路径1：" + imagePath);
-                //图片过大解决方法
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 2;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
+            if (imgpath != null) {
+                showProgress(true, getString(R.string.app_loading1));
+//                imgfile = new File(uri.getPath());
+                //压缩
+                Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                imgfile = FileUtil.bytesToImageFile(OnlineServiceActivity.this,
+                        ImageUtils.compressByQuality(bitmap, 50));
 
-//                imageView1.setImageBitmap(bitmap);
-//                imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                new UpFileToQiNiuUtil(OnlineServiceActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                    @Override
+                    public void complete(boolean isok, String result, String url) {
+//                        hideProgress();
+                        if (isok) {
+                            MyLogger.i(">>>>上传文件路径：" + url);
+                            Map<String, String> params = new HashMap<>();
+                            params.put("type","1");//1图片2文本
+                            params.put("message",url);
+                            RequestAddMessage(params);
 
-//                listFileNames = new ArrayList<>();
-//                listFileNames.add("head");
-
-                Uri uri1 = Uri.parse("");
-                /*uri1 = Uri.fromFile(new File(imagePath));
-                File file1 = new File(FileUtil.getPath(this, uri1));*/
-                File file1 = new File(imagePath);
-                listFiles = new ArrayList<>();
-                File newFile = null;
-                try {
-                    newFile = new Compressor(this).compressToFile(file1);
-                    listFiles.add(newFile);
-//                    MyLogger.i(">>>>>选择图片结果>>>>>>>>>" + listFileNames.toString() + ">>>>>>" + listFiles.toString());
-
-                    Map<String, File> fileMap = new HashMap<>();
-//                    fileMap.put("picture", newFile);
-                    Map<String, String> params = new HashMap<>();
-                    params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
-//                    RequestUpFile(fileMap, params);
-                    RequestUpFile(params, listFiles, "picture");
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    myToast(getString(R.string.app_imgerr));
-                }
+                        } else {
+                            myToast(result);
+                        }
+                    }
+                };
             }
         }
 
     }
+    private void RequestAddMessage(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.AddMessage, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                hideProgress();
+                requestServer();
+            }
+        });
+    }
 
 }

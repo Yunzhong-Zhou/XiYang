@@ -260,11 +260,8 @@ public class LoginActivity extends BaseActivity {
 
                 MainActivity.isOver = false;
                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                if (response.getRoleType().equals("1")) {
-                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-                } else {
-                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
-                }
+                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+
             }
         });
     }
@@ -307,11 +304,13 @@ public class LoginActivity extends BaseActivity {
 
                 MainActivity.isOver = false;
                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                if (response.getRoleType().equals("1")) {
+                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
+
+                /*if (response.getRoleType().equals("bd")) {//RM、CM、BDM、BD
                     CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
                 } else {
                     CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
-                }
+                }*/
             }
         });
     }

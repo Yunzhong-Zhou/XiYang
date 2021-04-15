@@ -51,10 +51,10 @@ public abstract class BaseFragment extends Fragment implements IBaseView_Respons
 
         Log.i("BaseFragment", getClass().getSimpleName());
         mParent = getView();
+
         if (!(getActivity() instanceof MainActivity)) {//这里转换
             mActivity = (BaseActivity) getActivity();
         }
-
 
         titleView = (TitleView) getView().findViewById(R.id.title_view);
         localUserInfo = LocalUserInfo.getInstance(getActivity());

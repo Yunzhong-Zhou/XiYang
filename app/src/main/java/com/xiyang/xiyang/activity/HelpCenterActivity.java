@@ -31,8 +31,8 @@ import okhttp3.Response;
 public class HelpCenterActivity extends BaseActivity {
     HelpModel model;
     RecyclerView recyclerView;
-    List<HelpModel.ArticleListBean> list = new ArrayList<>();
-    CommonAdapter<HelpModel.ArticleListBean> mAdapter;
+    List<HelpModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<HelpModel.ListBean> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,15 +131,15 @@ public class HelpCenterActivity extends BaseActivity {
                 hideProgress();
                 model = response;
 //                textView1.setText(getString(R.string.onlineservice_h3) + response.getLandline_number());
-                list = response.getArticle_list();
+                list = response.getList();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<HelpModel.ArticleListBean>
+                    mAdapter = new CommonAdapter<HelpModel.ListBean>
                             (HelpCenterActivity.this, R.layout.item_help, list) {
                         @Override
-                        protected void convert(ViewHolder holder, HelpModel.ArticleListBean model, int position) {
-                            holder.setText(R.id.textView1, model.getTitle());
+                        protected void convert(ViewHolder holder, HelpModel.ListBean model, int position) {
+                            holder.setText(R.id.textView1, model.getName());
                         }
                     };
                     recyclerView.setAdapter(mAdapter);
@@ -147,7 +147,7 @@ public class HelpCenterActivity extends BaseActivity {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                             Bundle bundle = new Bundle();
-                            bundle.putString("url", list.get(position).getUrl());
+//                            bundle.putString("url", list.get(position).getUrl());
                             CommonUtil.gotoActivityWithData(HelpCenterActivity.this, WebContentActivity.class, bundle, false);
                         }
 

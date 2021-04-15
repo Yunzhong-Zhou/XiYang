@@ -72,8 +72,7 @@ public class MyIncomeActivity extends BaseActivity {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                /*String string = "?token=" + localUserInfo.getToken();
-                Request(string);*/
+                Request(params);
             }
 
             @Override
@@ -261,8 +260,7 @@ public class MyIncomeActivity extends BaseActivity {
         super.requestServer();
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
-        /*String string = "?token=" + localUserInfo.getToken();
-        Request(string);*/
+        Request(params);
     }
 
     @Override

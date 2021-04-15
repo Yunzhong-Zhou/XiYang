@@ -98,16 +98,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.MainActivity_m"
-            android:label="主页"
-            android:theme="@style/DefaultCityPickerTheme">
-            <!--点击通知默认打开-->
-            <intent-filter>
-                <action android:name="${applicationId}.default.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".activity.LoginActivity"

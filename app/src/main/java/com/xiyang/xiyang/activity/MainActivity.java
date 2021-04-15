@@ -25,8 +25,11 @@ import com.next.easynavigation.view.EasyNavigationBar;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.fragment.Fragment1;
+import com.xiyang.xiyang.fragment.Fragment1_m;
 import com.xiyang.xiyang.fragment.Fragment2;
+import com.xiyang.xiyang.fragment.Fragment2_m;
 import com.xiyang.xiyang.fragment.Fragment3;
+import com.xiyang.xiyang.fragment.Fragment3_m;
 import com.xiyang.xiyang.fragment.Fragment4;
 import com.xiyang.xiyang.fragment.Fragment5;
 import com.xiyang.xiyang.model.UpgradeModel;
@@ -49,11 +52,7 @@ import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
     private EasyNavigationBar navigationBar;
-    private String[] tabText = {"商户", "门店", "设备", "数据", "我的"};
-    //未选中icon
-    private int[] normalIcon = {R.mipmap.tab1_0, R.mipmap.tab2_0, R.mipmap.tab3_0, R.mipmap.tab4_0, R.mipmap.tab5_0};
-    //选中时icon
-    private int[] selectIcon = {R.mipmap.tab1_1, R.mipmap.tab2_1, R.mipmap.tab3_1, R.mipmap.tab4_1, R.mipmap.tab5_1};
+
     private List<Fragment> fragments = new ArrayList<>();
 
     public static boolean isOver = false;
@@ -63,6 +62,7 @@ public class MainActivity extends BaseActivity {
     UpgradeModel model_up;
 
     Timer timer = null;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -131,12 +131,34 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
         navigationBar = findViewByID_My(R.id.navigationBar);
+        String[] tabText = {"商户", "门店", "设备", "数据", "我的"};
+        //未选中icon
+        int[] normalIcon = {R.mipmap.tab1_0, R.mipmap.tab2_0, R.mipmap.tab3_0, R.mipmap.tab4_0, R.mipmap.tab5_0};
+        //选中时icon
+        int[] selectIcon = {R.mipmap.tab1_1, R.mipmap.tab2_1, R.mipmap.tab3_1, R.mipmap.tab4_1, R.mipmap.tab5_1};
 
-        fragments.add(new Fragment1());
-        fragments.add(new Fragment2());
-        fragments.add(new Fragment3());
+        if (localUserInfo.getUserJob().equals("bd")){
+            fragments.add(new Fragment1());
+            fragments.add(new Fragment2());
+            fragments.add(new Fragment3());
+        }else {
+            tabText[0]="管理";
+            tabText[1]="分派";
+            tabText[2]="审批";
+            normalIcon[0] = R.mipmap.tab1_0_m;
+            normalIcon[1] = R.mipmap.tab2_0_m;
+            normalIcon[2] = R.mipmap.tab3_0_m;
+
+            selectIcon[0] = R.mipmap.tab1_1_m;
+            selectIcon[1] = R.mipmap.tab2_1_m;
+            selectIcon[2] = R.mipmap.tab3_1_m;
+            fragments.add(new Fragment1_m());
+            fragments.add(new Fragment2_m());
+            fragments.add(new Fragment3_m());
+        }
         fragments.add(new Fragment4());
         fragments.add(new Fragment5());
+
         /*String[] tabText = {getString(R.string.fragment1),
                 getString(R.string.fragment2),
                 getString(R.string.fragment3),
@@ -249,7 +271,6 @@ public class MainActivity extends BaseActivity {
                 RequestUpLoadToken(params);
             }
         }, 20*60*1000);*/
-
 
 
         //更新
