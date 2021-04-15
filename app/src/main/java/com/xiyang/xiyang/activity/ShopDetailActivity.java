@@ -242,7 +242,7 @@ public class ShopDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.BankCard, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
+        OkhttpUtil.okHttpGet(URLs.ShopDetail, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
             @Override
             public BankCardSettingModel onParseResponse(Call call, Response response) {
                 return null;
@@ -263,6 +263,13 @@ public class ShopDetailActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void requestServer() {
+        super.requestServer();
+        this.showLoadingPage();
+//        params.put("id",id+"");
+        request(params);
+    }
     @Override
     protected void updateView() {
         titleView.setTitle("商户详情");

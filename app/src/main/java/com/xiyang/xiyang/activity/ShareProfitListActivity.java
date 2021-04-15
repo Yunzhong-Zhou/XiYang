@@ -16,11 +16,10 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.MyTakeCashModel;
+import com.xiyang.xiyang.model.ShareProfitListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 
@@ -41,15 +40,15 @@ import okhttp3.Response;
  */
 public class ShareProfitListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyTakeCashModel> list = new ArrayList<>();
-    CommonAdapter<MyTakeCashModel> mAdapter;
+    List<ShareProfitListModel> list = new ArrayList<>();
+    CommonAdapter<ShareProfitListModel> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2,linearLayout3;
     private TextView textView1, textView2,textView3;
     private View view1, view2,view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "";
+    String sort = "desc", status = "",startTime="",endTime="",sortField="";
     int i1 = 0;
     int i2 = 0;
     @Override
@@ -69,24 +68,28 @@ public class ShareProfitListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("page",page+"");
+                params.put("count","10");
+                params.put("status",status);
+                params.put("sortField",sortField);
+                params.put("sort",sort);
+                params.put("startTime",startTime);
+                params.put("endTime",endTime);
+                requestList(params);
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentListMore(string);*/
+                params.put("page",page+"");
+                params.put("count","10");
+                params.put("status",status);
+                params.put("sortField",sortField);
+                params.put("sort",sort);
+                params.put("startTime",startTime);
+                params.put("endTime",endTime);
+                requestListMore(params);
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -105,8 +108,8 @@ public class ShareProfitListActivity extends BaseActivity {
         requestServer();//获取数据
     }
 
-    private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.ShareProfitList, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -123,7 +126,6 @@ public class ShareProfitListActivity extends BaseActivity {
             public void onResponse(String response) {
                 showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
                 JSONObject jObj;
                 /*try {
                     jObj = new JSONObject(response);
@@ -167,8 +169,8 @@ public class ShareProfitListActivity extends BaseActivity {
 
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.ShareProfitList, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -185,8 +187,7 @@ public class ShareProfitListActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
 //                showContentPage();
-                onHttpResult();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
+                hideProgress();
                 /*JSONObject jObj;
                 List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
                 try {
@@ -248,19 +249,16 @@ public class ShareProfitListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                + "&sort=" + sort
-                + "&page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestMyInvestmentList(string);*/
+        params.put("page",page+"");
+        params.put("count","10");
+        params.put("status",status);
+        params.put("sortField",sortField);
+        params.put("sort",sort);
+        params.put("startTime",startTime);
+        params.put("endTime",endTime);
+        requestList(params);
     }
 
-    public void onHttpResult() {
-        hideProgress();
-        springView.onFinishFreshAndLoad();
-
-    }
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容

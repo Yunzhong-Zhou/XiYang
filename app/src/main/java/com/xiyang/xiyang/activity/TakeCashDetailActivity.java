@@ -47,8 +47,8 @@ public class TakeCashDetailActivity extends BaseActivity {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                /*request("?token=" + localUserInfo.getToken()
-                        + "&id=" + id);*/
+                params.put("id",id);
+                request(params);
             }
 
             @Override
@@ -172,9 +172,9 @@ public class TakeCashDetailActivity extends BaseActivity {
     @Override
     public void requestServer() {
         super.requestServer();
-        /*showProgress(true, getString(R.string.app_loading2));
-        request("?token=" + localUserInfo.getToken()
-                + "&id=" + id);*/
+        showProgress(true, getString(R.string.app_loading2));
+        params.put("id",id);
+        request(params);
     }
 
     @Override

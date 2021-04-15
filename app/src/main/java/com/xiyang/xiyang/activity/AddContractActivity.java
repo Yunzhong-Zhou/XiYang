@@ -44,7 +44,9 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
-    int item_hetong = 1;
+    List<String> list_truefalse = new ArrayList<>();
+
+    int item_hetong = 1,itme_truefalse = 0;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,
@@ -168,6 +170,9 @@ public class AddContractActivity extends BaseActivity {
         list_hetong.add("取消合同");
         list_hetong.add("调价合同");
 
+        list_truefalse.add("是");
+        list_truefalse.add("否");
+
         item_hetong = getIntent().getIntExtra("item_hetong", 1);
         tv_hetongleixing.setText(list_hetong.get(item_hetong));
         titleView.setTitle(list_hetong.get(item_hetong));
@@ -191,7 +196,7 @@ public class AddContractActivity extends BaseActivity {
 
             case R.id.tv_shifoudujia:
                 //是否独家
-
+                dialogList_TrueFalse();
                 break;
 
 
@@ -477,5 +482,48 @@ public class AddContractActivity extends BaseActivity {
         });
         rv_list.setAdapter(adapter);
     }
+    /**
+     * 选择是否
+     */
+    private void dialogList_TrueFalse(){
+        dialog.contentView(R.layout.dialog_list)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.TOP)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AddContractActivity.this, R.layout.item_help, list_truefalse) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (itme_truefalse == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                itme_truefalse = position;
+                tv_shifoudujia.setText(list_truefalse.get(position));
 
+                adapter.notifyDataSetChanged();
+                changeUI();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
 }

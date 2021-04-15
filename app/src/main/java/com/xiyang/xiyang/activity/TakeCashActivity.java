@@ -186,7 +186,7 @@ public class TakeCashActivity extends BaseActivity {
                     params.put("money_type", money_type + "");
                     params.put("token", localUserInfo.getToken());
                     params.put("hk", model.getHk());
-                    RequestTakeCash(params);//提现
+                    requestTakeCash(params);//提现
                 }
                 break;
             case R.id.textView3:
@@ -215,7 +215,7 @@ public class TakeCashActivity extends BaseActivity {
     }
 
     //可用余额
-    private void RequestAvailableAmount(Map<String, String> params) {
+    private void requestAvailableAmount(Map<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.TakeCash, params, headerMap, new CallBackUtil<AvailableAmountModel>() {
             @Override
             public AvailableAmountModel onParseResponse(Call call, Response response) {
@@ -275,7 +275,7 @@ public class TakeCashActivity extends BaseActivity {
     }
 
     //提现
-    private void RequestTakeCash(Map<String, String> params) {
+    private void requestTakeCash(Map<String, String> params) {
         OkhttpUtil.okHttpPost(URLs.TakeCash, params, headerMap, new CallBackUtil<TakeCashModel>() {
             @Override
             public TakeCashModel onParseResponse(Call call, Response response) {
@@ -419,10 +419,9 @@ public class TakeCashActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
 //        this.showLoadingPage();
-        /*showProgress(true, getString(R.string.app_loading2));
-        String string = "?token=" + localUserInfo.getToken()
-                + "&money_type=" + money_type;
-        RequestAvailableAmount(string);//获取可用币数*/
+        showProgress(true, getString(R.string.app_loading2));
+
+        requestAvailableAmount(params);//获取可用币数
     }
 
     @Override

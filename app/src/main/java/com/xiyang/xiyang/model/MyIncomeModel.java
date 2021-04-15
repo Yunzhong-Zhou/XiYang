@@ -8,71 +8,139 @@ import java.util.List;
  */
 public class MyIncomeModel implements Serializable {
     /**
-     * usable_money : 100.0000
-     * commission_money : 0.0000
-     * earning_money : 100.0000
-     * out_money_list : [{"title":"设备使用收益","money":"100","status":"完成","created_at":"2021-01-19 16:18:41"}]
-     * in_money_list : [{"title":"设备使用收益","money":"100","status":"完成","created_at":"2021-01-19 16:18:41"}]
+     * id : 12
+     * roleType : bd
+     * nickname : admin3
+     * head : http://zhitiekj.oo/head/head.png
+     * amount : 0.00
+     * totalMoney : 0.00
+     * recommendMoney : 0.00
+     * operateMoney : 0.00
+     * out : [{"id":1,"type":"1","title":"充值","money":"1000","createdAt":"2021-03-25 14:04:54"}]
+     * in : [{"id":1,"type":"1","title":"充值","money":"1000","createdAt":"2021-03-25 14:04:54"}]
      */
 
-    private String usable_money;
-    private String commission_money;
-    private String earning_money;
-    private List<OutMoneyListBean> out_money_list;
-    private List<InMoneyListBean> in_money_list;
+    private String id;
+    private String roleType;
+    private String nickname;
+    private String head;
+    private String amount;
+    private String totalMoney;
+    private String recommendMoney;
+    private String operateMoney;
+    private List<OutBean> out;
+    private List<InBean> in;
 
-    public String getUsable_money() {
-        return usable_money;
+    public String getId() {
+        return id;
     }
 
-    public void setUsable_money(String usable_money) {
-        this.usable_money = usable_money;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getCommission_money() {
-        return commission_money;
+    public String getRoleType() {
+        return roleType;
     }
 
-    public void setCommission_money(String commission_money) {
-        this.commission_money = commission_money;
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
     }
 
-    public String getEarning_money() {
-        return earning_money;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setEarning_money(String earning_money) {
-        this.earning_money = earning_money;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public List<OutMoneyListBean> getOut_money_list() {
-        return out_money_list;
+    public String getHead() {
+        return head;
     }
 
-    public void setOut_money_list(List<OutMoneyListBean> out_money_list) {
-        this.out_money_list = out_money_list;
+    public void setHead(String head) {
+        this.head = head;
     }
 
-    public List<InMoneyListBean> getIn_money_list() {
-        return in_money_list;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setIn_money_list(List<InMoneyListBean> in_money_list) {
-        this.in_money_list = in_money_list;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
-    public static class OutMoneyListBean {
+    public String getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(String totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public String getRecommendMoney() {
+        return recommendMoney;
+    }
+
+    public void setRecommendMoney(String recommendMoney) {
+        this.recommendMoney = recommendMoney;
+    }
+
+    public String getOperateMoney() {
+        return operateMoney;
+    }
+
+    public void setOperateMoney(String operateMoney) {
+        this.operateMoney = operateMoney;
+    }
+
+    public List<OutBean> getOut() {
+        return out;
+    }
+
+    public void setOut(List<OutBean> out) {
+        this.out = out;
+    }
+
+    public List<InBean> getIn() {
+        return in;
+    }
+
+    public void setIn(List<InBean> in) {
+        this.in = in;
+    }
+
+    public static class OutBean {
         /**
-         * title : 设备使用收益
-         * money : 100
-         * status : 完成
-         * created_at : 2021-01-19 16:18:41
+         * id : 1
+         * type : 1
+         * title : 充值
+         * money : 1000
+         * createdAt : 2021-03-25 14:04:54
          */
 
+        private int id;
+        private String type;
         private String title;
         private String money;
-        private String status;
-        private String created_at;
+        private String createdAt;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public String getTitle() {
             return title;
@@ -90,35 +158,45 @@ public class MyIncomeModel implements Serializable {
             this.money = money;
         }
 
-        public String getStatus() {
-            return status;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getCreated_at() {
-            return created_at;
-        }
-
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
     }
 
-    public static class InMoneyListBean {
+    public static class InBean {
         /**
-         * title : 设备使用收益
-         * money : 100
-         * status : 完成
-         * created_at : 2021-01-19 16:18:41
+         * id : 1
+         * type : 1
+         * title : 充值
+         * money : 1000
+         * createdAt : 2021-03-25 14:04:54
          */
 
+        private int id;
+        private String type;
         private String title;
         private String money;
-        private String status;
-        private String created_at;
+        private String createdAt;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public String getTitle() {
             return title;
@@ -136,20 +214,12 @@ public class MyIncomeModel implements Serializable {
             this.money = money;
         }
 
-        public String getStatus() {
-            return status;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getCreated_at() {
-            return created_at;
-        }
-
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
     }
 }

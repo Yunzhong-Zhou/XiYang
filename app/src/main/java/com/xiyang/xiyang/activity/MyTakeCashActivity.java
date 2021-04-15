@@ -71,24 +71,22 @@ public class MyTakeCashActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("page",page+"");
+                params.put("count","10");
+                params.put("status",status);
+                params.put("sort",sort);
+                requestList(params);
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentListMore(string);*/
+                params.put("page",page+"");
+                params.put("count","10");
+                params.put("status",status);
+                params.put("sort",sort);
+                requestListMore(params);
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -107,11 +105,10 @@ public class MyTakeCashActivity extends BaseActivity {
     @Override
     protected void initData() {
         requestServer();//获取数据
-
     }
 
-    private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.TakeCashList, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -172,8 +169,8 @@ public class MyTakeCashActivity extends BaseActivity {
 
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.TakeCashList, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -253,12 +250,11 @@ public class MyTakeCashActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                + "&sort=" + sort
-                + "&page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestMyInvestmentList(string);*/
+        params.put("page",page+"");
+        params.put("count","10");
+        params.put("status",status);
+        params.put("sort",sort);
+        requestList(params);
     }
 
     public void onHttpResult() {

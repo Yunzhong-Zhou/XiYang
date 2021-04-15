@@ -55,11 +55,11 @@ public class URLs {
     /**
      * ********************************商户*****************************************
      */
-    public static final String Fragment1 = HOST + API + "/api/v1/techn/index_date";
-    //商品列表
-    public static final String ProductList = HOST + API + "/api/v1/public/get_goods_list";
-    //商品详情
-    public static final String ProductDetail = HOST + API + "/api/v1/public/get_goods_details";
+    public static final String Fragment1 = HOST + API + "merchant";
+    //商户列表
+    public static final String ShopList = HOST + API + "merchant/record";
+    //商户详情
+    public static final String ShopDetail = HOST + API + "merchant/detail";
     /**
      * ********************************门店*****************************************
      */
@@ -148,10 +148,16 @@ public class URLs {
     public static final String TransactionPassword = HOST + API + "user/set/trade/password";
     //我的收益
     public static final String MyIncome = HOST + API + "wallet";
+    //收入列表
+    public static final String WalletIn = HOST + API + "wallet/in";
+    //支出列表
+    public static final String WalletOut = HOST + API + "wallet/out";
     //提现
-    public static final String TakeCash = HOST + API + "wallet/out";
+    public static final String TakeCash = HOST + API + "withdrawal";
+    //提现列表
+    public static final String TakeCashList = HOST + API + "withdrawal/record";
     //提现详情
-    public static final String TakeCashDetail = HOST + API + "/api/v1/techn/user_resume_list";
+    public static final String TakeCashDetail = HOST + API + "withdrawal/detail";
     //帮助列表
     public static final String Help = HOST + API + "help";
     //在线客服
@@ -160,8 +166,8 @@ public class URLs {
     public static final String AddMessage = HOST + API + "online/consult/add";
     //关于我们
     public static final String About = HOST + API + "about";
-    //意见反馈分类
-    public static final String FeedBack_List = HOST + API + "/api/v1/public/get_feedback_classify_list";
+    //分润记录
+    public static final String ShareProfitList = HOST + API + "order/profit";
     //意见反馈提交
     public static final String FeedBack = HOST + API + "/api/v1/public/increase_user_feedback";
     //版本说明
@@ -192,8 +198,6 @@ public class URLs {
     public static final String HuiDa = HOST + API + "/api/v1/public/user_store_ques_ans_add";
     //删除足迹
     public static final String DeleteFootprint = HOST + API + "/api/v1/user/user_footprint_del";
-    //收藏列表
-    public static final String Collect = HOST + API + "/api/v1/user/user_collection_list_page";
     //删除收藏
     public static final String DeleteCollect = HOST + API + "/api/v1/user/user_collection_del";
     //我的报价

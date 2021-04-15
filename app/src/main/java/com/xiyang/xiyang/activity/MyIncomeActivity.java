@@ -15,7 +15,6 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -33,14 +32,14 @@ import okhttp3.Response;
  * 我的收益
  */
 public class MyIncomeActivity extends BaseActivity {
-    int type = 1;
+    int type = 1, page1 = 1, page2 = 1;
     MyIncomeModel model1;
     private RecyclerView recyclerView;
-    List<MyIncomeModel.InMoneyListBean> list1 = new ArrayList<>();
-    CommonAdapter<MyIncomeModel.InMoneyListBean> mAdapter1;
+    List<MyIncomeModel.InBean> list1 = new ArrayList<>();
+    CommonAdapter<MyIncomeModel.InBean> mAdapter1;
 
-    List<MyIncomeModel.OutMoneyListBean> list2 = new ArrayList<>();
-    CommonAdapter<MyIncomeModel.OutMoneyListBean> mAdapter2;
+    List<MyIncomeModel.OutBean> list2 = new ArrayList<>();
+    CommonAdapter<MyIncomeModel.OutBean> mAdapter2;
     //头部一
 //    View headerView1;
     RelativeLayout head1_relativeLayout;
@@ -145,40 +144,34 @@ public class MyIncomeActivity extends BaseActivity {
             @Override
             public void onResponse(MyIncomeModel response) {
                 showContentPage();
-                MyLogger.i(">>>>>>>>>我的收益" + response);
                 model1 = response;
-                /*if (!response.getTop_up_usdt_wallet_addr().equals("")) {
-                    head1_textView5.setVisibility(View.VISIBLE);
-                } else {
-                    head1_textView5.setVisibility(View.GONE);
-                }*/
 
-                head1_textView1.setText(response.getUsable_money());//可用余额
-                head1_textView2.setText(response.getCommission_money());//设备收益
-                head1_textView3.setText(response.getEarning_money());//销售分成
-                head1_textView4.setText(response.getCommission_money());//收益分成
+                head1_textView1.setText(response.getAmount());//可用余额
+                head1_textView2.setText("￥" + response.getOperateMoney());//运维分成
+                head1_textView3.setText("￥" + response.getRecommendMoney());//推荐分成
+                head1_textView4.setText("￥" + response.getTotalMoney());//总营收
 
-                list1 = response.getIn_money_list();
-                mAdapter1 = new CommonAdapter<MyIncomeModel.InMoneyListBean>
+                list1 = response.getIn();
+                mAdapter1 = new CommonAdapter<MyIncomeModel.InBean>
                         (MyIncomeActivity.this, R.layout.item_myincome, list1) {
                     @Override
-                    protected void convert(ViewHolder holder, final MyIncomeModel.InMoneyListBean model, int position) {
-                        holder.setText(R.id.textView1, model.getTitle() + "：+" + model.getMoney());//标题
+                    protected void convert(ViewHolder holder, final MyIncomeModel.InBean model, int position) {
+                        holder.setText(R.id.textView1, model.getTitle());//标题
 //                        holder.setText(R.id.textView2, getString(R.string.recharge_h21) + model.get);//流水号
-                        holder.setText(R.id.textView3, model.getCreated_at());//时间
-                        holder.setText(R.id.textView4, model.getStatus());//状态
+                        holder.setText(R.id.textView3, model.getCreatedAt());//时间
+                        holder.setText(R.id.textView4, "+"+model.getMoney());//状态
                     }
                 };
 
-                list2 = response.getOut_money_list();
-                mAdapter2 = new CommonAdapter<MyIncomeModel.OutMoneyListBean>
+                list2 = response.getOut();
+                mAdapter2 = new CommonAdapter<MyIncomeModel.OutBean>
                         (MyIncomeActivity.this, R.layout.item_myincome, list2) {
                     @Override
-                    protected void convert(ViewHolder holder, final MyIncomeModel.OutMoneyListBean model, int position) {
-                        holder.setText(R.id.textView1, model.getTitle() + "：-" + model.getMoney());//标题
-//                        holder.setText(R.id.textView2, getString(R.string.recharge_h21) + model.getId());//流水号
-                        holder.setText(R.id.textView3, model.getCreated_at());//时间
-                        holder.setText(R.id.textView4, model.getStatus());//状态
+                    protected void convert(ViewHolder holder, final MyIncomeModel.OutBean model, int position) {
+                        holder.setText(R.id.textView1, model.getTitle());//标题
+//                        holder.setText(R.id.textView2, getString(R.string.recharge_h21) + model.get);//流水号
+                        holder.setText(R.id.textView3, model.getCreatedAt());//时间
+                        holder.setText(R.id.textView4, "-"+model.getMoney());//状态
                     }
                 };
 
@@ -260,7 +253,13 @@ public class MyIncomeActivity extends BaseActivity {
         super.requestServer();
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
+        /*params.clear();
+        page1 = 1;
+        page2 = 2;
+        params.put("count", "10");
+        params.put("page", page1+"");*/
         Request(params);
+
     }
 
     @Override
