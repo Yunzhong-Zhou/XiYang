@@ -16,15 +16,14 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.MyTakeCashModel;
+import com.xiyang.xiyang.model.MyWorkListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.MyLogger;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-
-import org.json.JSONObject;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +40,18 @@ import okhttp3.Response;
  */
 public class MyWorkListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyTakeCashModel> list = new ArrayList<>();
-    CommonAdapter<MyTakeCashModel> mAdapter;
+    List<MyWorkListModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<MyWorkListModel.ListBean> mAdapter;
     //筛选
-    private LinearLayout linearLayout1, linearLayout2,linearLayout3;
-    private TextView textView1, textView2,textView3;
-    private View view1, view2,view3;
+    private LinearLayout linearLayout1, linearLayout2, linearLayout3;
+    private TextView textView1, textView2, textView3;
+    private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
     String sort = "desc", status = "";
     int i1 = 0;
     int i2 = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,24 +69,22 @@ public class MyWorkListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("status", status);
+                params.put("sort", sort);
+                requestList(params);
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentListMore(string);*/
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("status", status);
+                params.put("sort", sort);
+                requestListMore(params);
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -105,10 +103,10 @@ public class MyWorkListActivity extends BaseActivity {
         requestServer();//获取数据
     }
 
-    private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.WorkList, params, headerMap, new CallBackUtil<MyWorkListModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public MyWorkListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -120,57 +118,75 @@ public class MyWorkListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(MyWorkListModel response) {
                 showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
-                JSONObject jObj;
-                /*try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list.size() == 0) {
-                        showEmptyPage();//空数据
-                    } else {
-                        mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_myworklist, list) {
-                            @Override
-                            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
-                                holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                                holder.setText(R.id.textView2, model.getCreated_at());//时间
-                                holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                                holder.setText(R.id.textView4, model.getStatus_title());//状态
+                list = response.getList();
+                if (list.size() == 0) {
+                    showEmptyPage();//空数据
+                } else {
+                    mAdapter = new CommonAdapter<MyWorkListModel.ListBean>
+                            (MyWorkListActivity.this, R.layout.item_myworklist, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, MyWorkListModel.ListBean model, int position) {
+                            holder.setText(R.id.tv_title,model.getType());//标题
+                            holder.setText(R.id.tv_addr, model.getAddres());
+                            holder.setText(R.id.tv_time, model.getCreatedAt());
+                            TextView tv_jieshou = holder.getView(R.id.tv_jieshou);
+                            TextView tv_type = holder.getView(R.id.tv_type);
+                            tv_type.setText(model.getStatusTitle());
+                            if (model.getStatus().equals("0")){
+                                tv_type.setVisibility(View.INVISIBLE);
+                                tv_jieshou.setVisibility(View.VISIBLE);
+                            }else {
+                                tv_type.setVisibility(View.VISIBLE);
+                                tv_jieshou.setVisibility(View.GONE);
                             }
-                        };
-                        recyclerView.setAdapter(mAdapter);
-                        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("id", list.get(position).getId());
-                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, TakeCashDetailActivity.class, bundle1, false);
-                            }
+                            tv_jieshou.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //接手
+                                    showToast("确认接手该工单吗？", "确定", "取消",
+                                            new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                    showProgress(true, getString(R.string.app_loading1));
+                                                    params.clear();
+                                                    params.put("id",model.getId());
+                                                    requestJieShou(params);
+                                                }
+                                            }, new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
 
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                return false;
-                            }
-                        });
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+                                }
+                            });
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //详情
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("id",model.getId());
+                                    CommonUtil.gotoActivityWithData(MyWorkListActivity.this,WorkListDetailActivity.class,bundle,false);
+                                }
+                            });
+                        }
+                    };
+                    recyclerView.setAdapter(mAdapter);
+                }
             }
         });
 
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.WorkList, params, headerMap, new CallBackUtil<MyWorkListModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public MyWorkListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -183,33 +199,46 @@ public class MyWorkListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(MyWorkListModel response) {
 //                showContentPage();
                 onHttpResult();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
-                /*JSONObject jObj;
-                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list1.size() == 0) {
-                        myToast(getString(R.string.app_nomore));
-                        page--;
-                    } else {
-                        list.addAll(list1);
-                        mAdapter.notifyDataSetChanged();
-                    }
+                List<MyWorkListModel.ListBean> list1 = new ArrayList<>();
+                list1 = response.getList();
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    page--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
 
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
             }
         });
 
     }
+    private void requestJieShou(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.WorkList_JieShou, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                hideProgress();
+//                model = response;
+                myToast("接手工单成功");
+                requestServer();
+
+            }
+        });
+    }
     @Override
     public void onClick(View v) {
         Drawable drawable1 = getResources().getDrawable(R.mipmap.down_green);//选中-蓝色
@@ -248,12 +277,11 @@ public class MyWorkListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                + "&sort=" + sort
-                + "&page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestMyInvestmentList(string);*/
+        params.put("page", page + "");
+        params.put("count", "10");
+        params.put("status", status);
+        params.put("sort", sort);
+        requestList(params);
     }
 
     public void onHttpResult() {
@@ -289,8 +317,11 @@ public class MyWorkListActivity extends BaseActivity {
         ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView1);
         contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
         final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_jiangxu));
-        list.add(getString(R.string.app_type_shengxu));
+        list.add(getString(R.string.app_type_quanbu));
+        list.add(getString(R.string.app_type_daishenhe));
+        list.add(getString(R.string.app_type_yitongguo));
+        list.add(getString(R.string.app_type_weitongguo));
+
         final Pop_ListAdapter adapter = new Pop_ListAdapter(MyWorkListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
@@ -301,9 +332,9 @@ public class MyWorkListActivity extends BaseActivity {
                 adapter.notifyDataSetChanged();
                 i1 = i;
                 if (i == 0) {
-                    sort = "desc";
+                    status = "";
                 } else {
-                    sort = "asc";
+                    status = i + "";
                 }
 //                textView1.setText(list.get(i));
                 requestServer();
@@ -355,10 +386,8 @@ public class MyWorkListActivity extends BaseActivity {
         contentView.findViewById(R.id.pop_listView1).setVisibility(View.INVISIBLE);
         ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView2);
         final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_quanbu));
-        list.add(getString(R.string.app_type_daishenhe));
-        list.add(getString(R.string.app_type_yitongguo));
-        list.add(getString(R.string.app_type_weitongguo));
+        list.add(getString(R.string.app_type_jiangxu));
+        list.add(getString(R.string.app_type_shengxu));
 
         final Pop_ListAdapter adapter = new Pop_ListAdapter(MyWorkListActivity.this, list);
         adapter.setSelectItem(i2);
@@ -369,12 +398,12 @@ public class MyWorkListActivity extends BaseActivity {
                 adapter.setSelectItem(i);
                 i2 = i;
                 adapter.notifyDataSetChanged();
-
                 if (i == 0) {
-                    status = "";
+                    sort = "desc";
                 } else {
-                    status = i + "";
+                    sort = "asc";
                 }
+
 //                textView2.setText(list.get(i));
                 requestServer();
                 popupWindow.dismiss();

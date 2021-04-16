@@ -168,18 +168,18 @@ public class URLs {
     public static final String About = HOST + API + "about";
     //分润记录
     public static final String ShareProfitList = HOST + API + "order/profit";
-    //意见反馈提交
-    public static final String FeedBack = HOST + API + "/api/v1/public/increase_user_feedback";
-    //版本说明
-    public static final String Version = HOST + API + "/api/v1/h5/version";
-    //余额
-    public static final String Balance = HOST + API + "/api/v1/user/get_user_balance";
-    //我的钱包
-    public static final String MyWallet = HOST + API + "/api/v1/user/get_user_detailed_list";
-    //我的银行卡
-    public static final String MyBankCard = HOST + API + "/api/v1/techn/with_account_list";
-    //解绑银行卡
-    public static final String DeleteBankCard = HOST + API + "/api/v1/techn/with_account_del";
+    //工单列表
+    public static final String WorkList = HOST + API + "work/orders/record";
+    //添加设备工单
+    public static final String AddDeviceWorkList = HOST + API + "work/orders/device/fault";
+    //添加订单工单
+    public static final String AddOrderList = HOST + API + "app/work/orders/order";
+    //添加其他工单
+    public static final String AddOtherList = HOST + API + "work/orders/other";
+    //接手工单
+    public static final String WorkList_JieShou = HOST + API + "work/orders/fetch";
+    //工单详情
+    public static final String WorkListDetail = HOST + API + "work/orders/detail";
     //我的车辆
     public static final String MyCar = HOST + API + "/api/v1/user/user_sedan_list";
     //获取汽车品牌

@@ -1,13 +1,11 @@
 package com.xiyang.xiyang.activity;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,32 +14,44 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ImageUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.cretin.tools.scancode.CaptureActivity;
+import com.cretin.tools.scancode.config.ScanConfig;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.model.AddWorkListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.Constant;
+import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
+import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import id.zelory.compressor.Compressor;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -51,13 +61,15 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddWorkListActivity extends BaseActivity {
     List<String> list_work = new ArrayList<>();
-    int type = 0;
+    List<AddWorkListModel.WorkOrderTypeBean> list_guzhang = new ArrayList<>();
+    int type = 0, i_guzhang = -1;
     RelativeLayout rl_gongdanleixing, rl_xuanzedingdan, rl_shebeiguzhang, rl_xuanzemendian, rl_dingdanwenti,
             rl_guzhangleixing, rl_qitashuoming;
     EditText tv_gongdanleixing, tv_xuanzedingdan, tv_shebeiguzhang, tv_xuanzemendian, tv_dingdanwenti,
             tv_guzhangleixing, tv_qitashuoming;
     ImageView imageView1;
 
+    String workOrderType = "", deviceName = "", storeId = "", orderId = "", remark = "",images="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +108,32 @@ public class AddWorkListActivity extends BaseActivity {
         type = getIntent().getIntExtra("type", 0);
         tv_gongdanleixing.setText(list_work.get(type));
         titleView.setTitle(list_work.get(type));
-
         changeUI();
+
+    }
+
+    private void request(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<AddWorkListModel>() {
+            @Override
+            public AddWorkListModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(AddWorkListModel response) {
+                hideProgress();
+                i_guzhang = -1;
+                workOrderType = "";
+                list_guzhang = response.getWorkOrderType();
+            }
+        });
+
     }
 
     @Override
@@ -109,67 +145,237 @@ public class AddWorkListActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.tv_shebeiguzhang:
+                //设备扫码
+                ScanConfig config = new ScanConfig()
+                        .setShowFlashlight(true)//是否需要打开闪光灯
+                        .setShowGalary(true)//是否需要打开相册
+                        .setNeedRing(true);//是否需要提示音
+                //ScanConfig 也可以不配置 默认都是打开
+                CaptureActivity.launch(AddWorkListActivity.this, config);
+                break;
+            case R.id.tv_xuanzemendian:
+                //选择门店
+                Intent intent1 = new Intent(AddWorkListActivity.this, MyShopListActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("requestCode", Constant.SELECT_SHOP);
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, Constant.SELECT_SHOP, bundle1);
+                break;
+            case R.id.tv_xuanzedingdan:
+                //选择订单
+                Intent intent2 = new Intent(AddWorkListActivity.this, MyContractActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("requestCode", Constant.SELECT_CONTRACT);
+                intent2.putExtras(bundle2);
+                startActivityForResult(intent2, Constant.SELECT_CONTRACT, bundle2);
+                break;
             case R.id.tv_gongdanleixing:
                 //选择工单类型
-                dialog.contentView(R.layout.dialog_list)
-                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT))
-                        .animType(BaseDialog.AnimInType.BOTTOM)
-                        .canceledOnTouchOutside(true)
-                        .gravity(Gravity.TOP)
-                        .dimAmount(0.5f)
-                        .show();
-                RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
-                rv_list.setLayoutManager(new LinearLayoutManager(this));
-                CommonAdapter<String> adapter = new CommonAdapter<String>
-                        (AddWorkListActivity.this, R.layout.item_help, list_work) {
-                    @Override
-                    protected void convert(ViewHolder holder, String model, int position) {
-                        TextView tv = holder.getView(R.id.textView1);
-                        tv.setText(model);
-                        if (type == position)
-                            tv.setTextColor(getResources().getColor(R.color.green));
-                        else
-                            tv.setTextColor(getResources().getColor(R.color.black1));
-                    }
-                };
-                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                        type = position;
-                        tv_gongdanleixing.setText(list_work.get(position));
-                        titleView.setTitle(list_work.get(position));
-                        adapter.notifyDataSetChanged();
-                        changeUI();
-                        dialog.dismiss();
-
-                    }
-
-                    @Override
-                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        return false;
-                    }
-                });
-                rv_list.setAdapter(adapter);
+                dialogList_gongdan();
                 break;
-
-            case R.id.tv_baifangjilu:
-                //拜访记录
-                CommonUtil.gotoActivity(AddWorkListActivity.this,MyVisitListActivity.class);
+            case R.id.tv_guzhangleixing:
+                //故障类型
+                dialogList_guzhang(tv_guzhangleixing);
                 break;
-
+            case R.id.tv_dingdanwenti:
+                //订单类型
+                dialogList_guzhang(tv_dingdanwenti);
+                break;
+            case R.id.imageView1:
+                //上传图片
+                MyChooseImages.showPhotoDialog(AddWorkListActivity.this);
+                break;
+            case R.id.tv_confirm:
+                //提交
+                if (match()) {
+                    showProgress(true, getString(R.string.app_loading1));
+                    params.clear();
+                    params.put("remark",remark);
+                    params.put("images",images);
+                    switch (type) {
+                        case 0:
+                            //设备工单
+                            params.put("deviceName",deviceName);
+                            params.put("workOrderType",workOrderType);
+                            requestUpData(params,URLs.AddDeviceWorkList);
+                            break;
+                        case 1:
+                            //订单工单
+                            params.put("orderId",orderId);
+                            params.put("workOrderType",workOrderType);
+                            requestUpData(params,URLs.AddOrderList);
+                            break;
+                        case 2:
+                            //其他工单
+                            params.put("storeId",storeId);
+                            requestUpData(params,URLs.AddOtherList);
+                            break;
+                    }
+                }
+                break;
         }
     }
 
+    private boolean match() {
+        remark = tv_qitashuoming.getText().toString().trim();
+        if (TextUtils.isEmpty(remark)) {
+            myToast("请输入其他说明");
+            return false;
+        }
+        if (TextUtils.isEmpty(images)) {
+            myToast("请选择上传照片");
+            return false;
+        }
+        switch (type) {
+            case 0:
+                //设备工单
+                if (TextUtils.isEmpty(deviceName)) {
+                    myToast("请扫描设备码");
+                    return false;
+                }
+                if (TextUtils.isEmpty(workOrderType)) {
+                    myToast("请选择故障类型");
+                    return false;
+                }
+                break;
+            case 1:
+                //订单工单
+                if (TextUtils.isEmpty(orderId)) {
+                    myToast("请选择订单");
+                    return false;
+                }
+                if (TextUtils.isEmpty(workOrderType)) {
+                    myToast("请选择订单问题");
+                    return false;
+                }
+                break;
+            case 2:
+                //其他工单
+                if (TextUtils.isEmpty(storeId)) {
+                    myToast("请选择门店");
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
+
     /**
-     * 上传文件 list 方式
-     *
-     * @param params
-     * @param fileList
-     * @param fileKey
+     * *****************************************选择图片********************************************
      */
-    private void RequestUpFile(Map<String, String> params, List<File> fileList, String fileKey) {
-        OkhttpUtil.okHttpUploadListFile(URLs.AddMessage, params, fileList, fileKey, "image", headerMap, new CallBackUtil<String>() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            File pdffile = null;
+            File imgfile = null;
+            String imgpath = null;
+            Uri uri = null;
+            switch (requestCode) {
+                case CaptureActivity.REQUEST_CODE_SCAN:
+                    //二维码扫码
+                    if (data != null) {
+                        //获取扫描结果
+                        Bundle bundle = data.getExtras();
+                        String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
+                        //{"deviceName": "641708882ef84e09995d70440e12ebf9"}
+                        MyLogger.i("扫码返回", result);
+                        try {
+                            JSONObject mJsonObject = new JSONObject(result);
+                            deviceName = mJsonObject.getString("deviceName");
+                            tv_shebeiguzhang.setText(deviceName);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            myToast("解析出错");
+                        }
+                    }
+                    break;
+                case Constant.SELECT_SHOP:
+                    //选择门店
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        storeId = bundle.getString("storeId");
+                        tv_xuanzemendian.setText(storeId);
+                    }
+                    break;
+                case Constant.SELECT_CONTRACT:
+                    //选择合同
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        orderId = bundle.getString("orderId");
+                        tv_xuanzedingdan.setText(orderId);
+                    }
+                    break;
+                case SELECT_PDF_FILE:
+                    //选取PDF文件
+                    uri = data.getData();
+                    String pdfpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
+                    if (pdfpath != null) {
+                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
+                            pdffile = new File(pdfpath);
+                        } else {
+                            myToast("请选择PDF文件上传");
+                            return;
+                        }
+                    }
+                    break;
+                case REQUEST_CODE_CAPTURE_CAMEIA:
+                    //相机
+                    uri = Uri.parse("");
+                    uri = Uri.fromFile(new File(MyChooseImages.imagepath));
+                    imgpath = uri.getPath();
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
+                    break;
+                case REQUEST_CODE_PICK_IMAGE:
+                    //相册
+                    uri = data.getData();
+                    imgpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
+                    break;
+
+            }
+            if (imgpath != null) {
+//                showProgress(true, getString(R.string.app_loading1));
+//                imgfile = new File(uri.getPath());
+                //压缩
+                Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                imgfile = FileUtil.bytesToImageFile(AddWorkListActivity.this,
+                        ImageUtils.compressByQuality(bitmap, 50));
+
+                new UpFileToQiNiuUtil(AddWorkListActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                    @Override
+                    public void complete(boolean isok, String result, String url) {
+//                        hideProgress();
+                        if (isok) {
+                            MyLogger.i(">>>>上传文件路径：" + url);
+                            Glide.with(AddWorkListActivity.this)
+                                    .load(url)
+                                    .centerCrop()
+                                    .apply(RequestOptions.bitmapTransform(new
+                                            RoundedCorners(CommonUtil.dip2px(AddWorkListActivity.this, 10))))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.headimg)//加载失败
+                                    .into(imageView1);//加载图片
+                            images = url;
+                           /* Map<String, String> params = new HashMap<>();
+                            params.put("head",url);
+                            RequestUpFile(params);*/
+
+                        } else {
+                            myToast(result);
+                        }
+                    }
+                };
+            }
+        }
+
+    }
+
+    private void requestUpData(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPost(url, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -178,112 +384,23 @@ public class AddWorkListActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (!err.equals("")) {
-                    showToast(err);
-                }
+                myToast(err);
             }
 
             @Override
             public void onResponse(String response) {
-//                myToast("头像修改成功");
-//                editText.setText("");
-//                page = 1;
-                /*String string = "?page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestOnlineService(string);*/
+                myToast("提交成功");
+                hideProgress();
             }
         });
     }
 
+
     /**
-     * *****************************************选择图片********************************************
+     * 修改布局
      */
-    //选择图片及上传
-    ArrayList<String> listFileNames;
-    ArrayList<File> listFiles;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            Uri uri = null;
-            String imagePath = null;
-            switch (requestCode) {
-                case REQUEST_CODE_CAPTURE_CAMEIA:
-                    //相机
-                    uri = Uri.parse("");
-                    uri = Uri.fromFile(new File(MyChooseImages.imagepath));
-                    imagePath = uri.getPath();
-                    break;
-                case REQUEST_CODE_PICK_IMAGE:
-                    //相册
-                    uri = data.getData();
-                    //处理得到的url
-                    ContentResolver cr = this.getContentResolver();
-                    Cursor cursor = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        cursor = cr.query(uri, null, null, null, null, null);
-                        if (cursor != null) {
-                            cursor.moveToFirst();
-                            try {
-                                imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                myToast(getString(R.string.app_error));
-                            } finally {
-                                if (cursor != null)
-                                    cursor.close();
-                            }
-                        }
-
-                    } else {
-                        imagePath = uri.getPath();
-                    }
-                    break;
-            }
-            if (uri != null) {
-                MyLogger.i(">>>>>>>>>>获取到的图片路径1：" + imagePath);
-                //图片过大解决方法
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 2;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-
-//                imageView1.setImageBitmap(bitmap);
-//                imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-//                listFileNames = new ArrayList<>();
-//                listFileNames.add("head");
-
-                Uri uri1 = Uri.parse("");
-                /*uri1 = Uri.fromFile(new File(imagePath));
-                File file1 = new File(FileUtil.getPath(this, uri1));*/
-                File file1 = new File(imagePath);
-                listFiles = new ArrayList<>();
-                File newFile = null;
-                try {
-                    newFile = new Compressor(this).compressToFile(file1);
-                    listFiles.add(newFile);
-//                    MyLogger.i(">>>>>选择图片结果>>>>>>>>>" + listFileNames.toString() + ">>>>>>" + listFiles.toString());
-
-                    Map<String, File> fileMap = new HashMap<>();
-//                    fileMap.put("picture", newFile);
-                    Map<String, String> params = new HashMap<>();
-                    params.put("sn", "773EDB6D2715FACF9C93354CAC5B1A3372872DC4D5AC085867C7490E9984D33E");
-//                    RequestUpFile(fileMap, params);
-                    RequestUpFile(params, listFiles, "picture");
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    myToast(getString(R.string.app_imgerr));
-                }
-            }
-        }
-
-    }
-
-
     private void changeUI() {
+        showProgress(true, getString(R.string.app_loading2));
         rl_gongdanleixing.setVisibility(View.VISIBLE);
         rl_xuanzemendian.setVisibility(View.VISIBLE);
         rl_xuanzedingdan.setVisibility(View.GONE);
@@ -296,16 +413,109 @@ public class AddWorkListActivity extends BaseActivity {
                 //设备工单
                 rl_shebeiguzhang.setVisibility(View.VISIBLE);
                 rl_guzhangleixing.setVisibility(View.VISIBLE);
+                request(params, URLs.AddDeviceWorkList);
                 break;
             case 1:
                 //订单工单
                 rl_xuanzedingdan.setVisibility(View.VISIBLE);
                 rl_dingdanwenti.setVisibility(View.VISIBLE);
+                request(params, URLs.AddOrderList);
                 break;
             case 2:
                 //其他工单
-
+                request(params, URLs.AddOtherList);
                 break;
         }
+    }
+
+    /**
+     * 选择工单
+     */
+    private void dialogList_gongdan() {
+        dialog.contentView(R.layout.dialog_list)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.TOP)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AddWorkListActivity.this, R.layout.item_help, list_work) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (type == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                type = position;
+                tv_gongdanleixing.setText(list_work.get(position));
+                titleView.setTitle(list_work.get(position));
+                adapter.notifyDataSetChanged();
+                changeUI();
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择故障类型
+     */
+    private void dialogList_guzhang(TextView textView) {
+        dialog.contentView(R.layout.dialog_list)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.TOP)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<AddWorkListModel.WorkOrderTypeBean> adapter = new CommonAdapter<AddWorkListModel.WorkOrderTypeBean>
+                (AddWorkListActivity.this, R.layout.item_help, list_guzhang) {
+            @Override
+            protected void convert(ViewHolder holder, AddWorkListModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (i_guzhang == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                i_guzhang = position;
+                textView.setText(list_guzhang.get(position).getVal());
+                workOrderType = list_guzhang.get(position).getKey();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
     }
 }

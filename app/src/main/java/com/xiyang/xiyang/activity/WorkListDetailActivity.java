@@ -2,26 +2,19 @@ package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.BankCardSettingModel;
 import com.xiyang.xiyang.model.Fragment2Model;
+import com.xiyang.xiyang.model.WorkListDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.popupwindow.PhotoShowDialog;
 import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
-import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +30,7 @@ import okhttp3.Response;
  * 工单详情
  */
 public class WorkListDetailActivity extends BaseActivity {
+    String id = "";
     int type = 1;
     TextView tv_tab1, tv_tab2;
     LinearLayout ll_tab1, ll_tab2;
@@ -68,12 +62,8 @@ public class WorkListDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("id", id);
+                request(params);
             }
 
             @Override
@@ -126,7 +116,12 @@ public class WorkListDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        for (int i = 0; i < 5; i++) {
+        id = getIntent().getStringExtra("id");
+        showProgress(true, getString(R.string.app_loading2));
+        params.put("id", id);
+        request(params);
+
+        /*for (int i = 0; i < 5; i++) {
             list_shenhe.add(new Fragment2Model());
         }
         mAdapter_shenhe = new CommonAdapter<Fragment2Model>
@@ -136,24 +131,24 @@ public class WorkListDetailActivity extends BaseActivity {
                 //隐藏最前和最后的竖线
                 View view_top = holder.getView(R.id.view_top);
                 View view_bottom = holder.getView(R.id.view_bottom);
-                if (position == 0){
+                if (position == 0) {
                     view_top.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     view_top.setVisibility(View.VISIBLE);
                 }
-                if (position == (list_shenhe.size() -1)){
+                if (position == (list_shenhe.size() - 1)) {
                     view_bottom.setVisibility(View.GONE);
-                }else {
+                } else {
                     view_bottom.setVisibility(View.VISIBLE);
                 }
                 //横向图片
                 List<String> list_img = new ArrayList<>();
-                /*for (String s : model1.getGoods_info().getImgArr()) {
+                *//*for (String s : model1.getGoods_info().getImgArr()) {
                     list_img.add(URLs.IMGHOST + s);
-                }*/
-                list_img.add(URLs.IMGHOST +"");
-                list_img.add(URLs.IMGHOST +"");
-                list_img.add(URLs.IMGHOST +"");
+                }*//*
+                list_img.add(URLs.IMGHOST + "");
+                list_img.add(URLs.IMGHOST + "");
+                list_img.add(URLs.IMGHOST + "");
                 RecyclerView rv = holder.getView(R.id.rv);
                 LinearLayoutManager llm1 = new LinearLayoutManager(WorkListDetailActivity.this);
                 llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
@@ -186,7 +181,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 });
                 rv.setAdapter(ca);
 
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
+                            *//*ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
                                     .load(OkHttpClientManager.IMGHOST + model.getCover())
                                     .fitCenter()
@@ -206,26 +201,26 @@ public class WorkListDetailActivity extends BaseActivity {
                             holder.setText(R.id.tv_name, model.getTitle());
                             holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
                             holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
+                            holder.setText(R.id.tv_num, model.getNum() + "");*//*
 
-               /* holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+               *//* holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
 //                    bundle.putString("id",model.getId());
                         CommonUtil.gotoActivityWithData(ContractDetailActivity.this, ContractDetailActivity.class, bundle, false);
                     }
-                });*/
+                });*//*
 
             }
         };
-        rv_shenhe.setAdapter(mAdapter_shenhe);
+        rv_shenhe.setAdapter(mAdapter_shenhe);*/
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.BankCard, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
+        OkhttpUtil.okHttpGet(URLs.WorkListDetail, params, headerMap, new CallBackUtil<WorkListDetailModel>() {
             @Override
-            public BankCardSettingModel onParseResponse(Call call, Response response) {
+            public WorkListDetailModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -236,8 +231,8 @@ public class WorkListDetailActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(BankCardSettingModel response) {
-//                hideProgress();
+            public void onResponse(WorkListDetailModel response) {
+                hideProgress();
 //                model = response;
 
             }

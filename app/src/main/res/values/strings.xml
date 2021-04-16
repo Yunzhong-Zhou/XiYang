@@ -70,8 +70,8 @@
     <string name="app_type_jinxingzhong">进行中</string>
     <string name="app_type_yiwancheng">已完成</string>
     <string name="app_type_anyingli">按盈利</string>
-    <string name="app_type_anshijian">按时间</string>
-    <string name="app_type_anjine">按金额</string>
+    <string name="app_type_shijian">时间</string>
+    <string name="app_type_anjine">金额</string>
     <string name="app_type_yiijihuo">已激活</string>
     <string name="app_type_yijiangli">已奖励</string>
     <string name="app_type_zhuanchu">转出</string>

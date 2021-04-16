@@ -376,14 +376,12 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout10:
                 //设备报失-工单
-                bundle.putInt("type", 0);
-                bundle.putInt("type_guzhang", 0);
+                bundle.putInt("type", 1);
                 CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);
                 break;
             case R.id.linearLayout11:
                 //设备故障-工单
                 bundle.putInt("type", 0);
-                bundle.putInt("type_guzhang", 1);
                 CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);
                 break;
             case R.id.linearLayout12:

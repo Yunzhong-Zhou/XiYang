@@ -25,5 +25,8 @@ public class Constant {
     public static final int DEFAULT_WAVE_HEIGHT = 40;
 
 
-    public static final int SELECT_PDF_FILE= 10001;
+    public static final int SELECT_PDF_FILE= 10001;//选择PDF文件
+    public static final int SELECT_SHOP= 10005;//选择门店
+    public static final int SELECT_CONTRACT= 10006;//选择合同
+
 }
