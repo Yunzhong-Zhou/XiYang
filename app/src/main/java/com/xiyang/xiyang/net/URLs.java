@@ -5,8 +5,8 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.108";//图片地址
-    public static String HOST = "http://192.168.0.108";//接口地址
+    public static String IMGHOST = "http://192.168.0.103";//图片地址
+    public static String HOST = "http://192.168.0.103";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -173,7 +173,7 @@ public class URLs {
     //添加设备工单
     public static final String AddDeviceWorkList = HOST + API + "work/orders/device/fault";
     //添加订单工单
-    public static final String AddOrderList = HOST + API + "app/work/orders/order";
+    public static final String AddOrderList = HOST + API + "work/orders/order";
     //添加其他工单
     public static final String AddOtherList = HOST + API + "work/orders/other";
     //接手工单

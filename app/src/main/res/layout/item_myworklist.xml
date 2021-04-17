@@ -54,11 +54,34 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_time2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:layout_gravity="bottom"
+                android:text="time"
+                android:textColor="@color/black3"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_jieshou"
+                android:layout_width="62dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/yuanjiaobiankuang_7_lvse"
+                android:gravity="center"
+                android:text="接手"
+                android:textColor="@color/green"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
                 android:orientation="vertical">
 
                 <TextView
@@ -80,18 +103,6 @@
                     android:textSize="11sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_jieshou"
-                android:layout_width="62dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/yuanjiaobiankuang_7_lvse"
-                android:gravity="center"
-                android:text="接手"
-                android:textColor="@color/green"
-                android:textSize="14sp"
-                android:textStyle="bold" />
 
         </LinearLayout>
     </com.lihang.ShadowLayout>

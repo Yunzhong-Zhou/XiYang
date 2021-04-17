@@ -391,6 +391,9 @@ public class AddWorkListActivity extends BaseActivity {
             public void onResponse(String response) {
                 myToast("提交成功");
                 hideProgress();
+                Bundle bundle = new Bundle();
+                bundle.putString("fetch","1");//1待接工单2我的工单
+                CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class,bundle,false);
             }
         });
     }

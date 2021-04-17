@@ -525,7 +525,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="代接工单"
+                                    android:text="待接工单"
                                     android:textColor="@color/black2"
                                     android:textSize="12sp" />
 

@@ -229,9 +229,6 @@
             android:name=".activity.DeviceAddressActivity"
             android:label="设备定位" />
         <activity
-            android:name=".activity.WorkListDetailActivity"
-            android:label="工单详情" />
-        <activity
             android:name=".activity.MyDeviceListActivity"
             android:label="我的设备" />
         <activity
@@ -241,6 +238,9 @@
         <activity
             android:name=".activity.MyWorkListActivity"
             android:label="我的工单" />
+        <activity
+            android:name=".activity.WorkListDetailActivity"
+            android:label="工单详情" />
         <activity
             android:name=".activity.MyIncomeActivity"
             android:label="我的收益" />

@@ -48,7 +48,7 @@ public class MyWorkListActivity extends BaseActivity {
     private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "";
+    String type = "",sort="desc",fetch="1",startTime="",endTime="";
     int i1 = 0;
     int i2 = 0;
 
@@ -71,8 +71,11 @@ public class MyWorkListActivity extends BaseActivity {
                 page = 1;
                 params.put("page", page + "");
                 params.put("count", "10");
-                params.put("status", status);
+                params.put("type", type);
                 params.put("sort", sort);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
+                params.put("fetch", fetch);
                 requestList(params);
             }
 
@@ -82,8 +85,11 @@ public class MyWorkListActivity extends BaseActivity {
                 //加载更多
                 params.put("page", page + "");
                 params.put("count", "10");
-                params.put("status", status);
+                params.put("type", type);
                 params.put("sort", sort);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
+                params.put("fetch", fetch);
                 requestListMore(params);
             }
         });
@@ -100,6 +106,7 @@ public class MyWorkListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        fetch = getIntent().getStringExtra("fetch");//1待接工单2我的工单
         requestServer();//获取数据
     }
 
@@ -132,16 +139,21 @@ public class MyWorkListActivity extends BaseActivity {
                             holder.setText(R.id.tv_title,model.getType());//标题
                             holder.setText(R.id.tv_addr, model.getAddres());
                             holder.setText(R.id.tv_time, model.getCreatedAt());
+                            holder.setText(R.id.tv_type, model.getStatusTitle());
                             TextView tv_jieshou = holder.getView(R.id.tv_jieshou);
-                            TextView tv_type = holder.getView(R.id.tv_type);
-                            tv_type.setText(model.getStatusTitle());
+                            LinearLayout ll = holder.getView(R.id.ll);
+                            TextView tv_time2 = holder.getView(R.id.tv_time2);
+                            tv_time2.setText(model.getCreatedAt());
                             if (model.getStatus().equals("0")){
-                                tv_type.setVisibility(View.INVISIBLE);
+                                ll.setVisibility(View.GONE);
                                 tv_jieshou.setVisibility(View.VISIBLE);
+                                tv_time2.setVisibility(View.VISIBLE);
                             }else {
-                                tv_type.setVisibility(View.VISIBLE);
+                                ll.setVisibility(View.VISIBLE);
                                 tv_jieshou.setVisibility(View.GONE);
+                                tv_time2.setVisibility(View.GONE);
                             }
+
                             tv_jieshou.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -269,7 +281,12 @@ public class MyWorkListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("我的工单");
+        if (fetch.equals("1")){
+            titleView.setTitle("待接工单");
+        }else {
+            titleView.setTitle("我的工单");
+        }
+
     }
 
     @Override
@@ -279,8 +296,11 @@ public class MyWorkListActivity extends BaseActivity {
         page = 1;
         params.put("page", page + "");
         params.put("count", "10");
-        params.put("status", status);
+        params.put("type", type);
         params.put("sort", sort);
+        params.put("startTime", startTime);
+        params.put("endTime", endTime);
+        params.put("fetch", fetch);
         requestList(params);
     }
 
@@ -318,9 +338,9 @@ public class MyWorkListActivity extends BaseActivity {
         contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
         final List<String> list = new ArrayList<String>();
         list.add(getString(R.string.app_type_quanbu));
-        list.add(getString(R.string.app_type_daishenhe));
-        list.add(getString(R.string.app_type_yitongguo));
-        list.add(getString(R.string.app_type_weitongguo));
+        list.add("设备工单");
+        list.add("其他工单");
+        list.add("订单工单");
 
         final Pop_ListAdapter adapter = new Pop_ListAdapter(MyWorkListActivity.this, list);
         adapter.setSelectItem(i1);
@@ -332,9 +352,9 @@ public class MyWorkListActivity extends BaseActivity {
                 adapter.notifyDataSetChanged();
                 i1 = i;
                 if (i == 0) {
-                    status = "";
+                    type = "";
                 } else {
-                    status = i + "";
+                    type = i + "";
                 }
 //                textView1.setText(list.get(i));
                 requestServer();

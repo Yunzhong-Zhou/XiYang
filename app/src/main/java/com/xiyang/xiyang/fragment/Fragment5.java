@@ -241,6 +241,7 @@ public class Fragment5 extends BaseFragment {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.linearLayout1:
                 //个人资料
@@ -271,12 +272,14 @@ public class Fragment5 extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), MyStoreListActivity.class);
                 break;
             case R.id.linearLayout8:
-                //代接工单
-                CommonUtil.gotoActivity(getActivity(), MyWorkListActivity.class);
+                //待接工单
+                bundle.putString("fetch","1");//1待接工单2我的工单
+                CommonUtil.gotoActivityWithData(getActivity(), MyWorkListActivity.class,bundle,false);
                 break;
             case R.id.linearLayout9:
                 //我的工单
-                CommonUtil.gotoActivity(getActivity(), MyWorkListActivity.class,false);
+                bundle.putString("fetch","2");//1待接工单2我的工单
+                CommonUtil.gotoActivityWithData(getActivity(), MyWorkListActivity.class,bundle,false);
                 break;
             case R.id.linearLayout10:
                 //我的收益
