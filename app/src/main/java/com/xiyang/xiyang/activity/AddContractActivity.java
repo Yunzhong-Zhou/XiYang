@@ -46,7 +46,7 @@ public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
 
-    int item_hetong = 1,itme_truefalse = 0;
+    int item_hetong = 1,itme_truefalse = -1;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,

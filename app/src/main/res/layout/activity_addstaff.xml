@@ -96,10 +96,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/edittext_bg"
-                        android:focusable="false"
                         android:gravity="center_vertical|right"
                         android:hint="请输入员工姓名"
-                        android:inputType="textPassword"
                         android:padding="14dp"
                         android:singleLine="true"
                         android:textColor="@color/black2"
@@ -134,7 +132,6 @@
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical|right"
                         android:hint="请选择性别"
-                        android:inputType="textPassword"
                         android:padding="14dp"
                         android:singleLine="true"
                         android:textColor="@color/black2"
@@ -164,10 +161,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/edittext_bg"
-                        android:focusable="false"
                         android:gravity="center_vertical|right"
                         android:hint="请输入账号"
-                        android:inputType="textPassword"
                         android:padding="14dp"
                         android:singleLine="true"
                         android:textColor="@color/black2"
@@ -197,10 +192,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/edittext_bg"
-                        android:focusable="false"
                         android:gravity="center_vertical|right"
                         android:hint="请输入联系电话"
-                        android:inputType="textPassword"
+                        android:inputType="phone"
                         android:padding="14dp"
                         android:singleLine="true"
                         android:textColor="@color/black2"
@@ -209,39 +203,6 @@
                         android:textStyle="bold" />
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/rl_bumen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="部门"
-                        android:textColor="@color/black1"
-                        android:textSize="12.5sp"
-                        android:textStyle="bold"
-                        android:visibility="visible" />
-
-                    <EditText
-                        android:id="@+id/tv_bumen"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:background="@drawable/edittext_bg"
-                        android:focusable="false"
-                        android:gravity="center_vertical|right"
-                        android:hint="请输入所在部门"
-                        android:inputType="textPassword"
-                        android:padding="14dp"
-                        android:singleLine="true"
-                        android:textColor="@color/black2"
-                        android:textColorHint="@color/black3"
-                        android:textSize="12.5sp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/rl_leixing"
                     android:layout_width="match_parent"
@@ -253,7 +214,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="类型"
+                        android:text="选择类型"
                         android:textColor="@color/black1"
                         android:textSize="12.5sp"
                         android:textStyle="bold"
@@ -269,7 +230,6 @@
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical|right"
                         android:hint="请选择类型"
-                        android:inputType="textPassword"
                         android:padding="14dp"
                         android:singleLine="true"
                         android:textColor="@color/black2"
@@ -277,7 +237,40 @@
                         android:textSize="12.5sp"
                         android:textStyle="bold" />
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_chengshi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="选择城市"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_chengshi"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:focusable="false"
+                        android:drawableRight="@mipmap/ic_next_black"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical|right"
+                        android:hint="请选择城市"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
                 <TextView
                     android:id="@+id/tv_confirm"
                     android:layout_width="wrap_content"

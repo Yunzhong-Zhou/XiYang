@@ -55,6 +55,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_lable1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dip"
@@ -83,6 +84,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_lable2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dip"
@@ -111,6 +113,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_lable3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dip"
@@ -139,6 +142,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_lable4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dip"

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddStaffActivity;
+import com.xiyang.xiyang.activity.AdjustmentActivity;
 import com.xiyang.xiyang.activity.AdjustmentListActivity;
 import com.xiyang.xiyang.activity.DispatchActivity;
 import com.xiyang.xiyang.activity.MainActivity;
@@ -49,7 +50,9 @@ public class Fragment1_m extends BaseFragment {
     List<Fragment1Model> list2 = new ArrayList<>();
     CommonAdapter<Fragment1Model> mAdapter2;
 
-    TextView textView1, textView2, textView3, textView4;
+    TextView textView1, textView2, textView3, textView4,
+            tv_lable1,tv_lable2,tv_lable3,tv_lable4,
+            tv_tianjia,tv_fenpai,tv_tiaozheng,tv_mycity;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
             linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12;
 
@@ -158,6 +161,52 @@ public class Fragment1_m extends BaseFragment {
         linearLayout10.setOnClickListener(this);
         linearLayout11.setOnClickListener(this);
         linearLayout12.setOnClickListener(this);
+
+        tv_lable1 = findViewByID_My(R.id.tv_lable1);
+        tv_lable2 = findViewByID_My(R.id.tv_lable2);
+        tv_lable3 = findViewByID_My(R.id.tv_lable3);
+        tv_lable4 = findViewByID_My(R.id.tv_lable4);
+        tv_tianjia = findViewByID_My(R.id.tv_tianjia);
+        tv_fenpai = findViewByID_My(R.id.tv_fenpai);
+        tv_tiaozheng = findViewByID_My(R.id.tv_tiaozheng);
+        tv_mycity = findViewByID_My(R.id.tv_mycity);
+
+        switch (localUserInfo.getUserJob()){
+            case "rm":
+                tv_lable1.setText("总CM");
+                tv_lable2.setText("总BDM");
+                tv_lable3.setText("总BD");
+                tv_lable4.setText("总营收");
+                tv_tianjia.setText("添加CM");
+                tv_fenpai.setText("分派CM");
+                tv_tiaozheng.setText("调整BDM");
+                tv_mycity.setText("我的城市");
+                break;
+            case "cm":
+                tv_lable1.setText("总BDM");
+                tv_lable2.setText("总BD");
+                tv_lable3.setText("总门店");
+                tv_lable4.setText("总营收");
+                tv_tianjia.setText("添加BDM");
+                tv_fenpai.setText("分派BDM");
+                tv_tiaozheng.setText("调整BD");
+                tv_mycity.setText("我的市区");
+                break;
+            case "bdm":
+                tv_lable1.setText("总BD");
+                tv_lable2.setText("总设备");
+                tv_lable3.setText("总门店");
+                tv_lable4.setText("总营收");
+                tv_tianjia.setText("添加BD");
+                tv_fenpai.setText("分派BD");
+                tv_tiaozheng.setText("调整BD");
+                tv_mycity.setText("我的市区");
+                linearLayout10.setVisibility(View.GONE);
+                linearLayout11.setVisibility(View.GONE);
+                linearLayout12.setVisibility(View.GONE);
+                break;
+        }
+
 
     }
 
@@ -305,8 +354,7 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout5:
                 //添加CM
-                bundle.putInt("type", 1);
-                CommonUtil.gotoActivityWithData(getActivity(), AddStaffActivity.class, bundle);
+                CommonUtil.gotoActivity(getActivity(), AddStaffActivity.class);
                 break;
             case R.id.linearLayout6:
                 //我的门店
@@ -322,12 +370,11 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout9:
                 //分派CM
-                bundle.putInt("item_hetong", 1);
-                CommonUtil.gotoActivityWithData(getActivity(), DispatchActivity.class, bundle);
+                CommonUtil.gotoActivity(getActivity(), DispatchActivity.class);
                 break;
             case R.id.linearLayout10:
                 //调整角色
-                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
+                CommonUtil.gotoActivity(getActivity(), AdjustmentActivity.class);
                 break;
             case R.id.linearLayout11:
                 //调整BDM
