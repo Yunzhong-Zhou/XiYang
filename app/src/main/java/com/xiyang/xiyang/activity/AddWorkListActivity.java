@@ -435,7 +435,7 @@ public class AddWorkListActivity extends BaseActivity {
      * 选择工单
      */
     private void dialogList_gongdan() {
-        dialog.contentView(R.layout.dialog_list)
+        dialog.contentView(R.layout.dialog_list_top)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
                 .animType(BaseDialog.AnimInType.BOTTOM)
@@ -481,7 +481,7 @@ public class AddWorkListActivity extends BaseActivity {
      * 选择故障类型
      */
     private void dialogList_guzhang(TextView textView) {
-        dialog.contentView(R.layout.dialog_list)
+        dialog.contentView(R.layout.dialog_list_top)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
                 .animType(BaseDialog.AnimInType.BOTTOM)

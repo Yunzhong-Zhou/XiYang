@@ -137,6 +137,15 @@
             android:label="审核合同" />
         <!--管理-->
         <activity
+            android:name=".activity.AddStaffActivity"
+            android:label="添加员工" />
+        <activity
+            android:name=".activity.SelectMyCityActivity"
+            android:label="选择城市" />
+        <activity
+            android:name=".activity.StaffDetailActivity"
+            android:label="员工详情" />
+        <activity
             android:name=".activity.DispatchActivity"
             android:label="分派" />
         <activity
@@ -146,8 +155,12 @@
             android:name=".activity.AdjustmentActivity"
             android:label="调整" />
         <activity
+            android:name=".activity.AdjustmentListActivity"
+            android:label="调整列表" />
+        <activity
             android:name=".activity.MyCityActivity"
             android:label="我的城市" />
+
         <!--门店-->
         <activity
             android:name=".activity.AddStoreActivity"
@@ -197,12 +210,6 @@
         <activity
             android:name=".activity.StaffManagementActivity"
             android:label="员工管理" />
-        <activity
-            android:name=".activity.AddStaffActivity"
-            android:label="添加员工" />
-        <activity
-            android:name=".activity.StaffDetailActivity"
-            android:label="员工详情" />
         <!--设备-->
         <activity
             android:name=".activity.SelectDeviceActivity"

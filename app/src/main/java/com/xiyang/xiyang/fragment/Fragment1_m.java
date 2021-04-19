@@ -30,6 +30,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -115,12 +116,8 @@ public class Fragment1_m extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-               /* page1 = 0;
-                page2 = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("page", page1 + "");
-                params.put("u_token", localUserInfo.getToken());
-                Request(params);*/
+                Request(params);
             }
 
             @Override
@@ -265,14 +262,13 @@ public class Fragment1_m extends BaseFragment {
     @Override
     public void requestServer() {
         super.requestServer();
-        /*this.showLoadingPage();
+        this.showLoadingPage();
         Map<String, String> params = new HashMap<>();
-        params.put("u_token", localUserInfo.getToken());
-        Request(params);*/
+        Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment1, params, headerMap, new CallBackUtil<Fragment1Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment1_m, params, headerMap, new CallBackUtil<Fragment1Model>() {
             @Override
             public Fragment1Model onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;

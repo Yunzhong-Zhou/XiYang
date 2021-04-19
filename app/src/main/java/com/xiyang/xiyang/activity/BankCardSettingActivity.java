@@ -471,10 +471,10 @@ public class BankCardSettingActivity extends BaseActivity {
     }
 
     /**
-     * 选择合同
+     * 选择银行
      */
     private void dialogList_bank() {
-        dialog.contentView(R.layout.dialog_list)
+        dialog.contentView(R.layout.dialog_list_top)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
                 .animType(BaseDialog.AnimInType.BOTTOM)

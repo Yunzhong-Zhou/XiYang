@@ -131,7 +131,7 @@ public class MyVisitListActivity extends BaseActivity {
     }
 
     private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpGet(URLs.MyVisitList, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

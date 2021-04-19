@@ -51,7 +51,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddVisitActivity extends BaseActivity {
     List<String> list_visit = new ArrayList<>();
-    int type = 0;
+    int type = 0;// 1-远程拜访，2-上门拜访，3-陌生拜访
     RelativeLayout rl_xuanzefangshi, rl_xuanzemendian, rl_baifangjilu, rl_yingyeqingkuang, rl_hezuofengxian,
             rl_baifangmendian, rl_baifangrenyuan, rl_lianxidianhua, rl_baifangshijian, rl_mendiandizhi,
             rl_baifangfangshi, rl_shifouyixiang, rl_baifanglianxiren, rl_baifangyuanyin, rl_baifangfankui,
@@ -61,7 +61,6 @@ public class AddVisitActivity extends BaseActivity {
             tv_baifangfangshi, tv_shifouyixiang, tv_baifanglianxiren, tv_baifangyuanyin, tv_baifangfankui,
             tv_shanghujingdui, tv_buchongshuoming;
     ImageView imageView1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,49 +133,9 @@ public class AddVisitActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_xuanzefangshi:
-                //选择合同类型
-                dialog.contentView(R.layout.dialog_list)
-                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT))
-                        .animType(BaseDialog.AnimInType.BOTTOM)
-                        .canceledOnTouchOutside(true)
-                        .gravity(Gravity.TOP)
-                        .dimAmount(0.5f)
-                        .show();
-                RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
-                rv_list.setLayoutManager(new LinearLayoutManager(this));
-                CommonAdapter<String> adapter = new CommonAdapter<String>
-                        (AddVisitActivity.this, R.layout.item_help, list_visit) {
-                    @Override
-                    protected void convert(ViewHolder holder, String model, int position) {
-                        TextView tv = holder.getView(R.id.textView1);
-                        tv.setText(model);
-                        if (type == position)
-                            tv.setTextColor(getResources().getColor(R.color.green));
-                        else
-                            tv.setTextColor(getResources().getColor(R.color.black1));
-                    }
-                };
-                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                        type = position;
-                        tv_xuanzefangshi.setText(list_visit.get(position));
-                        titleView.setTitle(list_visit.get(position));
-                        adapter.notifyDataSetChanged();
-                        changeUI();
-                        dialog.dismiss();
-
-                    }
-
-                    @Override
-                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                        return false;
-                    }
-                });
-                rv_list.setAdapter(adapter);
+                //选择方式
+                dialogList_visit();
                 break;
-
             case R.id.tv_baifangjilu:
                 //拜访记录
                 CommonUtil.gotoActivity(AddVisitActivity.this,MyVisitListActivity.class);
@@ -352,5 +311,50 @@ public class AddVisitActivity extends BaseActivity {
                 rl_shifouyixiang.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+    /**
+     * 选择拜访
+     */
+    private void dialogList_visit() {
+        dialog.contentView(R.layout.dialog_list_top)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.TOP)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AddVisitActivity.this, R.layout.item_help, list_visit) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (type == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                type = position;
+                tv_xuanzefangshi.setText(list_visit.get(position));
+                titleView.setTitle(list_visit.get(position));
+                adapter.notifyDataSetChanged();
+                changeUI();
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
     }
 }

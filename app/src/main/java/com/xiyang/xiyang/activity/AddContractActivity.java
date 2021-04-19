@@ -442,7 +442,7 @@ public class AddContractActivity extends BaseActivity {
      * 选择合同
      */
     private void dialogList_hetong(){
-        dialog.contentView(R.layout.dialog_list)
+        dialog.contentView(R.layout.dialog_list_top)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
                 .animType(BaseDialog.AnimInType.BOTTOM)
@@ -486,12 +486,12 @@ public class AddContractActivity extends BaseActivity {
      * 选择是否
      */
     private void dialogList_TrueFalse(){
-        dialog.contentView(R.layout.dialog_list)
+        dialog.contentView(R.layout.dialog_list_center)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
                 .animType(BaseDialog.AnimInType.BOTTOM)
                 .canceledOnTouchOutside(true)
-                .gravity(Gravity.TOP)
+                .gravity(Gravity.CENTER)
                 .dimAmount(0.5f)
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);

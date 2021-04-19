@@ -28,5 +28,6 @@ public class Constant {
     public static final int SELECT_PDF_FILE= 10001;//选择PDF文件
     public static final int SELECT_SHOP= 10005;//选择门店
     public static final int SELECT_CONTRACT= 10006;//选择合同
+    public static final int SELECT_MYCITY= 10007;//选择我的城市
 
 }

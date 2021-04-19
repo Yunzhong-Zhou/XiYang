@@ -5,8 +5,8 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.103";//图片地址
-    public static String HOST = "http://192.168.0.103";//接口地址
+    public static String IMGHOST = "http://192.168.0.105";//图片地址
+    public static String HOST = "http://192.168.0.105";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -55,17 +55,25 @@ public class URLs {
     /**
      * ********************************商户*****************************************
      */
-    public static final String Fragment1 = HOST + API + "merchant";
+    public static final String Fragment1 = HOST + API + "merchant/record";
     //商户列表
     public static final String ShopList = HOST + API + "merchant/record";
     //商户详情
     public static final String ShopDetail = HOST + API + "merchant/detail";
     /**
+     * ********************************管理*****************************************
+     */
+    public static final String Fragment1_m = HOST + API + "rm/manage";
+    //选择权限城市
+    public static final String MyCity = HOST + API + "user/position/record";
+    //添加员工
+    public static final String AddStaff = HOST + API + "user/add";
+    /**
      * ********************************门店*****************************************
      */
     public static final String Fragment2 = HOST + API + "/api/v1/techn/techn_accept_order_list";
-    //接车
-    public static final String AddJieChe = HOST + API + "/api/v1/techn/techn_sedan_increase";
+    //拜访列表
+    public static final String MyVisitList = HOST + API + "store/visit/log/record";
     //待分配
     public static final String Fragment2_1 = HOST + API + "/api/v1/techn/techn_sedan_list";
     //待施工=进行中=待复检=待完工=已提车
