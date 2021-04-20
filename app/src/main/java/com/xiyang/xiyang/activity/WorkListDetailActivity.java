@@ -166,12 +166,12 @@ public class WorkListDetailActivity extends BaseActivity {
 
                 break;
             case R.id.ll_tab1:
-                //商户信息
+                //工单信息
                 type = 1;
                 changeUI();
                 break;
             case R.id.ll_tab2:
-                //合同信息
+                //处理记录
                 type = 2;
                 changeUI();
                 break;
@@ -186,6 +186,7 @@ public class WorkListDetailActivity extends BaseActivity {
     @Override
     public void requestServer() {
         super.requestServer();
+        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
         params.put("id", id);
         request(params);
@@ -201,6 +202,7 @@ public class WorkListDetailActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
+                showErrorPage();
                 myToast(err);
             }
 
@@ -271,73 +273,75 @@ public class WorkListDetailActivity extends BaseActivity {
                  * 处理记录
                  */
                 list_shenhe = response.getDealList();
-                mAdapter_shenhe = new CommonAdapter<WorkListDetailModel.DealListBean>
-                        (WorkListDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
-                    @Override
-                    protected void convert(ViewHolder holder, WorkListDetailModel.DealListBean model, int position) {
-                        //隐藏最前和最后的竖线
-                        View view_top = holder.getView(R.id.view_top);
-                        View view_bottom = holder.getView(R.id.view_bottom);
-                        if (position == 0) {
-                            view_top.setVisibility(View.INVISIBLE);
-                        } else {
-                            view_top.setVisibility(View.VISIBLE);
-                        }
-                        if (position == (list_shenhe.size() - 1)) {
-                            view_bottom.setVisibility(View.GONE);
-                        } else {
-                            view_bottom.setVisibility(View.VISIBLE);
-                        }
-                        //状态图片
-                        ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
-                        switch (model.getStatus()) {
-                            case "1":
-                                iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
-                                break;
-                            case "2":
-                                iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                break;
-                            case "3":
-                                iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
-                                break;
-                        }
-
-                        //横向图片
-                        List<String> list_img = new ArrayList<>();
-                        for (String s : model.getImages()) {
-                            list_img.add(s);
-                        }
-                        RecyclerView rv = holder.getView(R.id.rv);
-                        LinearLayoutManager llm1 = new LinearLayoutManager(WorkListDetailActivity.this);
-                        llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
-                        rv.setLayoutManager(llm1);
-                        CommonAdapter<String> ca = new CommonAdapter<String>
-                                (WorkListDetailActivity.this, R.layout.item_img_28_28, list_img) {
-                            @Override
-                            protected void convert(ViewHolder holder, String model, int position) {
-                                ImageView iv = holder.getView(R.id.iv);
-                                Glide.with(WorkListDetailActivity.this).load(model)
-                                        .centerCrop()
-                                        .apply(RequestOptions.bitmapTransform(new
-                                                RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 7))))
-                                        .placeholder(R.mipmap.loading)//加载站位图
-                                        .error(R.mipmap.zanwutupian)//加载失败
-                                        .into(iv);//加载图片
+                if (list_shenhe.size()>0){
+                    showContentPage();
+                    mAdapter_shenhe = new CommonAdapter<WorkListDetailModel.DealListBean>
+                            (WorkListDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
+                        @Override
+                        protected void convert(ViewHolder holder, WorkListDetailModel.DealListBean model, int position) {
+                            //隐藏最前和最后的竖线
+                            View view_top = holder.getView(R.id.view_top);
+                            View view_bottom = holder.getView(R.id.view_bottom);
+                            if (position == 0) {
+                                view_top.setVisibility(View.INVISIBLE);
+                            } else {
+                                view_top.setVisibility(View.VISIBLE);
                             }
-                        };
-                        ca.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                PhotoShowDialog photoShowDialog = new PhotoShowDialog(WorkListDetailActivity.this, list_img, i);
-                                photoShowDialog.show();
+                            if (position == (list_shenhe.size() - 1)) {
+                                view_bottom.setVisibility(View.GONE);
+                            } else {
+                                view_bottom.setVisibility(View.VISIBLE);
+                            }
+                            //状态图片
+                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
+                            switch (model.getStatus()) {
+                                case "1":
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
+                                    break;
+                                case "2":
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                    break;
+                                case "3":
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
+                                    break;
                             }
 
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                return false;
+                            //横向图片
+                            List<String> list_img = new ArrayList<>();
+                            for (String s : model.getImages()) {
+                                list_img.add(s);
                             }
-                        });
-                        rv.setAdapter(ca);
+                            RecyclerView rv = holder.getView(R.id.rv);
+                            LinearLayoutManager llm1 = new LinearLayoutManager(WorkListDetailActivity.this);
+                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                            rv.setLayoutManager(llm1);
+                            CommonAdapter<String> ca = new CommonAdapter<String>
+                                    (WorkListDetailActivity.this, R.layout.item_img_28_28, list_img) {
+                                @Override
+                                protected void convert(ViewHolder holder, String model, int position) {
+                                    ImageView iv = holder.getView(R.id.iv);
+                                    Glide.with(WorkListDetailActivity.this).load(model)
+                                            .centerCrop()
+                                            .apply(RequestOptions.bitmapTransform(new
+                                                    RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 7))))
+                                            .placeholder(R.mipmap.loading)//加载站位图
+                                            .error(R.mipmap.zanwutupian)//加载失败
+                                            .into(iv);//加载图片
+                                }
+                            };
+                            ca.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(WorkListDetailActivity.this, list_img, i);
+                                    photoShowDialog.show();
+                                }
+
+                                @Override
+                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    return false;
+                                }
+                            });
+                            rv.setAdapter(ca);
 
                         /*ImageView iv_head = holder.getView(R.id.iv_head);
                         Glide.with(WorkListDetailActivity.this)
@@ -349,14 +353,18 @@ public class WorkListDetailActivity extends BaseActivity {
                                 .error(R.mipmap.zanwutupian)//加载失败
                                 .into(iv_head);//加载图片
                         holder.setText(R.id.tv_name, model.get);*/
-                        holder.setText(R.id.tv_time, model.getCreatedAt());
-                        holder.setText(R.id.tv_type, model.getStatusTitle());
-                        holder.setText(R.id.tv_content, model.getReamrk());
+                            holder.setText(R.id.tv_time, model.getCreatedAt());
+                            holder.setText(R.id.tv_type, model.getStatusTitle());
+                            holder.setText(R.id.tv_content, model.getReamrk());
 
 
-                    }
-                };
-                rv_shenhe.setAdapter(mAdapter_shenhe);
+                        }
+                    };
+                    rv_shenhe.setAdapter(mAdapter_shenhe);
+                }else {
+                    showEmptyPage();
+                }
+
             }
         });
     }

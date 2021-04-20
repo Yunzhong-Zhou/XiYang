@@ -103,8 +103,19 @@
                 android:layout_height="100dp"
                 android:layout_marginLeft="28dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:background="@mipmap/ic_add_gray"
                 android:onClick="onClick" />
+
+            <!--图片选择-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_addimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginBottom="13dp"/>
 
             <TextView
                 android:id="@+id/tv_confirm"

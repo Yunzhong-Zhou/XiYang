@@ -117,7 +117,6 @@
 
                 </com.lihang.ShadowLayout>
 
-
                 <com.lihang.ShadowLayout
                     android:id="@+id/sl_tab"
                     android:layout_width="match_parent"
@@ -194,7 +193,7 @@
                     </LinearLayout>
                 </com.lihang.ShadowLayout>
 
-                //商户信息-已审核
+                //工单信息
 
                 <LinearLayout
                     android:id="@+id/ll_shopinfo"
@@ -235,6 +234,7 @@
                                 android:textColor="@color/black1"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
+
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_info"
                                 android:layout_width="match_parent"
@@ -248,6 +248,7 @@
                                 android:textColor="@color/black3"
                                 android:textSize="12.5sp"
                                 android:textStyle="bold" />
+
                             <ImageView
                                 android:id="@+id/iv_info"
                                 android:layout_width="107dp"
@@ -278,19 +279,25 @@
 
                 </LinearLayout>
 
-                //审核合同
+                //处理记录
 
                 <LinearLayout
                     android:id="@+id/ll_shenhe"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_shenhe"
+                    <com.xiyang.xiyang.view.LoadingLayout
+                        android:id="@+id/loading_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_shenhe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.xiyang.xiyang.view.LoadingLayout>
 
                 </LinearLayout>
 

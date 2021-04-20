@@ -190,8 +190,8 @@ public class URLs {
     public static final String WorkListDetail = HOST + API + "work/orders/detail";
     //处理工单
     public static final String ChangeWorkList = HOST + API + "work/orders/deal";
-    //获取汽车品牌
-    public static final String CarNameList = HOST + API + "/api/v1/public/user_sedan_brand_list";
+    //添加拜访
+    public static final String AddVisit = HOST + API + "store/visit/log/add";
     //添加车辆
     public static final String AddCar = HOST + API + "/api/v1/user/user_sedan_add";
     //足迹列表
