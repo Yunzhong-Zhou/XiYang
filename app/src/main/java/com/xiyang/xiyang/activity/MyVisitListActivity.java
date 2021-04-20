@@ -61,6 +61,12 @@ public class MyVisitListActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();//获取数据
+    }
+
+    @Override
     protected void initView() {
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -104,7 +110,7 @@ public class MyVisitListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestServer();//获取数据
+
 
         for (int i = 0; i < 5; i++) {
             list.add(new MyTakeCashModel());
@@ -265,7 +271,7 @@ public class MyVisitListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("我的工单");
+        titleView.setTitle("拜访记录");
     }
 
     @Override

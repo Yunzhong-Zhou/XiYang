@@ -63,8 +63,17 @@ public class WorkListDetailModel implements Serializable {
         private String createdAt;
         private String reamrk;
         private String status;
+        private String fetch;
         private String statusTitle;
         private List<String> images;
+
+        public String getFetch() {
+            return fetch;
+        }
+
+        public void setFetch(String fetch) {
+            this.fetch = fetch;
+        }
 
         public String getId() {
             return id;

@@ -233,6 +233,9 @@
             android:name=".activity.AddWorkListActivity"
             android:label="创建工单" />
         <activity
+            android:name=".activity.ChangeWorkListActivity"
+            android:label="处理工单" />
+        <activity
             android:name=".activity.DeviceAddressActivity"
             android:label="设备定位" />
         <activity

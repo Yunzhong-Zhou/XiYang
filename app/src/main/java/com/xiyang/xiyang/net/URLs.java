@@ -5,8 +5,8 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.105";//图片地址
-    public static String HOST = "http://192.168.0.105";//接口地址
+    public static String IMGHOST = "http://192.168.0.103";//图片地址
+    public static String HOST = "http://192.168.0.103";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -188,8 +188,8 @@ public class URLs {
     public static final String WorkList_JieShou = HOST + API + "work/orders/fetch";
     //工单详情
     public static final String WorkListDetail = HOST + API + "work/orders/detail";
-    //我的车辆
-    public static final String MyCar = HOST + API + "/api/v1/user/user_sedan_list";
+    //处理工单
+    public static final String ChangeWorkList = HOST + API + "work/orders/deal";
     //获取汽车品牌
     public static final String CarNameList = HOST + API + "/api/v1/public/user_sedan_brand_list";
     //添加车辆

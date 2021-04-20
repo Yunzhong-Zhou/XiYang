@@ -24,7 +24,7 @@ import com.cretin.tools.scancode.config.ScanConfig;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.AddWorkListModel;
+import com.xiyang.xiyang.model.CommonModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -61,7 +61,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddWorkListActivity extends BaseActivity {
     List<String> list_work = new ArrayList<>();
-    List<AddWorkListModel.WorkOrderTypeBean> list_guzhang = new ArrayList<>();
+    List<CommonModel.WorkOrderTypeBean> list_guzhang = new ArrayList<>();
     int type = 0, i_guzhang = -1;
     RelativeLayout rl_gongdanleixing, rl_xuanzedingdan, rl_shebeiguzhang, rl_xuanzemendian, rl_dingdanwenti,
             rl_guzhangleixing, rl_qitashuoming;
@@ -113,9 +113,9 @@ public class AddWorkListActivity extends BaseActivity {
     }
 
     private void request(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<AddWorkListModel>() {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<CommonModel>() {
             @Override
-            public AddWorkListModel onParseResponse(Call call, Response response) {
+            public CommonModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -126,7 +126,7 @@ public class AddWorkListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(AddWorkListModel response) {
+            public void onResponse(CommonModel response) {
                 hideProgress();
                 i_guzhang = -1;
                 workOrderType = "";
@@ -491,10 +491,10 @@ public class AddWorkListActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<AddWorkListModel.WorkOrderTypeBean> adapter = new CommonAdapter<AddWorkListModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
                 (AddWorkListActivity.this, R.layout.item_help, list_guzhang) {
             @Override
-            protected void convert(ViewHolder holder, AddWorkListModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
                 tv.setText(model.getVal());
                 if (i_guzhang == position)

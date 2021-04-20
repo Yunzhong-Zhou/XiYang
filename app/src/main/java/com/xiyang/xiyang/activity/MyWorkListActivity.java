@@ -59,6 +59,12 @@ public class MyWorkListActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();//获取数据
+    }
+
+    @Override
     protected void initView() {
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -107,7 +113,6 @@ public class MyWorkListActivity extends BaseActivity {
     @Override
     protected void initData() {
         fetch = getIntent().getStringExtra("fetch");//1待接工单2我的工单
-        requestServer();//获取数据
     }
 
     private void requestList(Map<String, String> params) {

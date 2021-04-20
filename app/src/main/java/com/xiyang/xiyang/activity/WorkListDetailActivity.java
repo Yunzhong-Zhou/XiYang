@@ -76,6 +76,12 @@ public class WorkListDetailActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
+    }
+
+    @Override
     protected void initView() {
         setSpringViewMore(false);//需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
@@ -135,22 +141,29 @@ public class WorkListDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_jieshou:
                 //接手
-                showToast("确认接手该工单吗？", "确定", "取消",
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                showProgress(true, getString(R.string.app_loading1));
-                                params.clear();
-                                params.put("id", id);
-                                requestJieShou(params);
-                            }
-                        }, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
+                if (tv_jieshou.getText().toString().trim().equals("接手")){
+                    showToast("确认接手该工单吗？", "确定", "取消",
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                    showProgress(true, getString(R.string.app_loading1));
+                                    params.clear();
+                                    params.put("id", id);
+                                    requestJieShou(params);
+                                }
+                            }, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                }else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id",id);
+                    CommonUtil.gotoActivityWithData(WorkListDetailActivity.this,ChangeWorkListActivity.class,bundle,false);
+                }
+
                 break;
             case R.id.ll_tab1:
                 //商户信息
@@ -168,10 +181,14 @@ public class WorkListDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         id = getIntent().getStringExtra("id");
+    }
+
+    @Override
+    public void requestServer() {
+        super.requestServer();
         showProgress(true, getString(R.string.app_loading2));
         params.put("id", id);
         request(params);
-
     }
 
     private void request(HashMap<String, String> params) {
@@ -194,13 +211,21 @@ public class WorkListDetailActivity extends BaseActivity {
                 /**
                  * 基本信息
                  */
-                if (response.getBaseInfo().getStatus().equals("0")){//未接工单
+                if (response.getBaseInfo().getFetch().equals("1")){//未接工单
                     sl_tab.setVisibility(View.GONE);
+                    tv_jieshou.setText("接手");
                     tv_jieshou.setVisibility(View.VISIBLE);
                 } else{
                     sl_tab.setVisibility(View.VISIBLE);
-                    tv_jieshou.setVisibility(View.GONE);
+                    if (!response.getBaseInfo().getStatus().equals("2")){
+                        tv_jieshou.setText("处理工单");
+                        tv_jieshou.setVisibility(View.VISIBLE);
+                    }else {
+                        tv_jieshou.setVisibility(View.GONE);
+                    }
+
                 }
+
                 Glide.with(WorkListDetailActivity.this)
                         .load(response.getBaseInfo().getStoreCover())
                         .fitCenter()
