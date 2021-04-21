@@ -5,8 +5,8 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.103";//图片地址
-    public static String HOST = "http://192.168.0.103";//接口地址
+    public static String IMGHOST = "http://192.168.0.102";//图片地址
+    public static String HOST = "http://192.168.0.102";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -40,10 +40,10 @@ public class URLs {
     public static final String UpFile = HOST + API + "/apiupload/picture";
     //退出登录
     public static final String LoginOut = HOST + API + "user/logout";
-    //搜索
-    public static final String Search = HOST + API + "/api/v1/public/get_store_search_list";
-    //收藏
-    public static final String ShouChang = HOST + API + "/api/v1/user/user_collection_increase";
+    //行业列表（2级）
+    public static final String Industry = HOST + API + "industry";
+    //省市区列表（3级）
+    public static final String Region = HOST + API + "region";
     //取消收藏
     public static final String QuXiaoShouChang = HOST + API + "/api/v1/user/user_collection_del";
     //加入购物车
@@ -56,6 +56,8 @@ public class URLs {
      * ********************************商户*****************************************
      */
     public static final String Fragment1 = HOST + API + "merchant/record";
+    //添加商户
+    public static final String AddShop = HOST + API + "bd/merchant/add";
     //商户列表
     public static final String ShopList = HOST + API + "merchant/record";
     //商户详情

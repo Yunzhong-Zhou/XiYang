@@ -10,6 +10,49 @@ import java.util.List;
 public class CommonModel implements Serializable {
 
     /**
+     * 通用列表
+     */
+    private List<ListBean> list;
+
+    public List<ListBean> getList() {
+        return list;
+    }
+
+    public void setList(List<ListBean> list) {
+        this.list = list;
+    }
+
+    public static class ListBean {
+        private String id;
+        private String name;
+        private String parentId;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getParentId() {
+            return parentId;
+        }
+
+        public void setParentId(String parentId) {
+            this.parentId = parentId;
+        }
+    }
+
+    /**
      * 添加工单-故障
      */
     private List<WorkOrderTypeBean> workOrderType;
@@ -23,11 +66,6 @@ public class CommonModel implements Serializable {
     }
 
     public static class WorkOrderTypeBean {
-        /**
-         * key : 1
-         * val : 网络断网
-         */
-
         private String key;
         private String val;
 
@@ -62,11 +100,6 @@ public class CommonModel implements Serializable {
     }
 
     public static class StatusBean {
-        /**
-         * key : 1
-         * val : 处理中
-         */
-
         private String key;
         private String val;
 
