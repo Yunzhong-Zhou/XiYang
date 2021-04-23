@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -56,8 +58,8 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
-
-    int item_hetong = 1, itme_truefalse = 1;
+    List<CommonModel.WorkOrderTypeBean> list_qixian = new ArrayList<>();
+    int item_hetong = 0, itme_truefalse = 1, item_qixian = -1;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,
@@ -78,8 +80,11 @@ public class AddContractActivity extends BaseActivity {
     TextView tv_img, tv_confirm;
     ImageView iv_add;
 
-    String storeId = "", shopId = "",contractType="",sole="1",renewalPeriod="",signTime="",file="",
-            licenseNo="",licenseNoImage="";
+    String storeId = "", shopId = "", contractType = "", sole = "1", renewalPeriod = "", signTime = "", file = "",
+            licenseNo = "", licenseNoImage = "";
+
+    File imgfile = null;
+    File pdffile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,14 +189,15 @@ public class AddContractActivity extends BaseActivity {
         list_hetong.add("取消合同");
         list_hetong.add("调价合同");
 
-        list_truefalse.add("是");
         list_truefalse.add("否");
+        list_truefalse.add("是");
 
-        item_hetong = getIntent().getIntExtra("item_hetong", 1);
+        item_hetong = getIntent().getIntExtra("item_hetong", 0);
         tv_hetongleixing.setText(list_hetong.get(item_hetong));
         titleView.setTitle(list_hetong.get(item_hetong));
         changeUI();
     }
+
     private void request(Map<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.Common, params, headerMap, new CallBackUtil<CommonModel>() {
             @Override
@@ -208,11 +214,15 @@ public class AddContractActivity extends BaseActivity {
             @Override
             public void onResponse(CommonModel response) {
                 hideProgress();
-
+                //期限
+                item_qixian = -1;
+                renewalPeriod = "";
+                list_qixian = response.getRenewalPeriod();
             }
         });
 
     }
+
     @Override
     protected void updateView() {
 
@@ -260,6 +270,10 @@ public class AddContractActivity extends BaseActivity {
                 CommonUtil.selectDate2YMD(AddContractActivity.this,
                         "请选择续签时间", tv_xuqianshijian, tv_xuqianshijian.getText().toString().trim());
                 break;
+            case R.id.tv_qianyueqixian:
+                //签约期限
+                dialogList_qixian(tv_qianyueqixian);
+                break;
             case R.id.tv_hetongwenjian:
                 //选取合同文件
                 FileUtil.selectPDFFile(AddContractActivity.this, list_hetong.get(item_hetong));
@@ -268,16 +282,158 @@ public class AddContractActivity extends BaseActivity {
                 //上传图片
                 MyChooseImages.showPhotoDialog(AddContractActivity.this);
                 break;
+            case R.id.tv_confirm:
+                //提交
+                if (match()) {
+                    showProgress(true, getString(R.string.app_loading1));
+                    switch (item_hetong) {
+                        case 0:
+                            //签约合同
+                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        file = url;//文件地址
+                                        new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                                            @Override
+                                            public void complete(boolean isok, String result, String url) {
+                                                if (isok) {
+                                                    licenseNoImage = url;//图片地址
+
+                                                    params.clear();
+                                                    params.put("merchatId", shopId);
+                                                    params.put("contractType", contractType);
+                                                    params.put("file", file);
+                                                    params.put("sole", sole);
+                                                    params.put("renewalPeriod", renewalPeriod);
+                                                    params.put("signTime", signTime);
+                                                    params.put("licenseNo", licenseNo);
+                                                    params.put("licenseNoImage", licenseNoImage);
+                                                    requestUpData(params, URLs.AddContract_QianYue);
+                                                } else {
+                                                    hideProgress();
+                                                    myToast("图片上传失败" + result);
+                                                }
+                                            }
+                                        };
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
+
+                            break;
+                        case 1:
+                            //新增合同
+
+                            break;
+                        case 2:
+                            //回收合同
+
+                            break;
+                        case 3:
+                            //换绑合同
+
+                            break;
+                        case 4:
+                            //修改合同
+
+                            break;
+                        case 5:
+                            //续签合同
+
+                            break;
+                        case 6:
+                            //取消合同
+
+                            break;
+                        case 7:
+                            //调价合同
+
+                            break;
+                    }
+                }
+
+                break;
         }
     }
 
+    private boolean match() {
+        switch (item_hetong) {
+            case 0:
+                //签约合同
+                contractType = "merchant_sign";
+                if (TextUtils.isEmpty(shopId)) {
+                    myToast("请选择商户");
+                    return false;
+                }
+                licenseNo = tv_yinyezhizhaohao.getText().toString().trim();
+                if (TextUtils.isEmpty(licenseNo)) {
+                    myToast("请输入营业执照号");
+                    return false;
+                }
+                if (TextUtils.isEmpty(renewalPeriod)) {
+                    myToast("请选择签约期限");
+                    return false;
+                }
+                sole = itme_truefalse+"";
+                if (TextUtils.isEmpty(sole)) {
+                    myToast("请选择是否独家");
+                    return false;
+                }
+                if (TextUtils.isEmpty(tv_qianyueshijian.getText().toString().trim())) {
+                    myToast("请选择签约时间");
+                    return false;
+                }else {
+                    signTime = TimeUtils.string2Millis(tv_qianyueshijian.getText().toString().trim(),"yyyy-MM-dd")+"";
+                }
+                if (pdffile == null) {
+                    myToast("请选择合同文件");
+                    return false;
+                }
+                if (imgfile == null) {
+                    myToast("请选择执照");
+                    return false;
+                }
+                break;
+            case 1:
+                //新增合同
+
+                break;
+            case 2:
+                //回收合同
+
+                break;
+            case 3:
+                //换绑合同
+
+                break;
+            case 4:
+                //修改合同
+
+                break;
+            case 5:
+                //续签合同
+
+                break;
+            case 6:
+                //取消合同
+
+                break;
+            case 7:
+                //调价合同
+
+                break;
+        }
+
+        return true;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
-            File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
@@ -303,6 +459,7 @@ public class AddContractActivity extends BaseActivity {
                     String pdfpath = FileUtil.getPath(this, uri);
                     MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
                     if (pdfpath != null) {
+                        tv_hetongwenjian.setText(FileUtils.getFileName(pdfpath));
                         if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
                             pdffile = new File(pdfpath);
                         } else {
@@ -326,26 +483,10 @@ public class AddContractActivity extends BaseActivity {
                     break;
 
             }
-
-
             //上传pdf文件
             if (pdffile != null) {
-                showProgress(true, "正在上传...");
-                new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            file = url;
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
             }
             if (imgpath != null) {
-                showProgress(true, "正在上传...");
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
@@ -364,29 +505,30 @@ public class AddContractActivity extends BaseActivity {
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(iv_add);//加载图片
-                new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            licenseNoImage = url;
-                            Glide.with(AddContractActivity.this)
-                                    .load(url)
-                                    .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(AddContractActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(iv_add);//加载图片
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
             }
         }
+    }
+
+    private void requestUpData(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPost(url, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                myToast("提交成功");
+                hideProgress();
+                CommonUtil.gotoActivity(AddContractActivity.this, MyContractActivity.class, true);
+            }
+        });
     }
 
     /**
@@ -446,7 +588,7 @@ public class AddContractActivity extends BaseActivity {
                 tv_img.setText("执照上传");
                 iv_add.setVisibility(View.VISIBLE);
 
-                params.put("type","renewalPeriod");
+                params.put("type", "renewalPeriod");
                 request(params);
                 break;
             case 1:
@@ -603,6 +745,51 @@ public class AddContractActivity extends BaseActivity {
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择签约期限
+     */
+    private void dialogList_qixian(TextView textView) {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+                (AddContractActivity.this, R.layout.item_help, list_qixian) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_qixian == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_qixian = position;
+                textView.setText(list_qixian.get(position).getVal());
+                renewalPeriod = list_qixian.get(position).getKey();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+
             }
 
             @Override

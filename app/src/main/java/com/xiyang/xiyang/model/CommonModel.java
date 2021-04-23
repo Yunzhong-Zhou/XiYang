@@ -52,6 +52,7 @@ public class CommonModel implements Serializable {
         }
     }
 
+
     /**
      * 添加工单-故障
      */
@@ -118,5 +119,17 @@ public class CommonModel implements Serializable {
         public void setVal(String val) {
             this.val = val;
         }
+    }
+
+    /**
+     * 签约期限
+     */
+    private List<WorkOrderTypeBean> renewalPeriod;
+
+    public List<WorkOrderTypeBean> getRenewalPeriod() {
+        return renewalPeriod;
+    }
+    public void setRenewalPeriod(List<WorkOrderTypeBean> renewalPeriod) {
+        this.renewalPeriod = renewalPeriod;
     }
 }

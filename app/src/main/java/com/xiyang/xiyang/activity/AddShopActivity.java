@@ -108,7 +108,6 @@ public class AddShopActivity extends BaseActivity {
                     new UpFileToQiNiuUtil(AddShopActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                         @Override
                         public void complete(boolean isok, String result, String url) {
-                            hideProgress();
                             if (isok) {
                                 MyLogger.i(">>>>上传文件路径：" + url);
                                 logoUrl = url;
@@ -129,7 +128,8 @@ public class AddShopActivity extends BaseActivity {
                                 requestUpData(params);
 
                             } else {
-                                myToast(result);
+                                hideProgress();
+                                myToast("图片上传失败"+result);
                             }
                         }
                     };

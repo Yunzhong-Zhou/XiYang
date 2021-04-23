@@ -61,6 +61,8 @@ public class URLs {
     public static final String ShopList = HOST + API + "merchant/record";
     //商户详情
     public static final String ShopDetail = HOST + API + "merchant/detail";
+    //签约合同
+    public static final String AddContract_QianYue = HOST + API + "contract/add";
     /**
      * ********************************管理*****************************************
      */
@@ -117,6 +119,22 @@ public class URLs {
      * ********************************设备*****************************************
      */
     public static final String Fragment3 = HOST + API + "/api/v1/techn/techn_forum_post_page_list";
+    //工单列表
+    public static final String WorkList = HOST + API + "work/orders/record";
+    //添加设备工单
+    public static final String AddDeviceWorkList = HOST + API + "work/orders/device/fault";
+    //添加订单工单
+    public static final String AddOrderList = HOST + API + "work/orders/order";
+    //添加其他工单
+    public static final String AddOtherList = HOST + API + "work/orders/other";
+    //接手工单
+    public static final String WorkList_JieShou = HOST + API + "work/orders/fetch";
+    //工单详情
+    public static final String WorkListDetail = HOST + API + "work/orders/detail";
+    //处理工单
+    public static final String ChangeWorkList = HOST + API + "work/orders/deal";
+    //添加拜访
+    public static final String AddVisit = HOST + API + "store/visit/log/add";
     //发布活动
     public static final String AddHuoDong = HOST + API + "/api/v1/techn/techn_activity_increase";
     //发布招聘
@@ -181,22 +199,6 @@ public class URLs {
     public static final String About = HOST + API + "about";
     //分润记录
     public static final String ShareProfitList = HOST + API + "order/profit";
-    //工单列表
-    public static final String WorkList = HOST + API + "work/orders/record";
-    //添加设备工单
-    public static final String AddDeviceWorkList = HOST + API + "work/orders/device/fault";
-    //添加订单工单
-    public static final String AddOrderList = HOST + API + "work/orders/order";
-    //添加其他工单
-    public static final String AddOtherList = HOST + API + "work/orders/other";
-    //接手工单
-    public static final String WorkList_JieShou = HOST + API + "work/orders/fetch";
-    //工单详情
-    public static final String WorkListDetail = HOST + API + "work/orders/detail";
-    //处理工单
-    public static final String ChangeWorkList = HOST + API + "work/orders/deal";
-    //添加拜访
-    public static final String AddVisit = HOST + API + "store/visit/log/add";
     //添加车辆
     public static final String AddCar = HOST + API + "/api/v1/user/user_sedan_add";
     //足迹列表
