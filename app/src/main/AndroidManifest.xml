@@ -294,6 +294,12 @@
             android:name=".activity.ForgetPasswordActivity"
             android:label="登录密码" />
 
+        <!--高德地图-->
+        <service android:name="com.amap.api.location.APSService" />
+        <!--开发者申请的key-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="4f7e6160c8c16c0a590abb61bd1a615a"></meta-data>
         <!--全面屏适配-->
         <!--<meta-data
             android:name="design_width_in_dp"

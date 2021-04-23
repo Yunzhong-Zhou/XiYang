@@ -120,6 +120,11 @@ public class Fragment1 extends BaseFragment {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
+                params.put("page", "");
+                params.put("count", "");
+                params.put("status", "");
+                params.put("title", "");
+                params.put("sort", "");
                 Request(params);
             }
 
@@ -262,6 +267,11 @@ public class Fragment1 extends BaseFragment {
         super.requestServer();
         this.showLoadingPage();
         Map<String, String> params = new HashMap<>();
+        params.put("page", "");
+        params.put("count", "");
+        params.put("status", "");
+        params.put("title", "");
+        params.put("sort", "");
         Request(params);
     }
 
@@ -284,7 +294,7 @@ public class Fragment1 extends BaseFragment {
             @Override
             public void onResponse(Fragment1Model response) {
                 hideProgress();
-
+                showContentPage();
                 mAdapter1 = new CommonAdapter<Fragment1Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
                     @Override
@@ -367,14 +377,14 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout7:
                 //取消商户
-                bundle.putInt("item_hetong",6);
-                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class,bundle);
+                bundle.putInt("item_hetong", 6);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
 //                CommonUtil.gotoActivity(getActivity(), CancelShopActivity.class);
                 break;
             case R.id.linearLayout8:
                 //修改商户
-                bundle.putInt("item_hetong",4);
-                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class,bundle);
+                bundle.putInt("item_hetong", 4);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
                 break;
             case R.id.linearLayout9:
                 //添加合同
@@ -391,8 +401,8 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout12:
                 //续签商户
-                bundle.putInt("item_hetong",5);
-                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class,bundle);
+                bundle.putInt("item_hetong", 5);
+                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
 //                CommonUtil.gotoActivity(getActivity(), RenewContractActivity.class);
                 break;
 

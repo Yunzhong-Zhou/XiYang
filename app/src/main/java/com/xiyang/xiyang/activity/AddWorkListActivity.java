@@ -156,11 +156,11 @@ public class AddWorkListActivity extends BaseActivity {
                 break;
             case R.id.tv_xuanzemendian:
                 //选择门店
-                Intent intent1 = new Intent(AddWorkListActivity.this, MyShopListActivity.class);
+                Intent intent1 = new Intent(AddWorkListActivity.this, MyStoreListActivity.class);
                 Bundle bundle1 = new Bundle();
-                bundle1.putInt("requestCode", Constant.SELECT_SHOP);
+                bundle1.putInt("requestCode", Constant.SELECT_STORE);
                 intent1.putExtras(bundle1);
-                startActivityForResult(intent1, Constant.SELECT_SHOP, bundle1);
+                startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
                 break;
             case R.id.tv_xuanzedingdan:
                 //选择订单
@@ -292,7 +292,7 @@ public class AddWorkListActivity extends BaseActivity {
                         }
                     }
                     break;
-                case Constant.SELECT_SHOP:
+                case Constant.SELECT_STORE:
                     //选择门店
                     if (data != null) {
                         Bundle bundle = data.getExtras();

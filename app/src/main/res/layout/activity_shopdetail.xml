@@ -54,8 +54,9 @@
 
                             <ImageView
                                 android:id="@+id/imageView2"
-                                android:layout_width="53dp"
-                                android:layout_height="49dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="fitXY"
                                 android:layout_alignParentRight="true"
                                 android:layout_alignParentBottom="true" />
 
@@ -274,37 +275,23 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                            <LinearLayout
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_info"
                                 android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                            <!--<TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡\n执照图片"
-                                    android:textColor="@color/black3"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡"
-                                    android:textColor="@color/black2"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
+                                android:lineSpacingExtra="14dp"
+                                android:text="执照图片"
+                                android:textColor="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />-->
                             <ImageView
+                                android:id="@+id/iv_info"
                                 android:layout_width="107dp"
                                 android:layout_height="107dp"
                                 android:layout_marginLeft="40dp"
-                                android:layout_marginTop="10dp"
                                 android:background="@mipmap/ic_add_gray" />
 
                         </LinearLayout>
@@ -344,31 +331,10 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                            <LinearLayout
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_tongji"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="门店数\n设备数\n总营收\n总收益"
-                                    android:textColor="@color/black3"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="门店数\n设备数\n总营收\n总收益"
-                                    android:textColor="@color/black2"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
+                                android:layout_height="wrap_content" />
 
 
                         </LinearLayout>
@@ -408,31 +374,10 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                            <LinearLayout
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_shenqing"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="推荐码\n推荐类型\n申请时间"
-                                    android:textColor="@color/black3"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="推荐码\n推荐类型\n申请时间"
-                                    android:textColor="@color/black2"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
+                                android:layout_height="wrap_content" />
 
 
                         </LinearLayout>
@@ -472,31 +417,10 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                            <LinearLayout
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_qianyue"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="签约合同\n是否独家\n签约时间\n签约年限\n签约人\n签约类型\n审核时间"
-                                    android:textColor="@color/black3"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="签约合同\n是否独家\n签约时间\n签约年限\n签约人\n签约类型\n审核时间"
-                                    android:textColor="@color/black2"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
+                                android:layout_height="wrap_content" />
 
 
                         </LinearLayout>
@@ -536,31 +460,10 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                            <LinearLayout
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_yunwei"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="运维BD\n运维类型"
-                                    android:textColor="@color/black3"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="运维BD\n运维类型"
-                                    android:textColor="@color/black2"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
+                                android:layout_height="wrap_content" />
 
 
                         </LinearLayout>

@@ -24,6 +24,7 @@ import okhttp3.Response;
  * 门店详情
  */
 public class StoreDetailActivity extends BaseActivity {
+    String id = "";
     int type = 1;
     TextView tv_tab1, tv_tab2, tv_tab3, tv_tab4;
     LinearLayout ll_tab1, ll_tab2, ll_tab3, ll_tab4;
@@ -55,6 +56,11 @@ public class StoreDetailActivity extends BaseActivity {
 
         findViewById(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(this), 0, 0);
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
+    }
 
     @Override
     protected void initView() {
@@ -63,12 +69,8 @@ public class StoreDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("id", id);
+                request(params);
             }
 
             @Override
@@ -170,7 +172,9 @@ public class StoreDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        id = getIntent().getStringExtra("id");
     }
+
 
     private void request(HashMap<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.BankCard, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
@@ -193,7 +197,14 @@ public class StoreDetailActivity extends BaseActivity {
             }
         });
     }
-
+    @Override
+    public void requestServer() {
+        super.requestServer();
+        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading2));
+        params.put("id", id);
+        request(params);
+    }
     @Override
     protected void updateView() {
         titleView.setVisibility(View.GONE);

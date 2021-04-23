@@ -19,6 +19,7 @@ import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
@@ -46,7 +47,7 @@ public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
 
-    int item_hetong = 1,itme_truefalse = -1;
+    int item_hetong = 1, itme_truefalse = 1;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,
@@ -66,6 +67,8 @@ public class AddContractActivity extends BaseActivity {
 
     TextView tv_img, tv_confirm;
     ImageView iv_add;
+
+    String storeId = "", shopId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,22 +196,36 @@ public class AddContractActivity extends BaseActivity {
                 //选择合同类型
                 dialogList_hetong();
                 break;
-
             case R.id.tv_shifoudujia:
                 //是否独家
                 dialogList_TrueFalse();
                 break;
 
-
+            case R.id.tv_xuanzemendian:
+                //选择门店
+                Intent intent1 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("requestCode", Constant.SELECT_STORE);
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
+                break;
+            case R.id.tv_xuanzeshanghu:
+                //选择商户
+                Intent intent2 = new Intent(AddContractActivity.this, MyShopListActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("requestCode", Constant.SELECT_SHOP);
+                intent2.putExtras(bundle2);
+                startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
+                break;
             case R.id.tv_qianyueshijian:
                 //签约时间
                 CommonUtil.selectDate2YMD(AddContractActivity.this,
-                        "请选择签约时间",tv_qianyueshijian,tv_qianyueshijian.getText().toString().trim());
+                        "请选择签约时间", tv_qianyueshijian, tv_qianyueshijian.getText().toString().trim());
                 break;
             case R.id.tv_xuqianshijian:
                 //续签时间
                 CommonUtil.selectDate2YMD(AddContractActivity.this,
-                        "请选择续签时间",tv_xuqianshijian,tv_xuqianshijian.getText().toString().trim());
+                        "请选择续签时间", tv_xuqianshijian, tv_xuqianshijian.getText().toString().trim());
                 break;
             case R.id.tv_hetongwenjian:
                 //选取合同文件
@@ -222,7 +239,6 @@ public class AddContractActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -232,15 +248,31 @@ public class AddContractActivity extends BaseActivity {
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
+                case Constant.SELECT_STORE:
+                    //选择门店
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        storeId = bundle.getString("storeId");
+                        tv_xuanzemendian.setText(bundle.getString("storeName"));
+                    }
+                    break;
+                case Constant.SELECT_SHOP:
+                    //选择商户
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        shopId = bundle.getString("shopId");
+                        tv_xuanzemendian.setText(bundle.getString("shopName"));
+                    }
+                    break;
                 case SELECT_PDF_FILE:
                     //选取PDF文件
                     uri = data.getData();
                     String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath+">>>>>后缀名："+FileUtils.getFileExtension(pdfpath));
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
                     if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")){
+                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
                             pdffile = new File(pdfpath);
-                        }else {
+                        } else {
                             myToast("请选择PDF文件上传");
                             return;
                         }
@@ -251,13 +283,13 @@ public class AddContractActivity extends BaseActivity {
                     uri = Uri.parse("");
                     uri = Uri.fromFile(new File(MyChooseImages.imagepath));
                     imgpath = uri.getPath();
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
                     break;
                 case REQUEST_CODE_PICK_IMAGE:
                     //相册
                     uri = data.getData();
                     imgpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath+">>>>>后缀名："+FileUtils.getFileExtension(imgpath));
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
                     break;
 
             }
@@ -280,9 +312,9 @@ public class AddContractActivity extends BaseActivity {
             if (imgpath != null) {
 //                imgfile = new File(uri.getPath());
                 //压缩
-                Bitmap bitmap= BitmapFactory.decodeFile(imgpath);
+                Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
                 imgfile = FileUtil.bytesToImageFile(AddContractActivity.this,
-                        ImageUtils.compressByQuality(bitmap,50));
+                        ImageUtils.compressByQuality(bitmap, 50));
 
                 new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                     @Override
@@ -438,10 +470,11 @@ public class AddContractActivity extends BaseActivity {
                 break;
         }
     }
+
     /**
      * 选择合同
      */
-    private void dialogList_hetong(){
+    private void dialogList_hetong() {
         dialog.contentView(R.layout.dialog_list_top)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -482,10 +515,11 @@ public class AddContractActivity extends BaseActivity {
         });
         rv_list.setAdapter(adapter);
     }
+
     /**
      * 选择是否
      */
-    private void dialogList_TrueFalse(){
+    private void dialogList_TrueFalse() {
         dialog.contentView(R.layout.dialog_list_center)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -515,7 +549,6 @@ public class AddContractActivity extends BaseActivity {
                 tv_shifoudujia.setText(list_truefalse.get(position));
 
                 adapter.notifyDataSetChanged();
-                changeUI();
                 dialog.dismiss();
             }
 

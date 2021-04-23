@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         app:hl_cornerRadius="8dp"
         app:hl_shadowColor="@color/bg_gray"
         app:hl_shadowHiddenTop="true"
@@ -37,8 +38,9 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="53dp"
-                    android:layout_height="49dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="fitXY"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true" />
 

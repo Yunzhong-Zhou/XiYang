@@ -5,8 +5,8 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.102";//图片地址
-    public static String HOST = "http://192.168.0.102";//接口地址
+    public static String IMGHOST = "http://192.168.0.112";//图片地址
+    public static String HOST = "http://192.168.0.112";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -20,7 +20,6 @@ public class URLs {
     public static final String XVERSION = "1.0.0";
     public static final String Accept = "application/json";
     public static final String ClientType = "android";
-
 
     //获取上传文件token
     public static final String UpLoadToken = HOST + API + "upload/get/token";
@@ -73,11 +72,13 @@ public class URLs {
     /**
      * ********************************门店*****************************************
      */
-    public static final String Fragment2 = HOST + API + "/api/v1/techn/techn_accept_order_list";
+    public static final String Fragment2 = HOST + API + "store/record";
     //拜访列表
     public static final String MyVisitList = HOST + API + "store/visit/log/record";
-    //待分配
-    public static final String Fragment2_1 = HOST + API + "/api/v1/techn/techn_sedan_list";
+    //门店列表
+    public static final String MyStoreList = HOST + API + "store/record";
+    //添加门店
+    public static final String AddStore = HOST + API + "store/add";
     //待施工=进行中=待复检=待完工=已提车
     public static final String Fragment2_2 = HOST + API + "/api/v1/techn/techn_sedan_waitfor_list";
     //添加项目
