@@ -244,8 +244,20 @@ public class AddVisitActivity extends BaseActivity {
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
                 imgfile = FileUtil.bytesToImageFile(AddVisitActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
+                Glide.with(AddVisitActivity.this)
+                        .load(imgfile)
+                        .centerCrop()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AddVisitActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.headimg)//加载失败
+                        .into(imageView1);//加载图片
 
                 new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                     @Override

@@ -78,7 +78,7 @@ public class MyShopListActivity extends BaseActivity {
                 page = 1;
                 params.put("page", page + "");
                 params.put("count", "10");
-                params.put("status", status);
+                params.put("status", status);//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 params.put("title", title);
                 params.put("sort", sort);
                 requestList(params);
@@ -109,7 +109,9 @@ public class MyShopListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestCode = getIntent().getIntExtra("requestCode",0);
+        requestCode = getIntent().getIntExtra("requestCode", 0);
+        status = getIntent().getStringExtra("status");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+        if (status == null) status = "";
         requestServer();//获取数据
     }
 
@@ -163,7 +165,7 @@ public class MyShopListActivity extends BaseActivity {
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (requestCode == Constant.SELECT_SHOP){
+                                    if (requestCode == Constant.SELECT_SHOP) {
                                         Intent resultIntent = new Intent();
                                         Bundle bundle = new Bundle();
                                         bundle.putString("shopId", model.getId());
@@ -171,7 +173,7 @@ public class MyShopListActivity extends BaseActivity {
                                         resultIntent.putExtras(bundle);
                                         MyShopListActivity.this.setResult(RESULT_OK, resultIntent);
                                         finish();
-                                    }else {
+                                    } else {
                                         Bundle bundle = new Bundle();
                                         bundle.putString("id", model.getId());
                                         CommonUtil.gotoActivityWithData(MyShopListActivity.this, ShopDetailActivity.class, bundle, false);

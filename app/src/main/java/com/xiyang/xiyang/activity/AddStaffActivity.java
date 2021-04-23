@@ -238,11 +238,24 @@ public class AddStaffActivity extends BaseActivity {
             if (imgpath != null) {
                 showProgress(true, getString(R.string.app_loading1));
 //                imgfile = new File(uri.getPath());
-                //压缩
+
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
+
+                //压缩
                 imgfile = FileUtil.bytesToImageFile(AddStaffActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
-
+                Glide.with(AddStaffActivity.this)
+                        .load(imgfile)
+                        .centerCrop()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AddStaffActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(imageView1);//加载图片
                 new UpFileToQiNiuUtil(AddStaffActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                     @Override
                     public void complete(boolean isok, String result, String url) {

@@ -15,9 +15,16 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.model.CommonModel;
+import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.okhttp.CallBackUtil;
+import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.FileUtil;
@@ -31,9 +38,12 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
@@ -68,7 +78,8 @@ public class AddContractActivity extends BaseActivity {
     TextView tv_img, tv_confirm;
     ImageView iv_add;
 
-    String storeId = "", shopId = "";
+    String storeId = "", shopId = "",contractType="",sole="1",renewalPeriod="",signTime="",file="",
+            licenseNo="",licenseNoImage="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +192,27 @@ public class AddContractActivity extends BaseActivity {
         titleView.setTitle(list_hetong.get(item_hetong));
         changeUI();
     }
+    private void request(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.Common, params, headerMap, new CallBackUtil<CommonModel>() {
+            @Override
+            public CommonModel onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(CommonModel response) {
+                hideProgress();
+
+            }
+        });
+
+    }
     @Override
     protected void updateView() {
 
@@ -206,6 +237,7 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent1 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("requestCode", Constant.SELECT_STORE);
+                bundle1.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
                 break;
@@ -214,6 +246,7 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent2 = new Intent(AddContractActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
+                bundle2.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
@@ -261,7 +294,7 @@ public class AddContractActivity extends BaseActivity {
                     if (data != null) {
                         Bundle bundle = data.getExtras();
                         shopId = bundle.getString("shopId");
-                        tv_xuanzemendian.setText(bundle.getString("shopName"));
+                        tv_xuanzeshanghu.setText(bundle.getString("shopName"));
                     }
                     break;
                 case SELECT_PDF_FILE:
@@ -294,15 +327,17 @@ public class AddContractActivity extends BaseActivity {
 
             }
 
-            showProgress(true, "正在上传...");
+
             //上传pdf文件
             if (pdffile != null) {
+                showProgress(true, "正在上传...");
                 new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
                     @Override
                     public void complete(boolean isok, String result, String url) {
                         hideProgress();
                         if (isok) {
                             MyLogger.i(">>>>上传文件路径：" + url);
+                            file = url;
                         } else {
                             myToast(result);
                         }
@@ -310,26 +345,40 @@ public class AddContractActivity extends BaseActivity {
                 };
             }
             if (imgpath != null) {
+                showProgress(true, "正在上传...");
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
                 imgfile = FileUtil.bytesToImageFile(AddContractActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
 
+                Glide.with(AddContractActivity.this)
+                        .load(imgfile)
+                        .centerCrop()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AddContractActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_add);//加载图片
                 new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                     @Override
                     public void complete(boolean isok, String result, String url) {
                         hideProgress();
                         if (isok) {
                             MyLogger.i(">>>>上传文件路径：" + url);
-                                /*Glide.with(MyProfileActivity.this)
-                                        .load(url)
-                                        .centerCrop()
-                                        .apply(RequestOptions.bitmapTransform(new
-                                                RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
-                                        .placeholder(R.mipmap.loading)//加载站位图
-                                        .error(R.mipmap.headimg)//加载失败
-                                        .into(imageView1);//加载图片*/
+                            licenseNoImage = url;
+                            Glide.with(AddContractActivity.this)
+                                    .load(url)
+                                    .centerCrop()
+                                    .apply(RequestOptions.bitmapTransform(new
+                                            RoundedCorners(CommonUtil.dip2px(AddContractActivity.this, 10))))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.headimg)//加载失败
+                                    .into(iv_add);//加载图片
 
                         } else {
                             myToast(result);
@@ -392,9 +441,13 @@ public class AddContractActivity extends BaseActivity {
                 rl_shifoudujia.setVisibility(View.VISIBLE);
                 rl_qianyueshijian.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
+                rl_yinyezhizhaohao.setVisibility(View.VISIBLE);
                 tv_img.setVisibility(View.VISIBLE);
                 tv_img.setText("执照上传");
                 iv_add.setVisibility(View.VISIBLE);
+
+                params.put("type","renewalPeriod");
+                request(params);
                 break;
             case 1:
                 //新增合同

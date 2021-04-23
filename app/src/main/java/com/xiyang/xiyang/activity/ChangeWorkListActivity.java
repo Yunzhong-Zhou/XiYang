@@ -17,9 +17,6 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.cy.dialog.BaseDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -35,7 +32,6 @@ import com.xiyang.xiyang.model.CommonModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
@@ -60,7 +56,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -238,25 +233,10 @@ public class ChangeWorkListActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
             File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
-                case SELECT_PDF_FILE:
-                    //选取PDF文件
-                    uri = data.getData();
-                    String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
-                    if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
-                            pdffile = new File(pdfpath);
-                        } else {
-                            myToast("请选择PDF文件上传");
-                            return;
-                        }
-                    }
-                    break;
                 case REQUEST_CODE_CAPTURE_CAMEIA:
                     //相机
                     uri = Uri.parse("");
@@ -277,6 +257,11 @@ public class ChangeWorkListActivity extends BaseActivity {
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
+                imageView1.setImageBitmap(bitmap);
                 imgfile = FileUtil.bytesToImageFile(ChangeWorkListActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
 
@@ -286,14 +271,7 @@ public class ChangeWorkListActivity extends BaseActivity {
 //                        hideProgress();
                         if (isok) {
                             MyLogger.i(">>>>上传文件路径：" + url);
-                            Glide.with(ChangeWorkListActivity.this)
-                                    .load(url)
-                                    .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(ChangeWorkListActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(imageView1);//加载图片
+
                             images = url;
                            /* Map<String, String> params = new HashMap<>();
                             params.put("head",url);

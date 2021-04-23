@@ -69,7 +69,10 @@ public class AddWorkListActivity extends BaseActivity {
             tv_guzhangleixing, tv_qitashuoming;
     ImageView imageView1;
 
-    String workOrderType = "", deviceName = "", storeId = "", orderId = "", remark = "",images="";
+    String workOrderType = "", deviceName = "", storeId = "", orderId = "", remark = "", images = "";
+
+    File pdffile = null;
+    File imgfile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,28 +193,43 @@ public class AddWorkListActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    params.clear();
-                    params.put("remark",remark);
-                    params.put("images",images);
-                    switch (type) {
-                        case 0:
-                            //设备工单
-                            params.put("deviceName",deviceName);
-                            params.put("workOrderType",workOrderType);
-                            requestUpData(params,URLs.AddDeviceWorkList);
-                            break;
-                        case 1:
-                            //订单工单
-                            params.put("orderId",orderId);
-                            params.put("workOrderType",workOrderType);
-                            requestUpData(params,URLs.AddOrderList);
-                            break;
-                        case 2:
-                            //其他工单
-                            params.put("storeId",storeId);
-                            requestUpData(params,URLs.AddOtherList);
-                            break;
-                    }
+                    new UpFileToQiNiuUtil(AddWorkListActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                        @Override
+                        public void complete(boolean isok, String result, String url) {
+                            if (isok) {
+                                MyLogger.i(">>>>上传文件路径：" + url);
+                                images = url;
+
+                                params.clear();
+                                params.put("remark", remark);
+                                params.put("images", images);
+                                switch (type) {
+                                    case 0:
+                                        //设备工单
+                                        params.put("deviceName", deviceName);
+                                        params.put("workOrderType", workOrderType);
+                                        requestUpData(params, URLs.AddDeviceWorkList);
+                                        break;
+                                    case 1:
+                                        //订单工单
+                                        params.put("orderId", orderId);
+                                        params.put("workOrderType", workOrderType);
+                                        requestUpData(params, URLs.AddOrderList);
+                                        break;
+                                    case 2:
+                                        //其他工单
+                                        params.put("storeId", storeId);
+                                        requestUpData(params, URLs.AddOtherList);
+                                        break;
+                                }
+
+                            } else {
+                                hideProgress();
+                                myToast("图片上传失败");
+                            }
+                        }
+                    };
+
                 }
                 break;
         }
@@ -223,7 +241,7 @@ public class AddWorkListActivity extends BaseActivity {
             myToast("请输入其他说明");
             return false;
         }
-        if (TextUtils.isEmpty(images)) {
+        if (imgfile == null) {
             myToast("请选择上传照片");
             return false;
         }
@@ -269,8 +287,6 @@ public class AddWorkListActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
-            File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
@@ -342,33 +358,20 @@ public class AddWorkListActivity extends BaseActivity {
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
                 imgfile = FileUtil.bytesToImageFile(AddWorkListActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
-
-                new UpFileToQiNiuUtil(AddWorkListActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-//                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            Glide.with(AddWorkListActivity.this)
-                                    .load(url)
-                                    .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(AddWorkListActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(imageView1);//加载图片
-                            images = url;
-                           /* Map<String, String> params = new HashMap<>();
-                            params.put("head",url);
-                            RequestUpFile(params);*/
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
+                Glide.with(AddWorkListActivity.this)
+                        .load(imgfile)
+                        .centerCrop()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AddWorkListActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.headimg)//加载失败
+                        .into(imageView1);//加载图片
             }
         }
 
@@ -392,8 +395,8 @@ public class AddWorkListActivity extends BaseActivity {
                 myToast("提交成功");
                 hideProgress();
                 Bundle bundle = new Bundle();
-                bundle.putString("fetch","1");//1待接工单2我的工单
-                CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class,bundle,false);
+                bundle.putString("fetch", "1");//1待接工单2我的工单
+                CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class, bundle, false);
             }
         });
     }

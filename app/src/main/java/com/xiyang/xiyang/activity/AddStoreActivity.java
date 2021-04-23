@@ -51,7 +51,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -72,6 +71,8 @@ public class AddStoreActivity extends BaseActivity {
     //定位
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
+
+    File imgfile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +169,7 @@ public class AddStoreActivity extends BaseActivity {
                 Intent intent2 = new Intent(AddStoreActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
+                bundle2.putString("status", "3");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
@@ -195,25 +197,38 @@ public class AddStoreActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    params.clear();
-                    params.put("name", name);
-                    params.put("merchantId", merchantId);
-                    params.put("contactName", contactName);
-                    params.put("contactPhone", contactPhone);
-                    params.put("childName", childName);
-                    params.put("businessHours", businessHours);
-                    params.put("isTrsanfter", isTrsanfter);
-                    params.put("storeScale", storeScale);
-                    params.put("account", account);
-                    params.put("workerScale", workerScale);
-                    params.put("deviceScale", deviceScale);
-                    params.put("address", address);
-                    params.put("image", image);
-                    params.put("instudryId", instudryId);
-                    params.put("postionId", postionId);
-                    params.put("latitude", latitude);
-                    params.put("longitude", longitude);
-                    requestUpData(params);
+                    new UpFileToQiNiuUtil(AddStoreActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                        @Override
+                        public void complete(boolean isok, String result, String url) {
+                            hideProgress();
+                            if (isok) {
+                                MyLogger.i(">>>>上传文件路径：" + url);
+                                image = url;
+                                params.clear();
+                                params.put("name", name);
+                                params.put("merchantId", merchantId);
+                                params.put("contactName", contactName);
+                                params.put("contactPhone", contactPhone);
+                                params.put("childName", childName);
+                                params.put("businessHours", businessHours);
+                                params.put("isTrsanfter", isTrsanfter);
+                                params.put("storeScale", storeScale);
+                                params.put("account", account);
+                                params.put("workerScale", workerScale);
+                                params.put("deviceScale", deviceScale);
+                                params.put("address", address);
+                                params.put("image", image);
+                                params.put("instudryId", instudryId);
+                                params.put("postionId", postionId);
+                                params.put("latitude", latitude);
+                                params.put("longitude", longitude);
+                                requestUpData(params);
+
+                            } else {
+                                myToast(result);
+                            }
+                        }
+                    };
                 }
                 break;
         }
@@ -297,7 +312,7 @@ public class AddStoreActivity extends BaseActivity {
             myToast("请输入设备分成");
             return false;
         }
-        if (TextUtils.isEmpty(image)) {
+        if (imgfile == null) {
             myToast("请选择门头照片");
             return false;
         }
@@ -326,8 +341,6 @@ public class AddStoreActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
-            File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
@@ -337,20 +350,6 @@ public class AddStoreActivity extends BaseActivity {
                         Bundle bundle = data.getExtras();
                         merchantId = bundle.getString("shopId");
                         textView1.setText(bundle.getString("shopName"));
-                    }
-                    break;
-                case SELECT_PDF_FILE:
-                    //选取PDF文件
-                    uri = data.getData();
-                    String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
-                    if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
-                            pdffile = new File(pdfpath);
-                        } else {
-                            myToast("请选择PDF文件上传");
-                            return;
-                        }
                     }
                     break;
                 case REQUEST_CODE_CAPTURE_CAMEIA:
@@ -373,33 +372,20 @@ public class AddStoreActivity extends BaseActivity {
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
                 imgfile = FileUtil.bytesToImageFile(AddStoreActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
-
-                new UpFileToQiNiuUtil(AddStoreActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            Glide.with(AddStoreActivity.this)
-                                    .load(url)
-                                    .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(AddStoreActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(imageView1);//加载图片
-                            image = url;
-                           /* Map<String, String> params = new HashMap<>();
-                            params.put("head",url);
-                            RequestUpFile(params);*/
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
+                Glide.with(AddStoreActivity.this)
+                        .load(imgfile)
+                        .centerCrop()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AddStoreActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.headimg)//加载失败
+                        .into(imageView1);//加载图片
             }
         }
 
@@ -648,6 +634,7 @@ public class AddStoreActivity extends BaseActivity {
      * 选择营业时间
      */
     String start = "", stop = "";
+
     private void dialogList_yingye() {
 //        View outerView = LayoutInflater.from(this).inflate(R.layout.dialog_yingyehsijian, null);
         dialog.contentView(R.layout.dialog_yingyehsijian)

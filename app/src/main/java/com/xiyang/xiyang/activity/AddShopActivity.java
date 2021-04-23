@@ -44,7 +44,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -56,8 +55,9 @@ public class AddShopActivity extends BaseActivity {
     EditText textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8;
     ImageView imageView1;
     String name = "", companyName = "", contactName = "", contactPhone = "", provinceId = "", cityId = "", areaId = "",
-            logoUrl = "", account = "", licenseNo = "", licenseNoImage = "", address = "", industryId = "";
+            logoUrl = "", account = "", address = "", industryId = "";
 
+    File imgfile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,27 +105,45 @@ public class AddShopActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    params.clear();
-                    params.put("name", name);
-                    params.put("companyName", companyName);
-                    params.put("contactName", contactName);
-                    params.put("contactPhone", contactPhone);
-                    params.put("provinceId", provinceId);
-                    params.put("cityId", cityId);
-                    params.put("areaId", areaId);
-                    params.put("logoUrl", logoUrl);
-                    params.put("account", account);
-                    params.put("licenseNo", licenseNo);
-                    params.put("licenseNoImage", licenseNoImage);
-                    params.put("address", address);
-                    params.put("industryId", industryId);
-                    requestUpData(params);
+                    new UpFileToQiNiuUtil(AddShopActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                        @Override
+                        public void complete(boolean isok, String result, String url) {
+                            hideProgress();
+                            if (isok) {
+                                MyLogger.i(">>>>上传文件路径：" + url);
+                                logoUrl = url;
+                                params.clear();
+                                params.put("name", name);
+                                params.put("companyName", companyName);
+                                params.put("contactName", contactName);
+                                params.put("contactPhone", contactPhone);
+                                params.put("provinceId", provinceId);
+                                params.put("cityId", cityId);
+                                params.put("areaId", areaId);
+                                params.put("logoUrl", logoUrl);
+                                params.put("account", account);
+//                    params.put("licenseNo", licenseNo);
+//                    params.put("licenseNoImage", licenseNoImage);
+                                params.put("address", address);
+                                params.put("industryId", industryId);
+                                requestUpData(params);
+
+                            } else {
+                                myToast(result);
+                            }
+                        }
+                    };
                 }
                 break;
         }
     }
 
     private boolean match() {
+        name = textView5.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            myToast("请输入商户名称");
+            return false;
+        }
         account = textView1.getText().toString().trim();
         if (TextUtils.isEmpty(account)) {
             myToast("请输入商户账号");
@@ -142,14 +160,8 @@ public class AddShopActivity extends BaseActivity {
             return false;
         }
         companyName = textView4.getText().toString().trim();
-        name = textView4.getText().toString().trim();
         if (TextUtils.isEmpty(companyName)) {
             myToast("请输入公司名称");
-            return false;
-        }
-        licenseNo = textView5.getText().toString().trim();
-        if (TextUtils.isEmpty(licenseNo)) {
-            myToast("请输入营业执照号");
             return false;
         }
         if (TextUtils.isEmpty(industryId)) {
@@ -173,7 +185,7 @@ public class AddShopActivity extends BaseActivity {
             myToast("请输入详细地址");
             return false;
         }
-        if (TextUtils.isEmpty(logoUrl)) {
+        if (imgfile == null) {
             myToast("请选择封面");
             return false;
         }
@@ -193,33 +205,9 @@ public class AddShopActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
-            File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
-                /*case Constant.SELECT_MYCITY:
-                    //选择城市
-                    if (data != null) {
-                        Bundle bundle = data.getExtras();
-                        postionIds = bundle.getString("postionIds");
-                        tv_chengshi.setText(bundle.getString("postionCitys"));
-                    }
-                    break;*/
-                case SELECT_PDF_FILE:
-                    //选取PDF文件
-                    uri = data.getData();
-                    String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
-                    if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
-                            pdffile = new File(pdfpath);
-                        } else {
-                            myToast("请选择PDF文件上传");
-                            return;
-                        }
-                    }
-                    break;
                 case REQUEST_CODE_CAPTURE_CAMEIA:
                     //相机
                     uri = Uri.parse("");
@@ -236,37 +224,24 @@ public class AddShopActivity extends BaseActivity {
 
             }
             if (imgpath != null) {
-                showProgress(true, getString(R.string.app_loading1));
-//                imgfile = new File(uri.getPath());
-                //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
+
+                //压缩
                 imgfile = FileUtil.bytesToImageFile(AddShopActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
 
-                new UpFileToQiNiuUtil(AddShopActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            Glide.with(AddShopActivity.this)
-                                    .load(url)
-                                    .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(AddShopActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(imageView1);//加载图片
-                            logoUrl = url;
-                           /* Map<String, String> params = new HashMap<>();
-                            params.put("head",url);
-                            RequestUpFile(params);*/
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
+                Glide.with(AddShopActivity.this)
+                        .load(imgfile)
+                        .centerCrop()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AddShopActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(imageView1);//加载图片
             }
         }
 
@@ -405,7 +380,7 @@ public class AddShopActivity extends BaseActivity {
                 dialog.contentView(R.layout.dialog_list_center)
 //                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                CommonUtil.dip2px(AddShopActivity.this,400)))
+                                CommonUtil.dip2px(AddShopActivity.this, 400)))
                         .animType(BaseDialog.AnimInType.BOTTOM)
                         .canceledOnTouchOutside(true)
                         .gravity(Gravity.CENTER)

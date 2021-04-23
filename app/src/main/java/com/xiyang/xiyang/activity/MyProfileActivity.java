@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
@@ -21,7 +19,6 @@ import com.xiyang.xiyang.model.MyProfileModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
@@ -221,6 +218,10 @@ public class MyProfileActivity extends BaseActivity {
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
                 imgfile = FileUtil.bytesToImageFile(MyProfileActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
 
@@ -234,8 +235,8 @@ public class MyProfileActivity extends BaseActivity {
                             Glide.with(MyProfileActivity.this)
                                     .load(url)
                                     .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
+//                                    .apply(RequestOptions.bitmapTransform(new
+//                                            RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.headimg)//加载失败
                                     .into(imageView1);//加载图片

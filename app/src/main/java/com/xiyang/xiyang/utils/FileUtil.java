@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -352,7 +353,7 @@ public class FileUtil {
             e.printStackTrace();
         }
         return bitmap;*/
-        Log.d("Magic",""+url);
+        Log.d("Magic", "" + url);
         HttpURLConnection conn = null;
         try {
             URL mURL = new URL(url);
@@ -385,7 +386,7 @@ public class FileUtil {
     /**
      * 截取图片存到本地
      */
-    public static Uri printScreen(Context context,View view, String picName) {
+    public static Uri printScreen(Context context, View view, String picName) {
         //图片地址
 //        String imgPath = FileUtil.getImageDownloadDir(MyPosterActivity.this) + picName + ".png";//包名文件夹
 //        String imgPath = Environment.getExternalStorageDirectory() + "/" + picName + ".png";//文件根目录
@@ -409,7 +410,7 @@ public class FileUtil {
                 out.flush();
                 out.close();
 
-                Uri uri = FileProvider.getUriForFile(context, context.getPackageName()+".fileprovider", file);
+                Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
 //                Uri uri = Uri.fromFile(f);
 
                 //通知相册更新
@@ -433,7 +434,7 @@ public class FileUtil {
     /**
      * 选取手机中的pdf文件
      */
-    public static void selectPDFFile(Activity context,String fileName){
+    public static void selectPDFFile(Activity context, String fileName) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         if (Build.VERSION.SDK_INT >= 24) {
             // 适配android7.0 ，不能直接访问原路径
@@ -444,8 +445,8 @@ public class FileUtil {
             if (!imagePath.exists()) {
                 imagePath.mkdirs();
             }
-            File newFile = new File(imagePath, fileName+".pdf");
-            Uri uri = FileProvider.getUriForFile(context, context.getPackageName()+".fileprovider", newFile);
+            File newFile = new File(imagePath, fileName + ".pdf");
+            Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", newFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
 //        intent.setType("pdf/*");//    file/*
@@ -461,11 +462,12 @@ public class FileUtil {
 
     /**
      * 图片 bytes转File
+     *
      * @param context
      * @param bytes
      * @return
      */
-    public static File bytesToImageFile(Activity context,byte[] bytes) {
+    public static File bytesToImageFile(Activity context, byte[] bytes) {
         try {
             File file = new File(FileUtil.getImageDownloadDir(context) + System.currentTimeMillis() + ".png");
             FileOutputStream fos = new FileOutputStream(file);
@@ -478,5 +480,34 @@ public class FileUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 旋转图片
+     *
+     * @param angle  被旋转角度
+     * @param oldbitmap 图片对象
+     * @return 旋转后的图片
+     */
+    public static Bitmap rotaingImageView(int angle, Bitmap oldbitmap) {
+        //压缩50%
+//        Bitmap newBitmap = ImageUtils.bytes2Bitmap(ImageUtils.compressByQuality(oldbitmap, 50));
+
+        Bitmap returnBm = null;
+        // 根据旋转角度，生成旋转矩阵
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        try {
+            // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
+            returnBm = Bitmap.createBitmap(oldbitmap, 0, 0, oldbitmap.getWidth(), oldbitmap.getHeight(), matrix, true);
+        } catch (OutOfMemoryError e) {
+        }
+        if (returnBm == null) {
+            returnBm = oldbitmap;
+        }
+        if (oldbitmap != returnBm) {
+            oldbitmap.recycle();
+        }
+        return returnBm;
     }
 }

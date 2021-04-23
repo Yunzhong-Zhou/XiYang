@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.xiyang.xiyang.R;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by ling on 2015/8/24.
@@ -44,11 +45,16 @@ public class MyChooseImages {
             public void onClick(View v) {
                 String state = Environment.getExternalStorageState();
                 if (state.equals(Environment.MEDIA_MOUNTED)) {
-                    Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-                    String out_file_path = FileUtil.getImageDownloadDir(activity);
-                    File dir = new File(out_file_path);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // 设置图片要保存的 根路径+文件名
+                    imagepath = FileUtil.getImageDownloadDir(activity)+ System.currentTimeMillis() + ".png";
+                    File file = new File(imagepath);
+                    if (!file.exists()) {
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     // 置入一个不设防的VmPolicy（不设置的话 7.0以上一调用拍照功能就崩溃了）
                     // 还有一种方式：manifest中加入provider然后修改intent代码
@@ -56,10 +62,9 @@ public class MyChooseImages {
                         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                         StrictMode.setVmPolicy(builder.build());
                     }
-                    imagepath = FileUtil.getImageDownloadDir(activity) + System.currentTimeMillis() + ".png";
-                    getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(imagepath)));
-                    getImageByCamera.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-                    activity.startActivityForResult(getImageByCamera, REQUEST_CODE_CAPTURE_CAMEIA);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                    activity.startActivityForResult(intent, REQUEST_CODE_CAPTURE_CAMEIA);
 
                     /*PictureSelector.create(activity)
                             .openCamera(PictureMimeType.ofImage())

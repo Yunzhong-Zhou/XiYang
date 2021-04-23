@@ -5,8 +5,8 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.112";//图片地址
-    public static String HOST = "http://192.168.0.112";//接口地址
+    public static String IMGHOST = "http://192.168.0.105";//图片地址
+    public static String HOST = "http://192.168.0.105";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -43,8 +43,8 @@ public class URLs {
     public static final String Industry = HOST + API + "industry";
     //省市区列表（3级）
     public static final String Region = HOST + API + "region";
-    //取消收藏
-    public static final String QuXiaoShouChang = HOST + API + "/api/v1/user/user_collection_del";
+    //公共参数获取
+    public static final String Common = HOST + API + "common";
     //加入购物车
     public static final String ADDShop = HOST + API + "/api/v1/public/user_cart_add";
     //评价列表
@@ -79,6 +79,8 @@ public class URLs {
     public static final String MyStoreList = HOST + API + "store/record";
     //添加门店
     public static final String AddStore = HOST + API + "store/add";
+    //门店详情
+    public static final String StoreDetail = HOST + API + "store/detail";
     //待施工=进行中=待复检=待完工=已提车
     public static final String Fragment2_2 = HOST + API + "/api/v1/techn/techn_sedan_waitfor_list";
     //添加项目
@@ -199,8 +201,6 @@ public class URLs {
     public static final String AddCar = HOST + API + "/api/v1/user/user_sedan_add";
     //足迹列表
     public static final String Footprint = HOST + API + "/api/v1/user/user_footprint_list_page";
-    //门店详情
-    public static final String StoreDetail = HOST + API + "/api/v1/public/get_store_details";
     //问答
     public static final String StoreDetail_WenDa = HOST + API + "/api/v1/public/user_store_ques_ans_list";
     //门店服务分类列表

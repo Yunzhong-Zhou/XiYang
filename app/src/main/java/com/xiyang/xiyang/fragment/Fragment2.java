@@ -4,15 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddStoreActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
-import com.xiyang.xiyang.activity.ContractDetailActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
@@ -21,6 +24,7 @@ import com.xiyang.xiyang.activity.StoreDetailActivity;
 import com.xiyang.xiyang.activity.TransferStoreActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment2Model;
+import com.xiyang.xiyang.model.MyStoreListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -30,6 +34,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +53,8 @@ public class Fragment2 extends BaseFragment {
     private RecyclerView recyclerView1, recyclerView2;
     List<Fragment2Model> list1 = new ArrayList<>();
     CommonAdapter<Fragment2Model> mAdapter1;
-    List<Fragment2Model> list2 = new ArrayList<>();
-    CommonAdapter<Fragment2Model> mAdapter2;
+    List<MyStoreListModel.ListBean> list2 = new ArrayList<>();
+    CommonAdapter<MyStoreListModel.ListBean> mAdapter2;
     TextView tv_mymore;
 
     TextView textView1, textView2, textView3, textView4;
@@ -119,12 +124,12 @@ public class Fragment2 extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-               /* page1 = 0;
-                page2 = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("page", page1 + "");
-                params.put("u_token", localUserInfo.getToken());
-                Request(params);*/
+                params.put("page", "");
+                params.put("count", "");
+                params.put("status", "");
+                params.put("sort", "");
+                request(params);
             }
 
             @Override
@@ -188,87 +193,26 @@ public class Fragment2 extends BaseFragment {
     @Override
     protected void initData() {
 //        requestServer();
-        for (int i = 0; i < 5; i++) {
-            list1.add(new Fragment2Model());
-            list2.add(new Fragment2Model());
-        }
-        mAdapter1 = new CommonAdapter<Fragment2Model>
-                (getActivity(), R.layout.item_fragment1_1, list1) {
-            @Override
-            protected void convert(ViewHolder holder, Fragment2Model model, int position) {
-
-//                        holder.setText(R.id.tv1, model.getTitle());
-//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
-                holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                        CommonUtil.gotoActivityWithData(getActivity(), ContractDetailActivity.class, bundle, false);
-                    }
-                });
-
-            }
-        };
-        recyclerView1.setAdapter(mAdapter1);
-
-        if (list2.size() > 0) {
-            mAdapter2 = new CommonAdapter<Fragment2Model>
-                    (getActivity(), R.layout.item_fragment2_2, list2) {
-                @Override
-                protected void convert(ViewHolder holder, Fragment2Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(getActivity())
-                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
-                                    .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
-                            }
-
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
-
-                    holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                            CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
-                        }
-                    });
-
-                }
-            };
-            recyclerView2.setAdapter(mAdapter2);
-        } else {
-            showEmptyPage();
-        }
     }
 
     @Override
     public void requestServer() {
         super.requestServer();
-       /* this.showLoadingPage();
+        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        params.put("u_token", localUserInfo.getToken());
-        Request(params);*/
+        params.put("page", "");
+        params.put("count", "");
+        params.put("status", "");
+        params.put("title", "");
+        params.put("sort", "");
+        request(params);
     }
 
-    private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment2, params, headerMap, new CallBackUtil<Fragment2Model>() {
+    private void request(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.Fragment2, params, headerMap, new CallBackUtil<MyStoreListModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public MyStoreListModel onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
                 return null;
             }
@@ -282,9 +226,9 @@ public class Fragment2 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(MyStoreListModel response) {
                 hideProgress();
-
+                showContentPage();
                 mAdapter1 = new CommonAdapter<Fragment2Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
                     @Override
@@ -295,34 +239,42 @@ public class Fragment2 extends BaseFragment {
                     }
                 };
                 recyclerView1.setAdapter(mAdapter1);
-//                list2 = response.getCooperation_shop_list();
+                list2 = response.getList();
                 if (list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<Fragment2Model>
+                    mAdapter2 = new CommonAdapter<MyStoreListModel.ListBean>
                             (getActivity(), R.layout.item_fragment2_2, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
+                        protected void convert(ViewHolder holder, MyStoreListModel.ListBean model, int position) {
+                            holder.setText(R.id.tv_name, model.getName());//标题
+                            holder.setText(R.id.tv_shop, model.getDeviceNum());
+                            holder.setText(R.id.tv_num, model.getMoney());//money
+                            holder.setText(R.id.tv_addr, model.getAddress());
+
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
-                                    .load(URLs.IMGHOST + model.getCover())
-                                    .fitCenter()
+                                    .load(model.getImage())
+//                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
+                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("0")) {
+                                //待拜访
+                                imageView2.setImageResource(R.mipmap.bg_daibaifang);
                             } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
+                                imageView2.setImageResource(R.mipmap.bg_yibaifang);
                             }
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("id", model.getId());
+                                    CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                                }
 
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
-
+                            });
                         }
                     };
                     recyclerView2.setAdapter(mAdapter2);
