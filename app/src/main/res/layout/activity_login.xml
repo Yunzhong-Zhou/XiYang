@@ -112,7 +112,7 @@
                                 android:background="@drawable/edittext_bg"
                                 android:gravity="center_vertical"
                                 android:hint="请输入手机号"
-                                android:inputType="none"
+                                android:inputType="phone"
                                 android:paddingLeft="35dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black2"

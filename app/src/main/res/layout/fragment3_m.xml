@@ -63,12 +63,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableRight="@mipmap/down_green"
+                android:drawableRight="@mipmap/ic_down_white"
                 android:drawablePadding="5dp"
                 android:gravity="center"
                 android:padding="7dp"
                 android:text="类型"
-                android:textColor="@color/green"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableRight="@mipmap/ic_down_black"
+                android:drawableRight="@mipmap/ic_down_white"
                 android:drawablePadding="5dp"
                 android:gravity="center"
                 android:padding="7dp"
@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableRight="@mipmap/ic_down_black"
+                android:drawableRight="@mipmap/ic_down_white"
                 android:drawablePadding="5dp"
                 android:gravity="center"
                 android:padding="7dp"
@@ -148,13 +148,13 @@
     <com.xiyang.xiyang.view.LoadingLayout
         android:id="@+id/loading_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <com.liaoinstan.springview.widget.SpringView
             android:id="@+id/springView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

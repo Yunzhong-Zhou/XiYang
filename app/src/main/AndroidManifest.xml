@@ -132,9 +132,6 @@
         <activity
             android:name=".activity.RenewContractActivity"
             android:label="续签合同" />
-        <activity
-            android:name=".activity.ApproveContractActivity"
-            android:label="审核合同" />
         <!--管理-->
         <activity
             android:name=".activity.AddStaffActivity"
@@ -244,6 +241,13 @@
         <activity
             android:name=".activity.DeviceDetailActivity"
             android:label="设备详情" />
+        <!--审批-->
+        <activity
+            android:name=".activity.ApproveDetailActivity"
+            android:label="审批详情" />
+        <activity
+            android:name=".activity.ApproveContractActivity"
+            android:label="审核合同" />
         <!--我的-->
         <activity
             android:name=".activity.MyWorkListActivity"

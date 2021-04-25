@@ -86,7 +86,7 @@
                     android:drawablePadding="6dp"
                     android:text="time"
                     android:textColor="@color/black3"
-                    android:textSize="12.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

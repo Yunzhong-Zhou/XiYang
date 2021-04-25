@@ -144,6 +144,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:visibility="gone"
                             android:orientation="vertical">
 
                             <TextView
@@ -228,7 +229,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
                     <!--商户基本信息-->
                     <com.lihang.ShadowLayout
                         android:layout_width="match_parent"
@@ -263,32 +264,6 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡\n执照图片"
-                                    android:textColor="@color/black3"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="right"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡"
-                                    android:textColor="@color/black2"
-                                    android:textSize="12.5sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
                             <ImageView
                                 android:layout_width="107dp"
                                 android:layout_height="107dp"
@@ -309,7 +284,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <!--合同基本信息-->
                     <com.lihang.ShadowLayout
@@ -339,11 +314,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="15dp"
-                                android:paddingBottom="15dp"
                                 android:text="基本信息"
                                 android:textColor="@color/black1"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_contract"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -354,44 +333,29 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:lineSpacingExtra="14dp"
-                                    android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡\n合同文件\n执照图片"
+                                    android:text="合同文件\n执照图片"
                                     android:textColor="@color/black3"
+                                    android:paddingTop="10dp"
                                     android:textSize="12.5sp"
                                     android:textStyle="bold" />
 
-                                <LinearLayout
+                                <TextView
+                                    android:id="@+id/tv_liulan"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="right"
-                                        android:lineSpacingExtra="14dp"
-                                        android:text="商户ID\n商户名称\n商户账号\n商户联系人\n商户公司名\n营业执照号\n所在城市\n所在行业\n商户等级\n商户标识\n商户来源\n是否对公\n是否绑卡"
-                                        android:textColor="@color/black2"
-                                        android:textSize="12.5sp"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:id="@+id/tv_liulan"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="right"
-                                        android:onClick="onClick"
-                                        android:paddingTop="12dp"
-                                        android:paddingBottom="10dp"
-                                        android:text="浏览>>"
-                                        android:textColor="@color/green"
-                                        android:textSize="12.5sp"
-                                        android:textStyle="bold" />
-                                </LinearLayout>
+                                    android:gravity="right"
+                                    android:onClick="onClick"
+                                    android:padding="10dp"
+                                    android:text="浏览>>"
+                                    android:textColor="@color/green"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
                             <ImageView
+                                android:id="@+id/iv_contract"
                                 android:layout_width="107dp"
                                 android:layout_height="107dp"
                                 android:layout_marginLeft="40dp"

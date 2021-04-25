@@ -45,7 +45,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -57,7 +56,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 public class AddStaffActivity extends BaseActivity {
     ImageView imageView1;
-    RelativeLayout rl_xingming, rl_xingbie, rl_zhanghao, rl_lianxidianhua, rl_bumen, rl_leixing;
+    RelativeLayout rl_xingming, rl_xingbie, rl_zhanghao, rl_lianxidianhua, rl_bumen, rl_leixing,rl_chengshi;
     EditText tv_xingming, tv_xingbie, tv_zhanghao, tv_lianxidianhua, tv_chengshi, tv_leixing;
 
     String account = "", name = "", head = "", sex = "1", contactPhone = "", postionIds = "",type="1";
@@ -67,6 +66,7 @@ public class AddStaffActivity extends BaseActivity {
     List<String> list_type = new ArrayList<>();
     int item_type = 0;
 
+    File imgfile = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +89,8 @@ public class AddStaffActivity extends BaseActivity {
         tv_lianxidianhua = findViewByID_My(R.id.tv_lianxidianhua);
         tv_chengshi = findViewByID_My(R.id.tv_chengshi);
         tv_leixing = findViewByID_My(R.id.tv_leixing);
+
+        rl_chengshi = findViewByID_My(R.id.rl_chengshi);
 
     }
 
@@ -129,15 +131,35 @@ public class AddStaffActivity extends BaseActivity {
                 //确认添加
                 if (match()){
                     showProgress(true, getString(R.string.app_loading1));
-                    params.clear();
-                    params.put("name",name);
-                    params.put("sex",sex);
-                    params.put("account",account);
-                    params.put("contactPhone",contactPhone);
-                    params.put("type",type);
-                    params.put("postionIds",postionIds);
-                    params.put("head",head);
-                    requestUpData(params);
+                    new UpFileToQiNiuUtil(AddStaffActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                        @Override
+                        public void complete(boolean isok, String result, String url) {
+                            if (isok) {
+                                MyLogger.i(">>>>上传文件路径：" + url);
+                                Glide.with(AddStaffActivity.this)
+                                        .load(url)
+                                        .centerCrop()
+                                        .apply(RequestOptions.bitmapTransform(new
+                                                RoundedCorners(CommonUtil.dip2px(AddStaffActivity.this, 10))))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.headimg)//加载失败
+                                        .into(imageView1);//加载图片
+                                head = url;
+
+                                params.clear();
+                                params.put("name",name);
+                                params.put("sex",sex);
+                                params.put("account",account);
+                                params.put("contactPhone",contactPhone);
+                                params.put("type",type);
+                                params.put("postionIds",postionIds);
+                                params.put("head",head);
+                                requestUpData(params);
+                            } else {
+                                myToast(result);
+                            }
+                        }
+                    };
                 }
                 break;
 
@@ -159,11 +181,14 @@ public class AddStaffActivity extends BaseActivity {
             myToast("请输入联系电话");
             return false;
         }
-        if (TextUtils.isEmpty(postionIds)) {
-            myToast("请选择城市");
-            return false;
+        if (!localUserInfo.getUserJob().equals("bdm")){//添加bd不需要选城市
+            if (TextUtils.isEmpty(postionIds)) {
+                myToast("请选择城市");
+                return false;
+            }
         }
-        if (TextUtils.isEmpty(head)) {
+
+        if (imgfile == null) {
             myToast("请选择上传员工头像");
             return false;
         }
@@ -181,6 +206,7 @@ public class AddStaffActivity extends BaseActivity {
                 break;
             case "bdm":
                 titleView.setTitle("添加BD");
+                rl_chengshi.setVisibility(View.GONE);
                 break;
         }
 
@@ -193,8 +219,6 @@ public class AddStaffActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
-            File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
@@ -206,20 +230,7 @@ public class AddStaffActivity extends BaseActivity {
                         tv_chengshi.setText(bundle.getString("postionCitys"));
                     }
                     break;
-                case SELECT_PDF_FILE:
-                    //选取PDF文件
-                    uri = data.getData();
-                    String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
-                    if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
-                            pdffile = new File(pdfpath);
-                        } else {
-                            myToast("请选择PDF文件上传");
-                            return;
-                        }
-                    }
-                    break;
+
                 case REQUEST_CODE_CAPTURE_CAMEIA:
                     //相机
                     uri = Uri.parse("");
@@ -236,7 +247,6 @@ public class AddStaffActivity extends BaseActivity {
 
             }
             if (imgpath != null) {
-                showProgress(true, getString(R.string.app_loading1));
 //                imgfile = new File(uri.getPath());
 
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
@@ -256,30 +266,6 @@ public class AddStaffActivity extends BaseActivity {
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-                new UpFileToQiNiuUtil(AddStaffActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            Glide.with(AddStaffActivity.this)
-                                    .load(url)
-                                    .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(AddStaffActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(imageView1);//加载图片
-                            head = url;
-                           /* Map<String, String> params = new HashMap<>();
-                            params.put("head",url);
-                            RequestUpFile(params);*/
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
             }
         }
 

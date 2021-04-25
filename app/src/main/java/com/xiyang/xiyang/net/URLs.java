@@ -5,12 +5,11 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.105";//图片地址
-    public static String HOST = "http://192.168.0.105";//接口地址
+    public static String IMGHOST = "http://192.168.0.103";//图片地址
+    public static String HOST = "http://192.168.0.103";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
-
 
     public static final String PROJECT_NAME = "";
     public static final String API = "/app/";
@@ -71,6 +70,16 @@ public class URLs {
     public static final String MyCity = HOST + API + "user/position/record";
     //添加员工
     public static final String AddStaff = HOST + API + "user/add";
+    /**
+     * ********************************分派*****************************************
+     */
+    public static final String Fragment2_m = HOST + API + "rm/manage";
+    /**
+     * ********************************审批*****************************************
+     */
+    public static final String Fragment3_m = HOST + API + "approval";
+    //审核详情
+    public static final String ApproveDetail = HOST + API + "bdm/verfiy/detail";
     /**
      * ********************************门店*****************************************
      */

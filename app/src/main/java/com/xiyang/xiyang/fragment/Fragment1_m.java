@@ -198,9 +198,10 @@ public class Fragment1_m extends BaseFragment {
                 tv_fenpai.setText("分派BD");
                 tv_tiaozheng.setText("调整BD");
                 tv_mycity.setText("我的市区");
-                linearLayout10.setVisibility(View.GONE);
-                linearLayout11.setVisibility(View.GONE);
-                linearLayout12.setVisibility(View.GONE);
+                linearLayout10.setVisibility(View.INVISIBLE);
+                linearLayout11.setVisibility(View.INVISIBLE);
+                linearLayout12.setVisibility(View.INVISIBLE);
+
                 break;
         }
 

@@ -61,6 +61,8 @@ public class Fragment3 extends BaseFragment {
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment3, container, false);

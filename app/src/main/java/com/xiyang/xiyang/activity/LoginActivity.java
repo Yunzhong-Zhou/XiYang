@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.Settings;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,14 +207,19 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_yzm:
                 //验证码
                 type = 1;//1、验证码 2、密码
+                editText1.setInputType(InputType.TYPE_CLASS_PHONE);
+                editText1.setHint("请输入手机号");
                 tv_yzm.setBackgroundResource(R.drawable.yuanjiao_15_lvsejianbian);
                 tv_mima.setBackgroundResource(R.color.transparent);
                 rl_yzm.setVisibility(View.VISIBLE);
                 rl_mima.setVisibility(View.GONE);
+
                 break;
             case R.id.tv_mima:
                 //密码
                 type = 2;//1、验证码 2、密码
+                editText1.setInputType(InputType.TYPE_CLASS_TEXT);
+                editText1.setHint("请输入账号");
                 tv_yzm.setBackgroundResource(R.color.transparent);
                 tv_mima.setBackgroundResource(R.drawable.yuanjiao_15_lvsejianbian);
                 rl_yzm.setVisibility(View.GONE);
