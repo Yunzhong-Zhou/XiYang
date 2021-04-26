@@ -102,6 +102,9 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="登录" />
+        <activity
+            android:name=".activity.ShowPDFActivity"
+            android:label="查看PDF"/>
 
         <!--商户-->
         <activity

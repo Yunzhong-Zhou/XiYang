@@ -35,7 +35,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/textView3"
+                    android:id="@+id/tv_jieguo"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:drawableRight="@mipmap/ic_down_black"
@@ -67,7 +67,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/textView5"
+                    android:id="@+id/tv_shuoming"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center_vertical|right"
@@ -90,14 +90,15 @@
                 android:textColor="@color/black1"
                 android:textSize="14sp"
                 android:textStyle="bold" />
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="28dp"
-                android:background="@mipmap/ic_add_gray"
-                android:onClick="onClick" />
+            <!--图片选择-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_addimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginBottom="13dp"/>
 
             <TextView
                 android:id="@+id/tv_confirm"

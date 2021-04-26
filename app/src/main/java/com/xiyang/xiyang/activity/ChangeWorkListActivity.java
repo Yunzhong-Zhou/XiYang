@@ -61,14 +61,13 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 创建工单
+ * 处理工单
  */
 public class ChangeWorkListActivity extends BaseActivity {
-    List<String> list_work = new ArrayList<>();
     List<CommonModel.StatusBean> list_jieguo = new ArrayList<>();
     int i_jieguo = -1;
-    RelativeLayout rl_chulijieguo, rl_chulishuoming;
-    EditText tv_chulijieguo, tv_chulishuoming;
+    RelativeLayout rl_jieguo, rl_shuoming;
+    EditText tv_jieguo, tv_shuoming;
     ImageView imageView1;
 
     String id = "", status = "", remark = "", images = "";
@@ -107,11 +106,11 @@ public class ChangeWorkListActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        rl_chulijieguo = findViewByID_My(R.id.rl_chulijieguo);
-        rl_chulishuoming = findViewByID_My(R.id.rl_chulishuoming);
+        rl_jieguo = findViewByID_My(R.id.rl_jieguo);
+        rl_shuoming = findViewByID_My(R.id.rl_shuoming);
 
-        tv_chulijieguo = findViewByID_My(R.id.tv_chulijieguo);
-        tv_chulishuoming = findViewByID_My(R.id.tv_chulishuoming);
+        tv_jieguo = findViewByID_My(R.id.tv_jieguo);
+        tv_shuoming = findViewByID_My(R.id.tv_shuoming);
 
         imageView1 = findViewByID_My(R.id.imageView1);
 
@@ -121,9 +120,6 @@ public class ChangeWorkListActivity extends BaseActivity {
     @Override
     protected void initData() {
         id = getIntent().getStringExtra("id");
-        list_work.add("设备工单");
-        list_work.add("订单工单");
-        list_work.add("其他工单");
 
         request(params);
     }
@@ -161,13 +157,9 @@ public class ChangeWorkListActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.tv_chulijieguo:
+            case R.id.tv_jieguo:
                 //故障类型
-                dialogList_jieguo(tv_chulijieguo);
-                break;
-            case R.id.imageView1:
-                //上传图片
-                MyChooseImages.showPhotoDialog(ChangeWorkListActivity.this);
+                dialogList_jieguo(tv_jieguo);
                 break;
             case R.id.tv_confirm:
                 //提交
@@ -213,7 +205,7 @@ public class ChangeWorkListActivity extends BaseActivity {
             myToast("请选择处理结果");
             return false;
         }
-        remark = tv_chulishuoming.getText().toString().trim();
+        remark = tv_shuoming.getText().toString().trim();
         if (TextUtils.isEmpty(remark)) {
             myToast("请输入处理说明");
             return false;

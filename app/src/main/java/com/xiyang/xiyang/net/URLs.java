@@ -5,8 +5,8 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "http://192.168.0.103";//图片地址
-    public static String HOST = "http://192.168.0.103";//接口地址
+    public static String IMGHOST = "https://kqjhq.zhitiekeji.com";//图片地址
+    public static String HOST = "https://kqjhq.zhitiekeji.com";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -79,7 +79,9 @@ public class URLs {
      */
     public static final String Fragment3_m = HOST + API + "approval";
     //审核详情
-    public static final String ApproveDetail = HOST + API + "bdm/verfiy/detail";
+    public static final String ApproveDetail = HOST + API + "approval/detail";
+    //审核合同
+    public static final String ApproveContract = HOST + API + "approval/deal";
     /**
      * ********************************门店*****************************************
      */

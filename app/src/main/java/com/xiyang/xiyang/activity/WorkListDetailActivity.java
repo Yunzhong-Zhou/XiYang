@@ -350,7 +350,7 @@ public class WorkListDetailActivity extends BaseActivity {
                                 .apply(RequestOptions.bitmapTransform(new
                                         RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 3))))
                                 .placeholder(R.mipmap.loading)//加载站位图
-                                .error(R.mipmap.zanwutupian)//加载失败
+                                .error(R.mipmap.headimg)//加载失败
                                 .into(iv_head);//加载图片
                         holder.setText(R.id.tv_name, model.get);*/
                             holder.setText(R.id.tv_time, model.getCreatedAt());

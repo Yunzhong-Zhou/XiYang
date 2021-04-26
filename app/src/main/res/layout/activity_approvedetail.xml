@@ -181,7 +181,7 @@
                                 android:drawablePadding="5dp"
                                 android:gravity="center"
                                 android:text="合同信息"
-                                android:textColor="@color/black3"
+                                android:textColor="@color/black1"
                                 android:textSize="14sp" />
 
                             <View
@@ -189,7 +189,7 @@
                                 android:layout_width="56dp"
                                 android:layout_height="2dp"
                                 android:background="@color/green"
-                                android:visibility="invisible" />
+                                android:visibility="visible" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -314,6 +314,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="15dp"
+                                android:paddingBottom="10dp"
                                 android:text="基本信息"
                                 android:textColor="@color/black1"
                                 android:textSize="14sp"
@@ -440,11 +441,16 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_shenhe"
+                    <com.xiyang.xiyang.view.LoadingLayout
+                        android:id="@+id/loading_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_shenhe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.xiyang.xiyang.view.LoadingLayout>
 
                     <TextView
                         android:id="@+id/tv_shenpi"

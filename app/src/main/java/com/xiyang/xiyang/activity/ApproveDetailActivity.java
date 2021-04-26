@@ -13,13 +13,11 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.ApproveDetailModel;
-import com.xiyang.xiyang.model.Fragment2Model;
-import com.xiyang.xiyang.model.ShopDetailModel;
+import com.xiyang.xiyang.model.KeyValueModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.popupwindow.PhotoShowDialog;
-import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -39,11 +37,14 @@ import okhttp3.Response;
  */
 public class ApproveDetailActivity extends BaseActivity {
     String id = "";
-    int type = 1;
+    int type = 2;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
 
+    ApproveDetailModel model;
+    TextView tv_name, tv_shop, tv_num, tv_addr;
+    ImageView imageView1, imageView2;
     /**
      * 商户信息
      */
@@ -56,16 +57,17 @@ public class ApproveDetailActivity extends BaseActivity {
     TextView tv_liulan;
     ImageView iv_contract;
     RecyclerView rv_contract;
-    List<ShopDetailModel.ContractBean> list_contract = new ArrayList<>();
-    CommonAdapter<ShopDetailModel.ContractBean> mAdapter_contract;
+    List<KeyValueModel> list_contract = new ArrayList<>();
+    CommonAdapter<KeyValueModel> mAdapter_contract;
 
     /**
      * 审核合同
      */
     LinearLayout ll_shenhe;
+    TextView tv_shenpi;
     RecyclerView rv_shenhe;
-    List<Fragment2Model> list_shenhe = new ArrayList<>();
-    CommonAdapter<Fragment2Model> mAdapter_shenhe;
+    List<ApproveDetailModel.VerifyLogBean> list_shenhe = new ArrayList<>();
+    CommonAdapter<ApproveDetailModel.VerifyLogBean> mAdapter_shenhe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,14 @@ public class ApproveDetailActivity extends BaseActivity {
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
+
+        tv_name = findViewByID_My(R.id.tv_name);
+        tv_shop = findViewByID_My(R.id.tv_shop);
+        tv_num = findViewByID_My(R.id.tv_num);
+        tv_addr = findViewByID_My(R.id.tv_addr);
+        imageView1 = findViewByID_My(R.id.imageView1);
+        imageView2 = findViewByID_My(R.id.imageView2);
+
         /**
          *商户信息
          */
@@ -124,6 +134,7 @@ public class ApproveDetailActivity extends BaseActivity {
          * 门店信息
          */
         ll_shenhe = findViewByID_My(R.id.ll_shenhe);
+        tv_shenpi = findViewByID_My(R.id.tv_shenpi);
         rv_shenhe = findViewByID_My(R.id.rv_shenhe);
         rv_shenhe.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -134,13 +145,18 @@ public class ApproveDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_liulan:
                 //查看图片
-                PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ApproveDetailActivity.this,
+                /*PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ApproveDetailActivity.this,
                         URLs.IMGHOST + "");
-                photoShowDialog.show();
+                photoShowDialog.show();*/
+                if (model.getBase().getFile() != null && !model.getBase().getFile().equals("")) {
+                    bundle.putString("url", model.getBase().getFile());
+                    CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ShowPDFActivity.class, bundle, false);
+                }else myToast("暂无文件");
+
                 break;
             case R.id.tv_shenpi:
                 //立即审批
-                bundle.putString("id", "");
+                bundle.putString("id", model.getHead().getId());
                 CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ApproveContractActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
@@ -190,104 +206,150 @@ public class ApproveDetailActivity extends BaseActivity {
 
             @Override
             public void onResponse(ApproveDetailModel response) {
-//                hideProgress();
-//                model = response;
+                hideProgress();
+                model = response;
 
+                tv_name.setText(response.getHead().getName());
+                tv_shop.setText("《" + response.getHead().getContactTitle() + "》");
+                tv_num.setText(response.getHead().getStatusTitle());
+                tv_addr.setText(response.getBase().getCreatedAt());
+                Glide.with(ApproveDetailActivity.this)
+                        .load(model.getHead().getImage())
+//                                .fitCenter()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(imageView1);//加载图片
 
-                for (int i = 0; i < 5; i++) {
-                    list_shenhe.add(new Fragment2Model());
+                if (response.getHead().getStatus().equals("0")) {//需要审核
+                    tv_shenpi.setVisibility(View.VISIBLE);
+                } else {
+                    tv_shenpi.setVisibility(View.GONE);
                 }
-                mAdapter_shenhe = new CommonAdapter<Fragment2Model>
-                        (ApproveDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
+                /**
+                 * 合同信息
+                 */
+                list_contract.clear();
+                list_contract.add(new KeyValueModel("选择类型", response.getBase().getContactTitle()));
+                list_contract.add(new KeyValueModel("选择商户", response.getHead().getName()));
+                list_contract.add(new KeyValueModel("签约期限", response.getBase().getExtra().getRenewalPeriod() + "年"));
+                if (response.getBase().getExtra().getSole().equals("1"))
+                    list_contract.add(new KeyValueModel("是否独家", "是"));
+                else list_contract.add(new KeyValueModel("是否独家", "否"));
+
+                list_contract.add(new KeyValueModel("审核时间", response.getBase().getCreatedAt()));
+                mAdapter_contract = new CommonAdapter<KeyValueModel>
+                        (ApproveDetailActivity.this, R.layout.item_keyvalue, list_contract) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment2Model model, int position) {
-                        //隐藏最前和最后的竖线
-                        View view_top = holder.getView(R.id.view_top);
-                        View view_bottom = holder.getView(R.id.view_bottom);
-                        if (position == 0) {
-                            view_top.setVisibility(View.INVISIBLE);
-                        } else {
-                            view_top.setVisibility(View.VISIBLE);
-                        }
-                        if (position == (list_shenhe.size() - 1)) {
-                            view_bottom.setVisibility(View.GONE);
-                        } else {
-                            view_bottom.setVisibility(View.VISIBLE);
-                        }
-                        //横向图片
-                        List<String> list_img = new ArrayList<>();
-                /*for (String s : model1.getGoods_info().getImgArr()) {
-                    list_img.add(URLs.IMGHOST + s);
-                }*/
-                        list_img.add(URLs.IMGHOST + "");
-                        list_img.add(URLs.IMGHOST + "");
-                        list_img.add(URLs.IMGHOST + "");
-                        RecyclerView rv = holder.getView(R.id.rv);
-                        LinearLayoutManager llm1 = new LinearLayoutManager(ApproveDetailActivity.this);
-                        llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
-                        rv.setLayoutManager(llm1);
-                        CommonAdapter<String> ca = new CommonAdapter<String>
-                                (ApproveDetailActivity.this, R.layout.item_img_28_28, list_img) {
-                            @Override
-                            protected void convert(ViewHolder holder, String model, int position) {
-                                ImageView iv = holder.getView(R.id.iv);
-                                Glide.with(ApproveDetailActivity.this).load(model)
-                                        .centerCrop()
-                                        .apply(RequestOptions.bitmapTransform(new
-                                                RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 3))))
-                                        .placeholder(R.mipmap.loading)//加载站位图
-                                        .error(R.mipmap.zanwutupian)//加载失败
-                                        .into(iv);//加载图片
-                            }
-                        };
-                        ca.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                PhotoShowDialog photoShowDialog = new PhotoShowDialog(ApproveDetailActivity.this, list_img, i);
-                                photoShowDialog.show();
-                            }
-
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                return false;
-                            }
-                        });
-                        rv.setAdapter(ca);
-
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(getActivity())
-                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
-                                    .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
-                            }
-
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
-
-               /* holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                        CommonUtil.gotoActivityWithData(ContractDetailActivity.this, ContractDetailActivity.class, bundle, false);
-                    }
-                });*/
-
+                    protected void convert(ViewHolder holder, KeyValueModel model, int position) {
+                        holder.setText(R.id.tv_kay, model.getKey());
+                        holder.setText(R.id.tv_value, "" + model.getValue());
                     }
                 };
-                rv_shenhe.setAdapter(mAdapter_shenhe);
+                rv_contract.setAdapter(mAdapter_contract);
+                Glide.with(ApproveDetailActivity.this)
+                        .load(response.getBase().getExtra().getLicenseNoImage())
+                        .fitCenter()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_contract);//加载图片
+
+                /**
+                 * 审核合同
+                 */
+                list_shenhe = response.getVerifyLog();
+                if (list_shenhe.size() > 0) {
+                    showContentPage();
+                    mAdapter_shenhe = new CommonAdapter<ApproveDetailModel.VerifyLogBean>
+                            (ApproveDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
+                        @Override
+                        protected void convert(ViewHolder holder, ApproveDetailModel.VerifyLogBean model, int position) {
+                            //隐藏最前和最后的竖线
+                            View view_top = holder.getView(R.id.view_top);
+                            View view_bottom = holder.getView(R.id.view_bottom);
+                            if (position == 0) {
+                                view_top.setVisibility(View.INVISIBLE);
+                            } else {
+                                view_top.setVisibility(View.VISIBLE);
+                            }
+                            if (position == (list_shenhe.size() - 1)) {
+                                view_bottom.setVisibility(View.GONE);
+                            } else {
+                                view_bottom.setVisibility(View.VISIBLE);
+                            }
+                            //状态图片
+                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
+                            switch (model.getStatus()) {
+                                case "1":
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
+                                    break;
+                                case "2":
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                    break;
+                                case "3":
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
+                                    break;
+                            }
+
+                            //横向图片
+                            List<String> list_img = new ArrayList<>();
+                            for (String s : model.getImage()) {
+                                list_img.add(s);
+                            }
+                            RecyclerView rv = holder.getView(R.id.rv);
+                            LinearLayoutManager llm1 = new LinearLayoutManager(ApproveDetailActivity.this);
+                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                            rv.setLayoutManager(llm1);
+                            CommonAdapter<String> ca = new CommonAdapter<String>
+                                    (ApproveDetailActivity.this, R.layout.item_img_28_28, list_img) {
+                                @Override
+                                protected void convert(ViewHolder holder, String model, int position) {
+                                    ImageView iv = holder.getView(R.id.iv);
+                                    Glide.with(ApproveDetailActivity.this).load(model)
+                                            .centerCrop()
+                                            .apply(RequestOptions.bitmapTransform(new
+                                                    RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 7))))
+                                            .placeholder(R.mipmap.loading)//加载站位图
+                                            .error(R.mipmap.zanwutupian)//加载失败
+                                            .into(iv);//加载图片
+                                }
+                            };
+                            ca.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(ApproveDetailActivity.this, list_img, i);
+                                    photoShowDialog.show();
+                                }
+
+                                @Override
+                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                    return false;
+                                }
+                            });
+                            rv.setAdapter(ca);
+
+                            ImageView iv_head = holder.getView(R.id.iv_head);
+                            Glide.with(ApproveDetailActivity.this)
+                                    .load(model.getHead())
+                                    .fitCenter()
+                                    .apply(RequestOptions.bitmapTransform(new
+                                            RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 3))))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.headimg)//加载失败
+                                    .into(iv_head);//加载图片
+                            holder.setText(R.id.tv_name, model.getName());
+                            holder.setText(R.id.tv_time, model.getCreatedAt());
+                            holder.setText(R.id.tv_type, model.getStatusTitle());
+                            holder.setText(R.id.tv_content, model.getRemark());
+                        }
+                    };
+                    rv_shenhe.setAdapter(mAdapter_shenhe);
+                } else {
+                    showEmptyPage();
+                }
             }
         });
     }
