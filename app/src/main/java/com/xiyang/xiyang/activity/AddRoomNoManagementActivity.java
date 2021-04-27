@@ -1,29 +1,55 @@
 package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.cy.dialog.BaseDialog;
 import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.Fragment1Model;
+import com.xiyang.xiyang.model.RoomNoManagementModel;
+import com.xiyang.xiyang.model.StoreDetailModel;
+import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.okhttp.CallBackUtil;
+import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/4/2.
  */
 public class AddRoomNoManagementActivity extends BaseActivity {
-    int type = 1;
+    StoreDetailModel model;
+    int type = 1, item1 = -1, item2 = -1, item3 = -1, item4 = -1;
+    String parentId1 = "0", parentId2 = "", parentId3 = "", parentId4 = "",
+            name1 = "", name2 = "", name3 = "", name4 = "";
+
+
+    String title = "", parentId = "", name = "";
+
+    //门店信息
+    ImageView imageView1, imageView2;
+    TextView tv_name, tv_shop, tv_addr;
+
     //信息筛选
     ShadowLayout shadowLayout;
     RelativeLayout relativeLayout1, relativeLayout2, relativeLayout3;
@@ -31,8 +57,8 @@ public class AddRoomNoManagementActivity extends BaseActivity {
     TextView tv_title, tv_add;
     EditText editText1;
     RecyclerView recyclerView;
-    List<Fragment1Model> list = new ArrayList<>();
-    CommonAdapter<Fragment1Model> mAdapter;
+    List<String> list = new ArrayList<>();
+    CommonAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +68,14 @@ public class AddRoomNoManagementActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        //门店信息
+        imageView1 = findViewByID_My(R.id.imageView1);
+        imageView2 = findViewByID_My(R.id.imageView2);
+        tv_name = findViewByID_My(R.id.tv_name);
+        tv_shop = findViewByID_My(R.id.tv_shop);
+        tv_addr = findViewByID_My(R.id.tv_addr);
+
+        //信息筛选、添加
         shadowLayout = findViewByID_My(R.id.shadowLayout);
         relativeLayout1 = findViewByID_My(R.id.relativeLayout1);
         relativeLayout2 = findViewByID_My(R.id.relativeLayout2);
@@ -58,82 +92,99 @@ public class AddRoomNoManagementActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        for (int i = 0; i < 5; i++) {
-            list.add(new Fragment1Model());
-        }
-        mAdapter = new CommonAdapter<Fragment1Model>
+        type = getIntent().getIntExtra("type", 1);
+        model = (StoreDetailModel) getIntent().getSerializableExtra("StoreDetailModel");
+        item1 = getIntent().getIntExtra("item1", -1);
+        item2 = getIntent().getIntExtra("item2", -1);
+        item3 = getIntent().getIntExtra("item3", -1);
+        item4 = getIntent().getIntExtra("item4", -1);
+        parentId1 = getIntent().getStringExtra("parentId1");
+        parentId2 = getIntent().getStringExtra("parentId2");
+        parentId3 = getIntent().getStringExtra("parentId3");
+        parentId4 = getIntent().getStringExtra("parentId4");
+        name1 = getIntent().getStringExtra("name1");
+        name2 = getIntent().getStringExtra("name2");
+        name3 = getIntent().getStringExtra("name3");
+        name4 = getIntent().getStringExtra("name4");
+
+        //门店信息
+        Glide.with(AddRoomNoManagementActivity.this)
+                .load(model.getImage())
+//                                .fitCenter()
+//                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(CommonUtil.dip2px(StoreDetailActivity.this, 10))))
+                .placeholder(R.mipmap.loading)//加载站位图
+                .error(R.mipmap.zanwutupian)//加载失败
+                .into(imageView1);//加载图片
+        tv_name.setText(model.getBase().getName());
+        tv_shop.setText(model.getDeviceNum());
+        tv_addr.setText(model.getBase().getAddress());
+
+        ChangeUI();
+
+
+        mAdapter = new CommonAdapter<String>
                 (AddRoomNoManagementActivity.this, R.layout.item_addroomnomanagement, list) {
             @Override
-            protected void convert(ViewHolder holder, Fragment1Model model, int position) {
-                /*LinearLayout ll = holder.getView(R.id.ll);
-                TextView tv = holder.getView(R.id.tv);
-                ImageView iv_edit = holder.getView(R.id.iv_edit);
-                ImageView iv_delete = holder.getView(R.id.iv_delete);
-                ImageView iv_device = holder.getView(R.id.iv_device);
-
-                if (item == position){
-                    ll.setBackgroundResource(R.color.green);
-                    tv.setTextColor(getResources().getColor(R.color.white));
-                    iv_edit.setImageResource(R.mipmap.ic_edit_white);
-                    iv_delete.setImageResource(R.mipmap.ic_delete_white);
-                    iv_device.setImageResource(R.mipmap.ic_delete_white);
-                }else {
-                    ll.setBackgroundResource(R.color.transparent);
-                    tv.setTextColor(getResources().getColor(R.color.black2));
-                    iv_edit.setImageResource(R.mipmap.ic_edit);
-                    iv_delete.setImageResource(R.mipmap.ic_delete);
-                    iv_device.setImageResource(R.mipmap.ic_delete);
-                }*/
-
-//                        holder.setText(R.id.tv1, model.getTitle());
-//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
-                /*holder.getView(R.id.ll).setOnClickListener(new View.OnClickListener() {
+            protected void convert(ViewHolder holder, String model, int position) {
+                holder.setText(R.id.tv, model);
+                //删除
+                holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        item = position;
+                        list.remove(position);
                         mAdapter.notifyDataSetChanged();
-
                     }
-                });*/
-
+                });
             }
         };
         recyclerView.setAdapter(mAdapter);
 
-        type = getIntent().getIntExtra("type", 1);
-        switch (type) {
-            case 1:
-                titleView.setTitle("添加区域");
-                shadowLayout.setVisibility(View.GONE);
-                tv_title.setText("区域添加");
-                editText1.setHint("请输入区域名称");
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.textView1:
+                //区域
+                if (!parentId1.equals("")) {
+                    dialogList(textView1, parentId1, 1);
+                }
                 break;
-            case 2:
-                titleView.setTitle("添加楼栋");
-                shadowLayout.setVisibility(View.VISIBLE);
-                relativeLayout1.setVisibility(View.VISIBLE);
-                relativeLayout2.setVisibility(View.GONE);
-                relativeLayout3.setVisibility(View.GONE);
-                tv_title.setText("楼栋添加");
-                editText1.setHint("请输入楼栋");
+            case R.id.textView2:
+                //楼栋
+                dialogList(textView2, parentId2, 2);
                 break;
-            case 3:
-                titleView.setTitle("添加楼层");
-                shadowLayout.setVisibility(View.VISIBLE);
-                relativeLayout1.setVisibility(View.VISIBLE);
-                relativeLayout2.setVisibility(View.VISIBLE);
-                relativeLayout3.setVisibility(View.GONE);
-                tv_title.setText("楼层添加");
-                editText1.setHint("请输入楼层");
+            case R.id.textView3:
+                //楼层
+                dialogList(textView3, parentId3, 3);
                 break;
-            case 4:
-                titleView.setTitle("添加房号");
-                shadowLayout.setVisibility(View.VISIBLE);
-                relativeLayout1.setVisibility(View.VISIBLE);
-                relativeLayout2.setVisibility(View.VISIBLE);
-                relativeLayout3.setVisibility(View.VISIBLE);
-                tv_title.setText("房号添加");
-                editText1.setHint("请输入房号");
+            case R.id.tv_add:
+                //添加
+                if (!editText1.getText().toString().trim().equals("")) {
+                    list.add(editText1.getText().toString().trim());
+                    editText1.setText("");
+                    mAdapter.notifyDataSetChanged();
+                } else myToast(editText1.getHint().toString());
+
+                break;
+            case R.id.tv_confirm:
+                //保存
+                name = "";
+                for (String s : list) {
+                    name = name + s + ",";
+                }
+                if (!name.equals("")) {
+                    name = name.substring(0, name.length() - 1);
+                    showProgress(true, getString(R.string.app_loading1));
+                    params.clear();
+                    params.put("name", name);
+                    params.put("parentId", parentId);
+                    params.put("storeId", model.getId());
+                    requestUpData(params);
+
+                } else myToast("请" + title);
                 break;
         }
     }
@@ -141,5 +192,224 @@ public class AddRoomNoManagementActivity extends BaseActivity {
     @Override
     protected void updateView() {
 
+    }
+
+    private void requestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.AddRoom, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                myToast("添加成功");
+                hideProgress();
+                finish();
+            }
+        });
+    }
+
+    /**
+     * 选择区域
+     */
+    private void dialogList(TextView textView, String s, int i) {
+        showProgress(true, getString(R.string.app_loading2));
+        params.clear();
+        params.put("parentId", s);
+        params.put("storeId", model.getId());
+        OkhttpUtil.okHttpGet(URLs.RoomNoManagement, params, headerMap, new CallBackUtil<RoomNoManagementModel>() {
+            @Override
+            public RoomNoManagementModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(RoomNoManagementModel response) {
+                hideProgress();
+                dialog.contentView(R.layout.dialog_list_center)
+//                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                                ViewGroup.LayoutParams.WRAP_CONTENT))
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                CommonUtil.dip2px(AddRoomNoManagementActivity.this, 400)))
+                        .animType(BaseDialog.AnimInType.BOTTOM)
+                        .canceledOnTouchOutside(true)
+                        .gravity(Gravity.CENTER)
+                        .dimAmount(0.5f)
+                        .show();
+                RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+                rv_list.setLayoutManager(new LinearLayoutManager(AddRoomNoManagementActivity.this));
+                CommonAdapter<RoomNoManagementModel.ListBean> adapter = new CommonAdapter<RoomNoManagementModel.ListBean>
+                        (AddRoomNoManagementActivity.this, R.layout.item_help, response.getList()) {
+                    @Override
+                    protected void convert(ViewHolder holder, RoomNoManagementModel.ListBean model, int position) {
+                        TextView tv = holder.getView(R.id.textView1);
+                        tv.setText(model.getName());
+                        int item = -1;
+                        switch (i) {
+                            case 1:
+                                //选择的区域
+                                item = item1;
+                                break;
+                            case 2:
+                                //选择的楼栋
+                                item = item2;
+                                break;
+                            case 3:
+                                //选择的楼层
+                                item = item3;
+                                break;
+                        }
+                        if (position == item) {
+                            tv.setTextColor(getResources().getColor(R.color.green));
+                        } else {
+                            tv.setTextColor(getResources().getColor(R.color.black1));
+                        }
+                    }
+                };
+                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                        textView.setText(response.getList().get(position).getName());
+                        parentId = response.getList().get(position).getId();
+
+                        switch (i) {
+                            case 1:
+                                //选择的区域-清空后两项
+                                textView2.setText("");
+                                textView3.setText("");
+                                parentId2 = response.getList().get(position).getId();
+                                parentId3 = "";
+                                break;
+                            case 2:
+                                //选择的楼栋-清空后一项
+                                textView3.setText("");
+                                parentId3 = response.getList().get(position).getId();
+                                break;
+                        }
+                        //获取下一级
+                        showProgress(true, getString(R.string.app_loading2));
+                        params.clear();
+                        params.put("parentId", parentId);
+                        params.put("storeId", model.getId());
+                        requestNext(params, i);
+
+                        dialog.dismiss();
+
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv_list.setAdapter(adapter);
+            }
+        });
+    }
+
+    //获取下一级
+    private void requestNext(HashMap<String, String> params, int i) {
+        OkhttpUtil.okHttpGet(URLs.RoomNoManagement, params, headerMap, new CallBackUtil<RoomNoManagementModel>() {
+            @Override
+            public RoomNoManagementModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(RoomNoManagementModel response) {
+                hideProgress();
+                if (response.getList().size() == 0) {//没有数据
+                    switch (i) {
+                        case 1:
+                            //区域
+                            type = 2;
+                            break;
+                        case 2:
+                            //楼栋
+                            type = 3;
+                            break;
+                        case 3:
+                            //楼层
+                            type = 4;
+                            break;
+                    }
+                    ChangeUI();
+                }
+            }
+        });
+    }
+
+    private void ChangeUI() {
+        switch (type) {
+            case 1:
+                title = "添加区域";
+                shadowLayout.setVisibility(View.GONE);
+                tv_title.setText("区域添加");
+                editText1.setHint("请输入区域名称");
+
+                parentId = "0";
+
+                break;
+            case 2:
+                title = "添加楼栋";
+                shadowLayout.setVisibility(View.VISIBLE);
+                relativeLayout1.setVisibility(View.VISIBLE);
+                relativeLayout2.setVisibility(View.GONE);
+                relativeLayout3.setVisibility(View.GONE);
+                tv_title.setText("楼栋添加");
+                editText1.setHint("请输入楼栋");
+
+                parentId = parentId2;
+                textView1.setText(name1);//显示选择的区域
+
+                break;
+            case 3:
+                title = "添加楼层";
+                shadowLayout.setVisibility(View.VISIBLE);
+                relativeLayout1.setVisibility(View.VISIBLE);
+                relativeLayout2.setVisibility(View.VISIBLE);
+                relativeLayout3.setVisibility(View.GONE);
+                tv_title.setText("楼层添加");
+                editText1.setHint("请输入楼层");
+
+                parentId = parentId3;
+                textView1.setText(name1);//显示选择的区域
+                textView2.setText(name2);//显示选择的楼栋
+                break;
+            case 4:
+                title = "添加房号";
+                shadowLayout.setVisibility(View.VISIBLE);
+                relativeLayout1.setVisibility(View.VISIBLE);
+                relativeLayout2.setVisibility(View.VISIBLE);
+                relativeLayout3.setVisibility(View.VISIBLE);
+                tv_title.setText("房号添加");
+                editText1.setHint("请输入房号");
+
+                parentId = parentId4;
+                textView1.setText(name1);//显示选择的区域
+                textView2.setText(name2);//显示选择的楼栋
+                textView3.setText(name3);//显示选择的楼层
+                break;
+        }
+        titleView.setTitle(title);
     }
 }

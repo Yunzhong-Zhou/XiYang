@@ -169,7 +169,7 @@ public class AddStoreActivity extends BaseActivity {
                 Intent intent2 = new Intent(AddStoreActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
-                bundle2.putString("status", "3");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                bundle2.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
@@ -368,7 +368,6 @@ public class AddStoreActivity extends BaseActivity {
 
             }
             if (imgpath != null) {
-                showProgress(true, getString(R.string.app_loading1));
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);

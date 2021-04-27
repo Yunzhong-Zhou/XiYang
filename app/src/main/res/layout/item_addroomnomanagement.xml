@@ -20,7 +20,7 @@
             android:paddingBottom="14dp"
             android:text="name"
             android:textColor="@color/black2"
-            android:textSize="16sp"
+            android:textSize="12.5sp"
             android:textStyle="bold" />
 
         <ImageView

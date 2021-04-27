@@ -94,14 +94,14 @@ public class URLs {
     public static final String AddStore = HOST + API + "store/add";
     //门店详情
     public static final String StoreDetail = HOST + API + "store/detail";
-    //待施工=进行中=待复检=待完工=已提车
-    public static final String Fragment2_2 = HOST + API + "/api/v1/techn/techn_sedan_waitfor_list";
-    //添加项目
-    public static final String AddProject = HOST + API + "/api/v1/techn/techn_testing_details_increase";
-    //修改项目
-    public static final String ChageProject = HOST + API + "/api/v1/techn/techn_testing_details_modify";
-    //修改项目状态
-    public static final String ChageProjectType = HOST + API + "/api/v1/techn/techn_sedan_testing_details_modify_state";
+    //房号管理
+    public static final String RoomNoManagement = HOST + API + "store/room";
+    //添加房号
+    public static final String AddRoom = HOST + API + "store/room/add";
+    //修改房号
+    public static final String ChageRoom = HOST + API + "store/room/update";
+    //删除房号
+    public static final String DeleteRoom = HOST + API + "store/room/delete";
     //修改服务状态
     public static final String ChageServiceType = HOST + API + "/api/v1/techn/techn_sedan_order_service_modify_state";
     //修改订单状态

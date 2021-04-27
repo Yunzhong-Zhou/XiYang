@@ -136,7 +136,6 @@ public class MyProfileActivity extends BaseActivity {
                 //邮箱
                 editText2.setText(response.getEmail());
 
-
                 localUserInfo.setPhoneNumber(response.getMobile());
                 localUserInfo.setNickname(response.getNickname());
 //                localUserInfo.setInvuteCode(response.getInvite_code());
