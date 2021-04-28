@@ -476,7 +476,7 @@ public class AddStoreActivity extends BaseActivity {
 
                             dialog.dismiss();
                         } else {
-                            dialogList_hangye(list_hangye.get(position).getParentId());
+                            dialogList_hangye(list_hangye.get(position).getId());
                         }
                         adapter.notifyDataSetChanged();
 
@@ -562,12 +562,12 @@ public class AddStoreActivity extends BaseActivity {
                             case 1:
                                 //市
                                 postionId = list_chengshi.get(position).getId();
-                                dialogList_chengshi(list_chengshi.get(position).getParentId());
+                                dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
                             case 2:
                                 //省
                                 postionId = list_chengshi.get(position).getId();
-                                dialogList_chengshi(list_chengshi.get(position).getParentId());
+                                dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
                         }
                         adapter.notifyDataSetChanged();

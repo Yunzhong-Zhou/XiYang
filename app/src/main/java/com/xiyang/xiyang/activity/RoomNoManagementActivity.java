@@ -38,7 +38,7 @@ import okhttp3.Response;
  * 房号管理
  */
 public class RoomNoManagementActivity extends BaseActivity {
-    StoreDetailModel model;
+    StoreDetailModel model_sdm;
     RoomNoManagementModel model_rnm;
     String parentId = "0", parentId1 = "0", parentId2 = "", parentId3 = "", parentId4 = "",
             name1 = "", name2 = "", name3 = "", name4 = "";
@@ -71,7 +71,7 @@ public class RoomNoManagementActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 params.put("parentId", parentId);
-                params.put("storeId", model.getId());
+                params.put("storeId", model_sdm.getId());
 //        params.put("type", "all");
                 request(params);
             }
@@ -105,7 +105,7 @@ public class RoomNoManagementActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        model = (StoreDetailModel) getIntent().getSerializableExtra("StoreDetailModel");
+        model_sdm = (StoreDetailModel) getIntent().getSerializableExtra("StoreDetailModel");
 
     }
 
@@ -115,7 +115,7 @@ public class RoomNoManagementActivity extends BaseActivity {
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
         params.put("parentId", parentId);
-        params.put("storeId", model.getId());
+        params.put("storeId", model_sdm.getId());
 //        params.put("type", "all");
         request(params);
     }
@@ -192,26 +192,36 @@ public class RoomNoManagementActivity extends BaseActivity {
                                     switch (type) {
                                         case 1:
                                             item1 = position;
-                                            parentId2 = list.get(position).getId();
                                             name1 = list.get(position).getName();
+
+                                            parentId2 = list.get(position).getId();
+                                            type = 2;
                                             break;
                                         case 2:
                                             item2 = position;
-                                            parentId3 = list.get(position).getId();
                                             name2 = list.get(position).getName();
+
+                                            parentId3 = list.get(position).getId();
+                                            type = 3;
                                             break;
                                         case 3:
                                             item3 = position;
+                                            name3 = list.get(position).getName();
+
                                             parentId4 = list.get(position).getId();
-                                            name2 = list.get(position).getName();
+                                            type = 4;
                                             break;
-                                        case 4:
+                                        /*case 4:
                                             item4 = position;
-//                                            parentId5 = list.get(position).getId();
                                             name4 = list.get(position).getName();
-                                            break;
+
+//                                            parentId5 = list.get(position).getId();
+                                            break;*/
                                     }
                                     mAdapter.notifyDataSetChanged();
+
+//                                    parentId = list.get(position).getId();
+                                    changeUI();
                                 }
                             });
 
@@ -233,7 +243,7 @@ public class RoomNoManagementActivity extends BaseActivity {
                                             showProgress(false, getString(R.string.app_loading1));
                                             params.clear();
                                             params.put("id", list.get(position).getId());
-                                            params.put("storeId", model.getId());
+                                            params.put("storeId", model_sdm.getId());
                                             requestChange(params, URLs.DeleteRoom, 2);//删除
                                         }
                                     }, new View.OnClickListener() {
@@ -267,7 +277,7 @@ public class RoomNoManagementActivity extends BaseActivity {
             case R.id.textView2:
                 //添加
                 bundle.putInt("type", type);
-                bundle.putSerializable("StoreDetailModel", model);
+                bundle.putSerializable("StoreDetailModel", model_sdm);
                 bundle.putInt("item1", item1);
                 bundle.putInt("item2", item2);
                 bundle.putInt("item3", item3);
@@ -329,9 +339,27 @@ public class RoomNoManagementActivity extends BaseActivity {
                 textView2.setText("添加新的区域");
 
                 parentId = parentId1;
+
+                //清空四级选择的数据
+                item1 = -1;
+//                parentId1 = "";
+                name1 = "";
+
+                item2 = -1;
+//                parentId2 = "";
+                name2 = "";
+
+                item3 = -1;
+//                parentId3 = "";
+                name3 = "";
+
+                item4 = -1;
+//                parentId4 = "";
+                name4 = "";
+
                 break;
             case 2:
-                tv_tab1.setTextColor(getResources().getColor(R.color.black3));
+                tv_tab1.setTextColor(getResources().getColor(R.color.black1));
                 tv_tab2.setTextColor(getResources().getColor(R.color.black1));
                 tv_tab3.setTextColor(getResources().getColor(R.color.black3));
                 tv_tab4.setTextColor(getResources().getColor(R.color.black3));
@@ -343,10 +371,23 @@ public class RoomNoManagementActivity extends BaseActivity {
                 textView2.setText("添加新的楼栋");
 
                 parentId = parentId2;
+
+                //清空后三级选择的数据
+                item2 = -1;
+//                parentId2 = "";
+                name2 = "";
+
+                item3 = -1;
+//                parentId3 = "";
+                name3 = "";
+
+                item4 = -1;
+//                parentId4 = "";
+                name4 = "";
                 break;
             case 3:
-                tv_tab1.setTextColor(getResources().getColor(R.color.black3));
-                tv_tab2.setTextColor(getResources().getColor(R.color.black3));
+                tv_tab1.setTextColor(getResources().getColor(R.color.black1));
+                tv_tab2.setTextColor(getResources().getColor(R.color.black1));
                 tv_tab3.setTextColor(getResources().getColor(R.color.black1));
                 tv_tab4.setTextColor(getResources().getColor(R.color.black3));
                 view1.setVisibility(View.INVISIBLE);
@@ -357,11 +398,20 @@ public class RoomNoManagementActivity extends BaseActivity {
                 textView2.setText("添加新的楼层");
 
                 parentId = parentId3;
+
+                //清空后二级的数据
+                item3 = -1;
+//                parentId3 = "";
+                name3 = "";
+
+                item4 = -1;
+//                parentId4 = "";
+                name4 = "";
                 break;
             case 4:
-                tv_tab1.setTextColor(getResources().getColor(R.color.black3));
-                tv_tab2.setTextColor(getResources().getColor(R.color.black3));
-                tv_tab3.setTextColor(getResources().getColor(R.color.black3));
+                tv_tab1.setTextColor(getResources().getColor(R.color.black1));
+                tv_tab2.setTextColor(getResources().getColor(R.color.black1));
+                tv_tab3.setTextColor(getResources().getColor(R.color.black1));
                 tv_tab4.setTextColor(getResources().getColor(R.color.black1));
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
@@ -371,8 +421,11 @@ public class RoomNoManagementActivity extends BaseActivity {
                 textView2.setText("添加新的房号");
 
                 parentId = parentId4;
-                break;
 
+                item4 = -1;
+//                parentId4 = "";
+                name4 = "";
+                break;
         }
         requestServer();
     }
@@ -397,7 +450,7 @@ public class RoomNoManagementActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!textView2.getText().toString().trim().equals("")) {
-                    KeyboardUtils.hideSoftInput(RoomNoManagementActivity.this);
+                    KeyboardUtils.hideSoftInput(textView2);
 
                     dialog.dismiss();
 
@@ -406,7 +459,7 @@ public class RoomNoManagementActivity extends BaseActivity {
                     params.put("id", id);
                     params.put("name", textView2.getText().toString().trim());
                     params.put("parentId", parentId);
-                    params.put("storeId", model.getId());
+                    params.put("storeId", model_sdm.getId());
                     requestChange(params, URLs.ChageRoom, 1);//修改
                 } else {
                     myToast(hint);
@@ -446,7 +499,34 @@ public class RoomNoManagementActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 if (i == 1) myToast("修改成功");
-                else myToast("删除成功");
+                else{
+                    myToast("删除成功");
+                    switch (type) {
+                        case 1:
+                            item1 = -1;
+                            parentId1 = "0";
+                            name1 = "";
+                            break;
+                        case 2:
+                            item2 = -1;
+                            parentId2 = "";
+                            name2 = "";
+                            break;
+                        case 3:
+                            item3 = -1;
+                            parentId3 = "";
+                            name3 = "";
+                            break;
+                        case 4:
+                            item4 = -1;
+                            parentId4 = "";
+                            name4 = "";
+                            break;
+                    }
+                }
+
+
+
                 hideProgress();
                 requestServer();
             }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.bumptech.glide.Glide;
 import com.cy.dialog.BaseDialog;
 import com.lihang.ShadowLayout;
@@ -19,7 +20,6 @@ import com.xiyang.xiyang.model.StoreDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -148,21 +148,20 @@ public class AddRoomNoManagementActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.textView1:
                 //区域
-                if (!parentId1.equals("")) {
-                    dialogList(textView1, parentId1, 1);
-                }
+                dialogList(textView1, "0", 1);
                 break;
             case R.id.textView2:
                 //楼栋
-                dialogList(textView2, parentId2, 2);
+                dialogList(textView2, parentId1, 2);
                 break;
             case R.id.textView3:
                 //楼层
-                dialogList(textView3, parentId3, 3);
+                dialogList(textView3, parentId2, 3);
                 break;
             case R.id.tv_add:
                 //添加
                 if (!editText1.getText().toString().trim().equals("")) {
+                    KeyboardUtils.hideSoftInput(AddRoomNoManagementActivity.this);
                     list.add(editText1.getText().toString().trim());
                     editText1.setText("");
                     mAdapter.notifyDataSetChanged();
@@ -171,20 +170,41 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 break;
             case R.id.tv_confirm:
                 //保存
-                name = "";
-                for (String s : list) {
-                    name = name + s + ",";
-                }
-                if (!name.equals("")) {
-                    name = name.substring(0, name.length() - 1);
-                    showProgress(true, getString(R.string.app_loading1));
-                    params.clear();
-                    params.put("name", name);
-                    params.put("parentId", parentId);
-                    params.put("storeId", model.getId());
-                    requestUpData(params);
+                if (!parentId.equals("")) {
+                    name = "";
+                    for (String s : list) {
+                        name = name + s + ",";
+                    }
+                    if (!name.equals("")) {
+                        name = name.substring(0, name.length() - 1);
+                        showProgress(true, getString(R.string.app_loading1));
+                        params.clear();
+                        params.put("name", name);
+                        params.put("parentId", parentId);
+                        params.put("storeId", model.getId());
+                        requestUpData(params);
 
-                } else myToast("请" + title);
+                    } else myToast("请" + title);
+                } else {
+                    switch (type) {
+                        case 1:
+                            //添加区域
+                            break;
+                        case 2:
+                            //添加楼栋
+                            myToast(textView1.getHint().toString());
+                            break;
+                        case 3:
+                            //添加楼层
+                            myToast(textView2.getHint().toString());
+                            break;
+                        case 4:
+                            //添加房号
+                            myToast(textView3.getHint().toString());
+                            break;
+                    }
+                }
+
                 break;
         }
     }
@@ -240,10 +260,10 @@ public class AddRoomNoManagementActivity extends BaseActivity {
             public void onResponse(RoomNoManagementModel response) {
                 hideProgress();
                 dialog.contentView(R.layout.dialog_list_center)
-//                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                                ViewGroup.LayoutParams.WRAP_CONTENT))
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                CommonUtil.dip2px(AddRoomNoManagementActivity.this, 400)))
+                                ViewGroup.LayoutParams.WRAP_CONTENT))
+//                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                                CommonUtil.dip2px(AddRoomNoManagementActivity.this, 400)))
                         .animType(BaseDialog.AnimInType.BOTTOM)
                         .canceledOnTouchOutside(true)
                         .gravity(Gravity.CENTER)
@@ -283,26 +303,61 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                         textView.setText(response.getList().get(position).getName());
-                        parentId = response.getList().get(position).getId();
-
                         switch (i) {
                             case 1:
-                                //选择的区域-清空后两项
+                                parentId1 = response.getList().get(position).getId();
+                                name1 = response.getList().get(position).getName();
+                                item1 = position;
+
+                                //选择的区域-清空后三项
+                                name2 = "";
                                 textView2.setText("");
+                                parentId2 = "";
+                                item2 = -1;
+
+                                name3 = "";
                                 textView3.setText("");
-                                parentId2 = response.getList().get(position).getId();
                                 parentId3 = "";
+                                item3 = -1;
+
+                                name4 = "";
+//                                textView4.setText("");
+                                parentId4 = "";
+                                item4 = -1;
                                 break;
                             case 2:
-                                //选择的楼栋-清空后一项
+                                parentId2 = response.getList().get(position).getId();
+                                name2 = response.getList().get(position).getName();
+                                item2 = position;
+
+                                //选择的楼栋-清空后两项
+                                name3 = "";
                                 textView3.setText("");
+                                parentId3 = "";
+                                item3 = -1;
+
+                                name4 = "";
+//                                textView4.setText("");
+                                parentId4 = "";
+                                item4 = -1;
+                                break;
+                            case 3:
+                                //选择的楼层
                                 parentId3 = response.getList().get(position).getId();
+                                name3 = response.getList().get(position).getName();
+                                item3 = position;
+
+                                //选择的楼栋-清空后一项
+                                name4 = "";
+//                                textView4.setText("");
+                                parentId4 = "";
+                                item4 = -1;
                                 break;
                         }
                         //获取下一级
                         showProgress(true, getString(R.string.app_loading2));
                         params.clear();
-                        params.put("parentId", parentId);
+                        params.put("parentId", response.getList().get(position).getId());
                         params.put("storeId", model.getId());
                         requestNext(params, i);
 
@@ -352,8 +407,24 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                             type = 4;
                             break;
                     }
-                    ChangeUI();
+                } else {
+                    //有数据
+                    switch (i) {
+                        case 1:
+                            //区域
+                            type = 3;
+                            break;
+                        case 2:
+                            //楼栋
+                            type = 4;
+                            break;
+                        case 3:
+                            //楼层
+//                            type = 4;
+                            break;
+                    }
                 }
+                ChangeUI();
             }
         });
     }
@@ -378,7 +449,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 tv_title.setText("楼栋添加");
                 editText1.setHint("请输入楼栋");
 
-                parentId = parentId2;
+                parentId = parentId1;
                 textView1.setText(name1);//显示选择的区域
 
                 break;
@@ -391,7 +462,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 tv_title.setText("楼层添加");
                 editText1.setHint("请输入楼层");
 
-                parentId = parentId3;
+                parentId = parentId2;
                 textView1.setText(name1);//显示选择的区域
                 textView2.setText(name2);//显示选择的楼栋
                 break;
@@ -404,7 +475,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 tv_title.setText("房号添加");
                 editText1.setHint("请输入房号");
 
-                parentId = parentId4;
+                parentId = parentId3;
                 textView1.setText(name1);//显示选择的区域
                 textView2.setText(name2);//显示选择的楼栋
                 textView3.setText(name3);//显示选择的楼层
