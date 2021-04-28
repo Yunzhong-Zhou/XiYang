@@ -210,6 +210,9 @@
         <activity
             android:name=".activity.StaffManagementActivity"
             android:label="员工管理" />
+        <activity
+            android:name=".activity.AddStaffActivity_BD"
+            android:label="添加员工-BD" />
         <!--设备-->
         <activity
             android:name=".activity.SelectDeviceActivity"

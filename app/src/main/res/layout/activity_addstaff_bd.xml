@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/yuanjiao_10_baise_top"
+    android:orientation="vertical">
+
+    <!--只需要刷新只写header-->
+    <com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="30dp"
+                android:paddingTop="18dp"
+                android:paddingRight="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="员工头像"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="88dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:onClick="onClick"
+                        android:orientation="horizontal">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imageView1"
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:background="@mipmap/headimg" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="-8dp"
+                            android:padding="8dp"
+                            android:src="@mipmap/ic_edit1" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/xian" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_xingming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="姓名"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_xingming"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:gravity="center_vertical|right"
+                        android:hint="请输入员工姓名"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_xingbie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="性别"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_xingbie"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:focusable="false"
+                        android:onClick="onClick"
+                        android:drawableRight="@mipmap/ic_down_black"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical|right"
+                        android:hint="请选择性别"
+                        android:text="男"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_zhanghao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="账号"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_zhanghao"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:gravity="center_vertical|right"
+                        android:hint="请输入账号"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_lianxidianhua"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="联系电话"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_lianxidianhua"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:gravity="center_vertical|right"
+                        android:hint="请输入联系电话"
+                        android:inputType="phone"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_leixing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="选择部门"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_leixing"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:gravity="center_vertical|right"
+                        android:hint="请输入所在部门"
+                        android:padding="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_chengshi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="选择城市"
+                        android:textColor="@color/black1"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/tv_chengshi"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:paddingStart="100dp"
+                        android:background="@drawable/edittext_bg"
+                        android:focusable="false"
+                        android:onClick="onClick"
+                        android:drawableRight="@mipmap/ic_next_black"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical|right"
+                        android:hint="请选择城市"
+                        android:padding="14dp"
+                        android:textColor="@color/black2"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/btn_img1"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="确认添加"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+        </ScrollView>
+    </com.liaoinstan.springview.widget.SpringView>
+</LinearLayout>

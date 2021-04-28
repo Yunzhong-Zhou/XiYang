@@ -8,24 +8,26 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.MyTakeCashModel;
+import com.xiyang.xiyang.model.StaffManagementModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-
-import org.json.JSONObject;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +43,17 @@ import okhttp3.Response;
  * 员工管理
  */
 public class StaffManagementActivity extends BaseActivity {
+    String storeId = "";
     private RecyclerView recyclerView;
-    List<MyTakeCashModel> list = new ArrayList<>();
-    CommonAdapter<MyTakeCashModel> mAdapter;
+    List<StaffManagementModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<StaffManagementModel.ListBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
     private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "";
+    String sort = "desc", status = "", earning = "", title = "";
     int i1 = 0;
     int i2 = 0;
 
@@ -58,6 +61,12 @@ public class StaffManagementActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staffmanagement);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();//获取数据
     }
 
     @Override
@@ -71,24 +80,27 @@ public class StaffManagementActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("title", title);
+                params.put("sort", sort);
+                params.put("earning", earning);
+                params.put("storeId", storeId);
+                requestList(params);
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentListMore(string);*/
+                page = 1;
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("title", title);
+                params.put("sort", sort);
+                params.put("earning", earning);
+                params.put("storeId", storeId);
+                requestListMore(params);
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -104,13 +116,13 @@ public class StaffManagementActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestServer();//获取数据
+        storeId = getIntent().getStringExtra("storeId");
     }
 
-    private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.StaffManagement, params, headerMap, new CallBackUtil<StaffManagementModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public StaffManagementModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -122,57 +134,67 @@ public class StaffManagementActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(StaffManagementModel response) {
                 showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
-                JSONObject jObj;
-                /*try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list.size() == 0) {
-                        showEmptyPage();//空数据
-                    } else {
-                        mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_staffmanagement, list) {
-                            @Override
-                            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
-                                holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                                holder.setText(R.id.textView2, model.getCreated_at());//时间
-                                holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                                holder.setText(R.id.textView4, model.getStatus_title());//状态
-                            }
-                        };
-                        recyclerView.setAdapter(mAdapter);
-                        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("id", list.get(position).getId());
-                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, StaffDetailActivity.class, bundle1, false);
-                            }
+                list = response.getList();
+                if (list.size() == 0) {
+                    showEmptyPage();//空数据
+                } else {
+                    mAdapter = new CommonAdapter<StaffManagementModel.ListBean>
+                            (StaffManagementActivity.this, R.layout.item_staffmanagement, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, StaffManagementModel.ListBean model, int position) {
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(StaffManagementActivity.this)
+                                    .load(model.getHead())
+//                                .fitCenter()
+                                    .apply(RequestOptions.bitmapTransform(new
+                                            RoundedCorners(CommonUtil.dip2px(StaffManagementActivity.this, 10))))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(imageView1);//加载图片
+                            holder.setText(R.id.tv_name,model.getName());
+                            holder.setText(R.id.tv_phone, model.getAccount());
+                            holder.setText(R.id.tv_suoshu, model.getDepartment());
+                            holder.setText(R.id.tv_money, model.getMoney());
+                            //删除
+                            holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showToast("确认删除吗？", "确定", "取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            showProgress(false, getString(R.string.app_loading1));
+                                            params.clear();
+                                            params.put("workerId", list.get(position).getId());
+                                            params.put("storeId", storeId);
+                                            requestDelete(params);//删除
+                                        }
+                                    }, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
 
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                return false;
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
+                    };
+                    recyclerView.setAdapter(mAdapter);
 
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+                }
             }
         });
 
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<StaffManagementModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public StaffManagementModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -185,28 +207,18 @@ public class StaffManagementActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(StaffManagementModel response) {
 //                showContentPage();
-                onHttpResult();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
-                /*JSONObject jObj;
-                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list1.size() == 0) {
-                        myToast(getString(R.string.app_nomore));
-                        page--;
-                    } else {
-                        list.addAll(list1);
-                        mAdapter.notifyDataSetChanged();
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+                hideProgress();
+                List<StaffManagementModel.ListBean> list1 = new ArrayList<>();
+                list1 = response.getList();
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    page--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -239,11 +251,34 @@ public class StaffManagementActivity extends BaseActivity {
                 break;
             case R.id.ll_add:
                 //添加员工
-                CommonUtil.gotoActivity(StaffManagementActivity.this, AddStaffActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("storeId", storeId);
+                CommonUtil.gotoActivityWithData(StaffManagementActivity.this, AddStaffActivity_BD.class, bundle);
                 break;
         }
     }
+    //删除
+    private void requestDelete(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.DeleteStaff, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                myToast("删除成功");
+                hideProgress();
+                requestServer();
+            }
+        });
+    }
     @Override
     protected void updateView() {
         titleView.setTitle("员工管理");
@@ -254,19 +289,15 @@ public class StaffManagementActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                + "&sort=" + sort
-                + "&page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestMyInvestmentList(string);*/
+        params.put("page", page + "");
+        params.put("count", "10");
+        params.put("title", title);
+        params.put("sort", sort);
+        params.put("earning", earning);
+        params.put("storeId", storeId);
+        requestList(params);
     }
 
-    public void onHttpResult() {
-        hideProgress();
-        springView.onFinishFreshAndLoad();
-
-    }
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容

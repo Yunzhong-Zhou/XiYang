@@ -180,7 +180,8 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.linearLayout3:
                 //员工
-                CommonUtil.gotoActivity(StoreDetailActivity.this, StaffManagementActivity.class);
+                bundle.putString("storeId",model.getId());
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, StaffManagementActivity.class,bundle);
                 break;
             case R.id.linearLayout4:
                 //移位

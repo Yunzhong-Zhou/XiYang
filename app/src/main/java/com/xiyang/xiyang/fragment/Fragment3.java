@@ -20,7 +20,6 @@ import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.SelectDeviceActivity;
 import com.xiyang.xiyang.base.BaseFragment;
-import com.xiyang.xiyang.model.Fragment1Model;
 import com.xiyang.xiyang.model.Fragment3Model;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -31,6 +30,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -122,12 +122,8 @@ public class Fragment3 extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-               /* page1 = 0;
-                page2 = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("page", page1 + "");
-                params.put("u_token", localUserInfo.getToken());
-                Request(params);*/
+                Request(params);
             }
 
             @Override
@@ -254,16 +250,16 @@ public class Fragment3 extends BaseFragment {
     @Override
     public void requestServer() {
         super.requestServer();
-       /* this.showLoadingPage();
+        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        params.put("u_token", localUserInfo.getToken());
-        Request(params);*/
+        Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment1Model>() {
+        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
             @Override
-            public Fragment1Model onParseResponse(Call call, Response response) {
+            public Fragment3Model onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
                 return null;
             }
@@ -277,7 +273,7 @@ public class Fragment3 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(Fragment1Model response) {
+            public void onResponse(Fragment3Model response) {
                 hideProgress();
 //                list1 = response.get;
                 mAdapter1 = new CommonAdapter<Fragment3Model>

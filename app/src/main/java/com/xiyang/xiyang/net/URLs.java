@@ -102,12 +102,12 @@ public class URLs {
     public static final String ChageRoom = HOST + API + "store/room/update";
     //删除房号
     public static final String DeleteRoom = HOST + API + "store/room/delete";
-    //修改服务状态
-    public static final String ChageServiceType = HOST + API + "/api/v1/techn/techn_sedan_order_service_modify_state";
-    //修改订单状态
-    public static final String ChageOrderType = HOST + API + "/api/v1/techn/techn_sedan_modify_state";
-    //救援列表
-    public static final String Fragment2_3 = HOST + API + "/api/v1/techn/techn_rescue_list";
+    //员工管理
+    public static final String StaffManagement = HOST + API + "store/worker";
+    //添加员工
+    public static final String AddStaff_BD = HOST + API + "store/worker/add";
+    //删除员工
+    public static final String DeleteStaff = HOST + API + "store/worker/delete";
     //救援状态
     public static final String JiuYuan_Type = HOST + API + "/api/v1/techn/techn_rescue_query";
     //立即救援
@@ -129,7 +129,7 @@ public class URLs {
     /**
      * ********************************设备*****************************************
      */
-    public static final String Fragment3 = HOST + API + "/api/v1/techn/techn_forum_post_page_list";
+    public static final String Fragment3 = HOST + API + "device";
     //工单列表
     public static final String WorkList = HOST + API + "work/orders/record";
     //添加设备工单
