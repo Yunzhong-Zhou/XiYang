@@ -80,7 +80,7 @@ public class ChangeWorkListActivity extends BaseActivity {
     int maxSelectNum = 3;//选择最多图片数量
     int spanCount = 3;//一行显示张数
     ArrayList<File> listFiles = new ArrayList<>();
-
+    int num = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,9 +173,9 @@ public class ChangeWorkListActivity extends BaseActivity {
                                     MyLogger.i(">>>>上传文件路径：" + url);
                                     images = images + url + ",";
 
-                                    maxSelectNum--;
-                                    MyLogger.i(">>>>>>"+maxSelectNum);
-                                    if (maxSelectNum == 0){
+                                    num--;
+                                    MyLogger.i(">>>>>>" + num);
+                                    if (num == 0) {
                                         if (!images.equals("")) {
                                             images = images.substring(0, images.length() - 1);
                                         }
@@ -210,10 +210,11 @@ public class ChangeWorkListActivity extends BaseActivity {
             myToast("请输入处理说明");
             return false;
         }
-        /*if (TextUtils.isEmpty(images)) {
+        num = listFiles.size();
+        if (num == 0) {
             myToast("请选择上传照片");
             return false;
-        }*/
+        }
         return true;
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/headView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/headView"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,8 +12,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp">
 
         <EditText
             android:layout_width="match_parent"
@@ -21,8 +21,8 @@
             android:layout_weight="1"
             android:background="@drawable/yuanjiao_20_baise_huisebiankuang"
             android:drawableLeft="@mipmap/ic_search_gray"
-            android:hint="请输入搜索内容"
             android:drawablePadding="5dp"
+            android:hint="请输入搜索内容"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingRight="20dp"
@@ -149,13 +149,13 @@
     <com.xiyang.xiyang.view.LoadingLayout
         android:id="@+id/loading_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <com.liaoinstan.springview.widget.SpringView
             android:id="@+id/springView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background" >
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

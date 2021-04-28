@@ -22,7 +22,7 @@ import com.xiyang.xiyang.activity.ShopDetailActivity;
 import com.xiyang.xiyang.activity.TransferShopActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment1Model;
-import com.xiyang.xiyang.model.MyShopListModel;
+import com.xiyang.xiyang.model.MyFragment1Model;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -48,12 +48,13 @@ import okhttp3.Response;
  */
 
 public class Fragment1 extends BaseFragment {
+    Fragment1Model model;
     int type = 1;
     private RecyclerView recyclerView1, recyclerView2;
-    List<Fragment1Model> list1 = new ArrayList<>();
-    CommonAdapter<Fragment1Model> mAdapter1;
-    List<MyShopListModel.ListBean> list2 = new ArrayList<>();
-    CommonAdapter<MyShopListModel.ListBean> mAdapter2;
+    List<MyFragment1Model> list1 = new ArrayList<>();
+    CommonAdapter<MyFragment1Model> mAdapter1;
+    List<Fragment1Model.MerchantsBean> list2 = new ArrayList<>();
+    CommonAdapter<Fragment1Model.MerchantsBean> mAdapter2;
     TextView tv_mymore;
 
     TextView textView1, textView2, textView3, textView4;
@@ -124,11 +125,6 @@ public class Fragment1 extends BaseFragment {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
-                params.put("page", "");
-                params.put("count", "");
-                params.put("status", "");
-                params.put("title", "");
-                params.put("sort", "");
                 Request(params);
             }
 
@@ -205,18 +201,13 @@ public class Fragment1 extends BaseFragment {
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        params.put("page", "");
-        params.put("count", "");
-        params.put("status", "");
-        params.put("title", "");
-        params.put("sort", "");
         Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment1, params, headerMap, new CallBackUtil<MyShopListModel>() {
+        OkhttpUtil.okHttpGet(URLs.Fragment1, params, headerMap, new CallBackUtil<Fragment1Model>() {
             @Override
-            public MyShopListModel onParseResponse(Call call, Response response) {
+            public Fragment1Model onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
                 return null;
             }
@@ -230,27 +221,38 @@ public class Fragment1 extends BaseFragment {
             }
 
             @Override
-            public void onResponse(MyShopListModel response) {
+            public void onResponse(Fragment1Model response) {
                 hideProgress();
                 showContentPage();
-//                list1 = response.getList();
-                mAdapter1 = new CommonAdapter<Fragment1Model>
+                model = response;
+                textView1.setText(response.getManageMerchantNum());
+                textView2.setText(response.getSignMerchantNum());
+                textView3.setText(response.getRecommendMerchantNum());
+                textView4.setText(response.getMoney());
+
+                mAdapter1 = new CommonAdapter<MyFragment1Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment1Model model, int position) {
-
-//                        holder.setText(R.id.tv1, model.getTitle());
-//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
+                    protected void convert(ViewHolder holder, MyFragment1Model model, int position) {
+                        holder.setText(R.id.tv1, model.getName());
+                        holder.setText(R.id.tv2, model.getCreatedAt());
                     }
                 };
                 recyclerView1.setAdapter(mAdapter1);
 
-                list2 = response.getList();
+                changeUI();
+
+
+
+                /**
+                 * 商户列表
+                 */
+                list2 = response.getMerchants();
                 if (list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<MyShopListModel.ListBean>
+                    mAdapter2 = new CommonAdapter<Fragment1Model.MerchantsBean>
                             (getActivity(), R.layout.item_fragment1_2, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, MyShopListModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, Fragment1Model.MerchantsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
                             holder.setText(R.id.tv_shop, model.getDeviceNum());
                             holder.setText(R.id.tv_num, model.getMoney());//money
@@ -267,7 +269,7 @@ public class Fragment1 extends BaseFragment {
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
                             if (model.getStatus() != null && model.getStatus().equals("1")) {
-                                //待拜访
+                                //待签约
                                 imageView2.setImageResource(R.mipmap.bg_daiqianyue);
                             } else {
                                 imageView2.setImageResource(R.mipmap.bg_yiqianyue);
@@ -341,6 +343,7 @@ public class Fragment1 extends BaseFragment {
                 CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
                 break;
             case R.id.linearLayout10:
+            case R.id.tv_more:
                 //我的合同
                 CommonUtil.gotoActivity(getActivity(), MyContractActivity.class);
                 break;
@@ -380,6 +383,7 @@ public class Fragment1 extends BaseFragment {
     }
 
     private void changeUI() {
+        list1.clear();
         switch (type) {
             case 1:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black1));
@@ -390,13 +394,9 @@ public class Fragment1 extends BaseFragment {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
                 view4.setVisibility(View.INVISIBLE);
-                /*if (list1.size() > 0) {
-                    showContentPage();
-                    recyclerView1.setAdapter(mAdapter1);
-//                mAdapter1.notifyDataSetChanged();
-                } else {
-                    showEmptyPage();
-                }*/
+                for (Fragment1Model.WaitSignBean bean:model.getWaitSign()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                }
                 break;
             case 2:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -407,7 +407,9 @@ public class Fragment1 extends BaseFragment {
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
                 view4.setVisibility(View.INVISIBLE);
-
+                for (Fragment1Model.WaitCheckBean bean:model.getWaitCheck()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                }
                 break;
             case 3:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -418,7 +420,9 @@ public class Fragment1 extends BaseFragment {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
                 view4.setVisibility(View.INVISIBLE);
-
+                for (Fragment1Model.HasRefuseBean bean:model.getHasRefuse()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                }
                 break;
             case 4:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -429,10 +433,13 @@ public class Fragment1 extends BaseFragment {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
                 view4.setVisibility(View.VISIBLE);
-
+                for (Fragment1Model.HasCheckedBean bean:model.getHasChecked()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                }
                 break;
 
         }
+        mAdapter1.notifyDataSetChanged();
     }
 
     @Override

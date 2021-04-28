@@ -50,13 +50,19 @@ public class MyContractActivity extends BaseActivity {
     private View view1, view2,view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "";
+    String sort = "desc", status = "",cityId="",instudyId="";
     int i1 = 0;
     int i2 = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myshoplist);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();//获取数据
     }
 
     @Override
@@ -70,24 +76,26 @@ public class MyContractActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("status", status);
+                params.put("sort", sort);
+                params.put("cityId", cityId);
+                params.put("instudyId", instudyId);
+                requestList(params);
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentListMore(string);*/
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("status", status);
+                params.put("sort", sort);
+                params.put("cityId", cityId);
+                params.put("instudyId", instudyId);
+                requestListMore(params);
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -103,11 +111,11 @@ public class MyContractActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestServer();//获取数据
+
     }
 
-    private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyContract, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -124,7 +132,6 @@ public class MyContractActivity extends BaseActivity {
             public void onResponse(String response) {
                 showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
                 JSONObject jObj;
                 /*try {
                     jObj = new JSONObject(response);
@@ -168,8 +175,8 @@ public class MyContractActivity extends BaseActivity {
 
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyContract, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -187,7 +194,6 @@ public class MyContractActivity extends BaseActivity {
             public void onResponse(String response) {
                 showContentPage();
                 onHttpResult();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
                 /*JSONObject jObj;
                 List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
                 try {
@@ -257,12 +263,13 @@ public class MyContractActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                + "&sort=" + sort
-                + "&page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestMyInvestmentList(string);*/
+        params.put("page", page + "");
+        params.put("count", "10");
+        params.put("status", status);
+        params.put("sort", sort);
+        params.put("cityId", cityId);
+        params.put("instudyId", instudyId);
+        requestList(params);
     }
 
     public void onHttpResult() {

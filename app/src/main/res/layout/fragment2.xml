@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:descendantFocusability="blocksDescendants">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:src="@mipmap/bg_head" />
+    <!-- <ImageView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:adjustViewBounds="true"
+         android:src="@mipmap/bg_head" />-->
 
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"
@@ -157,14 +157,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
                     app:hl_cornerRadius="15dp"
                     app:hl_shadowColor="@color/bg_gray"
+                    app:hl_shadowHiddenTop="true"
                     app:hl_shadowLimit="2dp"
                     app:hl_shadowOffsetX="0dp"
-                    app:hl_shadowOffsetY="2dp"
-                    app:hl_shadowHiddenTop="true">
+                    app:hl_shadowOffsetY="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -363,8 +363,8 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:onClick="onClick"
-                                android:visibility="invisible"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:visibility="invisible">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -390,11 +390,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    app:hl_shadowHiddenTop="true"
                     android:layout_marginTop="8dp"
+                    android:layout_marginRight="10dp"
                     app:hl_cornerRadius="15dp"
                     app:hl_shadowColor="@color/bg_gray"
+                    app:hl_shadowHiddenTop="true"
                     app:hl_shadowLimit="2dp"
                     app:hl_shadowOffsetX="0dp"
                     app:hl_shadowOffsetY="2dp">

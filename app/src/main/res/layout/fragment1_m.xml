@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants"
-    android:background="@color/background">
+    android:descendantFocusability="blocksDescendants">
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@mipmap/bg_head" />
+        android:src="@mipmap/bg_head" />-->
 
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"
@@ -396,7 +395,7 @@
                     android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView2"
+                        android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.xiyang.xiyang.view.LoadingLayout>

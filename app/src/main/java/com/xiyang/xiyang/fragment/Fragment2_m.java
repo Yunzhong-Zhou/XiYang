@@ -24,6 +24,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -110,12 +111,8 @@ public class Fragment2_m extends BaseFragment {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-               /* page1 = 0;
-                page2 = 0;
                 Map<String, String> params = new HashMap<>();
-                params.put("page", page1 + "");
-                params.put("u_token", localUserInfo.getToken());
-                Request(params);*/
+                Request(params);
             }
 
             @Override
@@ -146,76 +143,18 @@ public class Fragment2_m extends BaseFragment {
     @Override
     protected void initData() {
 //        requestServer();
-        for (int i = 0; i < 5; i++) {
-            list1.add(new Fragment2Model());
-        }
-
-        if (list1.size() > 0) {
-            mAdapter1 = new CommonAdapter<Fragment2Model>
-                    (getActivity(), R.layout.item_fragment2_m, list1) {
-                @Override
-                protected void convert(ViewHolder holder, Fragment2Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(getActivity())
-                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
-                                    .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
-                            }
-
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
-
-                    holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                            switch (type){
-                                case 1:
-                                    CommonUtil.gotoActivityWithData(getActivity(), ShopDetailActivity.class, bundle, false);
-                                    break;
-                                case 2:
-                                    CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
-                                    break;
-                                case 3:
-                                    CommonUtil.gotoActivityWithData(getActivity(), WorkListDetailActivity.class, bundle, false);
-                                    break;
-                            }
-
-                        }
-                    });
-
-                }
-            };
-            recyclerView.setAdapter(mAdapter1);
-        } else {
-            showEmptyPage();
-        }
     }
 
     @Override
     public void requestServer() {
         super.requestServer();
-       /* this.showLoadingPage();
+        this.showLoadingPage();
         Map<String, String> params = new HashMap<>();
-        params.put("u_token", localUserInfo.getToken());
-        Request(params);*/
+        Request(params);
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment2, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpGet(URLs.Fragment2_m, params, headerMap, new CallBackUtil<Fragment2Model>() {
             @Override
             public Fragment2Model onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
@@ -260,7 +199,25 @@ public class Fragment2_m extends BaseFragment {
                             holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
                             holder.setText(R.id.tv_addr, model.getAddress());
                             holder.setText(R.id.tv_num, model.getNum() + "");*/
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+//                    bundle.putString("id",model.getId());
+                                    switch (type){
+                                        case 1:
+                                            CommonUtil.gotoActivityWithData(getActivity(), ShopDetailActivity.class, bundle, false);
+                                            break;
+                                        case 2:
+                                            CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                                            break;
+                                        case 3:
+                                            CommonUtil.gotoActivityWithData(getActivity(), WorkListDetailActivity.class, bundle, false);
+                                            break;
+                                    }
 
+                                }
+                            });
                         }
                     };
                     recyclerView.setAdapter(mAdapter1);

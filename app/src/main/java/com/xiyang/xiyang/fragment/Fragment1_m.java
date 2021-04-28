@@ -47,9 +47,9 @@ import okhttp3.Response;
 
 public class Fragment1_m extends BaseFragment {
     int type = 1;
-    private RecyclerView recyclerView2;
-    List<Fragment1Model> list2 = new ArrayList<>();
-    CommonAdapter<Fragment1Model> mAdapter2;
+    private RecyclerView recyclerView;
+    List<Fragment1Model> list = new ArrayList<>();
+    CommonAdapter<Fragment1Model> mAdapter;
 
     TextView textView1, textView2, textView3, textView4,
             tv_lable1,tv_lable2,tv_lable3,tv_lable4,
@@ -126,8 +126,8 @@ public class Fragment1_m extends BaseFragment {
             }
         });
 
-        recyclerView2 = findViewByID_My(R.id.recyclerView2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView = findViewByID_My(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
@@ -212,52 +212,6 @@ public class Fragment1_m extends BaseFragment {
     protected void initData() {
 //        requestServer();
 
-        for (int i = 0; i < 5; i++) {
-            list2.add(new Fragment1Model());
-        }
-
-        if (list2.size() > 0) {
-            mAdapter2 = new CommonAdapter<Fragment1Model>
-                    (getActivity(), R.layout.item_fragment1_m, list2) {
-                @Override
-                protected void convert(ViewHolder holder, Fragment1Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(getActivity())
-                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
-                                    .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
-                            }
-
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
-
-                    holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                            CommonUtil.gotoActivityWithData(getActivity(), StaffDetailActivity.class, bundle, false);
-                        }
-                    });
-
-                }
-            };
-            recyclerView2.setAdapter(mAdapter2);
-        } else {
-            showEmptyPage();
-        }
     }
 
     @Override
@@ -269,7 +223,7 @@ public class Fragment1_m extends BaseFragment {
     }
 
     private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment1_m, params, headerMap, new CallBackUtil<Fragment1Model>() {
+        OkhttpUtil.okHttpGet(URLs.Fragment1_m, params, headerMap, new CallBackUtil<Fragment1Model>() {
             @Override
             public Fragment1Model onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
@@ -288,10 +242,10 @@ public class Fragment1_m extends BaseFragment {
             public void onResponse(Fragment1Model response) {
                 hideProgress();
 
-//                list2 = response.getCooperation_shop_list();
-                if (list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<Fragment1Model>
-                            (getActivity(), R.layout.item_fragment1_m, list2) {
+//                list = response.getCooperation_shop_list();
+                if (list.size() > 0) {
+                    mAdapter = new CommonAdapter<Fragment1Model>
+                            (getActivity(), R.layout.item_fragment1_m, list) {
                         @Override
                         protected void convert(ViewHolder holder, Fragment1Model model, int position) {
                             /*ImageView imageView1 = holder.getView(R.id.imageView1);
@@ -315,10 +269,17 @@ public class Fragment1_m extends BaseFragment {
                             holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
                             holder.setText(R.id.tv_addr, model.getAddress());
                             holder.setText(R.id.tv_num, model.getNum() + "");*/
-
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+//                    bundle.putString("id",model.getId());
+                                    CommonUtil.gotoActivityWithData(getActivity(), StaffDetailActivity.class, bundle, false);
+                                }
+                            });
                         }
                     };
-                    recyclerView2.setAdapter(mAdapter2);
+                    recyclerView.setAdapter(mAdapter);
                 } else {
                     showEmptyPage();
                 }

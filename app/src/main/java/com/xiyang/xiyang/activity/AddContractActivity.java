@@ -81,7 +81,7 @@ public class AddContractActivity extends BaseActivity {
     ImageView iv_add;
 
     String storeId = "", shopId = "", contractType = "", sole = "1", renewalPeriod = "", signTime = "", file = "",
-            licenseNo = "", licenseNoImage = "";
+            licenseNo = "", licenseNoImage = "",deviceNum = "";
 
     File imgfile = null;
     File pdffile = null;
@@ -309,7 +309,7 @@ public class AddContractActivity extends BaseActivity {
                                                     params.put("signTime", signTime);
                                                     params.put("licenseNo", licenseNo);
                                                     params.put("licenseNoImage", licenseNoImage);
-                                                    requestUpData(params, URLs.AddContract_QianYue);
+                                                    requestUpData(params);
                                                 } else {
                                                     hideProgress();
                                                     myToast("图片上传失败" + result);
@@ -326,6 +326,25 @@ public class AddContractActivity extends BaseActivity {
                             break;
                         case 1:
                             //新增合同
+                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        file = url;//文件地址
+
+                                        params.clear();
+                                        params.put("storeId", storeId);
+                                        params.put("contractType", contractType);
+                                        params.put("file", file);
+                                        params.put("deviceNum", deviceNum);
+                                        requestUpData(params);
+
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
 
                             break;
                         case 2:
@@ -399,7 +418,20 @@ public class AddContractActivity extends BaseActivity {
                 break;
             case 1:
                 //新增合同
-
+                contractType = "device_add";
+                if (TextUtils.isEmpty(storeId)) {
+                    myToast("请选择门店");
+                    return false;
+                }
+                deviceNum = tv_xinzengshuliang.getText().toString().trim();
+                if (TextUtils.isEmpty(deviceNum)) {
+                    myToast("请输入新增数量");
+                    return false;
+                }
+                if (pdffile == null) {
+                    myToast("请选择合同文件");
+                    return false;
+                }
                 break;
             case 2:
                 //回收合同
@@ -509,8 +541,8 @@ public class AddContractActivity extends BaseActivity {
         }
     }
 
-    private void requestUpData(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpPost(url, params, headerMap, new CallBackUtil<String>() {
+    private void requestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.AddContract, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

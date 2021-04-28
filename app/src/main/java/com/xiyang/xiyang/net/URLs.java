@@ -53,19 +53,19 @@ public class URLs {
     /**
      * ********************************商户*****************************************
      */
-    public static final String Fragment1 = HOST + API + "merchant/record";
+    public static final String Fragment1 = HOST + API + "merchant";
     //添加商户
     public static final String AddShop = HOST + API + "bd/merchant/add";
     //商户列表
     public static final String ShopList = HOST + API + "merchant/record";
     //商户详情
     public static final String ShopDetail = HOST + API + "merchant/detail";
-    //签约合同
-    public static final String AddContract_QianYue = HOST + API + "contract/add";
+    //添加合同
+    public static final String AddContract = HOST + API + "contract/add";
     /**
      * ********************************管理*****************************************
      */
-    public static final String Fragment1_m = HOST + API + "rm/manage";
+    public static final String Fragment1_m = HOST + API + "manage";
     //选择权限城市
     public static final String MyCity = HOST + API + "user/position/record";
     //添加员工
@@ -73,7 +73,7 @@ public class URLs {
     /**
      * ********************************分派*****************************************
      */
-    public static final String Fragment2_m = HOST + API + "rm/manage";
+    public static final String Fragment2_m = HOST + API + "point";
     /**
      * ********************************审批*****************************************
      */
@@ -85,7 +85,7 @@ public class URLs {
     /**
      * ********************************门店*****************************************
      */
-    public static final String Fragment2 = HOST + API + "store/record";
+    public static final String Fragment2 = HOST + API + "store";
     //拜访列表
     public static final String MyVisitList = HOST + API + "store/visit/log/record";
     //门店列表
@@ -210,8 +210,8 @@ public class URLs {
     public static final String About = HOST + API + "about";
     //分润记录
     public static final String ShareProfitList = HOST + API + "order/profit";
-    //添加车辆
-    public static final String AddCar = HOST + API + "/api/v1/user/user_sedan_add";
+    //我的合同列表
+    public static final String MyContract = HOST + API + "contract/record";
     //足迹列表
     public static final String Footprint = HOST + API + "/api/v1/user/user_footprint_list_page";
     //问答

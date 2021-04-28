@@ -233,10 +233,16 @@ public class ApproveDetailActivity extends BaseActivity {
                 list_contract.clear();
                 list_contract.add(new KeyValueModel("选择类型", response.getBase().getContactTitle()));
                 list_contract.add(new KeyValueModel("选择商户", response.getHead().getName()));
-                list_contract.add(new KeyValueModel("签约期限", response.getBase().getExtra().getRenewalPeriod() + "年"));
-                if (response.getBase().getExtra().getSole().equals("1"))
-                    list_contract.add(new KeyValueModel("是否独家", "是"));
-                else list_contract.add(new KeyValueModel("是否独家", "否"));
+
+
+                //签约合同
+                if (response.getBase().getExtra().getSole() != null){
+                    list_contract.add(new KeyValueModel("签约期限", response.getBase().getExtra().getRenewalPeriod() + "年"));
+                    if (response.getBase().getExtra().getSole().equals("1"))
+                        list_contract.add(new KeyValueModel("是否独家", "是"));
+                    else list_contract.add(new KeyValueModel("是否独家", "否"));
+                }
+
 
                 list_contract.add(new KeyValueModel("审核时间", response.getBase().getCreatedAt()));
                 mAdapter_contract = new CommonAdapter<KeyValueModel>

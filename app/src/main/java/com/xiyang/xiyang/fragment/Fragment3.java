@@ -4,9 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
@@ -21,6 +25,7 @@ import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.SelectDeviceActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment3Model;
+import com.xiyang.xiyang.model.MyFragment1Model;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -45,12 +50,13 @@ import okhttp3.Response;
  * 设备
  */
 public class Fragment3 extends BaseFragment {
+    Fragment3Model model;
     int type = 1;
     private RecyclerView recyclerView1, recyclerView2;
-    List<Fragment3Model> list1 = new ArrayList<>();
-    CommonAdapter<Fragment3Model> mAdapter1;
-    List<Fragment3Model> list2 = new ArrayList<>();
-    CommonAdapter<Fragment3Model> mAdapter2;
+    List<MyFragment1Model> list1 = new ArrayList<>();
+    CommonAdapter<MyFragment1Model> mAdapter1;
+    List<Fragment3Model.DevicesBean> list2 = new ArrayList<>();
+    CommonAdapter<Fragment3Model.DevicesBean> mAdapter2;
     TextView tv_mymore;
 
     TextView textView1, textView2, textView3, textView4;
@@ -123,7 +129,7 @@ public class Fragment3 extends BaseFragment {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
-                Request(params);
+                request(params);
             }
 
             @Override
@@ -187,64 +193,6 @@ public class Fragment3 extends BaseFragment {
     @Override
     protected void initData() {
 //        requestServer();
-
-        for (int i = 0; i < 5; i++) {
-            list1.add(new Fragment3Model());
-            list2.add(new Fragment3Model());
-        }
-        mAdapter1 = new CommonAdapter<Fragment3Model>
-                (getActivity(), R.layout.item_fragment1_1, list1) {
-            @Override
-            protected void convert(ViewHolder holder, Fragment3Model model, int position) {
-
-//                        holder.setText(R.id.tv1, model.getTitle());
-//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
-            }
-        };
-        recyclerView1.setAdapter(mAdapter1);
-
-        if (list2.size() > 0) {
-            mAdapter2 = new CommonAdapter<Fragment3Model>
-                    (getActivity(), R.layout.item_fragment2_2, list2) {
-                @Override
-                protected void convert(ViewHolder holder, Fragment3Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(getActivity())
-                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
-                                    .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
-                            }
-
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
-
-                    holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                            CommonUtil.gotoActivityWithData(getActivity(), DeviceDetailActivity.class, bundle, false);
-                        }
-                    });
-
-                }
-            };
-            recyclerView2.setAdapter(mAdapter2);
-        } else {
-            showEmptyPage();
-        }
     }
 
     @Override
@@ -253,11 +201,11 @@ public class Fragment3 extends BaseFragment {
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        Request(params);
+        request(params);
     }
 
-    private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
+    private void request(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.Fragment3, params, headerMap, new CallBackUtil<Fragment3Model>() {
             @Override
             public Fragment3Model onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
@@ -275,44 +223,61 @@ public class Fragment3 extends BaseFragment {
             @Override
             public void onResponse(Fragment3Model response) {
                 hideProgress();
-//                list1 = response.get;
-                mAdapter1 = new CommonAdapter<Fragment3Model>
+                showContentPage();
+                model = response;
+                textView1.setText(response.getTotalNum());
+                textView2.setText(response.getTotalNum());
+                textView3.setText(response.getOfflineNum());
+                textView4.setText(response.getOfflineNum());
+
+                mAdapter1 = new CommonAdapter<MyFragment1Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment3Model model, int position) {
-
-//                        holder.setText(R.id.tv1, model.getTitle());
-//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
+                    protected void convert(ViewHolder holder, MyFragment1Model model, int position) {
+                        holder.setText(R.id.tv1, model.getName());
+                        holder.setText(R.id.tv2, model.getCreatedAt());
                     }
                 };
                 recyclerView1.setAdapter(mAdapter1);
-//                list2 = response.getCooperation_shop_list();
+
+                changeUI();
+
+                list2 = response.getDevices();
                 if (list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<Fragment3Model>
+                    mAdapter2 = new CommonAdapter<Fragment3Model.DevicesBean>
                             (getActivity(), R.layout.item_fragment2_2, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment3Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
+                        protected void convert(ViewHolder holder, Fragment3Model.DevicesBean model, int position) {
+                            holder.setText(R.id.tv_name, model.getName());//标题
+                            holder.setText(R.id.tv_shop, model.getDeviceSn());
+                            holder.setText(R.id.tv_num, model.getMoney());//money
+                            holder.setText(R.id.tv_addr, model.getAddress());
+
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
-                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
-                                    .fitCenter()
+                                    .load(model.getImage())
+//                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
+                            /*if (model.getStatus() != null && model.getStatus().equals("1")) {
+                                //离线
+                                imageView2.setImageResource(R.mipmap.bg_lixian);
                             } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
-                            }
+                                imageView2.setImageResource(R.mipmap.bg_zaixian);
+                            }*/
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("id", model.getId());
+                                    CommonUtil.gotoActivityWithData(getActivity(), DeviceDetailActivity.class, bundle, false);
 
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
+                                }
+                            });
 
                         }
                     };
@@ -406,6 +371,7 @@ public class Fragment3 extends BaseFragment {
     }
 
     private void changeUI() {
+        list1.clear();
         switch (type) {
             case 1:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black1));
@@ -414,13 +380,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                /*if (list1.size() > 0) {
-                    showContentPage();
-                    recyclerView1.setAdapter(mAdapter1);
-//                mAdapter1.notifyDataSetChanged();
-                } else {
-                    showEmptyPage();
-                }*/
+                for (Fragment3Model.WaitInstallBean bean:model.getWaitInstall()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                }
                 break;
             case 2:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -429,7 +391,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-
+                for (Fragment3Model.WaitRecoveryBean bean:model.getWaitRecovery()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                }
                 break;
             case 3:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -438,10 +402,13 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
-
+                for (Fragment3Model.WaitSwapBean bean:model.getWaitSwap()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                }
                 break;
 
         }
+        mAdapter1.notifyDataSetChanged();
     }
 
     @Override
