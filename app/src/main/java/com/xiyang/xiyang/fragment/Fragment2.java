@@ -18,6 +18,7 @@ import com.xiyang.xiyang.activity.AddStoreActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
+import com.xiyang.xiyang.activity.MyVisitListActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
 import com.xiyang.xiyang.activity.StopStoreActivity;
 import com.xiyang.xiyang.activity.StoreDetailActivity;
@@ -56,7 +57,7 @@ public class Fragment2 extends BaseFragment {
     CommonAdapter<MyFragment1Model> mAdapter1;
     List<Fragment2Model.StoresBean> list2 = new ArrayList<>();
     CommonAdapter<Fragment2Model.StoresBean> mAdapter2;
-    TextView tv_mymore;
+    TextView tv_mymore,tv_more;
 
     TextView textView1, textView2, textView3, textView4;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
@@ -141,6 +142,8 @@ public class Fragment2 extends BaseFragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
         tv_mymore = findViewByID_My(R.id.tv_mymore);
         tv_mymore.setOnClickListener(this);
+        tv_more = findViewByID_My(R.id.tv_more);
+        tv_more.setOnClickListener(this);
 
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
@@ -308,6 +311,10 @@ public class Fragment2 extends BaseFragment {
             case R.id.linearLayout4:
                 //总营收
 //                CommonUtil.gotoActivity(getActivity(), MyWalletActivity.class);
+                break;
+            case R.id.tv_more:
+                //拜访记录
+                CommonUtil.gotoActivity(getActivity(), MyVisitListActivity.class);
                 break;
             case R.id.tv_mymore:
                 //我的门店

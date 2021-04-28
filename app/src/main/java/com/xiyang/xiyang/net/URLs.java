@@ -212,8 +212,8 @@ public class URLs {
     public static final String ShareProfitList = HOST + API + "order/profit";
     //我的合同列表
     public static final String MyContract = HOST + API + "contract/record";
-    //足迹列表
-    public static final String Footprint = HOST + API + "/api/v1/user/user_footprint_list_page";
+    //我的设备列表
+    public static final String MyDevice = HOST + API + "device/record";
     //问答
     public static final String StoreDetail_WenDa = HOST + API + "/api/v1/public/user_store_ques_ans_list";
     //门店服务分类列表

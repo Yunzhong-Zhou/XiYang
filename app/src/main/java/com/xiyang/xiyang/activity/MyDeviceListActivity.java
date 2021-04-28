@@ -16,15 +16,13 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.MyTakeCashModel;
+import com.xiyang.xiyang.model.MyDeviceListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-
-import org.json.JSONObject;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,21 +39,27 @@ import okhttp3.Response;
  */
 public class MyDeviceListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyTakeCashModel> list = new ArrayList<>();
-    CommonAdapter<MyTakeCashModel> mAdapter;
+    List<MyDeviceListModel> list = new ArrayList<>();
+    CommonAdapter<MyDeviceListModel> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2,linearLayout3;
     private TextView textView1, textView2,textView3;
     private View view1, view2,view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "";
+    String sort = "desc", status = "",postionId="",storeId="",instudy="";
     int i1 = 0;
     int i2 = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myshoplist);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();//获取数据
     }
 
     @Override
@@ -69,24 +73,28 @@ public class MyDeviceListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("status", status);
+                params.put("postionId", postionId);
+                params.put("sort", sort);
+                params.put("storeId", storeId);
+                params.put("instudy", instudy);
+                requestList(params);
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentListMore(string);*/
+                params.put("page", page + "");
+                params.put("count", "10");
+                params.put("status", status);
+                params.put("postionId", postionId);
+                params.put("sort", sort);
+                params.put("storeId", storeId);
+                params.put("instudy", instudy);
+                requestListMore(params);
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -102,13 +110,13 @@ public class MyDeviceListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestServer();//获取数据
+
     }
 
-    private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyDevice, params, headerMap, new CallBackUtil<MyDeviceListModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public MyDeviceListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -120,57 +128,34 @@ public class MyDeviceListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(MyDeviceListModel response) {
                 showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
-                JSONObject jObj;
-                /*try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list.size() == 0) {
-                        showEmptyPage();//空数据
-                    } else {
-                        mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_fragment2_2, list) {
-                            @Override
-                            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
-                                holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                                holder.setText(R.id.textView2, model.getCreated_at());//时间
-                                holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                                holder.setText(R.id.textView4, model.getStatus_title());//状态
-                            }
-                        };
-                        recyclerView.setAdapter(mAdapter);
-                        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("id", list.get(position).getId());
-                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, DeviceDetailActivity.class, bundle1, false);
-                            }
-
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                return false;
-                            }
-                        });
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+//                list = response.get;
+                if (list.size() == 0) {
+                    showEmptyPage();//空数据
+                } else {
+                    mAdapter = new CommonAdapter<MyDeviceListModel>
+                            (MyDeviceListActivity.this, R.layout.item_fragment2_2, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, MyDeviceListModel model, int position) {
+                            /*holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
+                            holder.setText(R.id.textView2, model.getCreated_at());//时间
+                            holder.setText(R.id.textView3, "-"+model.getMoney());//money
+                            holder.setText(R.id.textView4, model.getStatus_title());//状态*/
+                        }
+                    };
+                    recyclerView.setAdapter(mAdapter);
+                }
             }
         });
 
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyDevice, params, headerMap, new CallBackUtil<MyDeviceListModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public MyDeviceListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -183,28 +168,19 @@ public class MyDeviceListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(MyDeviceListModel response) {
 //                showContentPage();
-                onHttpResult();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
-                /*JSONObject jObj;
-                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list1.size() == 0) {
-                        myToast(getString(R.string.app_nomore));
-                        page--;
-                    } else {
-                        list.addAll(list1);
-                        mAdapter.notifyDataSetChanged();
-                    }
+                hideProgress();
 
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+                List<MyDeviceListModel> list1 = new ArrayList<MyDeviceListModel>();
+//                list1 = response.get;
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    page--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -254,18 +230,14 @@ public class MyDeviceListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                + "&sort=" + sort
-                + "&page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestMyInvestmentList(string);*/
-    }
-
-    public void onHttpResult() {
-        hideProgress();
-        springView.onFinishFreshAndLoad();
-
+        params.put("page", page + "");
+        params.put("count", "10");
+        params.put("status", status);
+        params.put("postionId", postionId);
+        params.put("sort", sort);
+        params.put("storeId", storeId);
+        params.put("instudy", instudy);
+        requestList(params);
     }
 
     private void showPopupWindow1(View v) {

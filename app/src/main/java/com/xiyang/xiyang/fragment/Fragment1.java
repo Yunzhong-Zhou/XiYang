@@ -55,7 +55,7 @@ public class Fragment1 extends BaseFragment {
     CommonAdapter<MyFragment1Model> mAdapter1;
     List<Fragment1Model.MerchantsBean> list2 = new ArrayList<>();
     CommonAdapter<Fragment1Model.MerchantsBean> mAdapter2;
-    TextView tv_mymore;
+    TextView tv_mymore,tv_more;
 
     TextView textView1, textView2, textView3, textView4;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
@@ -140,6 +140,8 @@ public class Fragment1 extends BaseFragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
         tv_mymore = findViewByID_My(R.id.tv_mymore);
         tv_mymore.setOnClickListener(this);
+        tv_more = findViewByID_My(R.id.tv_more);
+        tv_more.setOnClickListener(this);
 
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
