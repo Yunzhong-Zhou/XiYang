@@ -59,7 +59,7 @@ public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
     List<CommonModel.WorkOrderTypeBean> list_qixian = new ArrayList<>();
-    int item_hetong = 0, itme_truefalse = 1, item_qixian = -1;
+    int item_hetong = 0, itme_truefalse = 1, item_qixian = -1,storetype = 0;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,
@@ -81,7 +81,10 @@ public class AddContractActivity extends BaseActivity {
     ImageView iv_add;
 
     String storeId = "", shopId = "", contractType = "", sole = "1", renewalPeriod = "", signTime = "", file = "",
-            licenseNo = "", licenseNoImage = "",deviceNum = "";
+            licenseNo = "", licenseNoImage = "",deviceNum = "",outStoreId="",inStoreId="",renewalTime="",
+            reasonId="";
+
+
 
     File imgfile = null;
     File pdffile = null;
@@ -244,6 +247,7 @@ public class AddContractActivity extends BaseActivity {
 
             case R.id.tv_xuanzemendian:
                 //选择门店
+                storetype = 0;
                 Intent intent1 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("requestCode", Constant.SELECT_STORE);
@@ -260,6 +264,26 @@ public class AddContractActivity extends BaseActivity {
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
+            case R.id.tv_zhuanchumendian:
+                //转出门店
+                storetype = 1;
+                Intent intent3 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("requestCode", Constant.SELECT_STORE);
+                bundle3.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                intent3.putExtras(bundle3);
+                startActivityForResult(intent3, Constant.SELECT_STORE, bundle3);
+                break;
+            case R.id.tv_zhuanrumendian:
+                //转出门店
+                storetype = 2;
+                Intent intent4 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
+                Bundle bundle4 = new Bundle();
+                bundle4.putInt("requestCode", Constant.SELECT_STORE);
+                bundle4.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                intent4.putExtras(bundle4);
+                startActivityForResult(intent4, Constant.SELECT_STORE, bundle4);
+                break;
             case R.id.tv_qianyueshijian:
                 //签约时间
                 CommonUtil.selectDate2YMD(AddContractActivity.this,
@@ -272,6 +296,8 @@ public class AddContractActivity extends BaseActivity {
                 break;
             case R.id.tv_qianyueqixian:
                 //签约期限
+            case R.id.tv_xuqiannianxian:
+                //续签年限
                 dialogList_qixian(tv_qianyueqixian);
                 break;
             case R.id.tv_hetongwenjian:
@@ -353,7 +379,26 @@ public class AddContractActivity extends BaseActivity {
                             break;
                         case 3:
                             //换绑合同
+                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        file = url;//文件地址
 
+                                        params.clear();
+                                        params.put("outStoreId", outStoreId);
+                                        params.put("inStoreId", inStoreId);
+                                        params.put("contractType", contractType);
+                                        params.put("file", file);
+                                        params.put("deviceNum", deviceNum);
+                                        requestUpData(params);
+
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
                             break;
                         case 4:
                             //修改合同
@@ -361,11 +406,49 @@ public class AddContractActivity extends BaseActivity {
                             break;
                         case 5:
                             //续签合同
+                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        file = url;//文件地址
 
+                                        params.clear();
+                                        params.put("merchantId", shopId);
+                                        params.put("sole", sole);
+                                        params.put("contractType", contractType);
+                                        params.put("file", file);
+                                        params.put("renewalPeriod", renewalPeriod);
+                                        params.put("renewalTime", renewalTime);
+                                        requestUpData(params);
+
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
                             break;
                         case 6:
                             //取消合同
+                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        file = url;//文件地址
 
+                                        params.clear();
+                                        params.put("merchantId", shopId);
+                                        params.put("reasonId", reasonId);
+                                        params.put("contractType", contractType);
+                                        params.put("file", file);
+                                        requestUpData(params);
+
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
                             break;
                         case 7:
                             //调价合同
@@ -439,7 +522,20 @@ public class AddContractActivity extends BaseActivity {
                 break;
             case 3:
                 //换绑合同
-
+                contractType = "device_exchange";
+                if (outStoreId.equals(inStoreId)){
+                    myToast("转出门店与转入门店是同一个");
+                    return false;
+                }
+                deviceNum = tv_zhuanchushebei.getText().toString().trim();
+                if (TextUtils.isEmpty(deviceNum)) {
+                    myToast("请输入新增数量");
+                    return false;
+                }
+                if (pdffile == null) {
+                    myToast("请选择合同文件");
+                    return false;
+                }
                 break;
             case 4:
                 //修改合同
@@ -447,11 +543,46 @@ public class AddContractActivity extends BaseActivity {
                 break;
             case 5:
                 //续签合同
-
+                contractType = "merchant_extend";
+                if (TextUtils.isEmpty(shopId)) {
+                    myToast("请选择商户");
+                    return false;
+                }
+                if (TextUtils.isEmpty(renewalPeriod)) {
+                    myToast("请选择续签年限");
+                    return false;
+                }
+                sole = itme_truefalse+"";
+                if (TextUtils.isEmpty(sole)) {
+                    myToast("请选择是否独家");
+                    return false;
+                }
+                if (TextUtils.isEmpty(tv_xuqianshijian.getText().toString().trim())) {
+                    myToast("请选择续签时间");
+                    return false;
+                }else {
+                    renewalTime = TimeUtils.string2Millis(tv_xuqianshijian.getText().toString().trim(),"yyyy-MM-dd")+"";
+                }
+                if (pdffile == null) {
+                    myToast("请选择合同文件");
+                    return false;
+                }
                 break;
             case 6:
                 //取消合同
-
+                contractType = "merchant_cancel";
+                if (TextUtils.isEmpty(shopId)) {
+                    myToast("请选择商户");
+                    return false;
+                }
+                if (TextUtils.isEmpty(reasonId)) {
+                    myToast("请选择原因");
+                    return false;
+                }
+                if (pdffile == null) {
+                    myToast("请选择合同文件");
+                    return false;
+                }
                 break;
             case 7:
                 //调价合同
@@ -473,8 +604,24 @@ public class AddContractActivity extends BaseActivity {
                     //选择门店
                     if (data != null) {
                         Bundle bundle = data.getExtras();
-                        storeId = bundle.getString("storeId");
-                        tv_xuanzemendian.setText(bundle.getString("storeName"));
+                        switch (storetype){
+                            case 0:
+                                //选择门店
+                                storeId = bundle.getString("storeId");
+                                tv_xuanzemendian.setText(bundle.getString("storeName"));
+                                break;
+                            case 1:
+                                //转出门店
+                                outStoreId = bundle.getString("storeId");
+                                tv_zhuanchumendian.setText(bundle.getString("storeName"));
+                                break;
+                            case 2:
+                                //转入门店
+                                inStoreId = bundle.getString("storeId");
+                                tv_zhuanrumendian.setText(bundle.getString("storeName"));
+                                break;
+                        }
+
                     }
                     break;
                 case Constant.SELECT_SHOP:
@@ -641,6 +788,9 @@ public class AddContractActivity extends BaseActivity {
                 rl_shoujiandianhua.setVisibility(View.VISIBLE);
                 rl_shoujiandizhi.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
+
+//                params.put("type", "renewalPeriod");
+//                request(params);
                 break;
             case 3:
                 //换绑合同
@@ -648,6 +798,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_zhuanrumendian.setVisibility(View.VISIBLE);
                 rl_zhuanchushebei.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
+
                 break;
             case 4:
                 //修改合同
@@ -665,6 +816,10 @@ public class AddContractActivity extends BaseActivity {
                 tv_img.setVisibility(View.VISIBLE);
                 tv_img.setText("执照上传");
                 iv_add.setVisibility(View.VISIBLE);
+
+                params.put("type", "renewalPeriod");
+                request(params);
+
                 break;
             case 5:
                 //续签合同
@@ -672,15 +827,16 @@ public class AddContractActivity extends BaseActivity {
                 rl_xuqiannianxian.setVisibility(View.VISIBLE);
                 rl_shifoudujia.setVisibility(View.VISIBLE);
                 rl_xuqianshijian.setVisibility(View.VISIBLE);
-                tv_img.setVisibility(View.VISIBLE);
-                tv_img.setText("上传合同");
-                iv_add.setVisibility(View.VISIBLE);
+                rl_hetongwenjian.setVisibility(View.VISIBLE);
+
                 break;
             case 6:
                 //取消合同
                 rl_xuanzeshanghu.setVisibility(View.VISIBLE);
                 rl_xuanzeyuanyin.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
+                params.put("type", "merchantCancelReason");
+                request(params);
                 break;
             case 7:
                 //调价合同
