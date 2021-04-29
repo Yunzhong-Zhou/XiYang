@@ -20,7 +20,7 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.MyContractModel;
+import com.xiyang.xiyang.model.AffairListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -40,12 +40,12 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 我的合同
+ * 事务列表
  */
-public class MyContractActivity extends BaseActivity {
+public class AffairListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyContractModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<MyContractModel.ListBean> mAdapter;
+    List<AffairListModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<AffairListModel.ListBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
@@ -118,9 +118,9 @@ public class MyContractActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyContract, params, headerMap, new CallBackUtil<MyContractModel>() {
+        OkhttpUtil.okHttpGet(URLs.AffairList, params, headerMap, new CallBackUtil<AffairListModel>() {
             @Override
-            public MyContractModel onParseResponse(Call call, Response response) {
+            public AffairListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -132,33 +132,33 @@ public class MyContractActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyContractModel response) {
+            public void onResponse(AffairListModel response) {
                 showContentPage();
                 hideProgress();
                 list = response.getList();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<MyContractModel.ListBean>
-                            (MyContractActivity.this, R.layout.item_mycontract, list) {
+                    mAdapter = new CommonAdapter<AffairListModel.ListBean>
+                            (AffairListActivity.this, R.layout.item_affairlist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, MyContractModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, AffairListModel.ListBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, "《" + model.getContractType() + "》");
+                            holder.setText(R.id.tv_shop, model.getStoreName());
                             holder.setText(R.id.tv_num, model.getStatusTitle());//money
-                            holder.setText(R.id.tv_addr, model.getCreatedAt());
+                            holder.setText(R.id.tv_addr, model.getDeviceNum()+"台");
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(MyContractActivity.this)
+                            Glide.with(AffairListActivity.this)
                                     .load(model.getImage())
 //                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(MyContractActivity.this, 10))))
+                                            RoundedCorners(CommonUtil.dip2px(AffairListActivity.this, 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            /*if (model.getStatus().equals("1")) {
+                            /*ImageView imageView2 = holder.getView(R.id.imageView2);
+                            if (model.getStatus().equals("1")) {
                                 //待签约
                                 imageView2.setImageResource(R.mipmap.bg_daiqianyue);
                             } else {
@@ -178,17 +178,7 @@ public class MyContractActivity extends BaseActivity {
 //                                    } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("id", model.getId());
-                                    switch (model.getContractType()){
-                                        case "设备添加":
-                                            //新增事务
-                                            CommonUtil.gotoActivityWithData(MyContractActivity.this, AffairDetailActivity.class, bundle, false);
-                                            break;
-
-                                        default:
-                                            CommonUtil.gotoActivityWithData(MyContractActivity.this, ContractDetailActivity.class, bundle, false);
-                                            break;
-                                    }
-
+                                    CommonUtil.gotoActivityWithData(AffairListActivity.this, AffairDetailActivity.class, bundle, false);
 //                                    }
 
                                 }
@@ -203,9 +193,9 @@ public class MyContractActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyContract, params, headerMap, new CallBackUtil<MyContractModel>() {
+        OkhttpUtil.okHttpGet(URLs.AffairList, params, headerMap, new CallBackUtil<AffairListModel>() {
             @Override
-            public MyContractModel onParseResponse(Call call, Response response) {
+            public AffairListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -218,10 +208,10 @@ public class MyContractActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyContractModel response) {
+            public void onResponse(AffairListModel response) {
                 showContentPage();
                 onHttpResult();
-                List<MyContractModel.ListBean> list1 = new ArrayList<>();
+                List<AffairListModel.ListBean> list1 = new ArrayList<>();
                 list1 = response.getList();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
@@ -265,15 +255,7 @@ public class MyContractActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("我的合同");
-        titleView.showRightTextview("添加合同", true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("item_hetong", 1);
-                CommonUtil.gotoActivityWithData(MyContractActivity.this, AddContractActivity.class, bundle);
-            }
-        });
+        titleView.setTitle("事务列表");
     }
 
     @Override
@@ -298,7 +280,7 @@ public class MyContractActivity extends BaseActivity {
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyContractActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AffairListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -325,7 +307,7 @@ public class MyContractActivity extends BaseActivity {
         final List<String> list = new ArrayList<String>();
         list.add(getString(R.string.app_type_jiangxu));
         list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyContractActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AffairListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -364,7 +346,7 @@ public class MyContractActivity extends BaseActivity {
 
     private void showPopupWindow2(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyContractActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AffairListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -394,7 +376,7 @@ public class MyContractActivity extends BaseActivity {
         list.add(getString(R.string.app_type_yitongguo));
         list.add(getString(R.string.app_type_weitongguo));
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyContractActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AffairListActivity.this, list);
         adapter.setSelectItem(i2);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

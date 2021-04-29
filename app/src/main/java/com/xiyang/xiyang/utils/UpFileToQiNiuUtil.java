@@ -14,7 +14,6 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -109,12 +108,14 @@ public abstract class UpFileToQiNiuUtil {
                         if (respInfo.isOK()) {
                             //上传成功
 //                            ToastUtils.show("上传成功");
-                            try {
+                            UpFileToQiNiuUtil.this.complete(true, "上传成功", key);
+                            /*try {
                                 String url = jsonData.getString("url");
                                 UpFileToQiNiuUtil.this.complete(true, "上传成功", url);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
 
                         } else {
                             //上传失败

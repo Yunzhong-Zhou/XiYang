@@ -222,7 +222,7 @@ public class ApproveDetailActivity extends BaseActivity {
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
 
-                if (response.getHead().getStatus().equals("0")) {//需要审核
+                if (response.getBase().getStatus().equals("0")) {//需要审核
                     tv_shenpi.setVisibility(View.VISIBLE);
                 } else {
                     tv_shenpi.setVisibility(View.GONE);

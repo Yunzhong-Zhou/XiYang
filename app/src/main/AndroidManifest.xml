@@ -247,6 +247,12 @@
         <activity
             android:name=".activity.DeviceDetailActivity"
             android:label="设备详情" />
+        <activity
+            android:name=".activity.AffairListActivity"
+            android:label="事务列表" />
+        <activity
+            android:name=".activity.AffairDetailActivity"
+            android:label="事务详情" />
         <!--审批-->
         <activity
             android:name=".activity.ApproveDetailActivity"

@@ -161,6 +161,7 @@ public class ApproveContractActivity extends BaseActivity {
             case R.id.tv_confirm:
                 //提交
                 if (match()) {
+                    images = "";
                     showProgress(true, getString(R.string.app_loading1));
                     for (int i = 0; i < listFiles.size(); i++) {
                         new UpFileToQiNiuUtil(ApproveContractActivity.this, listFiles.get(i), FileUtils.getFileExtension(listFiles.get(i))) {

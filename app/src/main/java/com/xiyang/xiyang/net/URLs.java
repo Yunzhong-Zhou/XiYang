@@ -62,6 +62,10 @@ public class URLs {
     public static final String ShopDetail = HOST + API + "merchant/detail";
     //添加合同
     public static final String AddContract = HOST + API + "contract/add";
+    //我的合同列表
+    public static final String MyContract = HOST + API + "contract/record";
+    //合同详情
+    public static final String ContractDetail = HOST + API + "merchant/detail";
     /**
      * ********************************管理*****************************************
      */
@@ -146,10 +150,10 @@ public class URLs {
     public static final String ChangeWorkList = HOST + API + "work/orders/deal";
     //添加拜访
     public static final String AddVisit = HOST + API + "store/visit/log/add";
-    //发布活动
-    public static final String AddHuoDong = HOST + API + "/api/v1/techn/techn_activity_increase";
-    //发布招聘
-    public static final String AddZhaoPin = HOST + API + "/api/v1/techn/techn_forum_recruit_increase";
+    //事务列表
+    public static final String AffairList = HOST + API + "transactions";
+    //事务详情
+    public static final String AffairDetail = HOST + API + "transactions/detail";
     //发布技术交流
     public static final String AddJiShuJiaoLiu = HOST + API + "/api/v1/techn/techn_exchange_increase";
     //技术交流详情
@@ -210,8 +214,6 @@ public class URLs {
     public static final String About = HOST + API + "about";
     //分润记录
     public static final String ShareProfitList = HOST + API + "order/profit";
-    //我的合同列表
-    public static final String MyContract = HOST + API + "contract/record";
     //我的设备列表
     public static final String MyDevice = HOST + API + "device/record";
     //问答

@@ -195,7 +195,7 @@ public class AddDeviceDetailActivity extends BaseActivity {
         };
         rv_yixuan.setAdapter(mAdapter_yixuan);
         mAdapter_anzhuang = new CommonAdapter<Fragment2Model>
-                (AddDeviceDetailActivity.this, R.layout.item_adddevicedetail_anzhuang, list_anzhuang) {
+                (AddDeviceDetailActivity.this, R.layout.item_affairedetail_anzhuang, list_anzhuang) {
             @Override
             protected void convert(ViewHolder holder, Fragment2Model model, int position) {
                             /*ImageView imageView1 = holder.getView(R.id.imageView1);
