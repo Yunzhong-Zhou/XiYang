@@ -20,7 +20,7 @@ import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.MyVisitListActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
-import com.xiyang.xiyang.activity.StopStoreActivity;
+import com.xiyang.xiyang.activity.CloseStoreActivity;
 import com.xiyang.xiyang.activity.StoreDetailActivity;
 import com.xiyang.xiyang.activity.TransferStoreActivity;
 import com.xiyang.xiyang.base.BaseFragment;
@@ -348,7 +348,7 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.linearLayout11:
                 //关闭门店
-                CommonUtil.gotoActivity(getActivity(), StopStoreActivity.class);
+                CommonUtil.gotoActivity(getActivity(), CloseStoreActivity.class);
                 break;
             case R.id.linearLayout12:
                 //

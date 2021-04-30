@@ -20,49 +20,52 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 划转商户
+ * 关闭门店
  */
-public class TransferShopActivity extends BaseActivity {
-    EditText textView1,textView2;
-    String shopId="",reason="";
+public class CloseStoreActivity extends BaseActivity {
+    EditText textView1, textView2;
+    String storeId = "", reason = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transfershop);
+        setContentView(R.layout.activity_closestore);
     }
 
     @Override
     protected void initView() {
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
+
     }
 
     @Override
     protected void initData() {
 
     }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.textView1:
                 //选择门店
-                Intent intent2 = new Intent(TransferShopActivity.this, MyShopListActivity.class);
-                Bundle bundle2 = new Bundle();
-                bundle2.putInt("requestCode", Constant.SELECT_SHOP);
-                bundle2.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
-                intent2.putExtras(bundle2);
-                startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
+                Intent intent1 = new Intent(CloseStoreActivity.this, MyStoreListActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("requestCode", Constant.SELECT_STORE);
+                bundle1.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
                 break;
             case R.id.tv_confirm:
                 //提交
-                if (match()){
-                    showToast("确认划转该商户吗？", "确定", "取消", new View.OnClickListener() {
+                if (match()) {
+                    showToast("确认关闭该门店吗？", "确定", "取消", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
                             showProgress(true, getString(R.string.app_loading1));
-                            params.put("id", shopId);
+                            params.put("id", storeId);
                             params.put("reason", reason);
                             requestUpData(params);
                         }
@@ -78,23 +81,25 @@ public class TransferShopActivity extends BaseActivity {
     }
 
     private boolean match() {
-        if (TextUtils.isEmpty(shopId)) {
-            myToast("请选择商户");
+        if (TextUtils.isEmpty(storeId)) {
+            myToast("请选择门店");
             return false;
         }
         reason = textView2.getText().toString().trim();
         if (TextUtils.isEmpty(reason)) {
-            myToast("请输入划转理由");
+            myToast("请输入关闭理由");
             return false;
         }
         return true;
     }
+
     @Override
     protected void updateView() {
-        titleView.setTitle("申请商户划转");
+        titleView.setTitle("关闭门店");
     }
+
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.TransferShop, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.CloseStore, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -120,12 +125,12 @@ public class TransferShopActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case Constant.SELECT_SHOP:
-                    //选择商户
+                case Constant.SELECT_STORE:
+                    //选择门店
                     if (data != null) {
                         Bundle bundle = data.getExtras();
-                        shopId = bundle.getString("shopId");
-                        textView1.setText(bundle.getString("shopName"));
+                        storeId = bundle.getString("storeId");
+                        textView1.setText(bundle.getString("storeName"));
                     }
                     break;
             }

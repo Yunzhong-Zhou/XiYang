@@ -242,7 +242,7 @@ public class TakeCashActivity extends BaseActivity {
                             .placeholder(R.mipmap.ic_bank_blue)//加载站位图
                             .error(R.mipmap.ic_bank_blue)//加载失败
                             .into(imageView3);//加载图片
-                    textView3.setText(response.getBank_card_account());//地址
+                    textView3.setText(response.getBank_card_proceeds_name()+"  "+response.getBank_card_account());//地址
                 } else {
                     textView3.setText("银行卡暂未设置，点此跳转设置");
                     showToast("需设置银行卡后才可操作",

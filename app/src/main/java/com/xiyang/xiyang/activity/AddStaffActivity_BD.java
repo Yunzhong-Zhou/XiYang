@@ -194,18 +194,7 @@ public class AddStaffActivity_BD extends BaseActivity {
 
     @Override
     protected void updateView() {
-        switch (localUserInfo.getUserJob()) {
-            case "rm":
-                titleView.setTitle("添加CM");
-                break;
-            case "cm":
-                titleView.setTitle("添加BDM");
-                break;
-            case "bdm":
-                titleView.setTitle("添加BD");
-                rl_chengshi.setVisibility(View.GONE);
-                break;
-        }
+        titleView.setTitle("添加新员工");
 
     }
 

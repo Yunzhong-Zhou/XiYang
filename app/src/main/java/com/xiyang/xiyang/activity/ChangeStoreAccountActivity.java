@@ -31,10 +31,11 @@ import okhttp3.Response;
  */
 
 public class ChangeStoreAccountActivity extends BaseActivity {
+    String storeId = "",storeName="",storeAccount="";
     EditText editText1, editText2, editText3, editText4;
     TextView textView1,tv_confirm;
     private TimeCount time;
-    String phonenum = "", password1 = "", password2 = "", code = "";
+    String mobile = "", code = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class ChangeStoreAccountActivity extends BaseActivity {
     @Override
     protected void initView() {
         editText1 = findViewByID_My(R.id.editText1);
-        editText1.setText("+"+localUserInfo.getMobile_State_Code()+"  "+localUserInfo.getPhonenumber());
+//        editText1.setText("+"+localUserInfo.getMobile_State_Code()+"  "+localUserInfo.getPhonenumber());
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
@@ -59,19 +60,14 @@ public class ChangeStoreAccountActivity extends BaseActivity {
         textView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                phonenum = localUserInfo.getPhonenumber();
-                if (TextUtils.isEmpty(phonenum)) {
+                if (TextUtils.isEmpty(storeAccount)) {
                     Toast.makeText(ChangeStoreAccountActivity.this, getString(R.string.settransactionpassword_h3), Toast.LENGTH_SHORT).show();
                 } else {
-                    /*String string = "?mobile=" + localUserInfo.getPhonenumber() +
-                            "&type=" + "5" +
-                            "&mobile_state_code=" + localUserInfo.getMobile_State_Code();*/
-                    ChangeStoreAccountActivity.this.showProgress(true, getString(R.string.app_sendcode_hint1));
+                    showProgress(true, getString(R.string.app_sendcode_hint1));
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("mobile", localUserInfo.getPhonenumber());
-                    params.put("type", "4");
-                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
+                    params.put("mobile", storeAccount);
+                    params.put("type", "8");
                     RequestCode(params);//获取验证码
                 }
             }
@@ -83,11 +79,10 @@ public class ChangeStoreAccountActivity extends BaseActivity {
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
-//                    params.put("qk", qk);
-                    params.put("trade_password", password1);//交易密码（不能小于6位数）
-                    params.put("code", code);//手机验证码
-                    params.put("token", localUserInfo.getToken());
-                    RequestSetTransactionPassword(params);//设置交易密码
+                    params.put("id", storeId);
+                    params.put("mobile", mobile);
+                    params.put("code", code);
+                    RequestUpData(params);
                 }
             }
         });
@@ -119,8 +114,8 @@ public class ChangeStoreAccountActivity extends BaseActivity {
 
     }
 
-    private void RequestSetTransactionPassword(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.TransactionPassword, params, headerMap, new CallBackUtil<String>() {
+    private void RequestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.ChangeStoreAccount, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -153,35 +148,25 @@ public class ChangeStoreAccountActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        qk = getIntent().getStringExtra("qk");
+        storeId = getIntent().getStringExtra("storeId");
+        storeName = getIntent().getStringExtra("storeName");
+        storeAccount = getIntent().getStringExtra("storeAccount");
+        editText1.setText(storeName);
+        editText2.setText(storeAccount);
     }
 
     private boolean match() {
-        phonenum = localUserInfo.getPhonenumber();
-        if (TextUtils.isEmpty(phonenum)) {
-            myToast(getString(R.string.settransactionpassword_h3));
-            return false;
-        }
         code = editText2.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
             myToast(getString(R.string.settransactionpassword_h5));
             return false;
         }
-        password1 = editText3.getText().toString().trim();
-        if (TextUtils.isEmpty(password1)) {
-            myToast(getString(R.string.settransactionpassword_h7));
-            return false;
-        }
-        password2 = editText4.getText().toString().trim();
-        if (TextUtils.isEmpty(password2)) {
-            myToast(getString(R.string.settransactionpassword_h9));
+        mobile = editText4.getText().toString().trim();
+        if (TextUtils.isEmpty(mobile)) {
+            myToast("请输入新账号");
             return false;
         }
 
-        if (!password1.equals(password2)) {
-            myToast(getString(R.string.settransactionpassword_h10));
-            return false;
-        }
         return true;
     }
 

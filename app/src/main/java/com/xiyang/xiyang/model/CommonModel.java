@@ -129,7 +129,34 @@ public class CommonModel implements Serializable {
     public List<WorkOrderTypeBean> getRenewalPeriod() {
         return renewalPeriod;
     }
+
     public void setRenewalPeriod(List<WorkOrderTypeBean> renewalPeriod) {
         this.renewalPeriod = renewalPeriod;
+    }
+
+    /**
+     * 减少原因
+     */
+    private List<WorkOrderTypeBean> merchantRecoverReason;
+
+    public List<WorkOrderTypeBean> getMerchantRecoverReason() {
+        return merchantRecoverReason;
+    }
+
+    public void setMerchantRecoverReason(List<WorkOrderTypeBean> merchantRecoverReason) {
+        this.merchantRecoverReason = merchantRecoverReason;
+    }
+
+    /**
+     * 取消原因
+     */
+    private List<WorkOrderTypeBean> merchantCancelReason;
+
+    public List<WorkOrderTypeBean> getMerchantCancelReason() {
+        return merchantCancelReason;
+    }
+
+    public void setMerchantCancelReason(List<WorkOrderTypeBean> merchantCancelReason) {
+        this.merchantCancelReason = merchantCancelReason;
     }
 }

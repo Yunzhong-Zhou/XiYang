@@ -193,7 +193,7 @@
             android:name=".activity.MoveDeviceActivity"
             android:label="设备移位" />
         <activity
-            android:name=".activity.StopStoreActivity"
+            android:name=".activity.CloseStoreActivity"
             android:label="关闭门店" />
         <activity
             android:name=".activity.ChangeStoreAccountActivity"

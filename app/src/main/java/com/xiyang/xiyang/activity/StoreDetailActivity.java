@@ -189,11 +189,15 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_change1:
                 //修改账号
-                CommonUtil.gotoActivity(StoreDetailActivity.this, ChangeStoreAccountActivity.class);
+                bundle.putString("storeId",model.getId());
+                bundle.putString("storeName",model.getBase().getName());
+                bundle.putString("storeAccount",model.getBase().getContactMobile());
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, ChangeStoreAccountActivity.class,bundle);
                 break;
             case R.id.tv_change2:
                 //修改信息
-                CommonUtil.gotoActivity(StoreDetailActivity.this, ChangeStoreActivity.class);
+                bundle.putSerializable("StoreDetailModel",model);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, ChangeStoreActivity.class,bundle);
                 break;
             case R.id.ll_tab1:
                 //待拜访
@@ -236,6 +240,7 @@ public class StoreDetailActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 myToast(err);
+                finish();
             }
 
             @Override

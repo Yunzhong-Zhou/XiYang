@@ -44,8 +44,8 @@ public class URLs {
     public static final String Region = HOST + API + "region";
     //公共参数获取
     public static final String Common = HOST + API + "common";
-    //加入购物车
-    public static final String ADDShop = HOST + API + "/api/v1/public/user_cart_add";
+    //公共-仓库
+    public static final String Warehouse = HOST + API + "warehouse";
     //评价列表
     public static final String PingJiaList = HOST + API + "/api/v1/public/get_goods_eval_list";
     //服务分类列表
@@ -66,6 +66,8 @@ public class URLs {
     public static final String MyContract = HOST + API + "contract/record";
     //合同详情
     public static final String ContractDetail = HOST + API + "merchant/detail";
+    //划转商户
+    public static final String TransferShop = HOST + API + "merchant/transfer";
     /**
      * ********************************管理*****************************************
      */
@@ -112,10 +114,12 @@ public class URLs {
     public static final String AddStaff_BD = HOST + API + "store/worker/add";
     //删除员工
     public static final String DeleteStaff = HOST + API + "store/worker/delete";
-    //救援状态
-    public static final String JiuYuan_Type = HOST + API + "/api/v1/techn/techn_rescue_query";
-    //立即救援
-    public static final String JiuYuan_Now = HOST + API + "/api/v1/techn/techn_rescue_save";
+    //关闭门店
+    public static final String CloseStore = HOST + API + "store/close";
+    //划转门店
+    public static final String TransferStore = HOST + API + "store/transfer";
+    //修改账户信息
+    public static final String ChangeStoreAccount = HOST + API + "store/account";
     //统计数据
     public static final String Fragment2_TongJi = HOST + API + "/api/v1/techn/console_statistics";
     //签到-提交
