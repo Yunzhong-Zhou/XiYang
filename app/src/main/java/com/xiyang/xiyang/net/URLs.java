@@ -80,6 +80,8 @@ public class URLs {
      * ********************************分派*****************************************
      */
     public static final String Fragment2_m = HOST + API + "point";
+    public static final String DispatchShop = HOST + API + "point";
+
     /**
      * ********************************审批*****************************************
      */

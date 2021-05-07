@@ -149,6 +149,9 @@
             android:name=".activity.DispatchActivity"
             android:label="分派" />
         <activity
+            android:name=".activity.DispatchShopActivity"
+            android:label="分派商户" />
+        <activity
             android:name=".activity.AssignActivity"
             android:label="指派" />
         <activity

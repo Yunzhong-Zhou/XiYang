@@ -10,7 +10,6 @@ import com.xiyang.xiyang.model.SelectMyCityModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -56,7 +55,7 @@ public class MyCityActivity extends BaseActivity {
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                requestCity(params);
+                requestCityMore(params);
             }
         });
 
@@ -119,8 +118,8 @@ public class MyCityActivity extends BaseActivity {
 
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
+    private void requestCityMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -138,7 +137,6 @@ public class MyCityActivity extends BaseActivity {
             public void onResponse(String response) {
 //                showContentPage();
                 onHttpResult();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
                 /*JSONObject jObj;
                 List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
                 try {
@@ -179,12 +177,7 @@ public class MyCityActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                + "&sort=" + sort
-                + "&page=" + page//当前页号
-                + "&count=" + "10"//页面行数
-                + "&token=" + localUserInfo.getToken();
-        RequestMyInvestmentList(string);*/
+        requestCity(params);
     }
 
     public void onHttpResult() {

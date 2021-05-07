@@ -106,7 +106,6 @@ public class RoomNoManagementActivity extends BaseActivity {
     @Override
     protected void initData() {
         model_sdm = (StoreDetailModel) getIntent().getSerializableExtra("StoreDetailModel");
-
     }
 
     @Override

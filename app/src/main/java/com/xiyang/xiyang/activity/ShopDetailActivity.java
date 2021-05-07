@@ -170,6 +170,7 @@ public class ShopDetailActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.tv_addcontract:
                 //添加合同
@@ -183,7 +184,10 @@ public class ShopDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_addstore:
                 //添加门店
-                CommonUtil.gotoActivity(ShopDetailActivity.this, AddStoreActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("shopId", model.getId());
+                bundle2.putString("shopName", model.getName());
+                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AddStoreActivity.class,bundle2);
                 break;
             case R.id.tv_morestore:
                 //门店-查看更多

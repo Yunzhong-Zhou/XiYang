@@ -136,14 +136,6 @@ public class AddStaffActivity extends BaseActivity {
                         public void complete(boolean isok, String result, String url) {
                             if (isok) {
                                 MyLogger.i(">>>>上传文件路径：" + url);
-                                Glide.with(AddStaffActivity.this)
-                                        .load(url)
-                                        .centerCrop()
-                                        .apply(RequestOptions.bitmapTransform(new
-                                                RoundedCorners(CommonUtil.dip2px(AddStaffActivity.this, 10))))
-                                        .placeholder(R.mipmap.loading)//加载站位图
-                                        .error(R.mipmap.headimg)//加载失败
-                                        .into(imageView1);//加载图片
                                 head = url;
 
                                 params.clear();

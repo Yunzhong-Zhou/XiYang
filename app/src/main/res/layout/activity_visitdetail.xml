@@ -53,79 +53,19 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-                        <!--<LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:lineSpacingExtra="14dp"
-                                android:text="记录ID\n拜访门店\n拜访方式\n营业情况\n拜访联系人\n竞争对手\n拜访时间\n拜访人\n合作风险上报\n拜访原因\n拜访反馈"
-                                android:textColor="@color/black3"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:lineSpacingExtra="14dp"
-                                android:text="记录ID\n拜访门店\n拜访方式\n营业情况\n拜访联系人\n竞争对手\n拜访时间\n拜访人\n合作风险上报\n拜访原因\n拜访反馈"
-                                android:textColor="@color/black2"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>-->
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_info"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
-                       <!-- <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:lineSpacingExtra="14dp"
-                                android:text="补充说明"
-                                android:textColor="@color/black3"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:layout_marginLeft="14dp"
-                                android:text="补充说明"
-                                android:textColor="@color/black2"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="14dp"
-                            android:text="拜访照片"
-                            android:textColor="@color/black3"
-                            android:layout_marginTop="12dp"
-                            android:textSize="12.5sp"
-                            android:textStyle="bold" />-->
                         <ImageView
                             android:id="@+id/iv_info"
                             android:layout_width="107dp"
                             android:layout_height="107dp"
                             android:layout_marginLeft="40dp"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/ic_add_gray" />
+                            android:background="@mipmap/ic_add_gray"
+                            android:scaleType="fitXY" />
 
 
                     </LinearLayout>

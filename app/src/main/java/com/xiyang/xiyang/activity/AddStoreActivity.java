@@ -102,6 +102,9 @@ public class AddStoreActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        merchantId = getIntent().getStringExtra("shopId");
+        textView1.setText(getIntent().getStringExtra("shopName"));
+
         list_truefalse.add("是");
         list_truefalse.add("否");
 
