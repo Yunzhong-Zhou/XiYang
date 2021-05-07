@@ -861,9 +861,6 @@ public class AddContractActivity extends BaseActivity {
                     break;
 
             }
-            //上传pdf文件
-            if (pdffile != null) {
-            }
             if (imgpath != null) {
 //                imgfile = new File(uri.getPath());
                 //压缩

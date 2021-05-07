@@ -159,4 +159,83 @@ public class CommonModel implements Serializable {
     public void setMerchantCancelReason(List<WorkOrderTypeBean> merchantCancelReason) {
         this.merchantCancelReason = merchantCancelReason;
     }
+
+    /**
+     * 拜访方式
+     */
+    private List<WorkOrderTypeBean> visitChannel;
+
+    public List<WorkOrderTypeBean> getVisitChannel() {
+        return visitChannel;
+    }
+
+    public void setVisitChannel(List<WorkOrderTypeBean> visitChannel) {
+        this.visitChannel = visitChannel;
+    }
+
+    /**
+     * 营业情况
+     */
+    private List<WorkOrderTypeBean> isBusiness;
+
+    public List<WorkOrderTypeBean> getIsBusiness() {
+        return isBusiness;
+    }
+
+    public void setIsBusiness(List<WorkOrderTypeBean> isBusiness) {
+        this.isBusiness = isBusiness;
+    }
+
+    /**
+     * 合作风险
+     */
+    private List<WorkOrderTypeBean> reportStatus;
+
+    public List<WorkOrderTypeBean> getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(List<WorkOrderTypeBean> reportStatus) {
+        this.reportStatus = reportStatus;
+    }
+
+    /**
+     * 拜访反馈
+     */
+    private List<WorkOrderTypeBean> feedback;
+
+    public List<WorkOrderTypeBean> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(List<WorkOrderTypeBean> feedback) {
+        this.feedback = feedback;
+    }
+
+    /**
+     * 存在竞对
+     */
+    private List<WorkOrderTypeBean> isAdver;
+
+    public List<WorkOrderTypeBean> getIsAdver() {
+        return isAdver;
+    }
+
+    public void setIsAdver(List<WorkOrderTypeBean> isAdver) {
+        this.isAdver = isAdver;
+    }
+
+    /**
+     * 拜访原因
+     */
+    private List<WorkOrderTypeBean> reason;
+
+    public List<WorkOrderTypeBean> getReason() {
+        return reason;
+    }
+
+    public void setReason(List<WorkOrderTypeBean> reason) {
+        this.reason = reason;
+    }
+
 }

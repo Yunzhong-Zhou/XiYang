@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -55,7 +55,16 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddVisitActivity extends BaseActivity {
     List<String> list_visit = new ArrayList<>();
-    int type = 0;// 1-远程拜访，2-上门拜访，3-陌生拜访
+    List<String> list_truefalse = new ArrayList<>();
+    List<CommonModel.WorkOrderTypeBean> list_fangshi = new ArrayList<>();
+    List<CommonModel.WorkOrderTypeBean> list_yingye = new ArrayList<>();
+    List<CommonModel.WorkOrderTypeBean> list_fengxian = new ArrayList<>();
+    List<CommonModel.WorkOrderTypeBean> list_fankui = new ArrayList<>();
+    List<CommonModel.WorkOrderTypeBean> list_jingdui = new ArrayList<>();
+    List<CommonModel.WorkOrderTypeBean> list_yuanyin = new ArrayList<>();
+
+    int type = 0;// 0-远程拜访，1-上门拜访，2-陌生拜访
+    int item_fangshi = -1, item_yingye = -1, item_fengxian = -1, item_fankui = -1, item_jingdui = -1, item_yuanyin = -1, itme_truefalse = 1;
     RelativeLayout rl_xuanzefangshi, rl_xuanzemendian, rl_baifangjilu, rl_yingyeqingkuang, rl_hezuofengxian,
             rl_baifangmendian, rl_baifangrenyuan, rl_lianxidianhua, rl_baifangshijian, rl_mendiandizhi,
             rl_baifangfangshi, rl_shifouyixiang, rl_baifanglianxiren, rl_baifangyuanyin, rl_baifangfankui,
@@ -67,8 +76,8 @@ public class AddVisitActivity extends BaseActivity {
     ImageView imageView1;
 
     String storeId = "", isBusiness = "", reportStatus = "", visitChannel = "", contactName = "", reason = "",
-            feedback = "", isAdver = "", remark = "", images = "";
-
+            feedback = "", isAdver = "", remark = "", images = "", intention = "1";
+    File imgfile = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +132,9 @@ public class AddVisitActivity extends BaseActivity {
         list_visit.add("上门拜访");
         list_visit.add("陌生拜访");
 
+        list_truefalse.add("否");
+        list_truefalse.add("是");
+
         type = getIntent().getIntExtra("type", 0);
         tv_xuanzefangshi.setText(list_visit.get(type));
         titleView.setTitle(list_visit.get(type));
@@ -148,9 +160,13 @@ public class AddVisitActivity extends BaseActivity {
             @Override
             public void onResponse(CommonModel response) {
                 hideProgress();
-                /*i_jieguo = -1;
-                status = "";
-                list_jieguo = response.getStatus();*/
+                list_fangshi = response.getVisitChannel();//拜访方式
+                list_yingye = response.getIsBusiness();//营业情况
+                list_fengxian = response.getReportStatus();//合作风险
+                list_fankui = response.getFeedback();//拜访反馈
+                list_jingdui = response.getIsAdver();//商户竞对
+                list_yuanyin = response.getReason();//拜访原因
+
             }
         });
 
@@ -169,26 +185,224 @@ public class AddVisitActivity extends BaseActivity {
                 //选择方式
                 dialogList_visit();
                 break;
+            case R.id.tv_yingyeqingkuang:
+                //营业情况
+                dialogList_yingye();
+                break;
+            case R.id.tv_baifangfangshi:
+                //拜访方式
+                dialogList_fangshi();
+                break;
+            case R.id.tv_hezuofengxian:
+                //合作风险
+                dialogList_fengxian();
+                break;
+            case R.id.tv_baifangyuanyin:
+                //拜访原因
+                dialogList_yuanyin();
+                break;
+            case R.id.tv_baifangfankui:
+                //拜访反馈
+                dialogList_fankui();
+                break;
+            case R.id.tv_shanghujingdui:
+                //商户竞对
+                dialogList_jingdui();
+                break;
+            case R.id.tv_shifouyixiang:
+                //是否独家
+                dialogList_TrueFalse();
+                break;
             case R.id.tv_xuanzemendian:
                 //选择门店
-                Intent intent1 = new Intent(AddVisitActivity.this, MyShopListActivity.class);
+                Intent intent1 = new Intent(AddVisitActivity.this, MyStoreListActivity.class);
                 Bundle bundle1 = new Bundle();
-                bundle1.putInt("requestCode", Constant.SELECT_SHOP);
+                bundle1.putInt("requestCode", Constant.SELECT_STORE);
+                bundle1.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 intent1.putExtras(bundle1);
-                startActivityForResult(intent1, Constant.SELECT_SHOP, bundle1);
+                startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
                 break;
             case R.id.tv_baifangjilu:
                 //拜访记录
-                CommonUtil.gotoActivity(AddVisitActivity.this, MyVisitListActivity.class);
+                Bundle bundle = new Bundle();
+                switch (type){
+                    case 0:
+                        bundle.putString("type","2");
+                        break;
+                    case 1:
+                        bundle.putString("type","3");
+                        break;
+                    case 2:
+                        bundle.putString("type","1");
+                        break;
+                }
+                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class,bundle,true);
                 break;
+            case R.id.imageView1:
+                //上传图片
+                MyChooseImages.showPhotoDialog(AddVisitActivity.this);
+                break;
+            case R.id.tv_confirm:
+                //提交
+                if (match()) {
+                    showProgress(true, getString(R.string.app_loading1));
+                    params.clear();
+                    switch (type) {
+                        case 0:
+                            //远程拜访
+                            new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        images = url;//文件地址
+                                        params.put("type", "2");//1陌生2远程3上门
+                                        params.put("storeId", storeId);
+                                        params.put("isBusiness", isBusiness);
+                                        params.put("reportStatus", reportStatus);
+                                        params.put("visitChannel", visitChannel);
+                                        params.put("contactName", contactName);
+                                        params.put("reason", reason);
+                                        params.put("feedback", feedback);
+                                        params.put("isAdver", isAdver);
+                                        params.put("remark", remark);
+                                        params.put("images", images);
+                                        requestUpData(params);
 
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
+                            break;
+                        case 1:
+                            //上门拜访
+                            new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        images = url;//文件地址
 
+                                        params.put("type", "3");//1陌生2远程3上门
+                                        params.put("storeId", storeId);
+                                        params.put("isBusiness", isBusiness);
+                                        params.put("reportStatus", reportStatus);
+                                        params.put("visitChannel", visitChannel);
+                                        params.put("contactName", contactName);
+                                        params.put("reason", reason);
+                                        params.put("feedback", feedback);
+                                        params.put("isAdver", isAdver);
+                                        params.put("remark", remark);
+                                        params.put("images", images);
+                                        requestUpData(params);
 
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
+                            break;
+                        case 2:
+                            //陌生拜访
+                            new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        images = url;//文件地址
+                                        params.put("type", "1");//1陌生2远程3上门
+                                        params.put("storeId", "0");
 
+                                        params.put("visitChannel", visitChannel);
+                                        params.put("intention", intention);
+                                        params.put("remark", remark);
+                                        params.put("images", images);
+                                        requestUpData(params);
+
+                                    } else {
+                                        hideProgress();
+                                        myToast("文件上传失败" + result);
+                                    }
+                                }
+                            };
+                            break;
+                    }
+                }
+
+                break;
 
         }
     }
+    private boolean match() {
+        switch (type) {
+            case 0:
+                //远程拜访
+            case 1:
+                //上门拜访
+                if (TextUtils.isEmpty(storeId)) {
+                    myToast("请选择门店");
+                    return false;
+                }
+                if (TextUtils.isEmpty(isBusiness)) {
+                    myToast("请选择营业情况");
+                    return false;
+                }
+                if (TextUtils.isEmpty(reportStatus)) {
+                    myToast("请选择合作风险");
+                    return false;
+                }
+                if (TextUtils.isEmpty(visitChannel)) {
+                    myToast("请选择拜访方式");
+                    return false;
+                }
+                contactName = tv_baifanglianxiren.getText().toString().trim();
+                if (TextUtils.isEmpty(contactName)) {
+                    myToast("请输入拜访联系人");
+                    return false;
+                }
+                if (TextUtils.isEmpty(reason)) {
+                    myToast("请选择拜访原因");
+                    return false;
+                }
+                if (TextUtils.isEmpty(feedback)) {
+                    myToast("请选择拜访反馈");
+                    return false;
+                }
+                if (TextUtils.isEmpty(isAdver)) {
+                    myToast("请选择是否存在竞对");
+                    return false;
+                }
+                remark = tv_buchongshuoming.getText().toString().trim();
+                if (TextUtils.isEmpty(remark)) {
+                    myToast("请输入补充说明");
+                    return false;
+                }
+                if (imgfile == null) {
+                    myToast("请选择拜访照片");
+                    return false;
+                }
 
+                break;
+            case 2:
+                //陌生拜访
+                if (TextUtils.isEmpty(visitChannel)) {
+                    myToast("请选择拜访方式");
+                    return false;
+                }
+                remark = tv_buchongshuoming.getText().toString().trim();
+                if (TextUtils.isEmpty(remark)) {
+                    myToast("请输入补充说明");
+                    return false;
+                }
+                if (imgfile == null) {
+                    myToast("请选择拜访照片");
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
 
     /**
      * *****************************************选择图片********************************************
@@ -197,31 +411,15 @@ public class AddVisitActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
-            File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
-                case Constant.SELECT_SHOP:
+                case Constant.SELECT_STORE:
                     //选择门店
                     if (data != null) {
                         Bundle bundle = data.getExtras();
                         storeId = bundle.getString("storeId");
-                        tv_xuanzemendian.setText(storeId);
-                    }
-                    break;
-                case SELECT_PDF_FILE:
-                    //选取PDF文件
-                    uri = data.getData();
-                    String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
-                    if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
-                            pdffile = new File(pdfpath);
-                        } else {
-                            myToast("请选择PDF文件上传");
-                            return;
-                        }
+                        tv_xuanzemendian.setText(bundle.getString("storeName"));
                     }
                     break;
                 case REQUEST_CODE_CAPTURE_CAMEIA:
@@ -240,7 +438,6 @@ public class AddVisitActivity extends BaseActivity {
 
             }
             if (imgpath != null) {
-//                showProgress(true, getString(R.string.app_loading1));
 //                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
@@ -250,39 +447,15 @@ public class AddVisitActivity extends BaseActivity {
                 }
                 imgfile = FileUtil.bytesToImageFile(AddVisitActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
+
                 Glide.with(AddVisitActivity.this)
                         .load(imgfile)
                         .centerCrop()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(AddVisitActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.headimg)//加载失败
+                        .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-
-                new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-//                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            Glide.with(AddVisitActivity.this)
-                                    .load(url)
-                                    .centerCrop()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(AddVisitActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(imageView1);//加载图片
-                            images = url;
-                           /* Map<String, String> params = new HashMap<>();
-                            params.put("head",url);
-                            RequestUpFile(params);*/
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
             }
         }
 
@@ -305,7 +478,19 @@ public class AddVisitActivity extends BaseActivity {
             public void onResponse(String response) {
                 myToast("提交成功");
                 hideProgress();
-                finish();
+                Bundle bundle = new Bundle();
+                switch (type){
+                    case 0:
+                        bundle.putString("type","2");
+                        break;
+                    case 1:
+                        bundle.putString("type","3");
+                        break;
+                    case 2:
+                        bundle.putString("type","1");
+                        break;
+                }
+                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class,bundle,true);
             }
         });
     }
@@ -393,6 +578,327 @@ public class AddVisitActivity extends BaseActivity {
                 changeUI();
                 dialog.dismiss();
 
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择拜访方式
+     */
+    private void dialogList_fangshi() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+                (AddVisitActivity.this, R.layout.item_help, list_fangshi) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_fangshi == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_fangshi = position;
+                tv_baifangfangshi.setText(list_fangshi.get(position).getVal());
+
+                visitChannel = list_fangshi.get(position).getKey();
+
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择营业情况
+     */
+    private void dialogList_yingye() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+                (AddVisitActivity.this, R.layout.item_help, list_yingye) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_yingye == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_yingye = position;
+                tv_yingyeqingkuang.setText(list_yingye.get(position).getVal());
+
+                isBusiness = list_yingye.get(position).getKey();
+
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择风险上报
+     */
+    private void dialogList_fengxian() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+                (AddVisitActivity.this, R.layout.item_help, list_fengxian) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_fengxian == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_fengxian = position;
+                tv_hezuofengxian.setText(list_fengxian.get(position).getVal());
+
+                reportStatus = list_fengxian.get(position).getKey();
+
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择拜访原因
+     */
+    private void dialogList_yuanyin() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+                (AddVisitActivity.this, R.layout.item_help, list_yuanyin) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_yuanyin == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_yuanyin = position;
+                tv_baifangyuanyin.setText(list_yuanyin.get(position).getVal());
+
+                reason = list_yuanyin.get(position).getKey();
+
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择拜访反馈
+     */
+    private void dialogList_fankui() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+                (AddVisitActivity.this, R.layout.item_help, list_fankui) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_fankui == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_fankui = position;
+                tv_baifangfankui.setText(list_fankui.get(position).getVal());
+
+                feedback = list_fankui.get(position).getKey();
+
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择商户竞对
+     */
+    private void dialogList_jingdui() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+                (AddVisitActivity.this, R.layout.item_help, list_jingdui) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_jingdui == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_jingdui = position;
+                tv_shanghujingdui.setText(list_jingdui.get(position).getVal());
+
+                isAdver = list_jingdui.get(position).getKey();
+
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择是否意向
+     */
+    private void dialogList_TrueFalse() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AddVisitActivity.this, R.layout.item_help, list_truefalse) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (itme_truefalse == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                itme_truefalse = position;
+                tv_shifouyixiang.setText(list_truefalse.get(position));
+                intention = position + "";
+
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
 
             @Override

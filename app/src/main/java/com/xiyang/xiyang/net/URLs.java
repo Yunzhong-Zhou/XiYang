@@ -93,7 +93,9 @@ public class URLs {
      */
     public static final String Fragment2 = HOST + API + "store";
     //拜访列表
-    public static final String MyVisitList = HOST + API + "store/visit/log/record";
+    public static final String MyVisitList = HOST + API + "store/visit/record";
+    //拜访详情
+    public static final String VisitDetail = HOST + API + "store/visit/detail";
     //门店列表
     public static final String MyStoreList = HOST + API + "store/record";
     //添加门店
@@ -153,7 +155,7 @@ public class URLs {
     //处理工单
     public static final String ChangeWorkList = HOST + API + "work/orders/deal";
     //添加拜访
-    public static final String AddVisit = HOST + API + "store/visit/log/add";
+    public static final String AddVisit = HOST + API + "store/visit/add";
     //事务列表
     public static final String AffairList = HOST + API + "transactions";
     //事务详情
