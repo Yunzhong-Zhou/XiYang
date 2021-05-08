@@ -1,36 +1,63 @@
 package com.xiyang.xiyang.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ImageUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.cretin.tools.scancode.CaptureActivity;
-import com.cretin.tools.scancode.config.ScanConfig;
+import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
+import com.lihang.ShadowLayout;
+import com.lljjcoder.Interface.OnCityItemClickListener;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.citywheel.CityConfig;
+import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.AffairDetailModel;
-import com.xiyang.xiyang.model.Fragment2Model;
 import com.xiyang.xiyang.model.KeyValueModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.FileUtil;
+import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
+import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
+import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 /**
  * Created by Mr.Z on 2021/3/30.
@@ -56,16 +83,31 @@ public class AffairDetailActivity extends BaseActivity {
     /**
      * 申领信息
      */
-    LinearLayout ll_contract;
-
+    LinearLayout ll_contract, ll_shenlingfangshi, ll_shouhuoren, ll_lianxifangshi, ll_shouhuodizhi, ll_xiangxidizhi;
+    EditText et_shouhuoren, et_lianxifangshi, et_xiangxidizhi;
+    ImageView iv_shangchuanzhaopian;
+    TextView tv_shenlingxinxi, tv_shenlingfangshi, tv_shouhuodizhi,tv_dengdaifahuo,tv_quedingqianshou,
+            tv_shangchuanzhaopian, tv_confirm;
+    ShadowLayout sl_wuliu;
+    private RecyclerView rv_wuliu;
+    List<KeyValueModel> list_wuliu = new ArrayList<>();
+    CommonAdapter<KeyValueModel> mAdapter_wuliu;
+    int expressWay = 1;//邮寄方式 1-自取，2-邮寄
+    List<String> list_fangshi = new ArrayList<>();
+    int itme_fangshi = 0;
+    File imgfile = null;
+    //省市
+    CityConfig cityConfig = null;
+    CityPickerView mPicker = new CityPickerView();
+    String receiveName = "", phone = "", areaId = "", address = "", scene = "";
     /**
      * 安装记录
      */
     LinearLayout ll_shenhe;
     RecyclerView rv_anzhuang;
-    List<Fragment2Model> list_anzhuang = new ArrayList<>();
-    CommonAdapter<Fragment2Model> mAdapter_anzhuang;
-    TextView iv_scan,tv_scan;
+    List<AffairDetailModel.InstallBean> list_anzhuang = new ArrayList<>();
+    CommonAdapter<AffairDetailModel.InstallBean> mAdapter_anzhuang;
+    TextView iv_scan, tv_scan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +122,7 @@ public class AffairDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
+                params.clear();
                 params.put("id", id);
                 request(params);
             }
@@ -116,9 +159,82 @@ public class AffairDetailActivity extends BaseActivity {
         rv_shiwu.setLayoutManager(new LinearLayoutManager(this));
 
         /**
-         * 合同信息
+         * 申领信息
          */
         ll_contract = findViewByID_My(R.id.ll_contract);
+        tv_shenlingxinxi = findViewByID_My(R.id.tv_shenlingxinxi);
+        ll_shenlingfangshi = findViewByID_My(R.id.ll_shenlingfangshi);
+        tv_shenlingfangshi = findViewByID_My(R.id.tv_shenlingfangshi);
+        ll_shouhuoren = findViewByID_My(R.id.ll_shouhuoren);
+        et_shouhuoren = findViewByID_My(R.id.et_shouhuoren);
+        ll_lianxifangshi = findViewByID_My(R.id.ll_lianxifangshi);
+        et_lianxifangshi = findViewByID_My(R.id.et_lianxifangshi);
+        ll_shouhuodizhi = findViewByID_My(R.id.ll_shouhuodizhi);
+        tv_shouhuodizhi = findViewByID_My(R.id.tv_shouhuodizhi);
+        ll_xiangxidizhi = findViewByID_My(R.id.ll_xiangxidizhi);
+        et_xiangxidizhi = findViewByID_My(R.id.et_xiangxidizhi);
+        tv_shangchuanzhaopian = findViewByID_My(R.id.tv_shangchuanzhaopian);
+        iv_shangchuanzhaopian = findViewByID_My(R.id.iv_shangchuanzhaopian);
+        tv_confirm = findViewByID_My(R.id.tv_confirm);
+        sl_wuliu = findViewByID_My(R.id.sl_wuliu);
+        rv_wuliu = findViewByID_My(R.id.rv_wuliu);
+        rv_wuliu.setLayoutManager(new LinearLayoutManager(this));
+        tv_dengdaifahuo = findViewByID_My(R.id.tv_dengdaifahuo);
+        tv_quedingqianshou = findViewByID_My(R.id.tv_quedingqianshou);
+        //预先加载仿iOS滚轮实现的全部数据
+        mPicker.init(this);
+        cityConfig = new CityConfig.Builder()
+                .title("选择地址")//标题
+                .titleTextSize(18)//标题文字大小
+                .titleTextColor("#585858")//标题文字颜  色
+                .titleBackgroundColor("#eaeaea")//标题栏背景色
+                .confirTextColor("#10A589")//确认按钮文字颜色
+                .confirmText(getString(R.string.app_confirm))//确认按钮文字
+                .confirmTextSize(16)//确认按钮文字大小
+                .cancelTextColor("#10A589")//取消按钮文字颜色
+                .cancelText(getString(R.string.app_cancel))//取消按钮文字
+                .cancelTextSize(16)//取消按钮文字大小
+                .setCityWheelType(CityConfig.WheelType.PRO_CITY_DIS)//显示类，只显示省份一级，显示省市两级还是显示省市区三级
+                .showBackground(false)//是否显示半透明背景
+                .visibleItemsCount(7)//显示item的数量
+                .province("北京市")//默认显示的省份
+                .city("北京市")//默认显示省份下面的城市
+                .district("朝阳区")//默认显示省市下面的区县数据
+                .provinceCyclic(false)//省份滚轮是否可以循环滚动
+                .cityCyclic(false)//城市滚轮是否可以循环滚动
+                .districtCyclic(false)//区县滚轮是否循环滚动
+                .setCustomItemLayout(R.layout.item_city)//自定义item的布局
+                .setCustomItemTextViewId(R.id.textView1)//自定义item布局里面的textViewid
+                .drawShadows(false)//滚轮不显示模糊效果
+                .setLineColor("#80CDCDCE")//中间横线的颜色
+                .setLineHeigh(2)//中间横线的高度
+                .setShowGAT(false)//是否显示港澳台数据，默认不显示
+                .build();
+
+
+        //设置自定义的属性配置
+        mPicker.setConfig(cityConfig);
+
+        //监听选择点击事件及返回结果
+        mPicker.setOnCityItemClickListener(new OnCityItemClickListener() {
+            @Override
+            public void onSelected(ProvinceBean province1, CityBean city1, DistrictBean district1) {
+                //省份province//城市city//地区district
+                /*province = province1.getName().toString();
+                city = city1.getName().toString();
+                district = district1.getName().toString();
+
+                textView1.setText(province1.getName().toString());
+                textView2.setText(city1.getName().toString());
+                textView3.setText(district1.getName().toString());*/
+                areaId = province1.getName() + city1.getName() + district1.getName();
+                tv_shouhuodizhi.setText(province1.getName() + city1.getName() + district1.getName());
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });
         /**
          * 安装记录
          */
@@ -128,6 +244,8 @@ public class AffairDetailActivity extends BaseActivity {
         iv_scan = findViewByID_My(R.id.iv_scan);
         tv_scan = findViewByID_My(R.id.tv_scan);
 
+        changeUI();
+
     }
 
     @Override
@@ -136,12 +254,13 @@ public class AffairDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.ll_scan:
                 //扫码
-                ScanConfig config = new ScanConfig()
+                /*ScanConfig config = new ScanConfig()
                         .setShowFlashlight(true)//是否需要打开闪光灯
                         .setShowGalary(true)//是否需要打开相册
                         .setNeedRing(true);//是否需要提示音
                 //ScanConfig 也可以不配置 默认都是打开
-                CaptureActivity.launch(this, config);
+                CaptureActivity.launch(this, config);*/
+                CommonUtil.gotoActivity(AffairDetailActivity.this,InstallDeviceActivity.class);
                 break;
             case R.id.ll_tab1:
                 //商户信息
@@ -158,11 +277,86 @@ public class AffairDetailActivity extends BaseActivity {
                 type = 3;
                 changeUI();
                 break;
+            case R.id.iv_shangchuanzhaopian:
+                //上传图片
+                MyChooseImages.showPhotoDialog(AffairDetailActivity.this);
+                break;
+            case R.id.tv_shenlingfangshi:
+                //选择申领方式
+                dialogList_fangshi();
+                break;
+            case R.id.tv_shouhuodizhi:
+                //选择地址
+                mPicker.showCityPicker();
+                break;
+
+            case R.id.tv_confirm:
+                if (match()) {
+                    showProgress(true, getString(R.string.app_loading1));
+                    switch (expressWay) {
+                        case 1:
+                            //自取
+                            new UpFileToQiNiuUtil(AffairDetailActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                                @Override
+                                public void complete(boolean isok, String result, String url) {
+                                    if (isok) {
+                                        MyLogger.i(">>>>上传文件路径：" + url);
+                                        params.clear();
+                                        params.put("transactionId", model.getId());
+                                        params.put("expressWay", expressWay + "");
+                                        params.put("voucher", url);
+                                        /*params.put("expressNo", "");
+                                        params.put("expressCompany", "");
+                                        params.put("receiveName", "");
+                                        params.put("phone", "");
+                                        params.put("areaId", "");
+                                        params.put("address", "");*/
+                                        params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
+                                        requestUpData(params);
+
+                                    } else {
+                                        hideProgress();
+                                        myToast("图片上传失败");
+                                    }
+                                }
+                            };
+                            break;
+                        case 2:
+                            //邮寄
+                            params.clear();
+                            params.put("transactionId", model.getId());
+                            params.put("expressWay", expressWay + "");
+                            params.put("expressNo", "");
+                            params.put("expressCompany", "");
+                            params.put("receiveName", receiveName);
+                            params.put("phone", phone);
+                            params.put("areaId", areaId);
+                            params.put("address", address);
+                            params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
+                            requestUpData(params);
+                            break;
+                    }
+                }
+                break;
+            case R.id.tv_quedingqianshou:
+                //确定签收
+                showProgress(true, getString(R.string.app_loading1));
+                params.clear();
+                params.put("transactionId", model.getId());
+                params.put("expressWay", expressWay + "");
+                params.put("expressNo", "");
+                params.put("expressCompany", "");
+                params.put("scene", "confirm");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
+                requestUpData(params);
+                break;
         }
     }
 
     @Override
     protected void initData() {
+        list_fangshi.add("自取");
+        list_fangshi.add("邮寄");
+
         id = getIntent().getStringExtra("id");
         requestServer();
     }
@@ -172,6 +366,7 @@ public class AffairDetailActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
+        params.clear();
         params.put("id", id);
         request(params);
     }
@@ -187,31 +382,35 @@ public class AffairDetailActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 myToast(err);
+                finish();
             }
 
             @Override
             public void onResponse(AffairDetailModel response) {
                 hideProgress();
                 model = response;
-               /* tv_name.setText(response.getName());
-                tv_shop.setText(response.getDeviceNum());
-                tv_num.setText(response.getMoney());
-                tv_addr.setText(response.getAddress());
-                Glide.with(ShopDetailActivity.this)
+                tv_name.setText(response.getMerchantName());
+                tv_shop.setText(response.getTransactionName());
+                tv_num.setText(response.getStatusTitle());
+                tv_addr.setText(response.getDeviceNum() + "台");
+                Glide.with(AffairDetailActivity.this)
                         .load(model.getImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(ShopDetailActivity.this, 10))))
+                                RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
-                        .into(imageView1);//加载图片*/
+                        .into(imageView1);//加载图片
 
                 /**
                  * 事务信息
                  */
                 list_shiwu.clear();
-                /*list_shiwu.add(new KeyValueModel("商户ID", response.getId()));
-                list_shiwu.add(new KeyValueModel("商户名称", response.getName()));
+                list_shiwu.add(new KeyValueModel("类型设备", response.getContract().getDeviceType()));
+                list_shiwu.add(new KeyValueModel("安装门店", response.getContract().getStoreName()));
+                list_shiwu.add(new KeyValueModel("安装台数", response.getContract().getInstallNum() + "台"));
+                list_shiwu.add(new KeyValueModel("创建时间", response.getContract().getCreatedAt()));
+                list_shiwu.add(new KeyValueModel("事务ID", response.getId()));
 
                 mAdapter_shiwu = new CommonAdapter<KeyValueModel>
                         (AffairDetailActivity.this, R.layout.item_keyvalue, list_shiwu) {
@@ -221,20 +420,21 @@ public class AffairDetailActivity extends BaseActivity {
                         holder.setText(R.id.tv_value, "" + model.getValue());
                     }
                 };
-                rv_shiwu.setAdapter(mAdapter_shiwu);*/
+                rv_shiwu.setAdapter(mAdapter_shiwu);
 
                 /**
                  * 申领信息
                  */
-
+                changeUI();
 
                 /**
                  * 安装记录
                  */
-                mAdapter_anzhuang = new CommonAdapter<Fragment2Model>
+                list_anzhuang = response.getInstall();
+                mAdapter_anzhuang = new CommonAdapter<AffairDetailModel.InstallBean>
                         (AffairDetailActivity.this, R.layout.item_affairedetail_anzhuang, list_anzhuang) {
                     @Override
-                    protected void convert(ViewHolder holder, Fragment2Model model, int position) {
+                    protected void convert(ViewHolder holder, AffairDetailModel.InstallBean model, int position) {
                            /* holder.setText(R.id.tv_name, model.getTitle());
                             holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
                             holder.setText(R.id.tv_addr, model.getAddress());
@@ -257,6 +457,42 @@ public class AffairDetailActivity extends BaseActivity {
         });
     }
 
+    private boolean match() {
+        switch (expressWay) {
+            case 1:
+                //自取
+                if (imgfile == null) {
+                    myToast("请选择上传照片");
+                    return false;
+                }
+                break;
+            case 2:
+                //邮寄
+                receiveName = et_shouhuoren.getText().toString().trim();
+                if (TextUtils.isEmpty(receiveName)) {
+                    myToast("请输入收货人");
+                    return false;
+                }
+                phone = et_lianxifangshi.getText().toString().trim();
+                if (TextUtils.isEmpty(phone)) {
+                    myToast("请输入收货人联系方式");
+                    return false;
+                }
+                if (TextUtils.isEmpty(areaId)) {
+                    myToast("请选择收货地址");
+                    return false;
+                }
+                address = et_xiangxidizhi.getText().toString().trim();
+                if (TextUtils.isEmpty(address)) {
+                    myToast("请输入详细地址");
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
+
     @Override
     protected void updateView() {
         titleView.setTitle("事务详情");
@@ -276,13 +512,6 @@ public class AffairDetailActivity extends BaseActivity {
                 ll_contract.setVisibility(View.GONE);
                 ll_shenhe.setVisibility(View.GONE);
 
-                /*if (list1.size() > 0) {
-                    showContentPage();
-                    recyclerView1.setAdapter(mAdapter1);
-//                mAdapter1.notifyDataSetChanged();
-                } else {
-                    showEmptyPage();
-                }*/
                 break;
             case 2:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -295,6 +524,8 @@ public class AffairDetailActivity extends BaseActivity {
                 ll_shopinfo.setVisibility(View.GONE);
                 ll_contract.setVisibility(View.VISIBLE);
                 ll_shenhe.setVisibility(View.GONE);
+
+                changeShenLingUI();
 
                 break;
             case 3:
@@ -314,29 +545,239 @@ public class AffairDetailActivity extends BaseActivity {
         }
     }
 
+    private void changeShenLingUI() {
+        ll_shouhuoren.setVisibility(View.GONE);
+        ll_lianxifangshi.setVisibility(View.GONE);
+        ll_shouhuodizhi.setVisibility(View.GONE);
+        ll_xiangxidizhi.setVisibility(View.GONE);
+        tv_shangchuanzhaopian.setVisibility(View.GONE);
+        iv_shangchuanzhaopian.setVisibility(View.GONE);
+        sl_wuliu.setVisibility(View.GONE);
+
+        tv_confirm.setVisibility(View.GONE);
+        tv_shenlingfangshi.setClickable(false);
+        iv_shangchuanzhaopian.setClickable(false);
+        switch (model.getApply().getType()) {
+            case "0":
+                //未选择邮寄方式
+                tv_confirm.setVisibility(View.VISIBLE);
+                tv_shenlingfangshi.setClickable(true);
+                iv_shangchuanzhaopian.setClickable(true);
+                break;
+            case "1":
+                //自取
+                expressWay = 1;
+                Glide.with(AffairDetailActivity.this)
+                        .load(model.getApply().getVoucher())
+//                                .fitCenter()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_shangchuanzhaopian);//加载图片
+                break;
+            case "2":
+                //邮寄
+                expressWay = 2;
+                et_shouhuoren.setText(model.getApply().getName());
+                et_lianxifangshi.setText(model.getApply().getMobile());
+                tv_shouhuodizhi.setText(model.getApply().getAddres());
+                et_xiangxidizhi.setText(model.getApply().getAddressDetail());
+                et_shouhuoren.setFocusable(false);
+                et_lianxifangshi.setFocusable(false);
+                tv_shouhuodizhi.setClickable(false);
+                et_xiangxidizhi.setFocusable(false);
+                break;
+        }
+        switch (expressWay) {
+            case 1:
+                //自取
+                tv_shenlingxinxi.setText("申领信息");
+                tv_shenlingfangshi.setText("自取");
+                tv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+                iv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+
+                break;
+            case 2:
+                //邮寄
+                tv_shenlingxinxi.setText("收件信息");
+                tv_shenlingfangshi.setText("邮寄");
+                ll_shouhuoren.setVisibility(View.VISIBLE);
+                ll_lianxifangshi.setVisibility(View.VISIBLE);
+                ll_shouhuodizhi.setVisibility(View.VISIBLE);
+                ll_xiangxidizhi.setVisibility(View.VISIBLE);
+
+                switch (model.getApply().getStatus()){
+                    case "1":
+                        //待发货
+                        sl_wuliu.setVisibility(View.VISIBLE);
+                        tv_dengdaifahuo.setVisibility(View.VISIBLE);
+                        rv_wuliu.setVisibility(View.GONE);
+                        tv_quedingqianshou.setVisibility(View.GONE);
+                        break;
+                    case "2":
+                        //已发货
+                        sl_wuliu.setVisibility(View.VISIBLE);
+                        tv_dengdaifahuo.setVisibility(View.GONE);
+                        rv_wuliu.setVisibility(View.VISIBLE);
+                        tv_quedingqianshou.setVisibility(View.VISIBLE);
+                        break;
+                    case "3":
+                        //已签收
+                        sl_wuliu.setVisibility(View.VISIBLE);
+                        tv_dengdaifahuo.setVisibility(View.GONE);
+                        rv_wuliu.setVisibility(View.VISIBLE);
+                        tv_quedingqianshou.setVisibility(View.GONE);
+                        break;
+                }
+                if (!model.getApply().getExpressNo().equals("")) {
+                    //有快递单号，显示快递信息
+                    list_wuliu.clear();
+                    list_wuliu.add(new KeyValueModel("快递公司", model.getApply().getExpressCompany()));
+                    list_wuliu.add(new KeyValueModel("物流单号", model.getApply().getExpressNo()));
+                    list_wuliu.add(new KeyValueModel("签收状态", model.getApply().getStatusTitle()));
+
+                    mAdapter_wuliu = new CommonAdapter<KeyValueModel>
+                            (AffairDetailActivity.this, R.layout.item_keyvalue, list_wuliu) {
+                        @Override
+                        protected void convert(ViewHolder holder, KeyValueModel model, int position) {
+                            holder.setText(R.id.tv_kay, model.getKey());
+                            holder.setText(R.id.tv_value, "" + model.getValue());
+                        }
+                    };
+                    rv_wuliu.setAdapter(mAdapter_wuliu);
+                }
+                break;
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /**
-         * 处理二维码扫描结果
-         */
-        if (requestCode == CaptureActivity.REQUEST_CODE_SCAN) {
-            // 扫描二维码回传
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    //获取扫描结果
-                    Bundle bundle = data.getExtras();
-                    String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
-                    MyLogger.i("扫码返回", result);
-                    if (!result.equals("")) {
-                        iv_scan.setVisibility(View.GONE);
-                        tv_scan.setText("SN号:" + result);
-                    } else {
-                        iv_scan.setVisibility(View.VISIBLE);
-                        tv_scan.setVisibility(View.GONE);
+        if (resultCode == RESULT_OK) {
+            String imgpath = null;
+            Uri uri = null;
+            switch (requestCode) {
+                case CaptureActivity.REQUEST_CODE_SCAN:
+                    //二维码扫码
+                    if (data != null) {
+                        //获取扫描结果
+                        Bundle bundle = data.getExtras();
+                        String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
+                        //{"deviceName": "641708882ef84e09995d70440e12ebf9"}
+                        MyLogger.i("扫码返回", result);
+                        /*try {
+                            JSONObject mJsonObject = new JSONObject(result);
+                            deviceName = mJsonObject.getString("deviceName");
+                            tv_shebeiguzhang.setText(deviceName);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            myToast("解析出错");
+                        }*/
                     }
+                    break;
+                case REQUEST_CODE_CAPTURE_CAMEIA:
+                    //相机
+                    uri = Uri.parse("");
+                    uri = Uri.fromFile(new File(MyChooseImages.imagepath));
+                    imgpath = uri.getPath();
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
+                    break;
+                case REQUEST_CODE_PICK_IMAGE:
+                    //相册
+                    uri = data.getData();
+                    imgpath = FileUtil.getPath(this, uri);
+                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
+                    break;
+
+            }
+            if (imgpath != null) {
+//                showProgress(true, getString(R.string.app_loading1));
+//                imgfile = new File(uri.getPath());
+                //压缩
+                Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
                 }
+                imgfile = FileUtil.bytesToImageFile(AffairDetailActivity.this,
+                        ImageUtils.compressByQuality(bitmap, 50));
+                Glide.with(AffairDetailActivity.this)
+                        .load(imgfile)
+                        .centerCrop()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.headimg)//加载失败
+                        .into(iv_shangchuanzhaopian);//加载图片
             }
         }
+    }
+
+    private void requestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.AffairDetail_ShenLing, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                myToast("提交成功");
+                hideProgress();
+                requestServer();
+            }
+        });
+    }
+
+    /**
+     * 选择申领方式
+     */
+    private void dialogList_fangshi() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AffairDetailActivity.this, R.layout.item_help, list_fangshi) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (itme_fangshi == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                itme_fangshi = position;
+
+                expressWay = position + 1;//邮寄方式 1-自取，2-邮寄
+                changeShenLingUI();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
     }
 }

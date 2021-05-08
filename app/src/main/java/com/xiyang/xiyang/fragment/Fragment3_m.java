@@ -188,6 +188,7 @@ public class Fragment3_m extends BaseFragment {
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
+                MainActivity.isOver = true;
                 showErrorPage();
                 hideProgress();
                 myToast(err);

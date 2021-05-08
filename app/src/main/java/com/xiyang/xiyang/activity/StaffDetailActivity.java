@@ -10,6 +10,7 @@ import com.xiyang.xiyang.base.BaseActivity;
  * 员工详情
  */
 public class StaffDetailActivity extends BaseActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

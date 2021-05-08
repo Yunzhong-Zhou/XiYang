@@ -76,6 +76,8 @@ public class URLs {
     public static final String MyCity = HOST + API + "user/position/record";
     //添加员工
     public static final String AddStaff = HOST + API + "user/add";
+    //我的下级员工
+    public static final String Subordinate = HOST + API + "manage/subordinate";
     /**
      * ********************************分派*****************************************
      */
@@ -162,8 +164,8 @@ public class URLs {
     public static final String AffairList = HOST + API + "transactions";
     //事务详情
     public static final String AffairDetail = HOST + API + "transactions/detail";
-    //发布技术交流
-    public static final String AddJiShuJiaoLiu = HOST + API + "/api/v1/techn/techn_exchange_increase";
+    //事务详情-申领-邮寄方式
+    public static final String AffairDetail_ShenLing = HOST + API + "device/apply/update";
     //技术交流详情
     public static final String JiShuJiaoLiuDetail = HOST + API + "/api/v1/techn/techn_post_details";
     //技术交流详情-回复

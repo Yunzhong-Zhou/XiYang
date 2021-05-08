@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
-    android:background="@color/background">
+    >
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@mipmap/bg_head" />
+        android:src="@mipmap/bg_head" />-->
 
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"
@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingTop="30dp">
+                    android:paddingTop="0dp">
 
                     <LinearLayout
                         android:id="@+id/linearLayout1"
@@ -57,7 +57,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dip"
+                            android:layout_marginTop="4dp"
                             android:singleLine="true"
                             android:text="总CM"
                             android:textColor="@color/white"
@@ -85,7 +85,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dip"
+                            android:layout_marginTop="4dp"
                             android:singleLine="true"
                             android:text="总BDM"
                             android:textColor="@color/white"
@@ -113,7 +113,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dip"
+                            android:layout_marginTop="4dp"
                             android:singleLine="true"
                             android:text="总BD"
                             android:textColor="@color/white"
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingTop="10dp">
+                    android:paddingTop="6dp">
 
                     <LinearLayout
                         android:id="@+id/linearLayout4"
@@ -149,7 +149,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dip"
+                            android:layout_marginTop="4dp"
                             android:singleLine="true"
                             android:text="总CM"
                             android:textColor="@color/white"
@@ -177,7 +177,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dip"
+                            android:layout_marginTop="4dp"
                             android:singleLine="true"
                             android:text="总BDM"
                             android:textColor="@color/white"
@@ -205,7 +205,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dip"
+                            android:layout_marginTop="4dp"
                             android:singleLine="true"
                             android:text="总BD"
                             android:textColor="@color/white"

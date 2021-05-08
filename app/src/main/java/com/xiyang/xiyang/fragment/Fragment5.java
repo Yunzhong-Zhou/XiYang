@@ -201,29 +201,32 @@ public class Fragment5 extends BaseFragment {
                 hideProgress();
                 model = response;
 
-                /*//保存头像
-                localUserInfo.setUserImage(response.getUser_info().getHeadPortrait());
-                if (!response.getUser_info().getHeadPortrait().equals("") && getActivity() != null)
-                    Glide.with(getActivity()).load(IMGHOST + localUserInfo.getUserImage())
-                            .centerCrop()
-//                            .placeholder(R.mipmap.headimg)//加载站位图
-//                            .error(R.mipmap.headimg)//加载失败
-                            .into(imageView1);//加载图片
+                textView3.setText(response.getMerchantsNum());
+                textView4.setText(response.getStoresNum());
+                textView5.setText(response.getDeviceNum());
+                textView6.setText(response.getAmount());
+
+                //保存头像
+                localUserInfo.setUserImage(response.getHead());
                 //保存昵称
-                localUserInfo.setNickname(response.getUser_info().getUserName());
-                if (!localUserInfo.getNickname().equals("")) {
-                    textView1.setText(localUserInfo.getNickname());
-                }
+                localUserInfo.setNickname(response.getNickname());
                 //保存电话号码
-                localUserInfo.setPhoneNumber(response.getUser_info().getUserPhone());
+                localUserInfo.setPhoneNumber(response.getMobile());
                 //保存职位
-                localUserInfo.setUserJob(response.getUser_info().getIsDistri()+"");//为1、有分配权限
-
-                //保存y_store_id
-                localUserInfo.setBelongid(response.getUser_info().getYStoreId());
-
+                localUserInfo.setUserJob(response.getRoleType());//为1、有分配权限
                 //保存userid
-                localUserInfo.setUserId(response.getUser_info().getUserId());*/
+                localUserInfo.setUserId(response.getId());
+
+                textView1.setText(localUserInfo.getNickname());
+                textView2.setText(localUserInfo.getUserJob());
+                Glide.with(getActivity())
+                        .load(localUserInfo.getUserImage())
+                        .centerCrop()
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.headimg)//加载失败
+                        .into(imageView1);//加载图片
+
+
                 MainActivity.isOver = true;
             }
         });
@@ -233,10 +236,9 @@ public class Fragment5 extends BaseFragment {
     public void requestServer() {
         super.requestServer();
 //        this.showLoadingPage();
-        /*showProgress(true, getString(R.string.app_loading));
+        showProgress(true, getString(R.string.app_loading));
         Map<String, String> params = new HashMap<>();
-        params.put("u_token", localUserInfo.getToken());
-        requestCenter(params);*/
+        requestCenter(params);
     }
 
     @Override
@@ -273,17 +275,17 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //待接工单
-                bundle.putString("fetch","1");//1待接工单2我的工单
-                CommonUtil.gotoActivityWithData(getActivity(), MyWorkListActivity.class,bundle,false);
+                bundle.putString("fetch", "1");//1待接工单2我的工单
+                CommonUtil.gotoActivityWithData(getActivity(), MyWorkListActivity.class, bundle, false);
                 break;
             case R.id.linearLayout9:
                 //我的工单
-                bundle.putString("fetch","2");//1待接工单2我的工单
-                CommonUtil.gotoActivityWithData(getActivity(), MyWorkListActivity.class,bundle,false);
+                bundle.putString("fetch", "2");//1待接工单2我的工单
+                CommonUtil.gotoActivityWithData(getActivity(), MyWorkListActivity.class, bundle, false);
                 break;
             case R.id.linearLayout10:
                 //我的收益
-                CommonUtil.gotoActivity(getActivity(), MyIncomeActivity.class,false);
+                CommonUtil.gotoActivity(getActivity(), MyIncomeActivity.class, false);
                 break;
             case R.id.linearLayout11:
                 //提现收益

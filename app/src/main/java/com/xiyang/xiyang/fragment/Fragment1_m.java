@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddStaffActivity;
@@ -20,7 +22,8 @@ import com.xiyang.xiyang.activity.MyShopListActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.StaffDetailActivity;
 import com.xiyang.xiyang.base.BaseFragment;
-import com.xiyang.xiyang.model.Fragment1Model;
+import com.xiyang.xiyang.model.Fragment1Model_m;
+import com.xiyang.xiyang.model.SubordinateModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -42,18 +45,18 @@ import okhttp3.Response;
 
 /**
  * Created by fafukeji01 on 2016/1/6.
- * 商户
+ * 管理
  */
 
 public class Fragment1_m extends BaseFragment {
     int type = 1;
     private RecyclerView recyclerView;
-    List<Fragment1Model> list = new ArrayList<>();
-    CommonAdapter<Fragment1Model> mAdapter;
+    List<SubordinateModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<SubordinateModel.ListBean> mAdapter;
 
     TextView textView1, textView2, textView3, textView4,
-            tv_lable1,tv_lable2,tv_lable3,tv_lable4,
-            tv_tianjia,tv_fenpai,tv_tiaozheng,tv_mycity;
+            tv_lable1, tv_lable2, tv_lable3, tv_lable4,
+            tv_tianjia, tv_fenpai, tv_tiaozheng, tv_mycity;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
             linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12;
 
@@ -117,7 +120,7 @@ public class Fragment1_m extends BaseFragment {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
-                Request(params);
+                request(params);
             }
 
             @Override
@@ -168,7 +171,7 @@ public class Fragment1_m extends BaseFragment {
         tv_tiaozheng = findViewByID_My(R.id.tv_tiaozheng);
         tv_mycity = findViewByID_My(R.id.tv_mycity);
 
-        switch (localUserInfo.getUserJob()){
+        switch (localUserInfo.getUserJob()) {
             case "rm":
                 tv_lable1.setText("总CM");
                 tv_lable2.setText("总BDM");
@@ -219,13 +222,13 @@ public class Fragment1_m extends BaseFragment {
         super.requestServer();
         this.showLoadingPage();
         Map<String, String> params = new HashMap<>();
-        Request(params);
+        request(params);
     }
 
-    private void Request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Fragment1_m, params, headerMap, new CallBackUtil<Fragment1Model>() {
+    private void request(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.Fragment1_m, params, headerMap, new CallBackUtil<Fragment1Model_m>() {
             @Override
-            public Fragment1Model onParseResponse(Call call, Response response) {
+            public Fragment1Model_m onParseResponse(Call call, Response response) {
                 MainActivity.isOver = true;
                 return null;
             }
@@ -234,46 +237,111 @@ public class Fragment1_m extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 MainActivity.isOver = true;
                 hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Fragment1Model_m response) {
+                hideProgress();
+                switch (localUserInfo.getUserJob()) {
+                    case "rm":
+                        textView1.setText(response.getBase().getCmNum());
+                        textView2.setText(response.getBase().getBdmNum());
+                        textView3.setText(response.getBase().getBdmNum());
+                        textView4.setText(response.getBase().getMoney());
+                        break;
+                    case "cm":
+                        textView1.setText(response.getBase().getBdmNum());
+                        textView2.setText(response.getBase().getBdNum());
+                        textView3.setText(response.getBase().getStoreNum());
+                        textView4.setText(response.getBase().getMoney());
+                        break;
+                    case "bdm":
+                        textView1.setText(response.getBase().getBdNum());
+                        textView2.setText(response.getBase().getDeviceNum());
+                        textView3.setText(response.getBase().getStoreNum());
+                        textView4.setText(response.getBase().getMoney());
+                        break;
+                }
+
+                Map<String, String> params = new HashMap<>();
+                requestList(params);//获取下级员工
+                MainActivity.isOver = true;
+            }
+        });
+    }
+
+    /**
+     * 获取下级员工
+     *
+     * @param params
+     */
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.Subordinate, params, headerMap, new CallBackUtil<SubordinateModel>() {
+            @Override
+            public SubordinateModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
                 showErrorPage();
                 myToast(err);
             }
 
             @Override
-            public void onResponse(Fragment1Model response) {
+            public void onResponse(SubordinateModel response) {
                 hideProgress();
-
-//                list = response.getCooperation_shop_list();
+                showContentPage();
+                list = response.getList();
                 if (list.size() > 0) {
-                    mAdapter = new CommonAdapter<Fragment1Model>
+                    mAdapter = new CommonAdapter<SubordinateModel.ListBean>
                             (getActivity(), R.layout.item_fragment1_m, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment1Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
+                        protected void convert(ViewHolder holder, SubordinateModel.ListBean model, int position) {
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
-                                    .load(OkHttpClientManager.IMGHOST + model.getCover())
+                                    .load(model.getHead())
                                     .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
+//                                    .apply(RequestOptions.bitmapTransform(new
+//                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .error(R.mipmap.headimg)//加载失败
                                     .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
+                            holder.setText(R.id.tv_name, model.getName());
+                            holder.setText(R.id.tv_phone, model.getMobile());
+                            holder.setText(R.id.tv_money, model.getMoney());
+
+                            TextView tv_addr = holder.getView(R.id.tv_addr);
+                            TextView tv1 = holder.getView(R.id.tv1);
+                            TextView tv2 = holder.getView(R.id.tv2);
+                            tv1.setVisibility(View.VISIBLE);
+                            tv2.setVisibility(View.VISIBLE);
+
+                            switch (localUserInfo.getUserJob()) {
+                                case "rm":
+                                    tv_addr.setText(model.getAddress());
+                                    tv1.setText("BDM:" + model.getBdmNum());
+                                    tv2.setText("BD:" + model.getBdNum());
+                                    break;
+                                case "cm":
+                                    tv_addr.setText(model.getAddress());
+//                                    tv1.setText("BDM:"+model.getBdmNum());
+                                    tv1.setVisibility(View.GONE);
+                                    tv2.setText("BD:" + model.getBdNum());
+                                    break;
+                                case "bdm":
+                                    tv1.setText("门店:" + model.getStoreNum());
+                                    tv2.setText("设备:" + model.getDeviceNum());
+                                    break;
                             }
 
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
+                                    bundle.putString("id", model.getId());
                                     CommonUtil.gotoActivityWithData(getActivity(), StaffDetailActivity.class, bundle, false);
                                 }
                             });
@@ -283,8 +351,6 @@ public class Fragment1_m extends BaseFragment {
                 } else {
                     showEmptyPage();
                 }
-
-                MainActivity.isOver = true;
 
             }
         });
