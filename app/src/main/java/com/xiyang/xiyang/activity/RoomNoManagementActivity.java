@@ -1,5 +1,6 @@
 package com.xiyang.xiyang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.Constant;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -38,6 +40,7 @@ import okhttp3.Response;
  * 房号管理
  */
 public class RoomNoManagementActivity extends BaseActivity {
+    int requestCode = 0;
     StoreDetailModel model_sdm;
     RoomNoManagementModel model_rnm;
     String parentId = "0", parentId1 = "0", parentId2 = "", parentId3 = "", parentId4 = "",
@@ -105,6 +108,7 @@ public class RoomNoManagementActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        requestCode = getIntent().getIntExtra("requestCode", 0);
         model_sdm = (StoreDetailModel) getIntent().getSerializableExtra("StoreDetailModel");
     }
 
@@ -210,12 +214,20 @@ public class RoomNoManagementActivity extends BaseActivity {
                                             parentId4 = list.get(position).getId();
                                             type = 4;
                                             break;
-                                        /*case 4:
-                                            item4 = position;
-                                            name4 = list.get(position).getName();
-
+                                        case 4:
+//                                            item4 = position;
+//                                            name4 = list.get(position).getName();
 //                                            parentId5 = list.get(position).getId();
-                                            break;*/
+                                            if (requestCode == Constant.SELECT_ROOMNO) {
+                                                Intent resultIntent = new Intent();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("roomId", model.getId());
+                                                bundle.putString("roomName", name1 + name2 + name3 + model.getName());
+                                                resultIntent.putExtras(bundle);
+                                                RoomNoManagementActivity.this.setResult(RESULT_OK, resultIntent);
+                                                finish();
+                                            }
+                                            break;
                                     }
                                     mAdapter.notifyDataSetChanged();
 
@@ -498,7 +510,7 @@ public class RoomNoManagementActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 if (i == 1) myToast("修改成功");
-                else{
+                else {
                     myToast("删除成功");
                     switch (type) {
                         case 1:
@@ -523,7 +535,6 @@ public class RoomNoManagementActivity extends BaseActivity {
                             break;
                     }
                 }
-
 
 
                 hideProgress();

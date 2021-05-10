@@ -1,6 +1,7 @@
 package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -8,22 +9,42 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.model.DebugDeviceModel;
+import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.okhttp.CallBackUtil;
+import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.MyLogger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+
+import okhttp3.Call;
+import okhttp3.Response;
+
 
 /**
  * Created by Mr.Z on 2021/4/3.
  * 调试设备
  */
 public class DebugDeviceActivity extends BaseActivity {
+    DebugDeviceModel model;
+    Timer timer = null;
+    String deviceName = "";
     int i_dangwei = 1;
     ImageView iv_zhizhen;
     float fromDegrees = -90f;//开始角度
     float toDegrees = -90f;//结束角度
-    TextView tv_dangwei;
+    TextView tv_dangwei, tv_pm, tv_wendu, tv_shidu;
 
-    ImageView iv_zidong, iv_fulizi, iv_guangchuihua, iv_shuimian, iv_ertongsuo;
+    ImageView iv_zidong, iv_fulizi, iv_guangchuihua, iv_shuimian, iv_ertongsuo, iv_start;
     boolean is_zidong = false, is_fulizi = false, is_guangchuihua = false, is_shuimian = false, is_ertongsuo = false;
 
     @Override
@@ -31,10 +52,34 @@ public class DebugDeviceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debugdevice);
         findViewById(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(this), 0, 0);
+        findViewById(R.id.left_btn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
     protected void initView() {
+        setSpringViewMore(false);//需要加载更多
+        springView.setListener(new SpringView.OnFreshListener() {
+            @Override
+            public void onRefresh() {
+                //刷新
+                params.put("deviceName", deviceName);
+                request(params);
+            }
+
+            @Override
+            public void onLoadmore() {
+
+            }
+        });
+        tv_pm = findViewByID_My(R.id.tv_pm);
+        tv_wendu = findViewByID_My(R.id.tv_wendu);
+        tv_shidu = findViewByID_My(R.id.tv_shidu);
+
         iv_zhizhen = findViewByID_My(R.id.iv_zhizhen);
         rotateAnim(iv_zhizhen, fromDegrees, toDegrees);//初始化在左边
         tv_dangwei = findViewByID_My(R.id.tv_dangwei);
@@ -44,76 +89,251 @@ public class DebugDeviceActivity extends BaseActivity {
         iv_guangchuihua = findViewByID_My(R.id.iv_guangchuihua);
         iv_shuimian = findViewByID_My(R.id.iv_shuimian);
         iv_ertongsuo = findViewByID_My(R.id.iv_ertongsuo);
+        iv_start = findViewByID_My(R.id.iv_start);
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.left_btn:
-                finish();
-                break;
-
-            case R.id.iv_jian:
-                //减档
-                if (i_dangwei > 1) {
-                    i_dangwei--;
-                    fromDegrees = toDegrees;
-                    toDegrees = fromDegrees - 45;
-                    rotateAnim(iv_zhizhen, fromDegrees, toDegrees);
-                }
-                tv_dangwei.setText(i_dangwei + "");
-
-                break;
-            case R.id.iv_jia:
-                //加档
-                if (i_dangwei < 5) {
-                    i_dangwei++;
-                    fromDegrees = toDegrees;
-                    toDegrees = fromDegrees + 45;
-                    rotateAnim(iv_zhizhen, fromDegrees, toDegrees);
-                }
-                tv_dangwei.setText(i_dangwei + "");
-
-                break;
-
-            case R.id.iv_zidong:
-                //自动
-                is_zidong = !is_zidong;
-                if (is_zidong) iv_zidong.setImageResource(R.mipmap.ic_debugdevice1_1);
-                else iv_zidong.setImageResource(R.mipmap.ic_debugdevice1_0);
-                break;
-            case R.id.iv_fulizi:
-                //负离子
-                is_fulizi = !is_fulizi;
-                if (is_fulizi) iv_fulizi.setImageResource(R.mipmap.ic_debugdevice2_1);
-                else iv_fulizi.setImageResource(R.mipmap.ic_debugdevice2_0);
-                break;
-            case R.id.iv_guangchuihua:
-                //光催化
-                is_guangchuihua = !is_guangchuihua;
-                if (is_guangchuihua) iv_guangchuihua.setImageResource(R.mipmap.ic_debugdevice3_1);
-                else iv_guangchuihua.setImageResource(R.mipmap.ic_debugdevice3_0);
-                break;
-            case R.id.iv_shuimian:
-                //睡眠
-                is_shuimian = !is_shuimian;
-                if (is_shuimian) iv_shuimian.setImageResource(R.mipmap.ic_debugdevice4_1);
-                else iv_shuimian.setImageResource(R.mipmap.ic_debugdevice4_0);
-                break;
-            case R.id.iv_ertongsuo:
-                //儿童锁
-                is_ertongsuo = !is_ertongsuo;
-                if (is_ertongsuo) iv_ertongsuo.setImageResource(R.mipmap.ic_debugdevice5_1);
-                else iv_ertongsuo.setImageResource(R.mipmap.ic_debugdevice5_0);
-                break;
-        }
     }
 
     @Override
     protected void initData() {
+        deviceName = getIntent().getStringExtra("deviceName");
+        MyLogger.i(">>>>>>>" + deviceName);
+        requestServer();
+        //获取设备运行状态 - 5秒更新一次
+        if (timer == null) {
+            timer = new Timer();
+        }
+        /*timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                // 执行的方法
+                params.put("deviceName", deviceName);
+                request(params);
+            }
+        }, 0, 5 * 1000);*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    @Override
+    public void requestServer() {
+        super.requestServer();
+//        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading2));
+        params.put("deviceName", deviceName);
+        request(params);
+    }
+
+    private void request(HashMap<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.DebugDevice, params, headerMap, new CallBackUtil<DebugDeviceModel>() {
+            @Override
+            public DebugDeviceModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+                finish();
+            }
+
+            @Override
+            public void onResponse(DebugDeviceModel response) {
+                hideProgress();
+                model = response;
+                //档位
+                if (response.getDevice().getWindSpeed().equals("0")) {
+                    response.getDevice().setWindSpeed("1");
+                }
+                tv_dangwei.setText(response.getDevice().getWindSpeed());
+                if (Integer.valueOf(response.getDevice().getWindSpeed()) > i_dangwei) {//实际档位比临时档位大，角度增加
+                    fromDegrees = toDegrees;
+                    toDegrees = fromDegrees + 45 * (Integer.valueOf(response.getDevice().getWindSpeed()) - i_dangwei);
+                    rotateAnim(iv_zhizhen, fromDegrees, toDegrees);
+                } else if (Integer.valueOf(response.getDevice().getWindSpeed()) < i_dangwei) {//实际档位比临时档位小，角度减少
+                    fromDegrees = toDegrees;
+                    toDegrees = fromDegrees - 45 * (i_dangwei - Integer.valueOf(response.getDevice().getWindSpeed()));
+                    rotateAnim(iv_zhizhen, fromDegrees, toDegrees);
+                }
+                i_dangwei = Integer.valueOf(response.getDevice().getWindSpeed());
+
+
+                //PM2.5
+                tv_pm.setText(response.getDevice().getPmValue());
+                //温度
+                tv_wendu.setText(response.getDevice().getTempature() + "°");
+                //湿度
+                tv_shidu.setText(response.getDevice().getHumidity());
+                //开关
+                if (response.getDevice().getPowerSwitch().equals("0")) {//关闭
+                    iv_start.setImageResource(R.mipmap.bg_device_start);
+                } else {
+                    iv_start.setImageResource(R.mipmap.bg_device_close);
+                }
+                //自动
+                if (response.getDevice().getAutoModeSwitch().equals("0")) {//关闭
+                    iv_zidong.setImageResource(R.mipmap.ic_debugdevice1_1);
+                } else {
+                    iv_zidong.setImageResource(R.mipmap.ic_debugdevice1_0);
+                }
+                //负离子
+                if (response.getDevice().getIonsSwitch().equals("0")) {//关闭
+                    iv_fulizi.setImageResource(R.mipmap.ic_debugdevice2_1);
+                } else {
+                    iv_fulizi.setImageResource(R.mipmap.ic_debugdevice2_0);
+                }
+                //光催化
+                if (response.getDevice().getPhotocatalysisSwitch().equals("0")) {//关闭
+                    iv_guangchuihua.setImageResource(R.mipmap.ic_debugdevice3_1);
+                } else {
+                    iv_guangchuihua.setImageResource(R.mipmap.ic_debugdevice3_0);
+                }
+                //睡眠
+                if (response.getDevice().getSleep().equals("0")) {//关闭
+                    iv_shuimian.setImageResource(R.mipmap.ic_debugdevice4_1);
+                } else {
+                    iv_shuimian.setImageResource(R.mipmap.ic_debugdevice4_0);
+                }
+                //儿童锁
+                if (response.getDevice().getChildLockSwitch().equals("0")) {//关闭
+                    iv_ertongsuo.setImageResource(R.mipmap.ic_debugdevice5_1);
+                } else {
+                    iv_ertongsuo.setImageResource(R.mipmap.ic_debugdevice5_0);
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        JSONObject object = new JSONObject();
+        try {
+            switch (v.getId()) {
+            /*case R.id.left_btn:
+                finish();
+                break;*/
+                case R.id.iv_start:
+                    //开启设备
+                    if (model.getDevice().getPowerSwitch().equals("0")) {//关闭
+                        object.put("powerSwitch", 1);
+                    } else {
+                        object.put("powerSwitch", 0);
+                    }
+                    break;
+
+                case R.id.iv_jian:
+                    //减档
+                    if (Integer.valueOf(model.getDevice().getWindSpeed()) > 1) {
+                    /*i_dangwei--;
+                    fromDegrees = toDegrees;
+                    toDegrees = fromDegrees - 45;
+                    rotateAnim(iv_zhizhen, fromDegrees, toDegrees);*/
+                        object.put("windSpeed", Integer.valueOf(model.getDevice().getWindSpeed()) - 1);
+
+                    } else {
+                        return;
+                    }
+//                tv_dangwei.setText(i_dangwei + "");
+
+                    break;
+                case R.id.iv_jia:
+                    //加档
+                    if (Integer.valueOf(model.getDevice().getWindSpeed()) < 5) {
+                    /*i_dangwei++;
+                    fromDegrees = toDegrees;
+                    toDegrees = fromDegrees + 45;
+                    rotateAnim(iv_zhizhen, fromDegrees, toDegrees);*/
+
+                        object.put("windSpeed", Integer.valueOf(model.getDevice().getWindSpeed()) + 1);
+
+                    } else {
+                        return;
+                    }
+//                tv_dangwei.setText(i_dangwei + "");
+
+                    break;
+
+                case R.id.iv_zidong:
+                    //自动
+                /*is_zidong = !is_zidong;
+                if (is_zidong) iv_zidong.setImageResource(R.mipmap.ic_debugdevice1_1);
+                else iv_zidong.setImageResource(R.mipmap.ic_debugdevice1_0);*/
+
+                    if (model.getDevice().getAutoModeSwitch().equals("0")) {//关闭
+                        object.put("autoModeSwitch", 1);
+                    } else {
+                        object.put("autoModeSwitch", 0);
+                    }
+                    break;
+                case R.id.iv_fulizi:
+                    //负离子
+                /*is_fulizi = !is_fulizi;
+                if (is_fulizi) iv_fulizi.setImageResource(R.mipmap.ic_debugdevice2_1);
+                else iv_fulizi.setImageResource(R.mipmap.ic_debugdevice2_0);*/
+
+                    if (model.getDevice().getIonsSwitch().equals("0")) {//关闭
+                        object.put("ionsSwitch", 1);
+                    } else {
+                        object.put("ionsSwitch", 0);
+                    }
+                    break;
+                case R.id.iv_guangchuihua:
+                    //光催化
+                /*is_guangchuihua = !is_guangchuihua;
+                if (is_guangchuihua) iv_guangchuihua.setImageResource(R.mipmap.ic_debugdevice3_1);
+                else iv_guangchuihua.setImageResource(R.mipmap.ic_debugdevice3_0);*/
+
+                    if (model.getDevice().getPhotocatalysisSwitch().equals("0")) {//关闭
+                        object.put("photocatalysisSwitch", 1);
+                    } else {
+                        object.put("photocatalysisSwitch", 0);
+                    }
+                    break;
+                case R.id.iv_shuimian:
+                    //睡眠
+                /*is_shuimian = !is_shuimian;
+                if (is_shuimian) iv_shuimian.setImageResource(R.mipmap.ic_debugdevice4_1);
+                else iv_shuimian.setImageResource(R.mipmap.ic_debugdevice4_0);*/
+
+                    if (model.getDevice().getSleep().equals("0")) {//关闭
+                        object.put("sleep", 1);
+                    } else {
+                        object.put("sleep", 0);
+                    }
+                    break;
+                case R.id.iv_ertongsuo:
+                    //儿童锁
+                /*is_ertongsuo = !is_ertongsuo;
+                if (is_ertongsuo) iv_ertongsuo.setImageResource(R.mipmap.ic_debugdevice5_1);
+                else iv_ertongsuo.setImageResource(R.mipmap.ic_debugdevice5_0);*/
+                    if (model.getDevice().getChildLockSwitch().equals("0")) {//关闭
+                        object.put("childLockSwitch", 1);
+                    } else {
+                        object.put("childLockSwitch", 0);
+                    }
+
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (object.length() > 0) {
+            showProgress(true, getString(R.string.app_loading1));
+            Map<String, String> params1 = new HashMap<>();
+            params1.put("deviceName", deviceName);
+            params1.put("properties", object.toString());
+            RequestSetUp(params1);
+        }
 
     }
+
 
     @Override
     protected void updateView() {
@@ -139,4 +359,39 @@ public class DebugDeviceActivity extends BaseActivity {
         anim.setInterpolator(new LinearInterpolator()); // 设置插入器
         iv.startAnimation(anim);
     }
+
+    /**
+     * 设置设备属性值
+     *
+     * @param params1
+     */
+    private void RequestSetUp(Map<String, String> params1) {
+        OkhttpUtil.okHttpPost(URLs.DeviceSetUp, params1, headerMap, new CallBackUtil<Object>() {
+            @Override
+            public Object onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //这里写延时后执行的操作
+                        params.put("deviceName", deviceName);
+                        request(params);
+                        hideProgress();
+                    }
+
+                }, 3 * 1000);
+            }
+        });
+    }
+
 }

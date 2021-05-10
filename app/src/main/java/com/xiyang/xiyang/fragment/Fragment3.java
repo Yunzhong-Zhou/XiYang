@@ -1,5 +1,6 @@
 package com.xiyang.xiyang.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.cretin.tools.scancode.CaptureActivity;
+import com.cretin.tools.scancode.config.ScanConfig;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
@@ -34,6 +37,9 @@ import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +49,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -273,7 +281,7 @@ public class Fragment3 extends BaseFragment {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("id", model.getId());
+                                    bundle.putString("deviceName", model.getId());
                                     CommonUtil.gotoActivityWithData(getActivity(), DeviceDetailActivity.class, bundle, false);
 
                                 }
@@ -325,8 +333,14 @@ public class Fragment3 extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), InstallDeviceActivity.class);
                 break;
             case R.id.linearLayout7:
-                //调试设备 - 设备控制（小程序）
-                CommonUtil.gotoActivity(getActivity(), DebugDeviceActivity.class);
+                //调试设备
+//                CommonUtil.gotoActivity(getActivity(), DebugDeviceActivity.class);
+                ScanConfig config = new ScanConfig()
+                        .setShowFlashlight(true)//是否需要打开闪光灯
+                        .setShowGalary(true)//是否需要打开相册
+                        .setNeedRing(true);//是否需要提示音
+                //ScanConfig 也可以不配置 默认都是打开
+                CaptureActivity.launch(this, config);
                 break;
             case R.id.linearLayout8:
                 //回收设备
@@ -414,5 +428,43 @@ public class Fragment3 extends BaseFragment {
     @Override
     protected void updateView() {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /**
+         * 处理二维码扫描结果
+         */
+        MyLogger.i(">>>>>>>>>>>>>>");
+        if (requestCode == CaptureActivity.REQUEST_CODE_SCAN) {
+            // 扫描二维码回传
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    //获取扫描结果
+                    Bundle bundle = data.getExtras();
+                    String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
+                    //{"deviceName": "641708882ef84e09995d70440e12ebf9"}
+                    MyLogger.i("扫码返回", result);
+                    try {
+                        JSONObject mJsonObject = new JSONObject(result);
+                        String deviceName = mJsonObject.getString("deviceName");
+                        bundle.putString("deviceName",deviceName);
+                        CommonUtil.gotoActivityWithData(getActivity(), DebugDeviceActivity.class,bundle,false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        myToast("解析出错");
+                    }
+
+                    /*if (!result.equals("")) {
+                        iv_scan.setVisibility(View.GONE);
+                        tv_scan.setText("SN号:" + result);
+                    } else {
+                        iv_scan.setVisibility(View.VISIBLE);
+                        tv_scan.setVisibility(View.GONE);
+                    }*/
+                }
+            }
+        }
     }
 }

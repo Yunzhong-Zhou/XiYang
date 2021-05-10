@@ -166,12 +166,16 @@ public class URLs {
     public static final String AffairDetail = HOST + API + "transactions/detail";
     //事务详情-申领-邮寄方式
     public static final String AffairDetail_ShenLing = HOST + API + "device/apply/update";
-    //技术交流详情
-    public static final String JiShuJiaoLiuDetail = HOST + API + "/api/v1/techn/techn_post_details";
-    //技术交流详情-回复
-    public static final String JiShuJiaoLiuDetail_HuiFu = HOST + API + "/api/v1/techn/techn_forum_reply_increase";
-    //技术交流详情-加入
-    public static final String JiShuJiaoLiuDetail_JiaRu = HOST + API + "/api/v1/techn/techn_circle_plus";
+    //设备详情
+    public static final String DeviceDetail = HOST + API + "device/detail";
+    //安装设备
+    public static final String InstallDevice = HOST + API + "device/install/add";
+    //调试设备
+    public static final String DebugDevice = HOST +API+ "device/properties";
+    //控制设备
+    public static final String DeviceSetUp = HOST +API+ "device/operate";
+    //换绑设备
+    public static final String ChangeTieDevice = HOST + API + "device/exchange/add";
     //发布维修案例
     public static final String AddWeiXiuAnLi = HOST + API + "/api/v1/techn/techn_forum_case_increase";
     //发布机友求助

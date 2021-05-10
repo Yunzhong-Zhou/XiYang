@@ -294,18 +294,39 @@ public class AffairDetailModel implements Serializable {
     }
 
     public static class InstallBean {
+
         /**
-         * id :
+         * sn : 383742cabd714f2ea37b0ad83fbe9c35
+         * addr : 万达酒店·北京店·A区·1栋·14层·74
+         * installAt : 2021-05-10 11:23:16
          */
 
-        private String id;
+        private String sn;
+        private String addr;
+        private String installAt;
 
-        public String getId() {
-            return id;
+        public String getSn() {
+            return sn;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setSn(String sn) {
+            this.sn = sn;
+        }
+
+        public String getAddr() {
+            return addr;
+        }
+
+        public void setAddr(String addr) {
+            this.addr = addr;
+        }
+
+        public String getInstallAt() {
+            return installAt;
+        }
+
+        public void setInstallAt(String installAt) {
+            this.installAt = installAt;
         }
     }
 }

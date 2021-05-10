@@ -98,13 +98,11 @@ public class DispatchShopActivity extends BaseActivity {
         OkhttpUtil.okHttpGet(URLs.Fragment2_m, params, headerMap, new CallBackUtil<Fragment2Model>() {
             @Override
             public Fragment2Model onParseResponse(Call call, Response response) {
-                MainActivity.isOver = true;
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
-                MainActivity.isOver = true;
                 hideProgress();
                 showErrorPage();
                 myToast(err);
@@ -166,9 +164,6 @@ public class DispatchShopActivity extends BaseActivity {
                 } else {
                     showEmptyPage();
                 }
-
-                MainActivity.isOver = true;
-
             }
         });
     }

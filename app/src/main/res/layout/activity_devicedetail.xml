@@ -52,32 +52,11 @@
                             android:textColor="@color/black1"
                             android:textSize="14sp"
                             android:textStyle="bold" />
-
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_jiben"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:lineSpacingExtra="14dp"
-                                android:text="SN号\n位置\n安装时间\n网络类型\n区域\n详细\n行业"
-                                android:textColor="@color/black3"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:lineSpacingExtra="14dp"
-                                android:text="SN号\n位置\n安装时间\n网络类型\n区域\n详细\n行业"
-                                android:textColor="@color/black2"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
 
 
                     </LinearLayout>
@@ -116,31 +95,11 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_yunwei"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:lineSpacingExtra="14dp"
-                                android:text="运维类型\n运维人\n最后心跳时间\n连续在线天数\n连续不在线天数\n连续无动销天数"
-                                android:textColor="@color/black3"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:lineSpacingExtra="14dp"
-                                android:text="运维类型\n运维人\n最后心跳时间\n连续在线天数\n连续不在线天数\n连续无动销天数"
-                                android:textColor="@color/black2"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
 
 
                     </LinearLayout>
@@ -179,31 +138,11 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_yingshou"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:lineSpacingExtra="14dp"
-                                android:text="订单总数\n当日订单数\n总营收\n当日营收\n门店标识"
-                                android:textColor="@color/black3"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:lineSpacingExtra="14dp"
-                                android:text="订单总数\n当日订单数\n总营收\n当日营收\n门店标识"
-                                android:textColor="@color/black2"
-                                android:textSize="12.5sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
 
 
                     </LinearLayout>

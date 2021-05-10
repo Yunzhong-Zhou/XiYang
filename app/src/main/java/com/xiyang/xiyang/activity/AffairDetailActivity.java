@@ -86,7 +86,7 @@ public class AffairDetailActivity extends BaseActivity {
     LinearLayout ll_contract, ll_shenlingfangshi, ll_shouhuoren, ll_lianxifangshi, ll_shouhuodizhi, ll_xiangxidizhi;
     EditText et_shouhuoren, et_lianxifangshi, et_xiangxidizhi;
     ImageView iv_shangchuanzhaopian;
-    TextView tv_shenlingxinxi, tv_shenlingfangshi, tv_shouhuodizhi,tv_dengdaifahuo,tv_quedingqianshou,
+    TextView tv_shenlingxinxi, tv_shenlingfangshi, tv_shouhuodizhi, tv_dengdaifahuo, tv_quedingqianshou,
             tv_shangchuanzhaopian, tv_confirm;
     ShadowLayout sl_wuliu;
     private RecyclerView rv_wuliu;
@@ -260,7 +260,8 @@ public class AffairDetailActivity extends BaseActivity {
                         .setNeedRing(true);//是否需要提示音
                 //ScanConfig 也可以不配置 默认都是打开
                 CaptureActivity.launch(this, config);*/
-                CommonUtil.gotoActivity(AffairDetailActivity.this,InstallDeviceActivity.class);
+                bundle.putString("transactionId", model.getId());
+                CommonUtil.gotoActivityWithData(AffairDetailActivity.this, InstallDeviceActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
                 //商户信息
@@ -435,16 +436,16 @@ public class AffairDetailActivity extends BaseActivity {
                         (AffairDetailActivity.this, R.layout.item_affairedetail_anzhuang, list_anzhuang) {
                     @Override
                     protected void convert(ViewHolder holder, AffairDetailModel.InstallBean model, int position) {
-                           /* holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
+                        holder.setText(R.id.textView1, model.getAddr());
+                        holder.setText(R.id.textView2, model.getSn());
+//                        holder.setText(R.id.textView3, model.get);
+                        holder.setText(R.id.textView4, model.getInstallAt() + "");
 
                         holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
+                                bundle.putString("deviceName", model.getSn());
                                 CommonUtil.gotoActivityWithData(AffairDetailActivity.this, DeviceDetailActivity.class, bundle, false);
                             }
                         });
@@ -607,7 +608,7 @@ public class AffairDetailActivity extends BaseActivity {
                 ll_shouhuodizhi.setVisibility(View.VISIBLE);
                 ll_xiangxidizhi.setVisibility(View.VISIBLE);
 
-                switch (model.getApply().getStatus()){
+                switch (model.getApply().getStatus()) {
                     case "1":
                         //待发货
                         sl_wuliu.setVisibility(View.VISIBLE);
