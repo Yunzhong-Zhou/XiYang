@@ -29,20 +29,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="选择角色"
+                    android:text="选择BDM"
                     android:textColor="@color/black1"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editText1"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:drawableRight="@mipmap/ic_down_black"
                     android:drawablePadding="10dp"
                     android:focusable="false"
                     android:gravity="center_vertical|right"
-                    android:hint="请选择角色"
+                    android:hint="请选择BDM"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
@@ -68,7 +67,6 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editText2"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:drawableRight="@mipmap/ic_down_black"
@@ -94,20 +92,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="选择新角色"
+                    android:text="当前CM"
                     android:textColor="@color/black1"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editText3"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:drawableRight="@mipmap/ic_down_black"
                     android:drawablePadding="10dp"
                     android:focusable="false"
                     android:gravity="center_vertical|right"
-                    android:hint="请选择新角色"
+                    android:hint="请选择当前CM"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
@@ -117,6 +114,39 @@
                     android:textStyle="bold"
                     android:background="@drawable/edittext_bg" />
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择CM"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/ic_down_black"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择CM"
+                    android:onClick="onClick"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/edittext_bg" />
+            </RelativeLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -140,7 +170,8 @@
                     android:hint="请输入验证码"
                     android:inputType="number"
                     android:onClick="onClick"
-                    android:paddingRight="150dp"
+                    android:paddingLeft="100dp"
+                    android:paddingRight="180dp"
                     android:textColor="@color/black2"
                     android:textColorHint="@color/black3"
                     android:textSize="12.5sp"
@@ -177,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginTop="10dp"
-                android:text="注意事项：\n调整角色前需要将该角色之后负责的所有工作移接之后才能调整；\n如CM需要将该CM所负责的城市全部转移给其他的CM之后才能调整"
+                android:text="注意事项： 调整角色前需要将该角色之后负责的所有工作移接之后才能调整； 如CM需要将该CM所负责的城市全部转移给其他的CM之后才能 调整"
                 android:textColor="@color/red"/>
 
             <TextView

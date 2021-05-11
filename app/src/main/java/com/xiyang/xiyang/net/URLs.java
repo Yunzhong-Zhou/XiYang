@@ -78,6 +78,14 @@ public class URLs {
     public static final String AddStaff = HOST + API + "user/add";
     //我的下级员工
     public static final String Subordinate = HOST + API + "manage/subordinate";
+    //员工详情
+    public static final String StaffDetail = HOST + API + "manage/subordinate/detail";
+    //我的城市
+    public static final String MyCity_RM = HOST + API + "rm/city";
+    //我的市区
+    public static final String MyCity_CM = HOST + API + "cm/area";
+    //调整岗位
+    public static final String Adjustment = HOST + API + "manage/change/role";
     /**
      * ********************************分派*****************************************
      */

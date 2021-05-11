@@ -97,7 +97,7 @@
                         android:id="@+id/tv6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="商户"
+                        android:text="姓名"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/black3"
                         android:textSize="12.5sp"

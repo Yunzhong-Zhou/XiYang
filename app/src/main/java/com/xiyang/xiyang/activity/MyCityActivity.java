@@ -2,11 +2,12 @@ package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.SelectMyCityModel;
+import com.xiyang.xiyang.model.MyCityModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -28,9 +29,10 @@ import okhttp3.Response;
  */
 public class MyCityActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<SelectMyCityModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<SelectMyCityModel.ListBean> mAdapter;
+    List<MyCityModel.ListBean> list = new ArrayList<>();
+    CommonAdapter<MyCityModel.ListBean> mAdapter;
     int page = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,20 +44,29 @@ public class MyCityActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        setSpringViewMore(true);//需要加载更多
+        setSpringViewMore(false);//需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
                 //刷新
                 page = 1;
-                requestCity(params);
+                switch (localUserInfo.getUserJob()) {
+                    case "rm":
+                        titleView.setTitle("我的城市");
+                        requestCity(params, URLs.MyCity_RM);
+                        break;
+                    case "cm":
+                        titleView.setTitle("我的市区");
+                        requestCity(params, URLs.MyCity_CM);
+                        break;
+                }
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                requestCityMore(params);
+//                requestCityMore(params);
             }
         });
 
@@ -66,10 +77,10 @@ public class MyCityActivity extends BaseActivity {
         requestServer();//获取数据
     }
 
-    private void requestCity(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<SelectMyCityModel>() {
+    private void requestCity(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<MyCityModel>() {
             @Override
-            public SelectMyCityModel onParseResponse(Call call, Response response) {
+            public MyCityModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -81,21 +92,34 @@ public class MyCityActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(SelectMyCityModel response) {
+            public void onResponse(MyCityModel response) {
                 showContentPage();
                 hideProgress();
                 list = response.getList();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<SelectMyCityModel.ListBean>
+                    mAdapter = new CommonAdapter<MyCityModel.ListBean>
                             (MyCityActivity.this, R.layout.item_mycity, list) {
                         @Override
-                        protected void convert(ViewHolder holder, SelectMyCityModel.ListBean model, int position) {
-                            /*holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                            holder.setText(R.id.textView2, model.getCreated_at());//时间
-                            holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                            holder.setText(R.id.textView4, model.getStatus_title());//状态*/
+                        protected void convert(ViewHolder holder, MyCityModel.ListBean model, int position) {
+                            holder.setText(R.id.tv_city, model.getName());
+                            TextView tv_name = holder.getView(R.id.tv_name);
+                            switch (localUserInfo.getUserJob()) {
+                                case "rm":
+                                    tv_name.setText("CM:" + model.getCmName());
+                                    break;
+                                case "cm":
+                                    tv_name.setText("BDM:" + model.getCmName());
+                                    break;
+                            }
+                            TextView tv_daizhipai = holder.getView(R.id.tv_daizhipai);//是否指派
+                            tv_daizhipai.setVisibility(View.GONE);
+
+                            holder.setText(R.id.tv_shop, model.getMerchantNum());
+                            holder.setText(R.id.tv_store, model.getStoreNum());
+                            holder.setText(R.id.tv_device, model.getDeviceNum());
+
                         }
                     };
                     recyclerView.setAdapter(mAdapter);
@@ -169,7 +193,7 @@ public class MyCityActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("我的城市");
+
     }
 
     @Override
@@ -177,7 +201,17 @@ public class MyCityActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        requestCity(params);
+        switch (localUserInfo.getUserJob()) {
+            case "rm":
+                titleView.setTitle("我的城市");
+                requestCity(params, URLs.MyCity_RM);
+                break;
+            case "cm":
+                titleView.setTitle("我的市区");
+                requestCity(params, URLs.MyCity_CM);
+                break;
+        }
+
     }
 
     public void onHttpResult() {

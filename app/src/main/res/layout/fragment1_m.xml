@@ -328,7 +328,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:text="调整角色"
+                                    android:text="调整岗位"
                                     android:textColor="@color/black2"
                                     android:textSize="12sp" />
 

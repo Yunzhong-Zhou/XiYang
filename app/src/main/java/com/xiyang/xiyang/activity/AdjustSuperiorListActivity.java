@@ -38,9 +38,9 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 调整岗位
+ * 调整上级列表
  */
-public class AdjustmentListActivity extends BaseActivity {
+public class AdjustSuperiorListActivity extends BaseActivity {
     private RecyclerView recyclerView;
     List<MyTakeCashModel> list = new ArrayList<>();
     CommonAdapter<MyTakeCashModel> mAdapter;
@@ -241,11 +241,11 @@ public class AdjustmentListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("调整岗位列表");
-        titleView.showRightTextview("调整岗位", true, new View.OnClickListener() {
+        titleView.setTitle("调整上级列表");
+        titleView.showRightTextview("调整上级", true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(AdjustmentListActivity.this, AdjustmentActivity.class);
+                CommonUtil.gotoActivity(AdjustSuperiorListActivity.this, AdjustSuperiorActivity.class);
             }
         });
     }
@@ -271,7 +271,7 @@ public class AdjustmentListActivity extends BaseActivity {
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(AdjustmentListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AdjustSuperiorListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -298,7 +298,7 @@ public class AdjustmentListActivity extends BaseActivity {
         final List<String> list = new ArrayList<String>();
         list.add(getString(R.string.app_type_jiangxu));
         list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustmentListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustSuperiorListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -337,7 +337,7 @@ public class AdjustmentListActivity extends BaseActivity {
 
     private void showPopupWindow2(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(AdjustmentListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AdjustSuperiorListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -367,7 +367,7 @@ public class AdjustmentListActivity extends BaseActivity {
         list.add(getString(R.string.app_type_yitongguo));
         list.add(getString(R.string.app_type_weitongguo));
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustmentListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustSuperiorListActivity.this, list);
         adapter.setSelectItem(i2);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

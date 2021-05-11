@@ -1,16 +1,46 @@
 package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.net.URLs;
+import com.xiyang.xiyang.okhttp.CallBackUtil;
+import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.MyLogger;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 调整
+ * 调整岗位
  */
 public class AdjustmentActivity extends BaseActivity {
-
+    EditText editText1, editText2, editText3, et_code;
+    TextView tv_code;
+    private TimeCount time;
+    List<String> list_juese = new ArrayList<>();
+    int itme_juese = 0;
+    String adminId="",role="",code="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,17 +49,199 @@ public class AdjustmentActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        editText1 = findViewByID_My(R.id.editText1);
+        editText2 = findViewByID_My(R.id.editText2);
+        editText3 = findViewByID_My(R.id.editText3);
+        et_code = findViewByID_My(R.id.et_code);
+        tv_code = findViewByID_My(R.id.tv_code);
 
     }
 
     @Override
     protected void initData() {
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        if (localUserInfo.getUserJob().equals("rm")){
+            list_juese.add("CM");
+            editText1.setText("CM");
+        }else {
+            editText1.setText("BDM");
+        }
+        list_juese.add("BDM");
+        list_juese.add("BD");
 
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.editText1:
+                //选择角色
+                dialogList_juese(editText1);
+                break;
+            case R.id.editText2:
+                //选择用户
+
+                break;
+            case R.id.editText3:
+                //选择新角色
+                dialogList_juese(editText3);
+                break;
+            case R.id.tv_code:
+                //获取验证码
+                showProgress(false, getString(R.string.app_sendcode_hint1));
+                tv_code.setClickable(false);
+                HashMap<String, String> params1 = new HashMap<>();
+                params1.put("mobile", localUserInfo.getPhonenumber());
+                params1.put("type", "37");
+//                params1.put("mobile_state_code", localUserInfo.getMobile_State_Code());
+                RequestCode(params1);//获取验证码
+                break;
+            case R.id.tv_confirm:
+                //提交
+                if (match()) {
+                    showProgress(false, getString(R.string.app_loading1));
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("role", role.toLowerCase());//大写转小写
+                    params.put("adminId", adminId);
+                    params.put("code", code);//手机验证码
+                    requestUpData(params);
+                }
+                break;
+        }
+    }
+
+    private boolean match() {
+        if (TextUtils.isEmpty(adminId)) {
+            myToast("请选择用户");
+            return false;
+        }
+        role = editText3.getText().toString().trim();
+        if (TextUtils.isEmpty(role)) {
+            myToast("请选择新角色");
+            return false;
+        }
+
+        code = editText3.getText().toString().trim();
+        if (TextUtils.isEmpty(code)) {
+            myToast("请输入验证码");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 发送验证码
+     */
+    private void RequestCode(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+                tv_code.setClickable(true);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                hideProgress();
+                time.start();
+                tv_code.setClickable(true);
+                MyLogger.i(">>>>>>>>>发送验证码" + response);
+                myToast(getString(R.string.app_sendcode_hint));
+            }
+        });
+
+    }
+
+    private void requestUpData(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Adjustment, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                myToast("调整成功");
+                hideProgress();
+                finish();
+            }
+        });
     }
 
     @Override
     protected void updateView() {
-        titleView.setTitle("调整");
+        titleView.setTitle("调整岗位");
     }
 
+    //获取验证码倒计时
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {//计时完毕时触发
+            tv_code.setText(getString(R.string.app_reacquirecode));
+            tv_code.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+            tv_code.setClickable(false);
+            tv_code.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
+        }
+    }
+    /**
+     * 选择角色
+     */
+    private void dialogList_juese(EditText editText) {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AdjustmentActivity.this, R.layout.item_help, list_juese) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (itme_juese == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                itme_juese = position;
+                editText.setText(list_juese.get(position));
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
 }

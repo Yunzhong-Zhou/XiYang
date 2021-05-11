@@ -324,6 +324,7 @@ public class BankCardSettingActivity extends BaseActivity {
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
                 myToast(err);
+                textView4.setClickable(true);
             }
 
             @Override

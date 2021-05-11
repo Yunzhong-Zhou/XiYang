@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddStaffActivity;
-import com.xiyang.xiyang.activity.AdjustmentActivity;
+import com.xiyang.xiyang.activity.AdjustSuperiorListActivity;
 import com.xiyang.xiyang.activity.AdjustmentListActivity;
 import com.xiyang.xiyang.activity.DispatchActivity;
 import com.xiyang.xiyang.activity.MainActivity;
@@ -121,6 +121,7 @@ public class Fragment1_m extends BaseFragment {
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
                 request(params);
+                requestList(params);//获取下级员工
             }
 
             @Override
@@ -223,13 +224,13 @@ public class Fragment1_m extends BaseFragment {
         this.showLoadingPage();
         Map<String, String> params = new HashMap<>();
         request(params);
+        requestList(params);//获取下级员工
     }
 
     private void request(Map<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.Fragment1_m, params, headerMap, new CallBackUtil<Fragment1Model_m>() {
             @Override
             public Fragment1Model_m onParseResponse(Call call, Response response) {
-                MainActivity.isOver = true;
                 return null;
             }
 
@@ -237,6 +238,7 @@ public class Fragment1_m extends BaseFragment {
             public void onFailure(Call call, Exception e, String err) {
                 MainActivity.isOver = true;
                 hideProgress();
+                showErrorPage();
                 myToast(err);
             }
 
@@ -264,8 +266,6 @@ public class Fragment1_m extends BaseFragment {
                         break;
                 }
 
-                Map<String, String> params = new HashMap<>();
-                requestList(params);//获取下级员工
                 MainActivity.isOver = true;
             }
         });
@@ -285,6 +285,7 @@ public class Fragment1_m extends BaseFragment {
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
+                MainActivity.isOver = true;
                 hideProgress();
                 showErrorPage();
                 myToast(err);
@@ -351,7 +352,7 @@ public class Fragment1_m extends BaseFragment {
                 } else {
                     showEmptyPage();
                 }
-
+                MainActivity.isOver = true;
             }
         });
     }
@@ -397,12 +398,12 @@ public class Fragment1_m extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), DispatchActivity.class);
                 break;
             case R.id.linearLayout10:
-                //调整角色
-                CommonUtil.gotoActivity(getActivity(), AdjustmentActivity.class);
+                //调整岗位
+                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
                 break;
             case R.id.linearLayout11:
-                //调整BDM
-                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
+                //调整BDM上级
+                CommonUtil.gotoActivity(getActivity(), AdjustSuperiorListActivity.class);
                 break;
             case R.id.linearLayout12:
                 //我的城市

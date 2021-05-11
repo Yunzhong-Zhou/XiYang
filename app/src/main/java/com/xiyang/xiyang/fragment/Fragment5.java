@@ -185,7 +185,6 @@ public class Fragment5 extends BaseFragment {
         OkhttpUtil.okHttpPost(URLs.Fragment5, params, headerMap, new CallBackUtil<Fragment5Model>() {
             @Override
             public Fragment5Model onParseResponse(Call call, Response response) {
-                MainActivity.isOver = true;
                 return null;
             }
 

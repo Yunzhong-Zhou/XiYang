@@ -210,7 +210,6 @@ public class Fragment1 extends BaseFragment {
         OkhttpUtil.okHttpGet(URLs.Fragment1, params, headerMap, new CallBackUtil<Fragment1Model>() {
             @Override
             public Fragment1Model onParseResponse(Call call, Response response) {
-                MainActivity.isOver = true;
                 return null;
             }
 

@@ -156,10 +156,16 @@
             android:label="指派" />
         <activity
             android:name=".activity.AdjustmentActivity"
-            android:label="调整" />
+            android:label="调整岗位" />
         <activity
             android:name=".activity.AdjustmentListActivity"
-            android:label="调整列表" />
+            android:label="调整岗位列表" />
+        <activity
+            android:name=".activity.AdjustSuperiorActivity"
+            android:label="调整上级" />
+        <activity
+            android:name=".activity.AdjustSuperiorListActivity"
+            android:label="调整上级列表" />
         <activity
             android:name=".activity.MyCityActivity"
             android:label="我的城市" />
