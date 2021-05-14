@@ -1,5 +1,6 @@
 package com.xiyang.xiyang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.model.SubordinateModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -39,8 +42,11 @@ public class AdjustmentActivity extends BaseActivity {
     TextView tv_code;
     private TimeCount time;
     List<String> list_juese = new ArrayList<>();
-    int itme_juese = 0;
-    String adminId="",role="",code="";
+//    List<AdjustmentModel.ListBean> list_staff = new ArrayList<>();
+//    CommonAdapter<AdjustmentModel.ListBean> mAdapter_staff;
+    int itme_juese = 0, item_staff = -1;
+    String adminId = "", role = "", code = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,16 +66,49 @@ public class AdjustmentActivity extends BaseActivity {
     @Override
     protected void initData() {
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
-        if (localUserInfo.getUserJob().equals("rm")){
+        if (localUserInfo.getUserJob().equals("rm")) {
             list_juese.add("CM");
             editText1.setText("CM");
-        }else {
+        } else {
             editText1.setText("BDM");
         }
         list_juese.add("BDM");
         list_juese.add("BD");
 
+        requestServer();
     }
+
+    @Override
+    public void requestServer() {
+        super.requestServer();
+        this.showLoadingPage();
+        params.put("role", editText1.getText().toString().toLowerCase());
+        requestStaff(params);
+    }
+
+    private void requestStaff(HashMap<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.Adjustment, params, headerMap, new CallBackUtil<SubordinateModel>() {
+            @Override
+            public SubordinateModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                showErrorPage();
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(SubordinateModel response) {
+                showContentPage();
+                hideProgress();
+//                list = response.getList();
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -79,7 +118,12 @@ public class AdjustmentActivity extends BaseActivity {
                 break;
             case R.id.editText2:
                 //选择用户
-
+                Intent intent2 = new Intent(AdjustmentActivity.this, SelectStaffActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("requestCode", Constant.SELECT_STAFF);
+                bundle2.putString("role", editText1.getText().toString().toLowerCase());
+                intent2.putExtras(bundle2);
+                startActivityForResult(intent2, Constant.SELECT_STAFF, bundle2);
                 break;
             case R.id.editText3:
                 //选择新角色
@@ -202,6 +246,7 @@ public class AdjustmentActivity extends BaseActivity {
             tv_code.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
     }
+
     /**
      * 选择角色
      */
@@ -243,5 +288,70 @@ public class AdjustmentActivity extends BaseActivity {
             }
         });
         rv_list.setAdapter(adapter);
+    }
+
+    /**
+     * 选择员工
+     */
+    private void dialogList_staff() {
+        /*dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<AdjustmentModel.ListBean> adapter = new CommonAdapter<AdjustmentModel.ListBean>
+                (AdjustmentActivity.this, R.layout.item_help, list_staff) {
+            @Override
+            protected void convert(ViewHolder holder, AdjustmentModel.ListBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getName());
+                if (item_staff == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_staff = position;
+                editText2.setText(list_staff.get(position).getName());
+
+                adminId = list_staff.get(position).getId();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Constant.SELECT_STAFF:
+                    //选择员工
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        adminId = bundle.getString("staffId");
+                        editText2.setText(bundle.getString("staffName"));
+                    }
+                    break;
+
+            }
+        }*/
+
     }
 }

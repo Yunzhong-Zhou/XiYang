@@ -169,7 +169,9 @@
         <activity
             android:name=".activity.MyCityActivity"
             android:label="我的城市" />
-
+        <activity
+            android:name=".activity.SelectStaffActivity"
+            android:label="选择员工" />
         <!--门店-->
         <activity
             android:name=".activity.AddStoreActivity"

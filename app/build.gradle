@@ -82,7 +82,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.google.firebase:firebase-core:16.0.4'//谷歌服务需要
+    implementation 'com.google.firebase:firebase-core:19.0.0'//谷歌服务需要
 
     //通过Grovvy脚本修改版本号解决冲突
 //    implementation 'com.android.support:multidex:1.0.3'
@@ -179,7 +179,7 @@ dependencies {
     //时间选择器
     implementation 'com.contrarywind:Android-PickerView:4.1.8'
     //条件选择器
-    compile 'com.wx.wheelview:wheelview:1.3.3'
+    implementation 'com.wx.wheelview:wheelview:1.3.3'
 
     //评星控件
     implementation 'com.github.giswangsj:AndRatingBar:1.0.4'
@@ -245,7 +245,6 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'//谷歌服务
-
 apply plugin: 'com.mob.sdk'
 MobSDK {
     appKey ""

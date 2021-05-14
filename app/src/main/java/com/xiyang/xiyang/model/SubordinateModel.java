@@ -18,6 +18,16 @@ public class SubordinateModel implements Serializable {
     }
 
     public static class ListBean {
+        boolean isXuanZhong = false;
+
+        public boolean isXuanZhong() {
+            return isXuanZhong;
+        }
+
+        public void setXuanZhong(boolean xuanZhong) {
+            isXuanZhong = xuanZhong;
+        }
+
         /**
          * id : 71
          * name : bdm周

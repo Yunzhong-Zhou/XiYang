@@ -31,5 +31,5 @@ public class Constant {
     public static final int SELECT_CONTRACT= 10006;//选择合同
     public static final int SELECT_MYCITY= 10007;//选择我的城市
     public static final int SELECT_ROOMNO = 10009;//选择房号
-
+    public static final int SELECT_STAFF = 10010;//选择员工
 }

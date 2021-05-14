@@ -86,6 +86,8 @@ public class URLs {
     public static final String MyCity_CM = HOST + API + "cm/area";
     //调整岗位
     public static final String Adjustment = HOST + API + "manage/change/role";
+    //选择员工
+    public static final String SelectStaff = HOST + API + "manage/subordinate";
     /**
      * ********************************分派*****************************************
      */
