@@ -14,13 +14,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
-import com.xiyang.xiyang.activity.AddStoreActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
+import com.xiyang.xiyang.activity.CloseStoreActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.MyVisitListActivity;
+import com.xiyang.xiyang.activity.SelectAddressActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
-import com.xiyang.xiyang.activity.CloseStoreActivity;
 import com.xiyang.xiyang.activity.StoreDetailActivity;
 import com.xiyang.xiyang.activity.TransferStoreActivity;
 import com.xiyang.xiyang.base.BaseFragment;
@@ -321,7 +321,8 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.linearLayout5:
                 //添加门店
-                CommonUtil.gotoActivity(getActivity(), AddStoreActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), AddStoreActivity.class);
+                CommonUtil.gotoActivity(getActivity(), SelectAddressActivity.class);
                 break;
             case R.id.linearLayout6:
                 //拜访门店

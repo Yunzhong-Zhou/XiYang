@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--地图-->
+    <com.amap.api.maps.MapView
+        android:id="@+id/route_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <!--顶部布局-->
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/yuanjiao_12_baise_huisebiankuang"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:padding="12dp"
+            android:src="@mipmap/ic_search_gray" />
+
+        <EditText
+            android:id="@+id/et_addr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:hint="搜索地址"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black2"
+            android:textColorHint="@color/black3"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/rv_sarch"
+         android:layout_width="match_parent"
+         android:layout_height="200dp"
+         android:background="@color/white"
+         android:layout_below="@id/ll_top" />-->
+
+    <!--底部-->
+    <!--<com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_addr"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/background"
+            android:visibility="gone" />
+<!--    </com.liaoinstan.springview.widget.SpringView>-->
+
+</RelativeLayout>

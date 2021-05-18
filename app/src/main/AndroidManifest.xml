@@ -174,6 +174,9 @@
             android:label="选择员工" />
         <!--门店-->
         <activity
+            android:name=".activity.SelectAddressActivity"
+            android:label="选择地址" />
+        <activity
             android:name=".activity.AddStoreActivity"
             android:label="添加门店" />
         <activity
