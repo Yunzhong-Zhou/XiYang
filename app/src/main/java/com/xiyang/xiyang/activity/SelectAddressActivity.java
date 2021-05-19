@@ -1,5 +1,6 @@
 package com.xiyang.xiyang.activity;
 
+import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,8 +31,11 @@ import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.cretin.tools.fanpermission.FanPermissionListener;
+import com.cretin.tools.fanpermission.FanPermissionUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -72,7 +76,45 @@ public class SelectAddressActivity extends BaseActivity {
         //初始化地图
         mMapView = (MapView) findViewById(R.id.route_map);
         mMapView.onCreate(savedInstanceState);// 此方法必须重写
-        init();//初始化AMap对象,设置点击位置监听
+
+        FanPermissionUtils.with(SelectAddressActivity.this)
+                //添加所有你需要申请的权限
+//                .addPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)//写入
+//                .addPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)//读取
+                .addPermissions(Manifest.permission.ACCESS_COARSE_LOCATION)//定位
+                .addPermissions(Manifest.permission.ACCESS_FINE_LOCATION)//定位
+//                .addPermissions(Manifest.permission.CALL_PHONE)//拨打电话
+//                .addPermissions(Manifest.permission.READ_PHONE_STATE)//读取手机状态
+//                .addPermissions(Manifest.permission.ACCESS_WIFI_STATE)//访问WiFi状态
+//                .addPermissions(Manifest.permission.CAMERA)//相机
+
+                //添加权限申请回调监听 如果申请失败 会返回已申请成功的权限列表，用户拒绝的权限列表和用户点击了不再提醒的永久拒绝的权限列表
+                .setPermissionsCheckListener(new FanPermissionListener() {
+                    @Override
+                    public void permissionRequestSuccess() {
+                        //所有权限授权成功才会回调这里
+                        init();//初始化AMap对象,设置点击位置监听
+                    }
+
+                    @Override
+                    public void permissionRequestFail(String[] grantedPermissions, String[] deniedPermissions, String[] forceDeniedPermissions) {
+                        //当有权限没有被授权就会回调这里
+                        //会返回已申请成功的权限列表（grantedPermissions）
+                        //用户拒绝的权限列表（deniedPermissions）
+                        //用户点击了不再提醒的永久拒绝的权限列表（forceDeniedPermissions）
+                        finish();
+                    }
+                })
+                //生成配置
+                .createConfig()
+                //配置是否强制用户授权才可以使用，当设置为true的时候，如果用户拒绝授权，会一直弹出授权框让用户授权
+                .setForceAllPermissionsGranted(false)
+                //配置当用户点击了不再提示的时候，会弹窗指引用户去设置页面授权，这个参数是弹窗里面的提示内容
+                .setForceDeniedPermissionTips("请前往设置->应用->【" + FanPermissionUtils.getAppName(SelectAddressActivity.this) + "】->权限中打开相关权限，否则功能无法正常运行！")
+                //构建配置并生效
+                .buildConfig()
+                //开始授权
+                .startCheckPermission();
     }
 
     @Override
@@ -331,7 +373,11 @@ public class SelectAddressActivity extends BaseActivity {
         titleView.showRightTextview("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("longitude",lng);
+                bundle.putString("latitude",lat);
+                bundle.putString("addr",addr);
+                CommonUtil.gotoActivityWithData(SelectAddressActivity.this,AddStoreActivity.class,bundle,false);
             }
         });
     }

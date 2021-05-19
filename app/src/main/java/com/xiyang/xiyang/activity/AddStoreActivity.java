@@ -13,10 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
@@ -70,7 +66,7 @@ public class AddStoreActivity extends BaseActivity {
     List<String> list_yingye = new ArrayList<>();
     //定位
     //声明AMapLocationClient类对象
-    private AMapLocationClient mLocationClient = null;
+//    private AMapLocationClient mLocationClient = null;
 
     File imgfile = null;
 
@@ -104,6 +100,11 @@ public class AddStoreActivity extends BaseActivity {
     protected void initData() {
         merchantId = getIntent().getStringExtra("shopId");
         textView1.setText(getIntent().getStringExtra("shopName"));
+
+        longitude = getIntent().getStringExtra("longitude");
+        latitude = getIntent().getStringExtra("latitude");
+        textView9.setText(getIntent().getStringExtra("addr"));
+
 
         list_truefalse.add("是");
         list_truefalse.add("否");
@@ -159,7 +160,7 @@ public class AddStoreActivity extends BaseActivity {
         list_yingye.add("24:00");
 
 
-        getMyLocation();//获取当前位置
+//        getMyLocation();//获取当前位置
 
     }
 
@@ -319,7 +320,7 @@ public class AddStoreActivity extends BaseActivity {
             myToast("请选择门头照片");
             return false;
         }
-        if (TextUtils.isEmpty(longitude)) {
+        /*if (TextUtils.isEmpty(longitude)) {
             showToast("暂未获取到经纬度,点击确定重新获取", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -327,7 +328,7 @@ public class AddStoreActivity extends BaseActivity {
                 }
             });
             return false;
-        }
+        }*/
 
         return true;
     }
@@ -691,7 +692,7 @@ public class AddStoreActivity extends BaseActivity {
     /**
      * 获取我的当前地址
      */
-    private void getMyLocation() {
+    /*private void getMyLocation() {
         mLocationClient = new AMapLocationClient(this);
         AMapLocationClientOption option = new AMapLocationClientOption();
         //设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
@@ -729,11 +730,11 @@ public class AddStoreActivity extends BaseActivity {
                                 + "\n地址:" + aMapLocation.getAddress());
 //                        register_addr = aMapLocation.getAddress();
 
-                       /* localUserInfo.setCityname(aMapLocation.getCity());
+                       *//* localUserInfo.setCityname(aMapLocation.getCity());
                         localUserInfo.setLongitude(aMapLocation.getLongitude() + "");
                         localUserInfo.setLatitude(aMapLocation.getLatitude() + "");
 
-                        editText3.setText(aMapLocation.getAddress() + "");*/
+                        editText3.setText(aMapLocation.getAddress() + "");*//*
 
                         longitude = aMapLocation.getLatitude() + "";
                         latitude = aMapLocation.getLatitude() + "";
@@ -757,6 +758,6 @@ public class AddStoreActivity extends BaseActivity {
 //        if (localUserInfo.getCityname().equals("")) {
         mLocationClient.startLocation();
 //        }
-    }
+    }*/
 
 }

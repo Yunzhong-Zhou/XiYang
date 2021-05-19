@@ -90,7 +90,7 @@ public class AboutActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.linearLayout1:
-                //官网
+                //下载
                 bundle.putString("url", model.getOfficial_website());
                 CommonUtil.gotoActivityWithData(AboutActivity.this, WebContentActivity.class, bundle, false);
                 break;

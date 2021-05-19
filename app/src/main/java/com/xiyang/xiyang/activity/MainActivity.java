@@ -1,6 +1,5 @@
 package com.xiyang.xiyang.activity;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.cretin.tools.fanpermission.FanPermissionListener;
-import com.cretin.tools.fanpermission.FanPermissionUtils;
 import com.cy.dialog.BaseDialog;
 import com.maning.updatelibrary.InstallUtils;
 import com.next.easynavigation.view.EasyNavigationBar;
@@ -90,7 +87,7 @@ public class MainActivity extends BaseActivity {
 //                .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
                 .init();
 
-        FanPermissionUtils.with(MainActivity.this)
+        /*FanPermissionUtils.with(MainActivity.this)
                 //添加所有你需要申请的权限
                 .addPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)//写入
                 .addPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)//读取
@@ -98,7 +95,6 @@ public class MainActivity extends BaseActivity {
                 .addPermissions(Manifest.permission.ACCESS_FINE_LOCATION)//定位
                 .addPermissions(Manifest.permission.CALL_PHONE)//拨打电话
                 .addPermissions(Manifest.permission.READ_PHONE_STATE)//读取手机状态
-//                .addPermissions(Manifest.permission.ACCESS_WIFI_STATE)//访问WiFi状态
                 .addPermissions(Manifest.permission.CAMERA)//相机
 
                 //添加权限申请回调监听 如果申请失败 会返回已申请成功的权限列表，用户拒绝的权限列表和用户点击了不再提醒的永久拒绝的权限列表
@@ -119,13 +115,13 @@ public class MainActivity extends BaseActivity {
                 //生成配置
                 .createConfig()
                 //配置是否强制用户授权才可以使用，当设置为true的时候，如果用户拒绝授权，会一直弹出授权框让用户授权
-                .setForceAllPermissionsGranted(true)
+                .setForceAllPermissionsGranted(false)
                 //配置当用户点击了不再提示的时候，会弹窗指引用户去设置页面授权，这个参数是弹窗里面的提示内容
                 .setForceDeniedPermissionTips("请前往设置->应用->【" + FanPermissionUtils.getAppName(MainActivity.this) + "】->权限中打开相关权限，否则功能无法正常运行！")
                 //构建配置并生效
                 .buildConfig()
                 //开始授权
-                .startCheckPermission();
+                .startCheckPermission();*/
     }
 
     @Override
