@@ -225,7 +225,7 @@ public class AdjustmentActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("调整岗位");
+        titleView.setTitle("升职降职");
     }
 
     //获取验证码倒计时
@@ -245,6 +245,24 @@ public class AdjustmentActivity extends BaseActivity {
             tv_code.setClickable(false);
             tv_code.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Constant.SELECT_STAFF:
+                    //选择城市
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        adminId = bundle.getString("staffId");
+                        editText2.setText(bundle.getString("staffName"));
+                    }
+                    break;
+            }
+        }
+
     }
 
     /**
@@ -288,70 +306,5 @@ public class AdjustmentActivity extends BaseActivity {
             }
         });
         rv_list.setAdapter(adapter);
-    }
-
-    /**
-     * 选择员工
-     */
-    private void dialogList_staff() {
-        /*dialog.contentView(R.layout.dialog_list_center)
-                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT))
-                .animType(BaseDialog.AnimInType.BOTTOM)
-                .canceledOnTouchOutside(true)
-                .gravity(Gravity.CENTER)
-                .dimAmount(0.5f)
-                .show();
-        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
-        rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<AdjustmentModel.ListBean> adapter = new CommonAdapter<AdjustmentModel.ListBean>
-                (AdjustmentActivity.this, R.layout.item_help, list_staff) {
-            @Override
-            protected void convert(ViewHolder holder, AdjustmentModel.ListBean model, int position) {
-                TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getName());
-                if (item_staff == position)
-                    tv.setTextColor(getResources().getColor(R.color.green));
-                else
-                    tv.setTextColor(getResources().getColor(R.color.black1));
-            }
-        };
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                item_staff = position;
-                editText2.setText(list_staff.get(position).getName());
-
-                adminId = list_staff.get(position).getId();
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
-
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                return false;
-            }
-        });
-        rv_list.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case Constant.SELECT_STAFF:
-                    //选择员工
-                    if (data != null) {
-                        Bundle bundle = data.getExtras();
-                        adminId = bundle.getString("staffId");
-                        editText2.setText(bundle.getString("staffName"));
-                    }
-                    break;
-
-            }
-        }*/
-
     }
 }

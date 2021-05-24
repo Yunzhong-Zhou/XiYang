@@ -10,11 +10,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
+import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.AddStaffActivity;
 import com.xiyang.xiyang.activity.AdjustSuperiorListActivity;
 import com.xiyang.xiyang.activity.AdjustmentListActivity;
-import com.xiyang.xiyang.activity.DispatchActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyCityActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
@@ -23,6 +22,7 @@ import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.StaffDetailActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment1Model_m;
+import com.xiyang.xiyang.model.KeyValueModel_m;
 import com.xiyang.xiyang.model.SubordinateModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
@@ -50,15 +51,24 @@ import okhttp3.Response;
 
 public class Fragment1_m extends BaseFragment {
     int type = 1;
+    private RecyclerView rv_tongji;
+    List<KeyValueModel_m> list_tongji = new ArrayList<>();
+    CommonAdapter<KeyValueModel_m> mAdapter_tongji;
+
     private RecyclerView recyclerView;
     List<SubordinateModel.ListBean> list = new ArrayList<>();
     CommonAdapter<SubordinateModel.ListBean> mAdapter;
 
-    TextView textView1, textView2, textView3, textView4,
-            tv_lable1, tv_lable2, tv_lable3, tv_lable4,
-            tv_tianjia, tv_fenpai, tv_tiaozheng, tv_mycity;
+    TextView textView1, textView8;
+    ImageView imageView8;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
-            linearLayout7, linearLayout8, linearLayout9, linearLayout10, linearLayout11, linearLayout12;
+            linearLayout7, linearLayout8;
+
+    ShadowLayout sl_tab;
+    TextView tv_tab1, tv_tab2, tv_tab3;
+    LinearLayout ll_tab1, ll_tab2, ll_tab3;
+    View view1, view2, view3;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -129,14 +139,11 @@ public class Fragment1_m extends BaseFragment {
 
             }
         });
-
+        rv_tongji = findViewByID_My(R.id.rv_tongji);
+        rv_tongji.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        textView1 = findViewByID_My(R.id.textView1);
-        textView2 = findViewByID_My(R.id.textView2);
-        textView3 = findViewByID_My(R.id.textView3);
-        textView4 = findViewByID_My(R.id.textView4);
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
         linearLayout2 = findViewByID_My(R.id.linearLayout2);
         linearLayout3 = findViewByID_My(R.id.linearLayout3);
@@ -145,11 +152,6 @@ public class Fragment1_m extends BaseFragment {
         linearLayout6 = findViewByID_My(R.id.linearLayout6);
         linearLayout7 = findViewByID_My(R.id.linearLayout7);
         linearLayout8 = findViewByID_My(R.id.linearLayout8);
-        linearLayout9 = findViewByID_My(R.id.linearLayout9);
-        linearLayout10 = findViewByID_My(R.id.linearLayout10);
-        linearLayout11 = findViewByID_My(R.id.linearLayout11);
-        linearLayout12 = findViewByID_My(R.id.linearLayout12);
-
         linearLayout1.setOnClickListener(this);
         linearLayout2.setOnClickListener(this);
         linearLayout3.setOnClickListener(this);
@@ -158,57 +160,64 @@ public class Fragment1_m extends BaseFragment {
         linearLayout6.setOnClickListener(this);
         linearLayout7.setOnClickListener(this);
         linearLayout8.setOnClickListener(this);
-        linearLayout9.setOnClickListener(this);
-        linearLayout10.setOnClickListener(this);
-        linearLayout11.setOnClickListener(this);
-        linearLayout12.setOnClickListener(this);
 
-        tv_lable1 = findViewByID_My(R.id.tv_lable1);
-        tv_lable2 = findViewByID_My(R.id.tv_lable2);
-        tv_lable3 = findViewByID_My(R.id.tv_lable3);
-        tv_lable4 = findViewByID_My(R.id.tv_lable4);
-        tv_tianjia = findViewByID_My(R.id.tv_tianjia);
-        tv_fenpai = findViewByID_My(R.id.tv_fenpai);
-        tv_tiaozheng = findViewByID_My(R.id.tv_tiaozheng);
-        tv_mycity = findViewByID_My(R.id.tv_mycity);
+        sl_tab = findViewByID_My(R.id.sl_tab);
+        ll_tab1 = findViewByID_My(R.id.ll_tab1);
+        ll_tab2 = findViewByID_My(R.id.ll_tab2);
+        ll_tab3 = findViewByID_My(R.id.ll_tab3);
+        ll_tab1.setOnClickListener(this);
+        ll_tab2.setOnClickListener(this);
+        ll_tab3.setOnClickListener(this);
+        tv_tab1 = findViewByID_My(R.id.tv_tab1);
+        tv_tab2 = findViewByID_My(R.id.tv_tab2);
+        tv_tab3 = findViewByID_My(R.id.tv_tab3);
+        view1 = findViewByID_My(R.id.view1);
+        view2 = findViewByID_My(R.id.view2);
+        view3 = findViewByID_My(R.id.view3);
+
+        textView1 = findViewByID_My(R.id.textView1);
+        textView8 = findViewByID_My(R.id.textView8);
+        imageView8 = findViewByID_My(R.id.imageView8);
 
         switch (localUserInfo.getUserJob()) {
             case "rm":
-                tv_lable1.setText("总CM");
-                tv_lable2.setText("总BDM");
-                tv_lable3.setText("总BD");
-                tv_lable4.setText("总营收");
-                tv_tianjia.setText("添加CM");
-                tv_fenpai.setText("分派CM");
-                tv_tiaozheng.setText("调整BDM");
-                tv_mycity.setText("我的城市");
+                textView1.setText("我的城市");
+
+                textView8.setText("人事记录");
+                imageView8.setImageResource(R.mipmap.ic_fragment1_tab1_m);
+
+                sl_tab.setVisibility(View.VISIBLE);
+                ll_tab1.setVisibility(View.VISIBLE);
+                ll_tab2.setVisibility(View.VISIBLE);
+                ll_tab3.setVisibility(View.VISIBLE);
+                type = 1;
+
                 break;
             case "cm":
-                tv_lable1.setText("总BDM");
-                tv_lable2.setText("总BD");
-                tv_lable3.setText("总门店");
-                tv_lable4.setText("总营收");
-                tv_tianjia.setText("添加BDM");
-                tv_fenpai.setText("分派BDM");
-                tv_tiaozheng.setText("调整BD");
-                tv_mycity.setText("我的市区");
+                textView1.setText("我的市区");
+
+                textView8.setText("申请采购");
+                imageView8.setImageResource(R.mipmap.ic_fragment1_tab1_m);
+
+                sl_tab.setVisibility(View.VISIBLE);
+                ll_tab1.setVisibility(View.GONE);
+                ll_tab2.setVisibility(View.VISIBLE);
+                ll_tab3.setVisibility(View.VISIBLE);
+
+                type = 2;
                 break;
             case "bdm":
-                tv_lable1.setText("总BD");
-                tv_lable2.setText("总设备");
-                tv_lable3.setText("总门店");
-                tv_lable4.setText("总营收");
-                tv_tianjia.setText("添加BD");
-                tv_fenpai.setText("分派BD");
-                tv_tiaozheng.setText("调整BD");
-                tv_mycity.setText("我的市区");
-                linearLayout10.setVisibility(View.INVISIBLE);
-                linearLayout11.setVisibility(View.INVISIBLE);
-                linearLayout12.setVisibility(View.INVISIBLE);
+                textView1.setText("我的市区");
+
+                textView8.setText("人事记录");
+                imageView8.setImageResource(R.mipmap.ic_fragment1_tab1_m);
+
+                sl_tab.setVisibility(View.GONE);
+                type = 3;
 
                 break;
         }
-
+        changeUI();
 
     }
 
@@ -245,26 +254,57 @@ public class Fragment1_m extends BaseFragment {
             @Override
             public void onResponse(Fragment1Model_m response) {
                 hideProgress();
+
+                /**
+                 * 统计
+                 */
+                list_tongji.clear();
                 switch (localUserInfo.getUserJob()) {
                     case "rm":
-                        textView1.setText(response.getBase().getCmNum());
-                        textView2.setText(response.getBase().getBdmNum());
-                        textView3.setText(response.getBase().getBdmNum());
-                        textView4.setText(response.getBase().getMoney());
+                        list_tongji.add(new KeyValueModel_m("总CM", response.getBase().getCmNum(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总BDM", response.getBase().getBdmNum(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总省份", response.getBase().getBdNum(), ""));
+
+                        list_tongji.add(new KeyValueModel_m("总商户", response.getBase().getStoreNum(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总门店", response.getBase().getStoreNum(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总设备", response.getBase().getDeviceNum(), "台"));
+                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
+
                         break;
                     case "cm":
-                        textView1.setText(response.getBase().getBdmNum());
-                        textView2.setText(response.getBase().getBdNum());
-                        textView3.setText(response.getBase().getStoreNum());
-                        textView4.setText(response.getBase().getMoney());
+                        list_tongji.add(new KeyValueModel_m("总BDM", response.getBase().getBdmNum(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
+                        list_tongji.add(new KeyValueModel_m("可用指标", response.getBase().getBdNum(), ""));
+                        list_tongji.add(new KeyValueModel_m("总城市", response.getBase().getBdNum(), ""));
+
+                        list_tongji.add(new KeyValueModel_m("总商户", response.getBase().getStoreNum(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总门店", response.getBase().getStoreNum(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总设备", response.getBase().getDeviceNum(), "台"));
+                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
+
                         break;
                     case "bdm":
-                        textView1.setText(response.getBase().getBdNum());
-                        textView2.setText(response.getBase().getDeviceNum());
-                        textView3.setText(response.getBase().getStoreNum());
-                        textView4.setText(response.getBase().getMoney());
+                        list_tongji.add(new KeyValueModel_m("总商户", response.getBase().getStoreNum(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总门店", response.getBase().getStoreNum(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总设备", response.getBase().getDeviceNum(), "台"));
+                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
+
+                        list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总区域", response.getBase().getBdNum(), ""));
                         break;
                 }
+
+                mAdapter_tongji = new CommonAdapter<KeyValueModel_m>
+                        (getActivity(), R.layout.item_fragment1_m_tongji, list_tongji) {
+                    @Override
+                    protected void convert(ViewHolder holder, KeyValueModel_m model, int position) {
+                        holder.setText(R.id.tv1, model.getValue());
+                        holder.setText(R.id.tv2, model.getKey());
+                        holder.setText(R.id.tv3, model.getDanwei());
+                    }
+                };
+                rv_tongji.setAdapter(mAdapter_tongji);
 
                 MainActivity.isOver = true;
             }
@@ -272,7 +312,7 @@ public class Fragment1_m extends BaseFragment {
     }
 
     /**
-     * 获取下级员工
+     * 获取员工
      *
      * @param params
      */
@@ -311,30 +351,43 @@ public class Fragment1_m extends BaseFragment {
                                     .error(R.mipmap.headimg)//加载失败
                                     .into(imageView1);//加载图片
                             holder.setText(R.id.tv_name, model.getName());
-                            holder.setText(R.id.tv_phone, model.getMobile());
-                            holder.setText(R.id.tv_money, model.getMoney());
 
-                            TextView tv_addr = holder.getView(R.id.tv_addr);
-                            TextView tv1 = holder.getView(R.id.tv1);
-                            TextView tv2 = holder.getView(R.id.tv2);
-                            tv1.setVisibility(View.VISIBLE);
-                            tv2.setVisibility(View.VISIBLE);
+                            holder.setText(R.id.tv1, model.getStoreNum());
+                            holder.setText(R.id.tv2, model.getStoreNum());
+                            holder.setText(R.id.tv3, model.getDeviceNum());
+                            holder.setText(R.id.tv4, "￥"+model.getMoney());
+
+                            TextView tv_bdm = holder.getView(R.id.tv_bdm);
+                            TextView tv_bd = holder.getView(R.id.tv_bd);
+                            TextView tv_city1 = holder.getView(R.id.tv_city1);
+                            TextView tv_city2 = holder.getView(R.id.tv_city1);
+
+
+                            tv_bdm.setVisibility(View.VISIBLE);
+                            tv_bd.setVisibility(View.VISIBLE);
+                            tv_city1.setVisibility(View.VISIBLE);
+                            tv_city2.setVisibility(View.VISIBLE);
+
 
                             switch (localUserInfo.getUserJob()) {
-                                case "rm":
-                                    tv_addr.setText(model.getAddress());
-                                    tv1.setText("BDM:" + model.getBdmNum());
-                                    tv2.setText("BD:" + model.getBdNum());
-                                    break;
                                 case "cm":
-                                    tv_addr.setText(model.getAddress());
-//                                    tv1.setText("BDM:"+model.getBdmNum());
-                                    tv1.setVisibility(View.GONE);
-                                    tv2.setText("BD:" + model.getBdNum());
+                                    tv_bdm.setText("BDM:" + model.getBdmNum());
+                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_city1.setText(model.getAddress());
+                                    tv_city2.setText(model.getAddress());
                                     break;
                                 case "bdm":
-                                    tv1.setText("门店:" + model.getStoreNum());
-                                    tv2.setText("设备:" + model.getDeviceNum());
+                                    tv_bdm.setVisibility(View.GONE);
+
+                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_city1.setText(model.getAddress());
+                                    tv_city2.setText(model.getAddress());
+                                    break;
+                                case "bd":
+                                    tv_bdm.setVisibility(View.GONE);
+                                    tv_bd.setVisibility(View.GONE);
+                                    tv_city2.setVisibility(View.VISIBLE);
+                                    tv_city1.setText(model.getAddress());
                                     break;
                             }
 
@@ -362,55 +415,86 @@ public class Fragment1_m extends BaseFragment {
         Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.linearLayout1:
-                //总CM
-//                CommonUtil.gotoActivity(getActivity(), PersonalSettingActivity.class);
-                break;
-            case R.id.linearLayout2:
-                //总BDM
-//                CommonUtil.gotoActivity(getActivity(), VerifiedActivity.class);
-                break;
-            case R.id.linearLayout3:
-                //总BD
-//                CommonUtil.gotoActivity(getActivity(), MyPublishActivity.class);
-                break;
-            case R.id.linearLayout4:
-                //总营收
-//                CommonUtil.gotoActivity(getActivity(), MyWalletActivity.class);
-                break;
-            case R.id.linearLayout5:
-                //添加CM
-                CommonUtil.gotoActivity(getActivity(), AddStaffActivity.class);
-                break;
-            case R.id.linearLayout6:
-                //我的门店
-                CommonUtil.gotoActivity(getActivity(), MyStoreListActivity.class);
-                break;
-            case R.id.linearLayout7:
-                //我的商户
-                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
-                break;
-            case R.id.linearLayout8:
-                //我的设备
-                CommonUtil.gotoActivity(getActivity(), MyDeviceListActivity.class);
-                break;
-            case R.id.linearLayout9:
-                //分派CM
-                CommonUtil.gotoActivity(getActivity(), DispatchActivity.class);
-                break;
-            case R.id.linearLayout10:
-                //调整岗位
-                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
-                break;
-            case R.id.linearLayout11:
-                //调整BDM上级
-                CommonUtil.gotoActivity(getActivity(), AdjustSuperiorListActivity.class);
-                break;
-            case R.id.linearLayout12:
                 //我的城市
                 CommonUtil.gotoActivity(getActivity(), MyCityActivity.class);
                 break;
+            case R.id.linearLayout2:
+                //我的商户
+                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
+                break;
+            case R.id.linearLayout3:
+                //我的门店
+                CommonUtil.gotoActivity(getActivity(), MyStoreListActivity.class);
+                break;
+            case R.id.linearLayout4:
+                //我的设备
+                CommonUtil.gotoActivity(getActivity(), MyDeviceListActivity.class);
+                break;
+            case R.id.linearLayout5:
+                //调整上级
+                CommonUtil.gotoActivity(getActivity(), AdjustSuperiorListActivity.class);
+                break;
+            case R.id.linearLayout6:
+                //调整市场
 
+                break;
+            case R.id.linearLayout7:
+                //调整岗位
+                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
+                break;
+            case R.id.linearLayout8:
+                //人事记录
 
+                break;
+
+            case R.id.ll_tab1:
+                //CM
+                type = 1;
+                changeUI();
+                break;
+            case R.id.ll_tab2:
+                //BDM
+                type = 2;
+                changeUI();
+                break;
+            case R.id.ll_tab3:
+                //BD
+                type = 3;
+                changeUI();
+                break;
+
+        }
+    }
+
+    private void changeUI() {
+        switch (type) {
+            case 1:
+                tv_tab1.setTextColor(getResources().getColor(R.color.green));
+                tv_tab2.setTextColor(getResources().getColor(R.color.black3));
+                tv_tab3.setTextColor(getResources().getColor(R.color.black3));
+                view1.setVisibility(View.VISIBLE);
+                view2.setVisibility(View.INVISIBLE);
+                view3.setVisibility(View.INVISIBLE);
+
+                break;
+            case 2:
+                tv_tab1.setTextColor(getResources().getColor(R.color.black3));
+                tv_tab2.setTextColor(getResources().getColor(R.color.green));
+                tv_tab3.setTextColor(getResources().getColor(R.color.black3));
+                view1.setVisibility(View.INVISIBLE);
+                view2.setVisibility(View.VISIBLE);
+                view3.setVisibility(View.INVISIBLE);
+
+                break;
+            case 3:
+                tv_tab1.setTextColor(getResources().getColor(R.color.black3));
+                tv_tab2.setTextColor(getResources().getColor(R.color.black3));
+                tv_tab3.setTextColor(getResources().getColor(R.color.green));
+                view1.setVisibility(View.INVISIBLE);
+                view2.setVisibility(View.INVISIBLE);
+                view3.setVisibility(View.VISIBLE);
+
+                break;
         }
     }
 

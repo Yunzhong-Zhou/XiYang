@@ -1,6 +1,7 @@
 package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,18 +41,20 @@ public class StaffDetailActivity extends BaseActivity {
     CommonAdapter<KeyValueModel> mAdapter_info;
 
     ImageView imageView1;
-    TextView tv_tiaozheng,tv_guanbi;
+    TextView tv_shangji, tv_shichang, tv_gangwei;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staffdetail);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         requestServer();
     }
+
     @Override
     protected void initView() {
         setSpringViewMore(false);//需要加载更多
@@ -69,18 +72,21 @@ public class StaffDetailActivity extends BaseActivity {
             }
         });
         rv_tongji = findViewByID_My(R.id.rv_tongji);
-        rv_tongji. setLayoutManager(new GridLayoutManager(StaffDetailActivity.this, 4));
+        rv_tongji.setLayoutManager(new GridLayoutManager(StaffDetailActivity.this, 4));
         rv_info = findViewByID_My(R.id.rv_info);
         rv_info.setLayoutManager(new LinearLayoutManager(StaffDetailActivity.this));
         imageView1 = findViewByID_My(R.id.imageView1);
-        tv_tiaozheng = findViewByID_My(R.id.tv_tiaozheng);
-        tv_guanbi = findViewByID_My(R.id.tv_guanbi);
+        tv_shangji = findViewByID_My(R.id.tv_shangji);
+        tv_shichang = findViewByID_My(R.id.tv_shichang);
+        tv_gangwei = findViewByID_My(R.id.tv_gangwei);
+
     }
 
     @Override
     protected void initData() {
         id = getIntent().getStringExtra("id");
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
@@ -112,21 +118,24 @@ public class StaffDetailActivity extends BaseActivity {
                  * 统计信息
                  */
                 list_tongji.clear();
-                switch (response.getRole()){
+                switch (response.getRole()) {
                     case "cm":
                         list_tongji.add(new KeyValueModel("BDM", response.getBdmNum()));
                         list_tongji.add(new KeyValueModel("BD", response.getBdNum()));
                         break;
                     case "bdm":
                         list_tongji.add(new KeyValueModel("BD", response.getBdNum()));
+                        list_tongji.add(new KeyValueModel("总区域", response.getStoreNum()));
                         break;
                     case "bd":
+
+                        tv_shichang.setVisibility(View.GONE);
                         break;
                 }
-                list_tongji.add(new KeyValueModel("门店数", response.getStoreNum()));
+                list_tongji.add(new KeyValueModel("总营收", "￥" + response.getMoney()));
                 list_tongji.add(new KeyValueModel("商户数", response.getMerchantNum()));
+                list_tongji.add(new KeyValueModel("门店数", response.getStoreNum()));
                 list_tongji.add(new KeyValueModel("设备数", response.getDeviceNum()));
-                list_tongji.add(new KeyValueModel("总营收", response.getMoney()));
 
                 mAdapter_tongji = new CommonAdapter<KeyValueModel>
                         (StaffDetailActivity.this, R.layout.item_staffdetail, list_tongji) {
@@ -154,18 +163,31 @@ public class StaffDetailActivity extends BaseActivity {
                 list_info.add(new KeyValueModel("帐号", response.getAccount()));
                 list_info.add(new KeyValueModel("联系手机号", response.getMobile()));
                 list_info.add(new KeyValueModel("性别", response.getSex()));
-                switch (response.getRole()){
+                switch (response.getRole()) {
                     case "cm":
                         list_info.add(new KeyValueModel("负责城市", response.getRegionName()));
+                        list_info.add(new KeyValueModel("加入时间", response.getJoinAt()));
+                        list_info.add(new KeyValueModel("所属分公司", response.getParentName()));
+                        list_info.add(new KeyValueModel("已用指标", response.getJoinAt()));
+                        list_info.add(new KeyValueModel("可用指标", response.getJoinAt()));
+
                         break;
                     case "bdm":
                         list_info.add(new KeyValueModel("负责区县", response.getRegionName()));
+                        list_info.add(new KeyValueModel("加入时间", response.getJoinAt()));
+                        list_info.add(new KeyValueModel("所属分公司", response.getParentName()));
                         break;
                     case "bd":
+                        list_info.add(new KeyValueModel("所属区域", response.getRegionName()));
+                        list_info.add(new KeyValueModel("加入时间", response.getJoinAt()));
+                        list_info.add(new KeyValueModel("所属分公司", response.getParentName()));
                         break;
                 }
-                list_info.add(new KeyValueModel("上级经理", response.getParentName()));
-                list_info.add(new KeyValueModel("加入时间", response.getJoinAt()));
+
+                list_info.add(new KeyValueModel("领货仓库", response.getJoinAt()));
+                list_info.add(new KeyValueModel("职业状态", response.getJoinAt()));
+                list_info.add(new KeyValueModel("类型", response.getJoinAt()));
+                list_info.add(new KeyValueModel("等级", response.getJoinAt()));
                 list_info.add(new KeyValueModel("上传头像", ""));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (StaffDetailActivity.this, R.layout.item_keyvalue, list_info) {
@@ -181,6 +203,7 @@ public class StaffDetailActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("员工详情");

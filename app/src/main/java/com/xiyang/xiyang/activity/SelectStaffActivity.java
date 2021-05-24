@@ -121,41 +121,57 @@ public class SelectStaffActivity extends BaseActivity {
                                     .error(R.mipmap.headimg)//加载失败
                                     .into(imageView1);//加载图片
                             holder.setText(R.id.tv_name, model.getName());
-                            holder.setText(R.id.tv_phone, model.getMobile());
-                            holder.setText(R.id.tv_money, model.getMoney());
 
-                            TextView tv_addr = holder.getView(R.id.tv_addr);
-                            TextView tv1 = holder.getView(R.id.tv1);
-                            TextView tv2 = holder.getView(R.id.tv2);
-                            tv1.setVisibility(View.VISIBLE);
-                            tv2.setVisibility(View.VISIBLE);
+                            holder.setText(R.id.tv1, model.getStoreNum());
+                            holder.setText(R.id.tv2, model.getStoreNum());
+                            holder.setText(R.id.tv3, model.getDeviceNum());
+                            holder.setText(R.id.tv4, "￥" + model.getMoney());
+
+                            TextView tv_bdm = holder.getView(R.id.tv_bdm);
+                            TextView tv_bd = holder.getView(R.id.tv_bd);
+                            TextView tv_city1 = holder.getView(R.id.tv_city1);
+                            TextView tv_city2 = holder.getView(R.id.tv_city1);
+
+
+                            tv_bdm.setVisibility(View.VISIBLE);
+                            tv_bd.setVisibility(View.VISIBLE);
+                            tv_city1.setVisibility(View.VISIBLE);
+                            tv_city2.setVisibility(View.VISIBLE);
+
 
                             switch (localUserInfo.getUserJob()) {
-                                case "rm":
-                                    tv_addr.setText(model.getAddress());
-                                    tv1.setText("BDM:" + model.getBdmNum());
-                                    tv2.setText("BD:" + model.getBdNum());
-                                    break;
                                 case "cm":
-                                    tv_addr.setText(model.getAddress());
-//                                    tv1.setText("BDM:"+model.getBdmNum());
-                                    tv1.setVisibility(View.GONE);
-                                    tv2.setText("BD:" + model.getBdNum());
+                                    tv_bdm.setText("BDM:" + model.getBdmNum());
+                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_city1.setText(model.getAddress());
+                                    tv_city2.setText(model.getAddress());
                                     break;
                                 case "bdm":
-                                    tv1.setText("门店:" + model.getStoreNum());
-                                    tv2.setText("设备:" + model.getDeviceNum());
+                                    tv_bdm.setVisibility(View.GONE);
+
+                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_city1.setText(model.getAddress());
+                                    tv_city2.setText(model.getAddress());
+                                    break;
+                                case "bd":
+                                    tv_bdm.setVisibility(View.GONE);
+                                    tv_bd.setVisibility(View.GONE);
+                                    tv_city2.setVisibility(View.VISIBLE);
+                                    tv_city1.setText(model.getAddress());
                                     break;
                             }
                             LinearLayout linearLayout = holder.getView(R.id.linearLayout);
+                            ImageView imageView = holder.getView(R.id.imageView);
                             if (position == item) {
-                                linearLayout.setBackgroundResource(R.drawable.yuanjiao_8_baise_lvsebiankuang);
+                                linearLayout.setBackgroundResource(R.drawable.yuanjiao_8_huisetouming);
+                                imageView.setVisibility(View.VISIBLE);
                             } else {
                                 linearLayout.setBackgroundResource(R.drawable.yuanjiao_8_baise);
+                                imageView.setVisibility(View.GONE);
                             }
 
 
-                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                            linearLayout.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     /*if (list.get(position).isXuanZhong())
@@ -185,6 +201,21 @@ public class SelectStaffActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("选择员工");
+        titleView.showRightTxtBtn("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (requestCode == Constant.SELECT_STAFF || item >= 0) {
+                    Intent resultIntent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("staffId", list.get(item).getId());
+                    bundle.putString("staffName", list.get(item).getName());
+//                    bundle.putStringArrayList("imgList", (ArrayList<String>) response.getList());
+                    resultIntent.putExtras(bundle);
+                    SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
+                    finish();
+                }
+            }
+        });
     }
 
     @Override
