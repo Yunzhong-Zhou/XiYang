@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
+import com.xiyang.xiyang.activity.AddBuyActivity;
 import com.xiyang.xiyang.activity.AdjustSuperiorActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyCityActivity;
@@ -465,7 +466,10 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //人事记录
-                CommonUtil.gotoActivity(getActivity(), PersonnelActivity.class);
+                if (localUserInfo.getUserJob().equals("cm"))
+                    CommonUtil.gotoActivity(getActivity(), AddBuyActivity.class);//申请采购
+                else
+                    CommonUtil.gotoActivity(getActivity(), PersonnelActivity.class);
                 break;
 
             case R.id.ll_tab1:

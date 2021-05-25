@@ -140,6 +140,9 @@
             android:name=".activity.AddStaffActivity"
             android:label="添加员工" />
         <activity
+            android:name=".activity.AddBuyActivity"
+            android:label="采购申请" />
+        <activity
             android:name=".activity.SelectMyCityActivity"
             android:label="选择城市" />
         <activity
