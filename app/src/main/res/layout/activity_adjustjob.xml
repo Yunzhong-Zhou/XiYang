@@ -29,7 +29,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="选择角色"
+                    android:text="是否跨区"
+                    android:textColor="@color/black1"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittext_bg"
+                    android:focusable="false"
+                    android:gravity="center_vertical|right"
+                    android:hint=""
+                    android:paddingLeft="100dp"
+                    android:paddingRight="100dp"
+                    android:textColor="@color/black2"
+                    android:textColorHint="@color/black3"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_kuaqu"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:onClick="onClick"
+                    android:padding="14dp"
+                    android:src="@mipmap/ic_weixuanzhong" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="选择CM"
                     android:textColor="@color/black1"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
@@ -38,19 +78,19 @@
                     android:id="@+id/editText1"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:drawableRight="@mipmap/ic_down_black"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@mipmap/ic_next_black"
                     android:drawablePadding="10dp"
                     android:focusable="false"
                     android:gravity="center_vertical|right"
-                    android:hint="请选择角色"
+                    android:hint="请选择CM"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"
                     android:textColorHint="@color/black3"
                     android:textSize="12.5sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/edittext_bg" />
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -62,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="选择用户"
+                    android:text="选择新职位"
                     android:textColor="@color/black1"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
@@ -75,7 +115,7 @@
                     android:drawablePadding="10dp"
                     android:focusable="false"
                     android:gravity="center_vertical|right"
-                    android:hint="请选择用户"
+                    android:hint="请选择新职位"
                     android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
@@ -85,38 +125,36 @@
                     android:textStyle="bold"
                     android:background="@drawable/edittext_bg" />
             </RelativeLayout>
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="选择新角色"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="14dp"
+                    android:gravity="center_vertical"
+                    android:text="编辑新市场"
                     android:textColor="@color/black1"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/editText3"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:drawableRight="@mipmap/ic_down_black"
-                    android:drawablePadding="10dp"
-                    android:focusable="false"
-                    android:gravity="center_vertical|right"
-                    android:hint="请选择新角色"
-                    android:onClick="onClick"
-                    android:paddingLeft="100dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/black2"
-                    android:textColorHint="@color/black3"
-                    android:textSize="12.5sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/edittext_bg" />
-            </RelativeLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/xian" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -173,24 +211,16 @@
             </RelativeLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="4dp"
-                android:layout_marginTop="10dp"
-                android:text="注意事项：\n调整角色前需要将该角色之后负责的所有工作移接之后才能调整；\n如CM需要将该CM所负责的城市全部转移给其他的CM之后才能调整"
-                android:textColor="@color/red"/>
-
-            <TextView
                 android:id="@+id/tv_confirm"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="90dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/btn_img1"
                 android:gravity="center"
                 android:onClick="onClick"
-                android:text="确认调整"
+                android:text="提交审核"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"

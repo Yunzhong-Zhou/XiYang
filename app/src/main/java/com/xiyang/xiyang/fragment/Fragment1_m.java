@@ -12,13 +12,14 @@ import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.AdjustSuperiorListActivity;
-import com.xiyang.xiyang.activity.AdjustmentListActivity;
+import com.xiyang.xiyang.activity.AdjustSuperiorActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyCityActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.MyShopListActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
+import com.xiyang.xiyang.activity.PersonnelActivity;
+import com.xiyang.xiyang.activity.SelectLevelActivity;
 import com.xiyang.xiyang.activity.StaffDetailActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment1Model_m;
@@ -184,7 +185,7 @@ public class Fragment1_m extends BaseFragment {
                 textView1.setText("我的城市");
 
                 textView8.setText("人事记录");
-                imageView8.setImageResource(R.mipmap.ic_fragment1_tab1_m);
+                imageView8.setImageResource(R.mipmap.ic_fragment1_tab8_m);
 
                 sl_tab.setVisibility(View.VISIBLE);
                 ll_tab1.setVisibility(View.VISIBLE);
@@ -197,7 +198,7 @@ public class Fragment1_m extends BaseFragment {
                 textView1.setText("我的市区");
 
                 textView8.setText("申请采购");
-                imageView8.setImageResource(R.mipmap.ic_fragment1_tab1_m);
+                imageView8.setImageResource(R.mipmap.ic_fragment1_tab9_m);
 
                 sl_tab.setVisibility(View.VISIBLE);
                 ll_tab1.setVisibility(View.GONE);
@@ -210,7 +211,7 @@ public class Fragment1_m extends BaseFragment {
                 textView1.setText("我的市区");
 
                 textView8.setText("人事记录");
-                imageView8.setImageResource(R.mipmap.ic_fragment1_tab1_m);
+                imageView8.setImageResource(R.mipmap.ic_fragment1_tab8_m);
 
                 sl_tab.setVisibility(View.GONE);
                 type = 3;
@@ -355,7 +356,7 @@ public class Fragment1_m extends BaseFragment {
                             holder.setText(R.id.tv1, model.getStoreNum());
                             holder.setText(R.id.tv2, model.getStoreNum());
                             holder.setText(R.id.tv3, model.getDeviceNum());
-                            holder.setText(R.id.tv4, "￥"+model.getMoney());
+                            holder.setText(R.id.tv4, "￥" + model.getMoney());
 
                             TextView tv_bdm = holder.getView(R.id.tv_bdm);
                             TextView tv_bd = holder.getView(R.id.tv_bd);
@@ -432,19 +433,39 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout5:
                 //调整上级
-                CommonUtil.gotoActivity(getActivity(), AdjustSuperiorListActivity.class);
+                if (localUserInfo.getUserJob().equals("bdm")) {
+                    bundle.putString("job", "bd");
+                    CommonUtil.gotoActivityWithData(getActivity(), AdjustSuperiorActivity.class, bundle);
+                } else {
+                    bundle.putInt("type", 1);
+                    CommonUtil.gotoActivityWithData(getActivity(), SelectLevelActivity.class, bundle);
+                }
+
                 break;
             case R.id.linearLayout6:
                 //调整市场
-
+                if (localUserInfo.getUserJob().equals("bdm")) {
+                    bundle.putString("job", "bd");
+                    CommonUtil.gotoActivityWithData(getActivity(), AdjustSuperiorActivity.class, bundle);
+                } else {
+                    bundle.putInt("type", 2);
+                    CommonUtil.gotoActivityWithData(getActivity(), SelectLevelActivity.class, bundle);
+                }
                 break;
             case R.id.linearLayout7:
                 //调整岗位
-                CommonUtil.gotoActivity(getActivity(), AdjustmentListActivity.class);
+                if (localUserInfo.getUserJob().equals("bdm")) {
+                    myToast("调整岗位需CM及以上");
+                    /*bundle.putString("job", "bd");
+                    CommonUtil.gotoActivityWithData(getActivity(), AdjustJobActivity.class, bundle);*/
+                } else {
+                    bundle.putInt("type", 3);
+                    CommonUtil.gotoActivityWithData(getActivity(), SelectLevelActivity.class, bundle);
+                }
                 break;
             case R.id.linearLayout8:
                 //人事记录
-
+                CommonUtil.gotoActivity(getActivity(), PersonnelActivity.class);
                 break;
 
             case R.id.ll_tab1:

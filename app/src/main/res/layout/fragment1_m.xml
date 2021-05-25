@@ -377,7 +377,7 @@
                                     android:id="@+id/imageView8"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/ic_fragment1_tab1_m" />
+                                    android:src="@mipmap/ic_fragment1_tab8_m" />
 
                                 <TextView
                                     android:id="@+id/textView8"

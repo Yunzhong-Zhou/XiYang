@@ -20,7 +20,6 @@ import com.xiyang.xiyang.model.MyTakeCashModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -56,7 +55,7 @@ public class AdjustSuperiorListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adjustmentlist);
+        setContentView(R.layout.activity_adjustjoblist);
     }
 
     @Override
@@ -242,12 +241,12 @@ public class AdjustSuperiorListActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("调整上级列表");
-        titleView.showRightTextview("调整上级", true, new View.OnClickListener() {
+        /*titleView.showRightTextview("调整上级", true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CommonUtil.gotoActivity(AdjustSuperiorListActivity.this, AdjustSuperiorActivity.class);
             }
-        });
+        });*/
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.xiyang.xiyang.activity;
 
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,27 +8,23 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.MyStoreListModel;
+import com.xiyang.xiyang.model.MyTakeCashModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.CommonUtil;
-import com.xiyang.xiyang.utils.Constant;
+import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,27 +37,25 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 我的商户
+ * 调整市场记录
  */
-public class MyStoreListActivity extends BaseActivity {
-    int requestCode = 0;
+public class AdjustMarketListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyStoreListModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<MyStoreListModel.ListBean> mAdapter;
+    List<MyTakeCashModel> list = new ArrayList<>();
+    CommonAdapter<MyTakeCashModel> mAdapter;
     //筛选
-    private LinearLayout linearLayout1, linearLayout2, linearLayout3;
-    private TextView textView1, textView2, textView3;
-    private View view1, view2, view3;
+    private LinearLayout linearLayout1, linearLayout2,linearLayout3;
+    private TextView textView1, textView2,textView3;
+    private View view1, view2,view3;
     private LinearLayout pop_view;
     int page = 1;
     String sort = "desc", status = "";
     int i1 = 0;
     int i2 = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_myshoplist);
+        setContentView(R.layout.activity_adjustjoblist);
     }
 
     @Override
@@ -76,22 +69,24 @@ public class MyStoreListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                params.put("page", page + "");
-                params.put("count", "10");
-                params.put("status", status);
-                params.put("sort", sort);
-                requestList(params);
+                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
+                        + "&sort=" + sort
+                        + "&page=" + page//当前页号
+                        + "&count=" + "10"//页面行数
+                        + "&token=" + localUserInfo.getToken();
+                RequestMyInvestmentList(string);*/
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("page", page + "");
-                params.put("count", "10");
-                params.put("status", status);
-                params.put("sort", sort);
-                requestListMore(params);
+                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
+                        + "&sort=" + sort
+                        + "&page=" + page//当前页号
+                        + "&count=" + "10"//页面行数
+                        + "&token=" + localUserInfo.getToken();
+                RequestMyInvestmentListMore(string);*/
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -107,16 +102,13 @@ public class MyStoreListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestCode = getIntent().getIntExtra("requestCode", 0);
-        status = getIntent().getStringExtra("status");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
-        if (status == null) status = "";
         requestServer();//获取数据
     }
 
-    private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyStoreList, params, headerMap, new CallBackUtil<MyStoreListModel>() {
+    private void RequestList(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
             @Override
-            public MyStoreListModel onParseResponse(Call call, Response response) {
+            public String onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -128,71 +120,57 @@ public class MyStoreListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyStoreListModel response) {
+            public void onResponse(String response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
-                if (list.size() == 0) {
-                    showEmptyPage();//空数据
-                } else {
-                    mAdapter = new CommonAdapter<MyStoreListModel.ListBean>
-                            (MyStoreListActivity.this, R.layout.item_fragment2_2, list) {
-                        @Override
-                        protected void convert(ViewHolder holder, MyStoreListModel.ListBean model, int position) {
-                            holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, model.getDeviceNum());
-                            holder.setText(R.id.tv_num, model.getMoney());//money
-                            holder.setText(R.id.tv_addr, model.getAddress());
-
-                            ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(MyStoreListActivity.this)
-                                    .load(model.getImage())
-//                                .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(MyStoreListActivity.this, 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("0")) {
-                                //待拜访
-                                imageView2.setImageResource(R.mipmap.bg_daibaifang);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yibaifang);
+                MyLogger.i(">>>>>>>>>提现记录列表" + response);
+                JSONObject jObj;
+                /*try {
+                    jObj = new JSONObject(response);
+                    JSONArray jsonArray = jObj.getJSONArray("data");
+                    list = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
+                    if (list.size() == 0) {
+                        showEmptyPage();//空数据
+                    } else {
+                        mAdapter = new CommonAdapter<MyTakeCashModel>
+                                (MyTakeCashActivity.this, R.layout.item_adjustmentlist, list) {
+                            @Override
+                            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
+                                holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
+                                holder.setText(R.id.textView2, model.getCreated_at());//时间
+                                holder.setText(R.id.textView3, "-"+model.getMoney());//money
+                                holder.setText(R.id.textView4, model.getStatus_title());//状态
                             }
-                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (requestCode == Constant.SELECT_STORE) {
-                                        Intent resultIntent = new Intent();
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("storeId", model.getId());
-                                        bundle.putString("storeName", model.getName());
-                                        resultIntent.putExtras(bundle);
-                                        MyStoreListActivity.this.setResult(RESULT_OK, resultIntent);
-                                        finish();
-                                    } else {
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("id", model.getId());
-                                        CommonUtil.gotoActivityWithData(MyStoreListActivity.this, StoreDetailActivity.class, bundle, false);
-                                    }
+                        };
+                        recyclerView.setAdapter(mAdapter);
+                        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                                Bundle bundle1 = new Bundle();
+                                bundle1.putString("id", list.get(position).getId());
+                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, TakeCashDetailActivity.class, bundle1, false);
+                            }
 
-                                }
-                            });
-                        }
-                    };
-                    recyclerView.setAdapter(mAdapter);
-                }
+                            @Override
+                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                                return false;
+                            }
+                        });
+                    }
 
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }*/
             }
         });
 
     }
 
-    private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyStoreList, params, headerMap, new CallBackUtil<MyStoreListModel>() {
+    private void RequestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
             @Override
-            public MyStoreListModel onParseResponse(Call call, Response response) {
+            public String onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -205,18 +183,28 @@ public class MyStoreListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyStoreListModel response) {
+            public void onResponse(String response) {
 //                showContentPage();
                 onHttpResult();
-                List<MyStoreListModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
-                if (list1.size() == 0) {
-                    myToast(getString(R.string.app_nomore));
-                    page--;
-                } else {
-                    list.addAll(list1);
-                    mAdapter.notifyDataSetChanged();
-                }
+                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
+                /*JSONObject jObj;
+                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
+                try {
+                    jObj = new JSONObject(response);
+                    JSONArray jsonArray = jObj.getJSONArray("data");
+                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
+                    if (list1.size() == 0) {
+                        myToast(getString(R.string.app_nomore));
+                        page--;
+                    } else {
+                        list.addAll(list1);
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }*/
             }
         });
 
@@ -252,15 +240,13 @@ public class MyStoreListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("我的门店");
-        if (localUserInfo.getUserJob().equals("bd")) {
-            titleView.showRightTextview("添加门店", true, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CommonUtil.gotoActivity(MyStoreListActivity.this, AddStoreActivity.class);
-                }
-            });
-        }
+        titleView.setTitle("调整市场记录");
+        /*titleView.showRightTextview("调整岗位", true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.gotoActivity(AdjustMarketListActivity.this, AdjustJobActivity.class);
+            }
+        });*/
     }
 
     @Override
@@ -268,11 +254,12 @@ public class MyStoreListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        params.put("page", page + "");
-        params.put("count", "10");
-        params.put("status", status);
-        params.put("sort", sort);
-        requestList(params);
+        /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
+                + "&sort=" + sort
+                + "&page=" + page//当前页号
+                + "&count=" + "10"//页面行数
+                + "&token=" + localUserInfo.getToken();
+        RequestMyInvestmentList(string);*/
     }
 
     public void onHttpResult() {
@@ -283,7 +270,7 @@ public class MyStoreListActivity extends BaseActivity {
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyStoreListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AdjustMarketListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -310,7 +297,7 @@ public class MyStoreListActivity extends BaseActivity {
         final List<String> list = new ArrayList<String>();
         list.add(getString(R.string.app_type_jiangxu));
         list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyStoreListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustMarketListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -349,7 +336,7 @@ public class MyStoreListActivity extends BaseActivity {
 
     private void showPopupWindow2(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(MyStoreListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AdjustMarketListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -379,7 +366,7 @@ public class MyStoreListActivity extends BaseActivity {
         list.add(getString(R.string.app_type_yitongguo));
         list.add(getString(R.string.app_type_weitongguo));
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(MyStoreListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustMarketListActivity.this, list);
         adapter.setSelectItem(i2);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

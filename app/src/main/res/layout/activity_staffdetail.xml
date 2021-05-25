@@ -93,11 +93,18 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/tv_shangji"
-                        android:layout_width="120dp"
+                        android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:background="@drawable/yuanjiao_20_lvsejianbian"
                         android:gravity="center"
@@ -105,10 +112,14 @@
                         android:text="调整上级"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/tv_shichang"
-                        android:layout_width="120dp"
+                        android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
@@ -118,10 +129,13 @@
                         android:text="调整市场"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
-
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
                     <TextView
                         android:id="@+id/tv_gangwei"
-                        android:layout_width="120dp"
+                        android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:background="@drawable/yuanjiao_20_lvsejianbian"
                         android:gravity="center"
@@ -129,6 +143,10 @@
                         android:text="升职降职"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
                 </LinearLayout>
 
             </LinearLayout>

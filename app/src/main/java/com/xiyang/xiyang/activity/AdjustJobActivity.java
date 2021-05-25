@@ -8,12 +8,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.SubordinateModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
@@ -37,97 +39,102 @@ import okhttp3.Response;
  * Created by Mr.Z on 2021/3/28.
  * 调整岗位
  */
-public class AdjustmentActivity extends BaseActivity {
-    EditText editText1, editText2, editText3, et_code;
-    TextView tv_code;
+public class AdjustJobActivity extends BaseActivity {
+    String job = "";
+    boolean isKuaQu = false;
+    ImageView iv_kuaqu;
+    TextView textView1, tv_code;
+    EditText editText1, editText2, et_code;
+
+    LinearLayout linearLayout;
+    View view1;
+
     private TimeCount time;
+
     List<String> list_juese = new ArrayList<>();
-//    List<AdjustmentModel.ListBean> list_staff = new ArrayList<>();
-//    CommonAdapter<AdjustmentModel.ListBean> mAdapter_staff;
-    int itme_juese = 0, item_staff = -1;
+
+    int itme_juese = 0;
     String adminId = "", role = "", code = "";
+
+    RecyclerView recyclerView;
+    List<String> idlist = new ArrayList<>();
+    List<String> citylist = new ArrayList<>();
+    CommonAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adjustment);
+        setContentView(R.layout.activity_adjustjob);
     }
 
     @Override
     protected void initView() {
+        iv_kuaqu = findViewByID_My(R.id.iv_kuaqu);
+        textView1 = findViewByID_My(R.id.textView1);
+        tv_code = findViewByID_My(R.id.tv_code);
         editText1 = findViewByID_My(R.id.editText1);
         editText2 = findViewByID_My(R.id.editText2);
-        editText3 = findViewByID_My(R.id.editText3);
         et_code = findViewByID_My(R.id.et_code);
-        tv_code = findViewByID_My(R.id.tv_code);
+        linearLayout = findViewByID_My(R.id.linearLayout);
+        view1 = findViewByID_My(R.id.view1);
+
+        recyclerView = findViewByID_My(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(AdjustJobActivity.this, 3));
 
     }
 
     @Override
     protected void initData() {
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        job = getIntent().getStringExtra("job");
+
+        titleView.setTitle("调整" + job.toUpperCase() + "市场");
+        textView1.setText("选择" + job.toUpperCase());
+        editText1.setHint("请选择" + job.toUpperCase());
+
+
         if (localUserInfo.getUserJob().equals("rm")) {
-            list_juese.add("CM");
-            editText1.setText("CM");
-        } else {
-            editText1.setText("BDM");
+            if (!job.equals("cm")) {
+                list_juese.add("CM");
+            }
         }
         list_juese.add("BDM");
         list_juese.add("BD");
+        editText2.setText(list_juese.get(itme_juese));
 
-        requestServer();
+        showSelectCity(idlist, citylist);
+
+
     }
 
-    @Override
-    public void requestServer() {
-        super.requestServer();
-        this.showLoadingPage();
-        params.put("role", editText1.getText().toString().toLowerCase());
-        requestStaff(params);
-    }
-
-    private void requestStaff(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Adjustment, params, headerMap, new CallBackUtil<SubordinateModel>() {
-            @Override
-            public SubordinateModel onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-                showErrorPage();
-                hideProgress();
-                myToast(err);
-            }
-
-            @Override
-            public void onResponse(SubordinateModel response) {
-                showContentPage();
-                hideProgress();
-//                list = response.getList();
-            }
-        });
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.editText1:
-                //选择角色
-                dialogList_juese(editText1);
+            case R.id.iv_kuaqu:
+                isKuaQu = !isKuaQu;
+                if (isKuaQu) {
+                    iv_kuaqu.setImageResource(R.mipmap.ic_xuanzhong);
+                    linearLayout.setVisibility(View.GONE);
+                    view1.setVisibility(View.GONE);
+                } else {
+                    iv_kuaqu.setImageResource(R.mipmap.ic_weixuanzhong);
+                    linearLayout.setVisibility(View.VISIBLE);
+                    view1.setVisibility(View.VISIBLE);
+                }
                 break;
-            case R.id.editText2:
+            case R.id.editText1:
                 //选择用户
-                Intent intent2 = new Intent(AdjustmentActivity.this, SelectStaffActivity.class);
+                Intent intent2 = new Intent(AdjustJobActivity.this, SelectStaffActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_STAFF);
-                bundle2.putString("role", editText1.getText().toString().toLowerCase());
+                bundle2.putString("role", job);
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_STAFF, bundle2);
                 break;
-            case R.id.editText3:
-                //选择新角色
-                dialogList_juese(editText3);
+            case R.id.editText2:
+                //选择角色
+                dialogList_juese(editText2);
                 break;
             case R.id.tv_code:
                 //获取验证码
@@ -136,7 +143,6 @@ public class AdjustmentActivity extends BaseActivity {
                 HashMap<String, String> params1 = new HashMap<>();
                 params1.put("mobile", localUserInfo.getPhonenumber());
                 params1.put("type", "37");
-//                params1.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                 RequestCode(params1);//获取验证码
                 break;
             case R.id.tv_confirm:
@@ -158,18 +164,68 @@ public class AdjustmentActivity extends BaseActivity {
             myToast("请选择用户");
             return false;
         }
-        role = editText3.getText().toString().trim();
+        role = editText2.getText().toString().trim();
         if (TextUtils.isEmpty(role)) {
             myToast("请选择新角色");
             return false;
         }
 
-        code = editText3.getText().toString().trim();
+        code = et_code.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
             myToast("请输入验证码");
             return false;
         }
         return true;
+    }
+
+    /**
+     * 展示选择的城市
+     */
+    private void showSelectCity(List<String> idlist, List<String> citylist) {
+        idlist.add("");
+        citylist.add("");
+        mAdapter = new CommonAdapter<String>
+                (AdjustJobActivity.this, R.layout.item_selectcity, citylist) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.tv);
+                ImageView iv_delete = holder.getView(R.id.iv_delete);
+                ImageView iv_add = holder.getView(R.id.iv_add);
+
+                if (position == citylist.size() - 1) {//最后一个
+                    tv.setVisibility(View.INVISIBLE);
+                    iv_delete.setVisibility(View.INVISIBLE);
+                    iv_add.setVisibility(View.VISIBLE);
+                } else {
+                    tv.setVisibility(View.VISIBLE);
+                    iv_delete.setVisibility(View.VISIBLE);
+                    iv_add.setVisibility(View.INVISIBLE);
+
+                    tv.setText(model);
+                }
+                iv_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        idlist.remove(position);
+                        citylist.remove(position);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+                iv_add.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //选择城市
+                        Intent intent2 = new Intent(AdjustJobActivity.this, SelectMyCityActivity.class);
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putInt("requestCode", Constant.SELECT_MYCITY);
+                        intent2.putExtras(bundle2);
+                        startActivityForResult(intent2, Constant.SELECT_MYCITY, bundle2);
+                    }
+                });
+
+            }
+        };
+        recyclerView.setAdapter(mAdapter);
     }
 
     /**
@@ -202,7 +258,7 @@ public class AdjustmentActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Adjustment, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.AdjustJob, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -253,11 +309,32 @@ public class AdjustmentActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case Constant.SELECT_STAFF:
-                    //选择城市
+                    //选择员工
                     if (data != null) {
                         Bundle bundle = data.getExtras();
                         adminId = bundle.getString("staffId");
-                        editText2.setText(bundle.getString("staffName"));
+                        editText1.setText(bundle.getString("staffName"));
+                    }
+                    break;
+                case Constant.SELECT_MYCITY:
+                    //选择城市
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+
+                        String postionIds = bundle.getString("postionIds");
+                        String postionCitys = bundle.getString("postionCitys");
+                        String[] idArr = postionIds.split(",");
+                        String[] cityArr = postionCitys.split(",");
+
+                        idlist.clear();
+                        citylist.clear();
+                        for (String s : idArr) {
+                            idlist.add(s);
+                        }
+                        for (String s : cityArr) {
+                            citylist.add(s);
+                        }
+                        showSelectCity(idlist, citylist);
                     }
                     break;
             }
@@ -280,7 +357,7 @@ public class AdjustmentActivity extends BaseActivity {
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
         CommonAdapter<String> adapter = new CommonAdapter<String>
-                (AdjustmentActivity.this, R.layout.item_help, list_juese) {
+                (AdjustJobActivity.this, R.layout.item_help, list_juese) {
             @Override
             protected void convert(ViewHolder holder, String model, int position) {
                 TextView tv = holder.getView(R.id.textView1);

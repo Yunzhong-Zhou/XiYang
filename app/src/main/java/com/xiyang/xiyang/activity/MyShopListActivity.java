@@ -254,12 +254,15 @@ public class MyShopListActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("我的商户");
-        titleView.showRightTextview("添加商户", true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommonUtil.gotoActivity(MyShopListActivity.this, AddShopActivity.class);
-            }
-        });
+        if (localUserInfo.getUserJob().equals("bd")){
+            titleView.showRightTextview("添加商户", true, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CommonUtil.gotoActivity(MyShopListActivity.this, AddShopActivity.class);
+                }
+            });
+        }
+
     }
 
     @Override

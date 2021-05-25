@@ -60,16 +60,15 @@ public class SelectMyCityActivity extends BaseActivity {
                     postionIds = postionIds.substring(0, postionIds.length() - 1);
                     postionCitys = postionCitys.substring(0, postionCitys.length() - 1);
                 }
-                if (requestCode == Constant.SELECT_MYCITY) {
+                if (requestCode == Constant.SELECT_MYCITY && !postionIds.equals("")) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putString("postionIds", postionIds);
                     bundle.putString("postionCitys", postionCitys);
-//                    bundle.putStringArrayList("imgList", (ArrayList<String>) response.getList());
                     resultIntent.putExtras(bundle);
                     SelectMyCityActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
-                }
+                }else myToast("请选择城市");
 
             }
         });
@@ -148,6 +147,32 @@ public class SelectMyCityActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("选择城市");
+        titleView.showRightTxtBtn("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String postionIds = "";
+                String postionCitys = "";
+                for (SelectMyCityModel.ListBean bean : list) {
+                    if (bean.isIsxuanzhong()) {
+                        postionIds += bean.getId() + ",";
+                        postionCitys += bean.getName() + ",";
+                    }
+                }
+                if (!postionIds.equals("")) {
+                    postionIds = postionIds.substring(0, postionIds.length() - 1);
+                    postionCitys = postionCitys.substring(0, postionCitys.length() - 1);
+                }
+                if (requestCode == Constant.SELECT_MYCITY && !postionIds.equals("")) {
+                    Intent resultIntent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("postionIds", postionIds);
+                    bundle.putString("postionCitys", postionCitys);
+                    resultIntent.putExtras(bundle);
+                    SelectMyCityActivity.this.setResult(RESULT_OK, resultIntent);
+                    finish();
+                }else myToast("请选择城市");
+            }
+        });
     }
 
     @Override

@@ -72,7 +72,7 @@ public class StaffDetailActivity extends BaseActivity {
             }
         });
         rv_tongji = findViewByID_My(R.id.rv_tongji);
-        rv_tongji.setLayoutManager(new GridLayoutManager(StaffDetailActivity.this, 4));
+        rv_tongji.setLayoutManager(new GridLayoutManager(StaffDetailActivity.this, 3));
         rv_info = findViewByID_My(R.id.rv_info);
         rv_info.setLayoutManager(new LinearLayoutManager(StaffDetailActivity.this));
         imageView1 = findViewByID_My(R.id.imageView1);
@@ -188,7 +188,7 @@ public class StaffDetailActivity extends BaseActivity {
                 list_info.add(new KeyValueModel("职业状态", response.getJoinAt()));
                 list_info.add(new KeyValueModel("类型", response.getJoinAt()));
                 list_info.add(new KeyValueModel("等级", response.getJoinAt()));
-                list_info.add(new KeyValueModel("上传头像", ""));
+                list_info.add(new KeyValueModel("头像", ""));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (StaffDetailActivity.this, R.layout.item_keyvalue, list_info) {
                     @Override

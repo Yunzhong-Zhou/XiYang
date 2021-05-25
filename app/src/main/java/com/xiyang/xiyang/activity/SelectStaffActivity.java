@@ -63,7 +63,7 @@ public class SelectStaffActivity extends BaseActivity {
                     postionIds = postionIds.substring(0, postionIds.length() - 1);
                     postionCitys = postionCitys.substring(0, postionCitys.length() - 1);
                 }*/
-                if (requestCode == Constant.SELECT_STAFF) {
+                if (requestCode == Constant.SELECT_STAFF && item >= 0) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putString("staffId", list.get(item).getId());
@@ -72,7 +72,7 @@ public class SelectStaffActivity extends BaseActivity {
                     resultIntent.putExtras(bundle);
                     SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
-                }
+                }else myToast("请选择员工");
 
             }
         });
@@ -200,11 +200,11 @@ public class SelectStaffActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("选择员工");
+        titleView.setTitle("选择"+role.toUpperCase());
         titleView.showRightTxtBtn("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (requestCode == Constant.SELECT_STAFF || item >= 0) {
+                if (requestCode == Constant.SELECT_STAFF && item >= 0) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putString("staffId", list.get(item).getId());
@@ -213,7 +213,7 @@ public class SelectStaffActivity extends BaseActivity {
                     resultIntent.putExtras(bundle);
                     SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
-                }
+                }else myToast("请选择"+role.toUpperCase());
             }
         });
     }

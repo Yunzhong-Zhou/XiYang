@@ -20,7 +20,6 @@ import com.xiyang.xiyang.model.MyTakeCashModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -40,7 +39,7 @@ import okhttp3.Response;
  * Created by Mr.Z on 2021/3/28.
  * 调整岗位
  */
-public class AdjustmentListActivity extends BaseActivity {
+public class AdjustJobListActivity extends BaseActivity {
     private RecyclerView recyclerView;
     List<MyTakeCashModel> list = new ArrayList<>();
     CommonAdapter<MyTakeCashModel> mAdapter;
@@ -56,7 +55,7 @@ public class AdjustmentListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adjustmentlist);
+        setContentView(R.layout.activity_adjustjoblist);
     }
 
     @Override
@@ -242,12 +241,12 @@ public class AdjustmentListActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("调整岗位列表");
-        titleView.showRightTextview("调整岗位", true, new View.OnClickListener() {
+        /*titleView.showRightTextview("调整岗位", true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.gotoActivity(AdjustmentListActivity.this, AdjustmentActivity.class);
+                CommonUtil.gotoActivity(AdjustJobListActivity.this, AdjustJobActivity.class);
             }
-        });
+        });*/
     }
 
     @Override
@@ -271,7 +270,7 @@ public class AdjustmentListActivity extends BaseActivity {
 
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(AdjustmentListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AdjustJobListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -298,7 +297,7 @@ public class AdjustmentListActivity extends BaseActivity {
         final List<String> list = new ArrayList<String>();
         list.add(getString(R.string.app_type_jiangxu));
         list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustmentListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustJobListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -337,7 +336,7 @@ public class AdjustmentListActivity extends BaseActivity {
 
     private void showPopupWindow2(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(AdjustmentListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(AdjustJobListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -367,7 +366,7 @@ public class AdjustmentListActivity extends BaseActivity {
         list.add(getString(R.string.app_type_yitongguo));
         list.add(getString(R.string.app_type_weitongguo));
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustmentListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(AdjustJobListActivity.this, list);
         adapter.setSelectItem(i2);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
