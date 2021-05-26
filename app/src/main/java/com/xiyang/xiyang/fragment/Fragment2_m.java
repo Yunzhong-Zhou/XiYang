@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.DispatchShopActivity;
+import com.xiyang.xiyang.activity.DispatchListActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
@@ -18,7 +18,8 @@ import com.xiyang.xiyang.utils.MyLogger;
  * 分派
  */
 public class Fragment2_m extends BaseFragment {
-    TextView textView1,textView2,textView3;
+    TextView textView1, textView2, textView3;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment2_m, container, false);
@@ -72,7 +73,7 @@ public class Fragment2_m extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        CommonUtil.setMargins(findViewByID_My(R.id.headView),0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
+        CommonUtil.setMargins(findViewByID_My(R.id.headView), 0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
 //        findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(getActivity()), 0, 0);
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
@@ -98,21 +99,22 @@ public class Fragment2_m extends BaseFragment {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.textView1:
                 //商户分派
-                CommonUtil.gotoActivity(getActivity(), DispatchShopActivity.class);
+                bundle.putInt("type_m", 1);
                 break;
             case R.id.textView2:
                 //门店分派
-                CommonUtil.gotoActivity(getActivity(), DispatchShopActivity.class);
+                bundle.putInt("type_m", 2);
                 break;
             case R.id.textView3:
                 //工单分派
-                CommonUtil.gotoActivity(getActivity(), DispatchShopActivity.class);
+                bundle.putInt("type_m", 3);
                 break;
-
         }
+        CommonUtil.gotoActivityWithData(getActivity(), DispatchListActivity.class, bundle);
     }
 
     @Override

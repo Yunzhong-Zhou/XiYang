@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Mr.Z on 2021/4/25.
  */
-public class Fragment3Model_m implements Serializable {
+public class ApproveContractListModel implements Serializable {
     private List<ListBean> list;
 
     public List<ListBean> getList() {

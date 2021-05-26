@@ -90,6 +90,8 @@ public class URLs {
     public static final String AdjustJob = HOST + API + "manage/change/role";
     //选择员工
     public static final String SelectStaff = HOST + API + "manage/subordinate";
+    //人事记录
+    public static final String PersonnelList = HOST + API + "manage/subordinate";
     /**
      * ********************************分派*****************************************
      */

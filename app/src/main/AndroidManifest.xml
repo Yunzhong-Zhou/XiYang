@@ -155,8 +155,8 @@
             android:name=".activity.DispatchActivity"
             android:label="分派" />
         <activity
-            android:name=".activity.DispatchShopActivity"
-            android:label="分派商户" />
+            android:name=".activity.DispatchListActivity"
+            android:label="分派列表" />
         <activity
             android:name=".activity.AssignActivity"
             android:label="指派" />
@@ -181,6 +181,9 @@
         <activity
             android:name=".activity.PersonnelActivity"
             android:label="人事记录" />
+        <activity
+            android:name=".activity.PersonnelListActivity"
+            android:label="人事记录列表" />
         <activity
             android:name=".activity.MyCityActivity"
             android:label="我的城市" />
@@ -283,6 +286,9 @@
             android:name=".activity.AffairDetailActivity"
             android:label="事务详情" />
         <!--审批-->
+        <activity
+            android:name=".activity.ApproveContractListActivity"
+            android:label="审批合同列表" />
         <activity
             android:name=".activity.ApproveDetailActivity"
             android:label="审批详情" />

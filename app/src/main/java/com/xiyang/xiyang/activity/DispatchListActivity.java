@@ -28,10 +28,10 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/5/7.
- * 分派商户
+ * 分派列表
  */
-public class DispatchShopActivity extends BaseActivity {
-    int type = 1;
+public class DispatchListActivity extends BaseActivity {
+    int type = 1,type_m = 1;//1、商户分派 2、门店分派 3、工单分派
     private RecyclerView recyclerView;
     List<Fragment2Model> list = new ArrayList<>();
     CommonAdapter<Fragment2Model> mAdapter;
@@ -42,7 +42,7 @@ public class DispatchShopActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dispatchshop);
+        setContentView(R.layout.activity_dispatchlist);
     }
 
     @Override
@@ -83,6 +83,7 @@ public class DispatchShopActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        type_m = getIntent().getIntExtra("type_m",1);
         requestServer();
     }
 
@@ -114,7 +115,7 @@ public class DispatchShopActivity extends BaseActivity {
 //                list2 = response.getCooperation_shop_list();
                 if (list.size() > 0) {
                     mAdapter = new CommonAdapter<Fragment2Model>
-                            (DispatchShopActivity.this, R.layout.item_dispatchshop, list) {
+                            (DispatchListActivity.this, R.layout.item_dispatchlist, list) {
                         @Override
                         protected void convert(ViewHolder holder, Fragment2Model model, int position) {
                             /*ImageView imageView1 = holder.getView(R.id.imageView1);
@@ -143,16 +144,16 @@ public class DispatchShopActivity extends BaseActivity {
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
 //                    bundle.putString("id",model.getId());
-                                    CommonUtil.gotoActivityWithData(DispatchShopActivity.this, ShopDetailActivity.class, bundle, false);
+                                    CommonUtil.gotoActivityWithData(DispatchListActivity.this, ShopDetailActivity.class, bundle, false);
 
                                     switch (type) {
                                         case 1:
                                             break;
                                         case 2:
-                                            CommonUtil.gotoActivityWithData(DispatchShopActivity.this, StoreDetailActivity.class, bundle, false);
+                                            CommonUtil.gotoActivityWithData(DispatchListActivity.this, StoreDetailActivity.class, bundle, false);
                                             break;
                                         case 3:
-                                            CommonUtil.gotoActivityWithData(DispatchShopActivity.this, WorkListDetailActivity.class, bundle, false);
+                                            CommonUtil.gotoActivityWithData(DispatchListActivity.this, WorkListDetailActivity.class, bundle, false);
                                             break;
                                     }
 
@@ -177,17 +178,17 @@ public class DispatchShopActivity extends BaseActivity {
                 break;
 
             case R.id.ll_tab1:
-                //待拜访
+                //待处理
                 type = 1;
                 changeUI();
                 break;
             case R.id.ll_tab2:
-                //待划转
+                //上报中
                 type = 2;
                 changeUI();
                 break;
             case R.id.ll_tab3:
-                //待调价
+                //已完成
                 type = 3;
                 changeUI();
                 break;

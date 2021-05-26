@@ -29,6 +29,7 @@ import com.xiyang.xiyang.fragment.Fragment3;
 import com.xiyang.xiyang.fragment.Fragment3_m;
 import com.xiyang.xiyang.fragment.Fragment4;
 import com.xiyang.xiyang.fragment.Fragment5;
+import com.xiyang.xiyang.fragment.Fragment5_m;
 import com.xiyang.xiyang.model.UpgradeModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -137,6 +138,8 @@ public class MainActivity extends BaseActivity {
             fragments.add(new Fragment1());
             fragments.add(new Fragment2());
             fragments.add(new Fragment3());
+            fragments.add(new Fragment4());
+            fragments.add(new Fragment5());
         }else {
             tabText[0]="管理";
             tabText[1]="分派";
@@ -151,9 +154,9 @@ public class MainActivity extends BaseActivity {
             fragments.add(new Fragment1_m());
             fragments.add(new Fragment2_m());
             fragments.add(new Fragment3_m());
+            fragments.add(new Fragment4());
+            fragments.add(new Fragment5_m());
         }
-        fragments.add(new Fragment4());
-        fragments.add(new Fragment5());
 
         /*String[] tabText = {getString(R.string.fragment1),
                 getString(R.string.fragment2),
