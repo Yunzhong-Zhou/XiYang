@@ -373,11 +373,16 @@ public class SelectAddressActivity extends BaseActivity {
         titleView.showRightTextview("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("longitude",lng);
-                bundle.putString("latitude",lat);
-                bundle.putString("addr",addr);
-                CommonUtil.gotoActivityWithData(SelectAddressActivity.this,AddStoreActivity.class,bundle,false);
+                if (!lng.equals("")){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("longitude",lng);
+                    bundle.putString("latitude",lat);
+                    bundle.putString("addr",addr);
+                    CommonUtil.gotoActivityWithData(SelectAddressActivity.this,AddStoreActivity.class,bundle,false);
+                }else {
+                    myToast("请选择地址");
+                }
+
             }
         });
     }
