@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.bumptech.glide.Glide;
 import com.cy.dialog.BaseDialog;
@@ -180,6 +181,8 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                         showProgress(true, getString(R.string.app_loading1));
                         params.clear();
                         params.put("name", name);
+                        params.put("fullName", "");
+                        params.put("level", type+"");
                         params.put("parentId", parentId);
                         params.put("storeId", model.getId());
                         requestUpData(params);
@@ -215,7 +218,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddRoom, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AddRoom, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -244,7 +247,8 @@ public class AddRoomNoManagementActivity extends BaseActivity {
         params.clear();
         params.put("parentId", s);
         params.put("storeId", model.getId());
-        OkhttpUtil.okHttpGet(URLs.RoomNoManagement, params, headerMap, new CallBackUtil<RoomNoManagementModel>() {
+        params.put("level", type+"");
+        OkhttpUtil.okHttpPostJson(URLs.RoomNoManagement, GsonUtils.toJson(params), headerMap, new CallBackUtil<RoomNoManagementModel>() {
             @Override
             public RoomNoManagementModel onParseResponse(Call call, Response response) {
                 return null;

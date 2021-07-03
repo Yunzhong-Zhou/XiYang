@@ -134,7 +134,7 @@ public class MainActivity extends BaseActivity {
         //选中时icon
         int[] selectIcon = {R.mipmap.tab1_1, R.mipmap.tab2_1, R.mipmap.tab3_1, R.mipmap.tab4_1, R.mipmap.tab5_1};
 
-        if (localUserInfo.getUserJob().equals("bd")){
+        if (localUserInfo.getUserJob().equals("BD")){
             fragments.add(new Fragment1());
             fragments.add(new Fragment2());
             fragments.add(new Fragment3());

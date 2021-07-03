@@ -7,61 +7,27 @@ import java.io.Serializable;
  */
 public class LoginModel implements Serializable {
     /**
-     * accessToken : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjAuMTA4XC9hcHBcL3VzZXJcL2xvZ2luXC9wYXNzd29yZCIsImlhdCI6MTYxODM4NzU1MywiZXhwIjoxNjIwMTg3NTUzLCJuYmYiOjE2MTgzODc1NTMsImp0aSI6IlZYeXFXQWJTNXJvR1g1VlciLCJzdWIiOjEyLCJwcnYiOiI2YmU1Zjk1Y2RkNWUwNTZlOTA3NzVkZDQ2MjZkMTI3MzEwODNlMzM0In0.z2_Hgn8kSyLFjQ5F_CP9XwQdaUb2TxrRAPxinmv0gNI
-     * tokenType : bearer
-     * expiresIn : 1800000
-     * roleType : bd
-     * mobile : 18306043086
-     * nickname : admin3
-     * head : http://zhitiekj.oo/head/head.png
+     * jobTitle : BD
+     * nickname : 1200020020003
+     * mobile : 1200020020003
+     * avatar :
+     * tokentype : jwt
+     * token : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4aXlhbmctdXNlciIsImlhdCI6MTYyNTAzOTg1OSwiZXhwIjoxNjI2MjQ5NDU5LCJpZCI6IjI1MGJhMmQwZWY4MDViMDliODU3ODRmMTJmZjUzNTZkYWUwNDBjMzUzMjU2ODUxNmQyOGNhZTFjNTgxMTc1MGEiLCJuaWNrbmFtZSI6IjEyMDAwMjAwMjAwMDMiLCJyb2xlVHlwZSI6IiIsInVzZXJUeXBlIjoiMSJ9.Hl-itCMS6-j4lT4zgC-r519WjWp-YyXNxju1jUXar6uwrv-qqluZgYK7leIT2oD9UeZ__fER3SgQfIZYVaCWwQ
      */
 
-    private String accessToken;
-    private String tokenType;
-    private String expiresIn;
-    private String roleType;
-    private String mobile;
+    private String jobTitle;
     private String nickname;
-    private String head;
+    private String mobile;
+    private String avatar;
+    private String tokentype;
+    private String token;
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getJobTitle() {
+        return jobTitle;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public String getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(String expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public String getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public String getNickname() {
@@ -72,11 +38,35 @@ public class LoginModel implements Serializable {
         this.nickname = nickname;
     }
 
-    public String getHead() {
-        return head;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setHead(String head) {
-        this.head = head;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getTokentype() {
+        return tokentype;
+    }
+
+    public void setTokentype(String tokentype) {
+        this.tokentype = tokentype;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

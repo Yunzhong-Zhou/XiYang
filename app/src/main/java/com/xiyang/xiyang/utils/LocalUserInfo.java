@@ -580,7 +580,7 @@ public class LocalUserInfo {
         if (!TextUtils.isEmpty(string)) {
             return string;
         }
-        return "86";
+        return "";
     }
 
     public String getPay() {

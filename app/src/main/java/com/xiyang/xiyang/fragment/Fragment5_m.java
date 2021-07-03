@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.BankCardSettingActivity;
+import com.xiyang.xiyang.activity.BankCardActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.MyIncomeActivity;
@@ -311,7 +311,7 @@ public class Fragment5_m extends BaseFragment {
                 break;
             case R.id.linearLayout14:
                 //绑定银行卡
-                CommonUtil.gotoActivity(getActivity(), BankCardSettingActivity.class, false);
+                CommonUtil.gotoActivity(getActivity(), BankCardActivity.class, false);
                 break;
             case R.id.linearLayout15:
                 //设置中心

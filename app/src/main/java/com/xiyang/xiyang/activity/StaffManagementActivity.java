@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -81,10 +82,10 @@ public class StaffManagementActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
-                params.put("title", title);
-                params.put("sort", sort);
-                params.put("earning", earning);
+                params.put("pageSize", "10");
+                params.put("keyWord", title);
+//                params.put("sort", sort);
+//                params.put("earning", earning);
                 params.put("storeId", storeId);
                 requestList(params);
             }
@@ -95,10 +96,10 @@ public class StaffManagementActivity extends BaseActivity {
                 //加载更多
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
-                params.put("title", title);
-                params.put("sort", sort);
-                params.put("earning", earning);
+                params.put("pageSize", "10");
+                params.put("keyWord", title);
+//                params.put("sort", sort);
+//                params.put("earning", earning);
                 params.put("storeId", storeId);
                 requestListMore(params);
             }
@@ -120,7 +121,7 @@ public class StaffManagementActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.StaffManagement, params, headerMap, new CallBackUtil<StaffManagementModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.StaffManagement, GsonUtils.toJson(params), headerMap, new CallBackUtil<StaffManagementModel>() {
             @Override
             public StaffManagementModel onParseResponse(Call call, Response response) {
                 return null;
@@ -192,7 +193,7 @@ public class StaffManagementActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<StaffManagementModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.StaffManagement, GsonUtils.toJson(params), headerMap, new CallBackUtil<StaffManagementModel>() {
             @Override
             public StaffManagementModel onParseResponse(Call call, Response response) {
                 return null;
@@ -259,7 +260,7 @@ public class StaffManagementActivity extends BaseActivity {
     }
     //删除
     private void requestDelete(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.DeleteStaff, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.DeleteStaff, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -290,10 +291,10 @@ public class StaffManagementActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("count", "10");
-        params.put("title", title);
-        params.put("sort", sort);
-        params.put("earning", earning);
+        params.put("pageSize", "10");
+        params.put("keyWord", title);
+//                params.put("sort", sort);
+//                params.put("earning", earning);
         params.put("storeId", storeId);
         requestList(params);
     }

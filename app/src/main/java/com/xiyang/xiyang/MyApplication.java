@@ -11,9 +11,7 @@ import android.os.Handler;
 import com.hjq.toast.ToastUtils;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
-import com.xdandroid.hellodaemon.DaemonEnv;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.TraceServiceImpl;
 import com.xiyang.xiyang.utils.changelanguage.LanguageUtil;
 import com.xiyang.xiyang.utils.changelanguage.SpUtil;
 
@@ -42,9 +40,9 @@ public class MyApplication extends Application {
 //        LogcatHelper.getInstance(this).start();//打印log
 
         //保活 需要在 Application 的 onCreate() 中调用一次 DaemonEnv.initialize()
-        DaemonEnv.initialize(this, TraceServiceImpl.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+       /* DaemonEnv.initialize(this, TraceServiceImpl.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         TraceServiceImpl.sShouldStopService = false;
-        DaemonEnv.startServiceMayBind(TraceServiceImpl.class);
+        DaemonEnv.startServiceMayBind(TraceServiceImpl.class);*/
 
         mContext = this;
         myApplication = this;

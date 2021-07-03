@@ -208,6 +208,58 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="2dp"
+                        android:text="验证码"
+                        android:textColor="@color/black1"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/editText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/edittext_bg"
+                        android:hint="@string/settransactionpassword_h5"
+                        android:inputType="number"
+                        android:paddingLeft="100dp"
+                        android:paddingRight="100dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black1"
+                        android:textColorHint="@color/black3"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:onClick="onClick"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="8dp"
+                        android:singleLine="true"
+                        android:text="@string/app_sendcode"
+                        android:textColor="@color/green"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/rl_leixing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

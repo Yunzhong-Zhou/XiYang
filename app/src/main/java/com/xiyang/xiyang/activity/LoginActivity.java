@@ -20,10 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.cy.dialog.BaseDialog;
 import com.maning.updatelibrary.InstallUtils;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.CodeModel;
@@ -53,7 +52,6 @@ import okhttp3.Response;
 
 
 /**
- * Created by fafukeji01 on 2017/4/25.
  * 登录
  */
 public class LoginActivity extends BaseActivity {
@@ -73,8 +71,6 @@ public class LoginActivity extends BaseActivity {
     //更新
     UpgradeModel model_up;
 
-    IWXAPI api;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +82,6 @@ public class LoginActivity extends BaseActivity {
 
 
         setSwipeBackEnable(false); //主 activity 可以调用该方法，禁止滑动删除
-
-        //注册微信api
-        api = WXAPIFactory.createWXAPI(this, "wx43d4928b7bbf4d5c", false);
-        api.registerApp("wx43d4928b7bbf4d5c");
     }
 
     @Override
@@ -149,9 +141,9 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     showProgress(true, "正在获取短信验证码...");
                     textView1.setClickable(false);
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("mobile", phonenum);
-                    params.put("type", "30");
+                    params.clear();
+                    params.put("phone", phonenum);
+                    params.put("type", "1");
                     RequestCode(params);//获取验证码
                 }
                 break;
@@ -159,21 +151,29 @@ public class LoginActivity extends BaseActivity {
             case R.id.textView2:
                 //确认登录
                 if (match()) {
-//                    LocalUserInfo.getInstance(this).setTime(System.currentTimeMillis() + "");
+                    this.showProgress(true, "正在登录，请稍候...");
+
                     textView2.setClickable(false);
                     params.clear();
-                    this.showProgress(true, "正在登录，请稍候...");
+
+                    /*headerMap.clear();
+                    headerMap.put("Authorization","Basic YWRtaW46YWRtaW4=");
+                    headerMap.put("isToken","false");*/
                     //测试数据
                     if (type == 1) {
-                        params.put("mobile", phonenum);
+                       /* params.put("phone", phonenum);
                         params.put("code", code);
-                        RequestLogin1(params);//登录
+                        params.put("grant_type", "sms_login");*/
+                        String url = "?phone=" + phonenum
+                                + "&grant_type=" + "sms_login"
+                                + "&code=" + code;
+                        RequestLogin1(params,URLs.Login1+url);//登录
                     } else {
                         params.put("username", phonenum);
                         params.put("password", password);
+                        params.put("type", "1");
                         RequestLogin2(params);//登录
                     }
-
                 }
 //                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
 //                CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
@@ -229,8 +229,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     //登录
-    private void RequestLogin1(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Login1, params, headerMap, new CallBackUtil<LoginModel>() {
+    private void RequestLogin1(Map<String, String> params,String url) {
+//        MyLogger.i(">>>"+GsonUtils.toJson(params));
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<LoginModel>() {
             @Override
             public LoginModel onParseResponse(Call call, Response response) {
                 return null;
@@ -250,9 +251,9 @@ public class LoginActivity extends BaseActivity {
                 hideProgress();
 
                 //保存Token
-                localUserInfo.setToken(response.getAccessToken());
+                localUserInfo.setToken(response.getToken());
                 //保存Token类型
-                localUserInfo.setTokenType(response.getTokenType());
+                localUserInfo.setTokenType(response.getTokentype());
                 //保存电话号码
                 localUserInfo.setPhoneNumber(response.getMobile());
                 //保存是否认证
@@ -260,21 +261,20 @@ public class LoginActivity extends BaseActivity {
                 //保存昵称
                 localUserInfo.setNickname(response.getNickname());
                 //保存头像
-                localUserInfo.setUserImage(response.getHead());
+                localUserInfo.setUserImage(response.getAvatar());
                 //保存职位
-                localUserInfo.setUserJob(response.getRoleType());//1、BD
+                localUserInfo.setUserJob(response.getJobTitle());//1、BD
 
                 MainActivity.isOver = false;
                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
                 CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-
             }
         });
     }
 
     //登录
     private void RequestLogin2(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Login2, params, headerMap, new CallBackUtil<LoginModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.Login2, GsonUtils.toJson(params), headerMap, new CallBackUtil<LoginModel>() {
             @Override
             public LoginModel onParseResponse(Call call, Response response) {
                 return null;
@@ -285,7 +285,6 @@ public class LoginActivity extends BaseActivity {
                 hideProgress();
                 textView2.setClickable(true);
                 myToast(err);
-
             }
 
             @Override
@@ -294,9 +293,9 @@ public class LoginActivity extends BaseActivity {
                 hideProgress();
 
                 //保存Token
-                localUserInfo.setToken(response.getAccessToken());
+                localUserInfo.setToken(response.getToken());
                 //保存Token类型
-                localUserInfo.setTokenType(response.getTokenType());
+                localUserInfo.setTokenType(response.getTokentype());
                 //保存电话号码
                 localUserInfo.setPhoneNumber(response.getMobile());
                 //保存是否认证
@@ -304,9 +303,9 @@ public class LoginActivity extends BaseActivity {
                 //保存昵称
                 localUserInfo.setNickname(response.getNickname());
                 //保存头像
-                localUserInfo.setUserImage(response.getHead());
+                localUserInfo.setUserImage(response.getAvatar());
                 //保存职位
-                localUserInfo.setUserJob(response.getRoleType());//1、BD
+                localUserInfo.setUserJob(response.getJobTitle());//1、BD
 
                 MainActivity.isOver = false;
                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
@@ -322,7 +321,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<CodeModel>() {
+        OkhttpUtil.okHttpPut(URLs.Code_yonghu, params, headerMap, new CallBackUtil<CodeModel>() {
             @Override
             public CodeModel onParseResponse(Call call, Response response) {
                 return null;
@@ -343,7 +342,7 @@ public class LoginActivity extends BaseActivity {
                 textView1.setClickable(true);
                 time.start();//开始计时
                 myToast(getString(R.string.app_sendcode_hint));
-                editText2.setText(response.getV_code());
+                editText2.setText(response.getCode());
             }
         });
     }

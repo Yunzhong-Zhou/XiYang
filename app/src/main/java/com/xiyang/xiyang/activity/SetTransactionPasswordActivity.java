@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.net.URLs;
@@ -47,7 +48,7 @@ public class SetTransactionPasswordActivity extends BaseActivity {
     @Override
     protected void initView() {
         editText1 = findViewByID_My(R.id.editText1);
-        editText1.setText("+"+localUserInfo.getMobile_State_Code()+"  "+localUserInfo.getPhonenumber());
+        editText1.setText(""+localUserInfo.getMobile_State_Code()+"  "+localUserInfo.getPhonenumber());
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
@@ -82,7 +83,7 @@ public class SetTransactionPasswordActivity extends BaseActivity {
                     HashMap<String, String> params = new HashMap<>();
 //                    params.put("qk", qk);
                     params.put("tradePassword", password1);//交易密码（不能小于6位数）
-                    params.put("code", code);//手机验证码
+                    params.put("verificationCode", code);//手机验证码
 //                    params.put("token", localUserInfo.getToken());
                     RequestSetTransactionPassword(params);//设置交易密码
                 }
@@ -91,7 +92,7 @@ public class SetTransactionPasswordActivity extends BaseActivity {
     }
 
     private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -117,7 +118,7 @@ public class SetTransactionPasswordActivity extends BaseActivity {
     }
 
     private void RequestSetTransactionPassword(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.TransactionPassword, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.TransactionPassword, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -132,7 +133,6 @@ public class SetTransactionPasswordActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 hideProgress();
-                MyLogger.i(">>>>>>>>>设置交易密码" + response);
                 myToast("交易密码设置成功");
                 /*JSONObject jObj;
                 try {

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.BankCardSettingActivity;
+import com.xiyang.xiyang.activity.BankCardActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyIncomeActivity;
 import com.xiyang.xiyang.activity.MyProfileActivity;
@@ -182,7 +182,7 @@ public class Fragment5 extends BaseFragment {
     }
 
     private void requestCenter(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment5, params, headerMap, new CallBackUtil<Fragment5Model>() {
+        OkhttpUtil.okHttpGet(URLs.Fragment5, params, headerMap, new CallBackUtil<Fragment5Model>() {
             @Override
             public Fragment5Model onParseResponse(Call call, Response response) {
                 return null;
@@ -300,7 +300,7 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout14:
                 //绑定银行卡
-                CommonUtil.gotoActivity(getActivity(), BankCardSettingActivity.class, false);
+                CommonUtil.gotoActivity(getActivity(), BankCardActivity.class, false);
                 break;
             case R.id.linearLayout15:
                 //设置中心

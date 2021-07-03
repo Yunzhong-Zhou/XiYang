@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -24,6 +25,7 @@ import com.wx.wheelview.widget.WheelView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.CommonModel;
+import com.xiyang.xiyang.model.IndustryModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -58,9 +60,9 @@ public class AddStoreActivity extends BaseActivity {
     EditText textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8,
             textView9, textView10, textView11, textView12, textView13, textView14;
     ImageView imageView1;
-    String merchantId = "", name = "", childName = "", account = "", contactName = "", contactPhone = "", instudryId = "",
-            postionId = "", address = "", businessHours = "", isTrsanfter = "1", storeScale = "", workerScale = "", deviceScale = "",
-            image = "", latitude = "", longitude = "";
+    String merchantId = "", name = "", childName = "", account = "", contactName = "", contactPhone = "", industryId = "",
+            address = "", businessHours = "", isTrsanfter = "1", storeScale = "", workerScale = "", deviceScale = "",
+            image = "", latitude = "", longitude = "",provinceId="",cityId="",areaId="";
     List<String> list_truefalse = new ArrayList<>();
     int itme_truefalse = 1;
     List<String> list_yingye = new ArrayList<>();
@@ -183,11 +185,11 @@ public class AddStoreActivity extends BaseActivity {
                 break;
             case R.id.textView7:
                 //商户行业
-                dialogList_hangye("");
+                dialogList_hangye("0");
                 break;
             case R.id.textView8:
                 //所在城市
-                dialogList_chengshi("");
+                dialogList_chengshi("0");
                 break;
             case R.id.textView11:
                 //是否划转
@@ -221,15 +223,17 @@ public class AddStoreActivity extends BaseActivity {
                                 params.put("deviceScale", deviceScale);
                                 params.put("address", address);
                                 params.put("image", image);
-                                params.put("instudryId", instudryId);
-                                params.put("postionId", postionId);
+                                params.put("industryId", industryId);
+                                params.put("provinceId", provinceId);
+                                params.put("cityId", cityId);
+                                params.put("areaId", areaId);
                                 params.put("latitude", latitude);
                                 params.put("longitude", longitude);
                                 requestUpData(params);
 
                             } else {
                                 hideProgress();
-                                myToast("图片上传失败"+result);
+                                myToast("图片上传失败" + result);
                             }
                         }
                     };
@@ -269,20 +273,20 @@ public class AddStoreActivity extends BaseActivity {
             myToast("请输入门店联系电话");
             return false;
         }
-        if (TextUtils.isEmpty(instudryId)) {
+        if (TextUtils.isEmpty(industryId)) {
             myToast("请选择行业");
             return false;
         }
-       /* if (TextUtils.isEmpty(provinceId)) {
+        if (TextUtils.isEmpty(provinceId)) {
             myToast("请选择省");
             return false;
         }
         if (TextUtils.isEmpty(cityId)) {
             myToast("请选择市");
             return false;
-        }*/
-        if (TextUtils.isEmpty(postionId)) {
-            myToast("请选择省市区");
+        }
+        if (TextUtils.isEmpty(areaId)) {
+            myToast("请选择区");
             return false;
         }
 
@@ -420,17 +424,17 @@ public class AddStoreActivity extends BaseActivity {
     /**
      * 选择行业
      */
-    List<CommonModel.ListBean> list_hangye = new ArrayList<>();
-    int maxIdex_hangye = 2;
+    List<IndustryModel.ListBean> list_hangye = new ArrayList<>();
+    int maxIdex_hangye = 2;//两级选择
     String string_hangye = "";
 
     private void dialogList_hangye(String parentId) {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("parentId", parentId);
-        OkhttpUtil.okHttpGet(URLs.Industry, params, headerMap, new CallBackUtil<CommonModel>() {
+//        params.put("parentId", parentId);
+        OkhttpUtil.okHttpGet(URLs.Industry + parentId, params, headerMap, new CallBackUtil<IndustryModel>() {
             @Override
-            public CommonModel onParseResponse(Call call, Response response) {
+            public IndustryModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -441,7 +445,7 @@ public class AddStoreActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CommonModel response) {
+            public void onResponse(IndustryModel response) {
                 hideProgress();
                 list_hangye = response.getList();
                 dialog.contentView(R.layout.dialog_list_center)
@@ -454,10 +458,10 @@ public class AddStoreActivity extends BaseActivity {
                         .show();
                 RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
                 rv_list.setLayoutManager(new LinearLayoutManager(AddStoreActivity.this));
-                CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
+                CommonAdapter<IndustryModel.ListBean> adapter = new CommonAdapter<IndustryModel.ListBean>
                         (AddStoreActivity.this, R.layout.item_help, list_hangye) {
                     @Override
-                    protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
+                    protected void convert(ViewHolder holder, IndustryModel.ListBean model, int position) {
                         TextView tv = holder.getView(R.id.textView1);
                         tv.setText(model.getName());
                     }
@@ -473,7 +477,7 @@ public class AddStoreActivity extends BaseActivity {
                                 string_hangye = string_hangye.substring(0, string_hangye.length() - 1);
                             }
                             textView7.setText(string_hangye);
-                            instudryId = list_hangye.get(position).getId();
+                            industryId = list_hangye.get(position).getId();
                             //初始化
                             string_hangye = "";
                             maxIdex_hangye = 2;
@@ -483,7 +487,6 @@ public class AddStoreActivity extends BaseActivity {
                             dialogList_hangye(list_hangye.get(position).getId());
                         }
                         adapter.notifyDataSetChanged();
-
                     }
 
                     @Override
@@ -501,14 +504,15 @@ public class AddStoreActivity extends BaseActivity {
      * 选择城市
      */
     List<CommonModel.ListBean> list_chengshi = new ArrayList<>();
-    int maxIdex_chengshi = 3;
+    int maxIdex_chengshi = 1;
     String string_chengshi = "";
 
     private void dialogList_chengshi(String parentId) {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("parentId", parentId);
-        OkhttpUtil.okHttpGet(URLs.Region, params, headerMap, new CallBackUtil<CommonModel>() {
+        params.put("id", parentId);
+        params.put("level", maxIdex_chengshi+"");
+        OkhttpUtil.okHttpPostJson(URLs.Region, GsonUtils.toJson(params), headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {
                 return null;
@@ -546,34 +550,35 @@ public class AddStoreActivity extends BaseActivity {
                 adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                        maxIdex_chengshi--;
                         string_chengshi = string_chengshi + list_chengshi.get(position).getName() + "-";
                         switch (maxIdex_chengshi) {
-                            case 0:
-                                //区
-                                //最后一个，赋值
+                            case 3:
+                                //区 -最后一个，赋值
                                 if (!string_chengshi.equals("")) {
                                     string_chengshi = string_chengshi.substring(0, string_chengshi.length() - 1);
                                 }
                                 textView8.setText(string_chengshi);
-                                postionId = list_chengshi.get(position).getId();
+                                areaId = list_chengshi.get(position).getId();
                                 //初始化
                                 string_chengshi = "";
-                                maxIdex_chengshi = 3;
+                                maxIdex_chengshi = 1;
 
                                 dialog.dismiss();
                                 break;
-                            case 1:
+                            case 2:
                                 //市
-                                postionId = list_chengshi.get(position).getId();
+                                cityId = list_chengshi.get(position).getId();
+                                maxIdex_chengshi = 3;
                                 dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
-                            case 2:
+                            case 1:
                                 //省
-                                postionId = list_chengshi.get(position).getId();
+                                provinceId = list_chengshi.get(position).getId();
+                                maxIdex_chengshi = 2;
                                 dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
                         }
+
                         adapter.notifyDataSetChanged();
 
                     }

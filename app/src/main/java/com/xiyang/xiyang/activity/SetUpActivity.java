@@ -44,7 +44,7 @@ public class SetUpActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.textView1:
                 //绑定银行卡
-                CommonUtil.gotoActivity(this, BankCardSettingActivity.class, false);
+                CommonUtil.gotoActivity(this, BankCardActivity.class, false);
                 break;
             case R.id.textView2:
                 //交易密码
@@ -65,6 +65,10 @@ public class SetUpActivity extends BaseActivity {
             case R.id.textView6:
                 //帮助中心
                 CommonUtil.gotoActivity(this, HelpCenterActivity.class, false);
+                break;
+            case R.id.textView7:
+                //通知公告
+                CommonUtil.gotoActivity(this, InformationActivity.class, false);
                 break;
             case R.id.tv_confirm:
                 //退出登录
@@ -88,7 +92,7 @@ public class SetUpActivity extends BaseActivity {
     }
 
     private void requestOut(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.LoginOut, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpDelete(URLs.LoginOut, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

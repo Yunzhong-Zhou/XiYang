@@ -5,8 +5,10 @@ package com.xiyang.xiyang.net;
  */
 public class URLs {
     //测试地址
-    public static String IMGHOST = "https://kqjhq.zhitiekeji.com";//图片地址
-    public static String HOST = "https://kqjhq.zhitiekeji.com";//接口地址
+//    public static String IMGHOST = "http://test.xiyangkeji.net";//图片地址
+//    public static String HOST = "http://test.xiyangkeji.net";//接口地址
+    public static String IMGHOST = "http://192.168.0.199:8082";//图片地址
+    public static String HOST = "http://192.168.0.199:8082";//接口地址
     //正式地址
 //    public static String IMGHOST = "http://img.leqi.cool/";//图片地址
 //    public static String HOST = "http://app.leqi.cool";//接口地址
@@ -26,22 +28,22 @@ public class URLs {
     public static final String Upgrade = HOST + API + "article/sys-upgrade";
     //引导页
     public static final String Guide = HOST + API + "app-banner/index";
-    //发送验证码
-    public static final String Code = HOST + API + "sms/send";
+    //发送验证码-个人中心
+    public static final String Code_yonghu = HOST + "/user/sms/verificationCode/issue";
     //验证码登录
-    public static final String Login1 = HOST + API + "user/login/sms";
+    public static final String Login1 = HOST + "/user/login";
     //登录
-    public static final String Login2 = HOST + API + "user/login/password";
+    public static final String Login2 = HOST + "/user/login";
     //绑定手机号
     public static final String BindingPhone = HOST + API + "/api/v1/user/binding_phone";
     //图片上传
-    public static final String UpFile = HOST + API + "/apiupload/picture";
+    public static final String UpFile = HOST + "/aliyunoss/file/manage/upload";
     //退出登录
-    public static final String LoginOut = HOST + API + "user/logout";
+    public static final String LoginOut = HOST + "/auth/token/logout";
     //行业列表（2级）
-    public static final String Industry = HOST + API + "industry";
+    public static final String Industry = HOST + "/baseinfo/industry/dropDown/";
     //省市区列表（3级）
-    public static final String Region = HOST + API + "region";
+    public static final String Region = HOST + "/baseinfo/china/region/dropDown";
     //公共参数获取
     public static final String Common = HOST + API + "common";
     //公共-仓库
@@ -55,7 +57,7 @@ public class URLs {
      */
     public static final String Fragment1 = HOST + API + "merchant";
     //添加商户
-    public static final String AddShop = HOST + API + "bd/merchant/add";
+    public static final String AddShop = HOST + "/bdservice/v2/Merchants";
     //商户列表
     public static final String ShopList = HOST + API + "merchant/record";
     //商户详情
@@ -121,15 +123,15 @@ public class URLs {
     //门店详情
     public static final String StoreDetail = HOST + API + "store/detail";
     //房号管理
-    public static final String RoomNoManagement = HOST + API + "store/room";
+    public static final String RoomNoManagement = HOST + "/applet/room/queryRoomByStoreIdAndParentId";
     //添加房号
-    public static final String AddRoom = HOST + API + "store/room/add";
+    public static final String AddRoom = HOST + "/applet/room/addStoreRoom";
     //修改房号
-    public static final String ChageRoom = HOST + API + "store/room/update";
+    public static final String ChageRoom = HOST + "/applet/room/editStoreRoom";
     //删除房号
-    public static final String DeleteRoom = HOST + API + "store/room/delete";
+    public static final String DeleteRoom = HOST + "/applet/room/deleteStoreRoom";
     //员工管理
-    public static final String StaffManagement = HOST + API + "store/worker";
+    public static final String StaffManagement = HOST + "/applet/user/queryUserList";
     //添加员工
     public static final String AddStaff_BD = HOST + API + "store/worker/add";
     //删除员工
@@ -185,9 +187,9 @@ public class URLs {
     //安装设备
     public static final String InstallDevice = HOST + API + "device/install/add";
     //调试设备
-    public static final String DebugDevice = HOST +API+ "device/properties";
+    public static final String DebugDevice = HOST + API + "device/properties";
     //控制设备
-    public static final String DeviceSetUp = HOST +API+ "device/operate";
+    public static final String DeviceSetUp = HOST + API + "device/operate";
     //换绑设备
     public static final String ChangeTieDevice = HOST + API + "device/exchange/add";
     //发布维修案例
@@ -211,15 +213,21 @@ public class URLs {
     /**
      * ********************************我的*****************************************
      */
-    public static final String Fragment5 = HOST + API + "user/center";
+    public static final String Fragment5 = HOST + "/user/center";
     //银行卡设置
-    public static final String BankCard = HOST + API + "user/bind/bank";
+    public static final String BankCard = HOST + "/finace/user/bank/get";
+    //银行列表
+    public static final String BankList = HOST + "/finace/banks/supportList";
+    //银行卡设置
+    public static final String BankCardSet = HOST + "/finace/user/bank/bind";
+    //个人信息
+    public static final String MyProfile = HOST + "/user/set/center/getAppPersonalData";
     //修改个人信息
-    public static final String ChangeProfile = HOST + API + "user/profile";
+    public static final String ChangeProfile = HOST + "/user/set/center/updateAppPersonalData";
     //修改登录密码
-    public static final String ChangePassword = HOST + API + "user/forget/password";
+    public static final String ChangePassword = HOST + "/user/set/center/setLoginPassword";
     //交易密码
-    public static final String TransactionPassword = HOST + API + "user/set/trade/password";
+    public static final String TransactionPassword = HOST + "/finace/user/tradePassword/setTradePassword";
     //我的收益
     public static final String MyIncome = HOST + API + "wallet";
     //收入列表
@@ -244,8 +252,8 @@ public class URLs {
     public static final String ShareProfitList = HOST + API + "order/profit";
     //我的设备列表
     public static final String MyDevice = HOST + API + "device/record";
-    //问答
-    public static final String StoreDetail_WenDa = HOST + API + "/api/v1/public/user_store_ques_ans_list";
+    //系统公告
+    public static final String Information = HOST + "/applet/notice/openPage";
     //门店服务分类列表
     public static final String ServiceList_Store = HOST + API + "/api/v1/public/get_store_service_content";
     //回复问答

@@ -129,9 +129,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
         headerMap.put("X-Version", URLs.XVERSION);//当前版本号（后台定）*/
 
 
-
-
-
         inflater = LayoutInflater.from(this);
         dialog = new BaseDialog(this);
 
@@ -286,18 +283,12 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
         if (!isFinishing()) {
             if (pd == null) {
                 pd = new ProgressDialog(this);
-                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                pd.setCancelable(flag);
-                pd.setCanceledOnTouchOutside(false);
-                pd.setMessage(message);
-                pd.show();
-            } else {
-                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                pd.setCancelable(flag);
-                pd.setCanceledOnTouchOutside(false);
-                pd.setMessage(message);
-                pd.show();
             }
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setCancelable(flag);
+            pd.setCanceledOnTouchOutside(false);
+            pd.setMessage(message);
+            pd.show();
         }
     }
 

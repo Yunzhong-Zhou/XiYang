@@ -11,12 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.blankj.utilcode.util.GsonUtils;
 import com.cy.dialog.BaseDialog;
 import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
@@ -27,7 +25,8 @@ import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.BankCardSettingModel;
+import com.xiyang.xiyang.model.BankCardModel;
+import com.xiyang.xiyang.model.BankListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -47,25 +46,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-
 /**
  * Created by zyz on 2017/9/16.
  * 银行卡设置
  */
-
 public class BankCardSettingActivity extends BaseActivity {
-    LinearLayout linearLayout_wu, linearLayout_you;
-
-    BankCardSettingModel model;
+    BankCardModel model;
     //    String qk = "";
     EditText textView1, textView3, editText1, editText2, editText3, editText4;
-    TextView textView4, textView5, tv_banknum, tv_kaihuname, tv_bankname;
-    ImageView ic_banklogo;
+    TextView textView4, textView5;
     private TimeCount time;
     String bank_address = "", bank_card_account = "", bank_card_proceeds_name = "", bank_title = "", code = "", password = "", bankId = "";
 
-    List<BankCardSettingModel.BankListBean> banklist = new ArrayList<>();
-    int i1 = 0;
+    List<BankListModel.ListBean> banklist = new ArrayList<>();
+    int i1 = -1;
 
     CityConfig cityConfig = null;
     //开户行控件 申明对象
@@ -137,32 +131,22 @@ public class BankCardSettingActivity extends BaseActivity {
         super.onResume();
         showProgress(true, getString(R.string.app_loading2));
         //获取收款设置
-
-        RequestGetCollection(params);
+        RequestBankList(params);
     }
 
     @Override
     protected void initView() {
-        linearLayout_wu = findViewByID_My(R.id.linearLayout_wu);
-        linearLayout_you = findViewByID_My(R.id.linearLayout_you);
-
         editText1 = findViewByID_My(R.id.editText1);
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
         editText4 = findViewByID_My(R.id.editText4);
 
-        ic_banklogo = findViewByID_My(R.id.ic_banklogo);
         textView1 = findViewByID_My(R.id.textView1);
 //        textView2 = findViewByID_My(R.id.textView2);
         textView3 = findViewByID_My(R.id.textView3);
-        textView3.setText("+" + localUserInfo.getMobile_State_Code() + "  " + localUserInfo.getPhonenumber());
+        textView3.setText("" + localUserInfo.getMobile_State_Code() + "  " + localUserInfo.getPhonenumber());
         textView4 = findViewByID_My(R.id.textView4);
         textView5 = findViewByID_My(R.id.textView5);
-
-        tv_banknum = findViewByID_My(R.id.tv_banknum);
-        tv_kaihuname = findViewByID_My(R.id.tv_kaihuname);
-        tv_bankname = findViewByID_My(R.id.tv_bankname);
-
     }
 
     @Override
@@ -170,45 +154,50 @@ public class BankCardSettingActivity extends BaseActivity {
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
 
 //        qk = getIntent().getStringExtra("qk");
-
+        model = (BankCardModel) getIntent().getSerializableExtra("BankCardModel");
+        if (model!=null && model.getBankCardNumber()!=null) {
+            bankId = model.getBankId();
+            textView1.setText(model.getBankName());//开户行
+            editText1.setText(model.getBankUserName());//开户名
+            editText2.setText(model.getBankCardNumber());//银行卡号
+        }
+        if (!model.isTradePasswordFlag()) {
+            showToast(getString(R.string.password_h2),
+                    getString(R.string.password_h5), getString(R.string.password_h6),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            CommonUtil.gotoActivity(BankCardSettingActivity.this, SetTransactionPasswordActivity.class, false);
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+        }
     }
 
     //获取收款设置
-    private void RequestGetCollection(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.BankCard, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
+    private void RequestBankList(HashMap<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.BankList, params, headerMap, new CallBackUtil<BankListModel>() {
             @Override
-            public BankCardSettingModel onParseResponse(Call call, Response response) {
+            public BankListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                if (err.contains(getString(R.string.password_h1))) {
-                    showToast(getString(R.string.password_h2),
-                            getString(R.string.password_h5), getString(R.string.password_h6),
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.dismiss();
-                                    CommonUtil.gotoActivity(BankCardSettingActivity.this, SetTransactionPasswordActivity.class, false);
-                                }
-                            }, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.dismiss();
-                                }
-                            });
-                } else {
-                    myToast(err);
-                }
+                myToast(err);
 
             }
 
             @Override
-            public void onResponse(BankCardSettingModel response) {
+            public void onResponse(BankListModel response) {
                 hideProgress();
-                model = response;
                 /*if (response.getMember().getTrade_password().equals("")) {
                     showToast("需设置交易密码后才可操作",
                             getString(R.string.app_confirm), getString(R.string.app_cancel),
@@ -226,41 +215,7 @@ public class BankCardSettingActivity extends BaseActivity {
                                 }
                             });
                 }*/
-                banklist = response.getBankList();
-
-                if (response.getBanks().size() > 0) {
-                    linearLayout_wu.setVisibility(View.GONE);
-                    linearLayout_you.setVisibility(View.VISIBLE);
-                    textView1.setText(response.getBanks().get(0).getBankTitle());//开户行
-                    editText1.setText(response.getBanks().get(0).getAccountName());//开户名
-                    editText2.setText(response.getBanks().get(0).getCard());//银行卡号
-
-                    tv_banknum.setText(response.getBanks().get(0).getCard());//银行卡号
-                    tv_kaihuname.setText(response.getBanks().get(0).getAccountName());//开户行
-                    tv_bankname.setText(response.getBanks().get(0).getBankTitle());//开户名
-                    Glide.with(BankCardSettingActivity.this)
-                            .load(response.getBanks().get(0).getIcon())
-                            .centerCrop()
-//                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
-                            .placeholder(R.mipmap.ic_yinlian)//加载站位图
-                            .error(R.mipmap.ic_yinlian)//加载失败
-                            .into(ic_banklogo);//加载图片
-
-                } else {
-                    linearLayout_wu.setVisibility(View.VISIBLE);
-                    linearLayout_you.setVisibility(View.GONE);
-                }
-                //显示开户行
-                /*String[] strings = response.getMember().getBank_address().split("#");
-                if (strings.length > 2) {
-                    textView2.setText(strings[0] + strings[1] + strings[2]);
-//                    editText7.setText(strings[2]);
-                    bank_address_temp = strings[0] + "#" + strings[1] + "#" + strings[2];
-                } else if (strings.length == 2) {
-                    textView2.setText(strings[0] + strings[1]);
-//                    editText7.setText("");
-                    bank_address_temp = strings[0] + "#" + strings[1];
-                }*/
+                banklist = response.getList();
             }
         });
     }
@@ -275,28 +230,28 @@ public class BankCardSettingActivity extends BaseActivity {
                 break;
             case R.id.textView4:
                 //获取验证码
-                showProgress(false, getString(R.string.app_sendcode_hint1));
+                showProgress(true, getString(R.string.app_sendcode_hint1));
                 textView4.setClickable(false);
                 HashMap<String, String> params1 = new HashMap<>();
-                params1.put("mobile", localUserInfo.getPhonenumber());
-                params1.put("type", "33");
+//                params1.put("mobile", localUserInfo.getPhonenumber());
+//                params1.put("type", "33");
 //                params1.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                 RequestCode(params1);//获取验证码
                 break;
             case R.id.textView5:
                 //提交
                 if (match()) {
-                    showProgress(false, getString(R.string.app_loading1));
+                    showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
 //                    params.put("qk", qk);
-                    params.put("bankCard", bank_card_account);//银行卡账号
-                    params.put("accountName", bank_card_proceeds_name);//银行卡收款人姓名
+                    params.put("bankCardNumber", bank_card_account);//银行卡账号
+                    params.put("bankUserName", bank_card_proceeds_name);//银行卡收款人姓名
                     params.put("bankId", bankId);//银行名称
-                    params.put("code", code);//手机验证码
-                    params.put("token", localUserInfo.getToken());
+                    params.put("verificationCode", code);//手机验证码
+                    params.put("phone", localUserInfo.getPhonenumber());
                     params.put("tradePassword", password);//交易密码（不能小于6位数）
 //                    params.put("bank_address", bank_address + "");//开户行
-                    RequestCollectionSetting(params);//
+                    RequestSetting(params);//
                 }
                 break;
            /* case R.id.textView2:
@@ -304,17 +259,12 @@ public class BankCardSettingActivity extends BaseActivity {
                 mPicker.showCityPicker();
                 break;*/
 
-            case R.id.iv_edit:
-                //编辑银行卡
-                linearLayout_wu.setVisibility(View.VISIBLE);
-                linearLayout_you.setVisibility(View.GONE);
-                break;
         }
     }
 
     //发送验证码
     private void RequestCode(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.Code_yonghu, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -340,10 +290,10 @@ public class BankCardSettingActivity extends BaseActivity {
     }
 
     //收款设置
-    private void RequestCollectionSetting(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.BankCard, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
+    private void RequestSetting(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPostJson(URLs.BankCardSet, GsonUtils.toJson(params), headerMap, new CallBackUtil<BankListModel>() {
             @Override
-            public BankCardSettingModel onParseResponse(Call call, Response response) {
+            public BankListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -371,7 +321,7 @@ public class BankCardSettingActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(BankCardSettingModel response) {
+            public void onResponse(BankListModel response) {
 //                hideProgress();
                 /*if (response != null && response.getCode() == 1) {
                     showToast(getString(R.string.password_h2),
@@ -476,19 +426,30 @@ public class BankCardSettingActivity extends BaseActivity {
      */
     private void dialogList_bank() {
         dialog.contentView(R.layout.dialog_list_top)
+                /*.layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))*/
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                        CommonUtil.dip2px(BankCardSettingActivity.this, 400)))
                 .animType(BaseDialog.AnimInType.BOTTOM)
                 .canceledOnTouchOutside(true)
                 .gravity(Gravity.TOP)
                 .dimAmount(0.5f)
                 .show();
+        /*dialog.contentView(R.layout.dialog_list_center)
+//                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        CommonUtil.dip2px(BankCardSettingActivity.this, 400)))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.TOP)
+                .dimAmount(0.5f)
+                .show();*/
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<BankCardSettingModel.BankListBean> adapter = new CommonAdapter<BankCardSettingModel.BankListBean>
+        CommonAdapter<BankListModel.ListBean> adapter = new CommonAdapter<BankListModel.ListBean>
                 (BankCardSettingActivity.this, R.layout.item_help, banklist) {
             @Override
-            protected void convert(ViewHolder holder, BankCardSettingModel.BankListBean model, int position) {
+            protected void convert(ViewHolder holder, BankListModel.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
                 tv.setText(model.getName());
                 if (i1 == position)

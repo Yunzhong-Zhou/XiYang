@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
@@ -37,6 +39,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +60,8 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class AddStaffActivity_BD extends BaseActivity {
     ImageView imageView1;
     RelativeLayout rl_xingming, rl_xingbie, rl_zhanghao, rl_lianxidianhua, rl_bumen, rl_leixing, rl_chengshi;
-    EditText tv_xingming, tv_xingbie, tv_zhanghao, tv_lianxidianhua, tv_chengshi, tv_leixing;
+    EditText tv_xingming, tv_xingbie, tv_zhanghao, tv_lianxidianhua, tv_chengshi, tv_leixing,editText1;
+    TextView textView1;
 
     String account = "", name = "", head = "", sex = "1", contactPhone = "", postionIds = "",
             type = "1", storeId = "", department = "", code = "";
@@ -68,6 +72,9 @@ public class AddStaffActivity_BD extends BaseActivity {
     int item_type = 0;
 
     File imgfile = null;
+
+    private TimeCount time;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +101,30 @@ public class AddStaffActivity_BD extends BaseActivity {
 
         rl_chengshi = findViewByID_My(R.id.rl_chengshi);
 
+        editText1 = findViewByID_My(R.id.editText1);
+        editText1.setText("+"+localUserInfo.getMobile_State_Code()+"  "+localUserInfo.getPhonenumber());
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        textView1 = findViewByID_My(R.id.textView1);
+        textView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                account = localUserInfo.getPhonenumber();
+                if (TextUtils.isEmpty(account)) {
+                    Toast.makeText(AddStaffActivity_BD.this, getString(R.string.settransactionpassword_h3), Toast.LENGTH_SHORT).show();
+                } else {
+                    /*String string = "?mobile=" + localUserInfo.getPhonenumber() +
+                            "&type=" + "5" +
+                            "&mobile_state_code=" + localUserInfo.getMobile_State_Code();*/
+                    AddStaffActivity_BD.this.showProgress(true, getString(R.string.app_sendcode_hint1));
+                    textView1.setClickable(false);
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("mobile", localUserInfo.getPhonenumber());
+                    params.put("type", "31");
+//                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
+                    RequestCode(params);//获取验证码
+                }
+            }
+        });
     }
 
     @Override
@@ -159,6 +190,29 @@ public class AddStaffActivity_BD extends BaseActivity {
 
         }
     }
+    private void RequestCode(Map<String, String> params) {
+        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                textView1.setClickable(true);
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                hideProgress();
+                time.start();
+                myToast(getString(R.string.app_sendcode_hint));
+            }
+        });
+
+    }
 
     private boolean match() {
         name = tv_xingming.getText().toString().trim();
@@ -169,6 +223,11 @@ public class AddStaffActivity_BD extends BaseActivity {
         account = tv_lianxidianhua.getText().toString().trim();
         if (TextUtils.isEmpty(account)) {
             myToast("请输入联系电话");
+            return false;
+        }
+        code = editText1.getText().toString().trim();
+        if (TextUtils.isEmpty(code)) {
+            myToast(getString(R.string.settransactionpassword_h5));
             return false;
         }
         department = tv_leixing.getText().toString().trim();
@@ -189,7 +248,24 @@ public class AddStaffActivity_BD extends BaseActivity {
         titleView.setTitle("添加新员工");
 
     }
+    //获取验证码倒计时
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
 
+        @Override
+        public void onFinish() {//计时完毕时触发
+            textView1.setText(getString(R.string.app_reacquirecode));
+            textView1.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+            textView1.setClickable(false);
+            textView1.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
+        }
+    }
     /**
      * *****************************************选择图片********************************************
      */

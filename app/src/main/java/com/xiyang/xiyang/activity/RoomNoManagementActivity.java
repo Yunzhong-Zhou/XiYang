@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.cy.dialog.BaseDialog;
 import com.liaoinstan.springview.widget.SpringView;
@@ -75,7 +76,7 @@ public class RoomNoManagementActivity extends BaseActivity {
             public void onRefresh() {
                 params.put("parentId", parentId);
                 params.put("storeId", model_sdm.getId());
-//        params.put("type", "all");
+                params.put("level", type+"");
                 request(params);
             }
 
@@ -119,12 +120,12 @@ public class RoomNoManagementActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         params.put("parentId", parentId);
         params.put("storeId", model_sdm.getId());
-//        params.put("type", "all");
+        params.put("level", type+"");
         request(params);
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.RoomNoManagement, params, headerMap, new CallBackUtil<RoomNoManagementModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.RoomNoManagement, GsonUtils.toJson(params), headerMap, new CallBackUtil<RoomNoManagementModel>() {
             @Override
             public RoomNoManagementModel onParseResponse(Call call, Response response) {
                 return null;
@@ -253,7 +254,7 @@ public class RoomNoManagementActivity extends BaseActivity {
                                             dialog.dismiss();
                                             showProgress(false, getString(R.string.app_loading1));
                                             params.clear();
-                                            params.put("id", list.get(position).getId());
+                                            params.put("storeRoomId", list.get(position).getId());
                                             params.put("storeId", model_sdm.getId());
                                             requestChange(params, URLs.DeleteRoom, 2);//删除
                                         }
@@ -467,10 +468,10 @@ public class RoomNoManagementActivity extends BaseActivity {
 
                     showProgress(false, getString(R.string.app_loading1));
                     params.clear();
-                    params.put("id", id);
+                    params.put("storeRoomId", id);
                     params.put("name", textView2.getText().toString().trim());
-                    params.put("parentId", parentId);
-                    params.put("storeId", model_sdm.getId());
+//                    params.put("parentId", parentId);
+//                    params.put("storeId", model_sdm.getId());
                     requestChange(params, URLs.ChageRoom, 1);//修改
                 } else {
                     myToast(hint);
@@ -495,7 +496,7 @@ public class RoomNoManagementActivity extends BaseActivity {
     }
 
     private void requestChange(Map<String, String> params, String url, int i) {
-        OkhttpUtil.okHttpPost(url, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

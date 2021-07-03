@@ -72,57 +72,57 @@ public abstract class CallBackUtil<T> {
             if (!string.equals("")) {
                 MyLogger.i("数据返回onSeccess", string);
                 JSONObject mJsonObject = new JSONObject(string);
-                int result_code = mJsonObject.getInt("code");
-
-                //保存后台返回的最新时间戳
-                LocalUserInfo.getInstance(MyApplication.getContext()).setTime(mJsonObject.getString("serverTime"));
-
-                switch (result_code) {
-                    case 0:
-                        //数据请求成功-解析数据
-                        if (string.indexOf("data") != -1) {
-                            // TODO 有data数据 -解析data
-                            String result = mJsonObject.getString("data");
-                            if (mType == String.class) {//模型为string直接返回data数据
-                                mMainHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
+                if (mJsonObject.has("code")){
+                    //数据是否包含code
+                    int result_code = mJsonObject.getInt("code");
+                    //保存后台返回的最新时间戳
+//                LocalUserInfo.getInstance(MyApplication.getContext()).setTime(mJsonObject.getString("serverTime"));
+                    switch (result_code) {
+                        case 0:
+                            //数据请求成功-解析数据
+                            if (string.indexOf("data") != -1) {
+                                // TODO 有data数据 -解析data
+                                String result = mJsonObject.getString("data");
+                                if (mType == String.class) {//模型为string直接返回data数据
+                                    mMainHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
 //                                    T obj = onParseResponse(call, response);
-                                        onResponse((T) result);
-                                    }
-                                });
+                                            onResponse((T) result);
+                                        }
+                                    });
+                                } else {
+                                    mMainHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Object o = mGson.fromJson(result, mType);
+                                            onResponse((T) o);
+                                        }
+                                    });
+                                }
                             } else {
-                                mMainHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Object o = mGson.fromJson(result, mType);
-                                        onResponse((T) o);
-                                    }
-                                });
-                            }
-                        } else {
-                            //TODO 无data数据 -解析message
-                            if (string.indexOf("message") != -1) {
-                                //TODO 判断有无message数据 -解析message
-                                String msg = mJsonObject.getString("message");
-                                mMainHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
+                                //TODO 无data数据 -解析message
+                                if (string.indexOf("msg") != -1) {
+                                    //TODO 判断有无message数据 -解析message
+                                    String msg = mJsonObject.getString("msg");
+                                    mMainHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
 //                                    T obj = onParseResponse(call, response);
-                                        onResponse((T) msg);
-                                    }
-                                });
-                            }else {
-                                mMainHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
+                                            onResponse((T) msg);
+                                        }
+                                    });
+                                }else {
+                                    mMainHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
 //                                    T obj = onParseResponse(call, response);
-                                        onResponse((T) "请求成功");
-                                    }
-                                });
+                                            onResponse((T) "请求成功");
+                                        }
+                                    });
+                                }
                             }
-                        }
-                        break;
+                            break;
                     /*case 600:
                     case 800:
                         mMainHandler.post(new Runnable() {
@@ -132,39 +132,68 @@ public abstract class CallBackUtil<T> {
                             }
                         });
                         break;*/
-                    case 50003:
-                    case 40002:
-                        //会员token无效 - 跳转登录
-                        ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                        LocalUserInfo.getInstance(MyApplication.getContext()).setUserHash("");
-                        CommonUtil.gotoActivity(MyApplication.getContext(), LoginActivity.class);
-                        break;
-                    case 50007:
-                        //请求时误差时间超时
-                        mMainHandler.post(new Runnable() {
+                        case 50003:
+                        case 40002:
+                            //会员token无效 - 跳转登录
+                            ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
+                            LocalUserInfo.getInstance(MyApplication.getContext()).setUserHash("");
+                            CommonUtil.gotoActivity(MyApplication.getContext(), LoginActivity.class);
+
+                        /*OkhttpUtil.okHttpPost(URLs.Login1, params, new CallBackUtil<LoginModel>() {
                             @Override
-                            public void run() {
-                                onFailure(call, null, "签名验证时间戳误差大，请刷新再试");
+                            public LoginModel onParseResponse(Call call, Response response) {
+                                return null;
                             }
-                        });
-                        break;
+
+                            @Override
+                            public void onFailure(Call call, Exception e, String err) {
+
+                            }
+
+                            @Override
+                            public void onResponse(LoginModel response) {
+
+                            }
+                        });*/
+                            break;
+                        case 50007:
+                            //请求时误差时间超时
+                            mMainHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onFailure(call, null, "签名验证时间戳误差大，请刷新再试");
+                                }
+                            });
+                            break;
 
 //                    case 40004:
                         //TODO 没有数据、提交失败 （有冲突，走失败逻辑提示message信息，请求列表数据时，不要提示）
-                    default:
-                        //数据请求失败
-                        String msg = mJsonObject.getString("message");
-                        mMainHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!msg.equals(""))
-                                    onFailure(call, null, msg.trim());
+                        default:
+                            //数据请求失败
+                            String msg = mJsonObject.getString("msg");
+                            mMainHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!msg.equals(""))
+                                        onFailure(call, null, msg.trim());
                                 /*else
                                     onFailure(call, null, "数据请求失败");*/
-                            }
-                        });
-                        break;
+                                }
+                            });
+                            break;
+                    }
                 }
+
+                /*if (mJsonObject.has("token")) {
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Object o = mGson.fromJson(string, mType);
+                            onResponse((T) o);
+                        }
+                    });
+                }*/
+
 
             } else {
                 //如果数据为空

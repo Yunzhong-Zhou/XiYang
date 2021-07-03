@@ -14,7 +14,6 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.utils.LocalUserInfo;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.view.LoadingLayout;
 import com.xiyang.xiyang.view.MyDefaultFooter;
 import com.xiyang.xiyang.view.MyDefaultHeader;
@@ -158,19 +157,15 @@ public abstract class BaseFragment extends Fragment implements IBaseView_Respons
 
     @Override
     public void showProgress(boolean flag, String message) {
-        MyLogger.i("showProgress");
         if (!getActivity().isFinishing()) {
             if (pd == null) {
                 pd = new ProgressDialog(getActivity());
-                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                pd.setCancelable(flag);
-                pd.setCanceledOnTouchOutside(false);
-                pd.setMessage(message);
-                pd.show();
-            } else {
-                pd.setMessage(message);
-                pd.show();
             }
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setCancelable(flag);
+            pd.setCanceledOnTouchOutside(false);
+            pd.setMessage(message);
+            pd.show();
         }
     }
 

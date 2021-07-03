@@ -10,13 +10,13 @@ public class CodeModel implements Serializable {
      * v_code : 251659
      */
 
-    private String v_code;
+    private String code;
 
-    public String getV_code() {
-        return v_code;
+    public String getCode() {
+        return code;
     }
 
-    public void setV_code(String v_code) {
-        this.v_code = v_code;
+    public void setCode(String code) {
+        this.code = code;
     }
 }

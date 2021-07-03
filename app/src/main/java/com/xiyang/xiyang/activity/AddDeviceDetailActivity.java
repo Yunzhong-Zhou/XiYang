@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.BankCardSettingModel;
+import com.xiyang.xiyang.model.BankListModel;
 import com.xiyang.xiyang.model.Fragment2Model;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -237,9 +237,9 @@ public class AddDeviceDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.BankCard, params, headerMap, new CallBackUtil<BankCardSettingModel>() {
+        OkhttpUtil.okHttpGet(URLs.BankCard, params, headerMap, new CallBackUtil<BankListModel>() {
             @Override
-            public BankCardSettingModel onParseResponse(Call call, Response response) {
+            public BankListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -250,7 +250,7 @@ public class AddDeviceDetailActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(BankCardSettingModel response) {
+            public void onResponse(BankListModel response) {
 //                hideProgress();
 //                model = response;
 

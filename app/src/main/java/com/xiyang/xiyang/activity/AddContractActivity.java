@@ -1577,7 +1577,7 @@ public class AddContractActivity extends BaseActivity {
                                 CommonUtil.dip2px(AddContractActivity.this, 400)))
                         .animType(BaseDialog.AnimInType.BOTTOM)
                         .canceledOnTouchOutside(true)
-                        .gravity(Gravity.CENTER)
+                        .gravity(Gravity.TOP)
                         .dimAmount(0.5f)
                         .show();
                 RecyclerView rv_list = dialog.findViewById(R.id.rv_list);

@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
@@ -22,7 +25,6 @@ import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -46,7 +48,8 @@ public class MyProfileActivity extends BaseActivity {
 
     ImageView imageView1;
     EditText editText1, editText2, editText3, editText4, editText5, editText6;
-
+    TextView textView;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,8 @@ public class MyProfileActivity extends BaseActivity {
         editText5 = findViewByID_My(R.id.editText5);
         editText6 = findViewByID_My(R.id.editText6);
 
+        textView = findViewByID_My(R.id.textView);
+        relativeLayout = findViewByID_My(R.id.relativeLayout);
     }
 
     @Override
@@ -104,7 +109,7 @@ public class MyProfileActivity extends BaseActivity {
     }
 
     private void requestInfo(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.ChangeProfile, params, headerMap, new CallBackUtil<MyProfileModel>() {
+        OkhttpUtil.okHttpPost(URLs.MyProfile, params, headerMap, new CallBackUtil<MyProfileModel>() {
             @Override
             public MyProfileModel onParseResponse(Call call, Response response) {
                 return null;
@@ -121,28 +126,61 @@ public class MyProfileActivity extends BaseActivity {
                 hideProgress();
                 model = response;
                 //头像
-                /*Glide.with(MyProfileActivity.this)
-                        .load(URLs.IMGHOST + response.getHead())
+                Glide.with(MyProfileActivity.this)
+                        .load(response.getAvatar())
                         .centerCrop()
 //                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.headimg)//加载失败
                         .into(imageView1);//加载图片
 
-                //手机号
-//                textView1.setText("+" + localUserInfo.getMobile_State_Code() + "  " + response.getMobile());
                 //昵称
-                editText1.setText(response.getNickname());
-                //邮箱
-                editText2.setText(response.getEmail());
+                editText1.setText(response.getName());
+                //手机号
+                editText2.setText("" + localUserInfo.getMobile_State_Code() + response.getPhone());
+                //性别
+                switch (response.getGender()) {
+                    case "1":
+                        editText3.setText("男");
+                        break;
+                    case "2":
+                        editText3.setText("女");
+                        break;
+                    default:
+                        editText3.setText("未知");
+                        break;
+                }
+                //所属BDM
+                relativeLayout.setVisibility(View.VISIBLE);
+                switch (localUserInfo.getUserJob()){
+                    case "BD":
+                        textView.setText("所属BDM");
+                        editText4.setText(response.getBelongingBDM());
+                        break;
+                    case "BDM":
+                        textView.setText("所属CM");
+                        editText4.setText(response.getBelongingCM());
+                        break;
+                    case "CM":
+                        textView.setText("所属RM");
+                        editText4.setText(response.getBelongingRM());
+                        break;
+                    default:
+                        relativeLayout.setVisibility(View.GONE);
+                        break;
+                }
+                //所属城市
+                editText5.setText(response.getBelongingRegion());
+                //加入时间
+                editText6.setText(response.getJoinTime());
 
-                localUserInfo.setPhoneNumber(response.getMobile());
-                localUserInfo.setNickname(response.getNickname());
+
+                localUserInfo.setPhoneNumber(response.getPhone());
+                localUserInfo.setNickname(response.getName());
 //                localUserInfo.setInvuteCode(response.getInvite_code());
-                localUserInfo.setEmail(response.getEmail());
-                localUserInfo.setUserImage(response.getHead());
+//                localUserInfo.setEmail(response.getEmail());
+                localUserInfo.setUserImage(response.getAvatar());
 
-               */
             }
         });
     }
@@ -224,7 +262,42 @@ public class MyProfileActivity extends BaseActivity {
                 imgfile = FileUtil.bytesToImageFile(MyProfileActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
 
-                new UpFileToQiNiuUtil(MyProfileActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                //上传头像
+                Map<String, File> fileMap = new HashMap<>();
+                fileMap.put("file", imgfile);
+                params.clear();
+                OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
+                    @Override
+                    public String onParseResponse(Call call, Response response) {
+                        return null;
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Exception e, String err) {
+                        hideProgress();
+                        myToast("图片上传失败" + err);
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//                        hideProgress();
+                        Glide.with(MyProfileActivity.this)
+                                .load(response)
+                                .centerCrop()
+//                                    .apply(RequestOptions.bitmapTransform(new
+//                                            RoundedCorners(CommonUtil.dip2px(MyProfileActivity.this, 10))))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.headimg)//加载失败
+                                .into(imageView1);//加载图片
+
+                        params.put("avatar", response);
+                        params.put("name", localUserInfo.getNickname());
+                        requestUpFile(params);
+                    }
+                });
+
+
+                /*new UpFileToQiNiuUtil(MyProfileActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                     @Override
                     public void complete(boolean isok, String result, String url) {
 //                        hideProgress();
@@ -248,13 +321,14 @@ public class MyProfileActivity extends BaseActivity {
                             myToast(result);
                         }
                     }
-                };
+                };*/
             }
         }
 
     }
-    private void RequestUpFile(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.ChangeProfile, params, headerMap, new CallBackUtil<String>() {
+
+    private void requestUpFile(Map<String, String> params) {
+        OkhttpUtil.okHttpPostJson(URLs.ChangeProfile, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -268,9 +342,8 @@ public class MyProfileActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response) {
-//                myToast("头像修改成功");
+                myToast("头像修改成功");
                 hideProgress();
-
             }
         });
     }

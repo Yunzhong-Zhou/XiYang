@@ -232,7 +232,7 @@ public class AdjustJobActivity extends BaseActivity {
      * 发送验证码
      */
     private void RequestCode(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

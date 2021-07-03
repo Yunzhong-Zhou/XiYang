@@ -333,6 +333,18 @@
             android:name=".activity.AboutActivity"
             android:label="关于我们" />
         <activity
+            android:name=".activity.InformationActivity"
+            android:label="系统公告" />
+        <activity
+            android:name=".activity.WebHTMLActivity"
+            android:label="WebHTML" />
+        <activity
+            android:name=".activity.WebContentActivity"
+            android:label="网页详情" />
+        <activity
+            android:name=".activity.BankCardActivity"
+            android:label="绑定银行卡" />
+        <activity
             android:name=".activity.BankCardSettingActivity"
             android:label="银行卡设置" />
         <activity

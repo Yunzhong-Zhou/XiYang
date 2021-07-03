@@ -191,7 +191,7 @@ public class TakeCashActivity extends BaseActivity {
                 break;
             case R.id.textView3:
                 Bundle bundle = new Bundle();
-                CommonUtil.gotoActivityWithData(this, BankCardSettingActivity.class, bundle, false);
+                CommonUtil.gotoActivityWithData(this, BankCardActivity.class, bundle, false);
 
                /* if (money_type == 1) {
                     bundle.putInt("type", 1);
@@ -251,7 +251,7 @@ public class TakeCashActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     dialog.dismiss();
-                                    CommonUtil.gotoActivity(TakeCashActivity.this, BankCardSettingActivity.class, false);
+                                    CommonUtil.gotoActivity(TakeCashActivity.this, BankCardActivity.class, false);
                                 }
                             }, new View.OnClickListener() {
                                 @Override
@@ -340,7 +340,7 @@ public class TakeCashActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     dialog.dismiss();
-                                    CommonUtil.gotoActivity(TakeCashActivity.this, BankCardSettingActivity.class, false);
+                                    CommonUtil.gotoActivity(TakeCashActivity.this, BankCardActivity.class, false);
                                 }
                             }, new View.OnClickListener() {
                                 @Override
@@ -361,7 +361,7 @@ public class TakeCashActivity extends BaseActivity {
     }
 
     private void RequestCode(HashMap<String, String> params, final TextView tv, final TextView tv3) {
-        OkhttpUtil.okHttpPost(URLs.Code, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

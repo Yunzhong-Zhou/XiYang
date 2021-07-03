@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -22,6 +23,7 @@ import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.CommonModel;
+import com.xiyang.xiyang.model.IndustryModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -29,13 +31,13 @@ import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,17 +97,54 @@ public class AddShopActivity extends BaseActivity {
                 break;
             case R.id.textView6:
                 //商户行业
-                dialogList_hangye("");
+                dialogList_hangye("0");
                 break;
             case R.id.textView7:
                 //所在城市
-                dialogList_chengshi("");
+                dialogList_chengshi("0");
                 break;
             case R.id.tv_confirm:
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    new UpFileToQiNiuUtil(AddShopActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                    //上传头像
+                    Map<String, File> fileMap = new HashMap<>();
+                    fileMap.put("file", imgfile);
+                    params.clear();
+                    OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
+                        @Override
+                        public String onParseResponse(Call call, Response response) {
+                            return null;
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Exception e, String err) {
+                            hideProgress();
+                            myToast("图片上传失败"+err);
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            MyLogger.i(">>>>上传文件路径：" + response);
+                            logoUrl = response;
+                            params.clear();
+                            params.put("name", name);
+                            params.put("companyName", companyName);
+                            params.put("contactName", contactName);
+                            params.put("contactPhone", contactPhone);
+                            params.put("provinceId", provinceId);
+                            params.put("cityId", cityId);
+                            params.put("areaId", areaId);
+                            params.put("logoUrl", logoUrl);
+                            params.put("account", account);
+//                    params.put("licenseNo", licenseNo);
+//                    params.put("licenseNoImage", licenseNoImage);
+                            params.put("address", address);
+                            params.put("industryId", industryId);
+                            requestUpData(params);
+                        }
+                    });
+                    /*new UpFileToQiNiuUtil(AddShopActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                         @Override
                         public void complete(boolean isok, String result, String url) {
                             if (isok) {
@@ -132,7 +171,7 @@ public class AddShopActivity extends BaseActivity {
                                 myToast("图片上传失败"+result);
                             }
                         }
-                    };
+                    };*/
                 }
                 break;
         }
@@ -273,17 +312,17 @@ public class AddShopActivity extends BaseActivity {
     /**
      * 选择行业
      */
-    List<CommonModel.ListBean> list_hangye = new ArrayList<>();
+    List<IndustryModel.ListBean> list_hangye = new ArrayList<>();
     int maxIdex_hangye = 2;
     String string_hangye = "";
 
     private void dialogList_hangye(String parentId) {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("parentId", parentId);
-        OkhttpUtil.okHttpGet(URLs.Industry, params, headerMap, new CallBackUtil<CommonModel>() {
+//        params.put("parentId", parentId);
+        OkhttpUtil.okHttpGet(URLs.Industry + parentId, params, headerMap, new CallBackUtil<IndustryModel>() {
             @Override
-            public CommonModel onParseResponse(Call call, Response response) {
+            public IndustryModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -294,7 +333,7 @@ public class AddShopActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CommonModel response) {
+            public void onResponse(IndustryModel response) {
                 hideProgress();
                 list_hangye = response.getList();
                 dialog.contentView(R.layout.dialog_list_center)
@@ -307,10 +346,10 @@ public class AddShopActivity extends BaseActivity {
                         .show();
                 RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
                 rv_list.setLayoutManager(new LinearLayoutManager(AddShopActivity.this));
-                CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
+                CommonAdapter<IndustryModel.ListBean> adapter = new CommonAdapter<IndustryModel.ListBean>
                         (AddShopActivity.this, R.layout.item_help, list_hangye) {
                     @Override
-                    protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
+                    protected void convert(ViewHolder holder, IndustryModel.ListBean model, int position) {
                         TextView tv = holder.getView(R.id.textView1);
                         tv.setText(model.getName());
                     }
@@ -333,7 +372,7 @@ public class AddShopActivity extends BaseActivity {
 
                             dialog.dismiss();
                         } else {
-                            dialogList_hangye(list_hangye.get(position).getParentId());
+                            dialogList_hangye(list_hangye.get(position).getId());
                         }
                         adapter.notifyDataSetChanged();
 
@@ -354,14 +393,15 @@ public class AddShopActivity extends BaseActivity {
      * 选择城市
      */
     List<CommonModel.ListBean> list_chengshi = new ArrayList<>();
-    int maxIdex_chengshi = 3;
+    int maxIdex_chengshi = 1;
     String string_chengshi = "";
 
     private void dialogList_chengshi(String parentId) {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("parentId", parentId);
-        OkhttpUtil.okHttpGet(URLs.Region, params, headerMap, new CallBackUtil<CommonModel>() {
+        params.put("id", parentId);
+        params.put("level", maxIdex_chengshi+"");
+        OkhttpUtil.okHttpPostJson(URLs.Region, GsonUtils.toJson(params), headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {
                 return null;
@@ -399,10 +439,9 @@ public class AddShopActivity extends BaseActivity {
                 adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                        maxIdex_chengshi--;
                         string_chengshi = string_chengshi + list_chengshi.get(position).getName() + "-";
                         switch (maxIdex_chengshi) {
-                            case 0:
+                            case 3:
                                 //区
                                 //最后一个，赋值
                                 if (!string_chengshi.equals("")) {
@@ -412,21 +451,24 @@ public class AddShopActivity extends BaseActivity {
                                 areaId = list_chengshi.get(position).getId();
                                 //初始化
                                 string_chengshi = "";
-                                maxIdex_chengshi = 3;
+                                maxIdex_chengshi = 1;
 
                                 dialog.dismiss();
                                 break;
-                            case 1:
+                            case 2:
                                 //市
                                 cityId = list_chengshi.get(position).getId();
-                                dialogList_chengshi(list_chengshi.get(position).getParentId());
+                                maxIdex_chengshi = 3;
+                                dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
-                            case 2:
+                            case 1:
                                 //省
                                 provinceId = list_chengshi.get(position).getId();
-                                dialogList_chengshi(list_chengshi.get(position).getParentId());
+                                maxIdex_chengshi = 2;
+                                dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
                         }
+
                         adapter.notifyDataSetChanged();
 
                     }
