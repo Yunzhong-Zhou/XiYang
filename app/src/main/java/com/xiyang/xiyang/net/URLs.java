@@ -30,6 +30,12 @@ public class URLs {
     public static final String Guide = HOST + API + "app-banner/index";
     //发送验证码-个人中心
     public static final String Code_yonghu = HOST + "/user/sms/verificationCode/issue";
+    //发送验证码-交易密码
+    public static final String Code_jiaoyi = HOST + "/user/tradePassword/verificationCode/issue";
+    //发送验证码-银行卡
+    public static final String Code_yinhangka = HOST + "/user/bank/verificationCode/issue";
+    //发送验证码-提现
+    public static final String Code_tixian = HOST + "/sms/manage/verificationCode/issue";
     //验证码登录
     public static final String Login1 = HOST + "/user/login";
     //登录
@@ -57,11 +63,13 @@ public class URLs {
      */
     public static final String Fragment1 = HOST + API + "merchant";
     //添加商户
-    public static final String AddShop = HOST + "/bdservice/v2/Merchants";
+    public static final String AddShop = HOST + "/bd/Merchants";
+    //添加商户-检测账号
+    public static final String AddShop_Detect = HOST + "/bdservice/v2/Merchants";
     //商户列表
-    public static final String ShopList = HOST + API + "merchant/record";
+    public static final String ShopList = HOST + "/bd/merchants/app/merchant/record";
     //商户详情
-    public static final String ShopDetail = HOST + API + "merchant/detail";
+    public static final String ShopDetail = HOST + "/bd/merchants/app/merchant/detail/";
     //添加合同
     public static final String AddContract = HOST + API + "contract/add";
     //我的合同列表
@@ -234,12 +242,14 @@ public class URLs {
     public static final String WalletIn = HOST + API + "wallet/in";
     //支出列表
     public static final String WalletOut = HOST + API + "wallet/out";
+    //提现-信息
+    public static final String TakeCash_info = HOST + "/finace/user/withdrawalApply/withdrawalPageData";
     //提现
-    public static final String TakeCash = HOST + API + "withdrawal";
+    public static final String TakeCash = HOST + "/finace/user/withdrawalApply/withdrawal";
     //提现列表
-    public static final String TakeCashList = HOST + API + "withdrawal/record";
+    public static final String TakeCashList = HOST + "/finace/user/withdrawalApply/withdrawalRecord";
     //提现详情
-    public static final String TakeCashDetail = HOST + API + "withdrawal/detail";
+    public static final String TakeCashDetail = HOST + "/finace/user/withdrawalApply/withdrawalRecord/detail/";
     //帮助列表
     public static final String Help = HOST + API + "help";
     //在线客服

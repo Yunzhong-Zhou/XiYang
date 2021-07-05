@@ -151,7 +151,7 @@ public class Fragment5_m extends BaseFragment {
         linearLayout16 = findViewByID_My(R.id.linearLayout16);
 
         ll_cm = findViewByID_My(R.id.ll_cm);
-        if (localUserInfo.getUserJob().equals("cm")) ll_cm.setVisibility(View.VISIBLE);
+        if (localUserInfo.getUserJob().equals("CM")) ll_cm.setVisibility(View.VISIBLE);
         else ll_cm.setVisibility(View.GONE);
 
         linearLayout1.setOnClickListener(this);

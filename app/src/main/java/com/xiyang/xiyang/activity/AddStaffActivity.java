@@ -173,7 +173,7 @@ public class AddStaffActivity extends BaseActivity {
             myToast("请输入联系电话");
             return false;
         }
-        if (!localUserInfo.getUserJob().equals("bdm")){//添加bd不需要选城市
+        if (!localUserInfo.getUserJob().equals("BDM")){//添加bd不需要选城市
             if (TextUtils.isEmpty(postionIds)) {
                 myToast("请选择城市");
                 return false;

@@ -92,7 +92,7 @@ public class SetTransactionPasswordActivity extends BaseActivity {
     }
 
     private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_jiaoyi, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

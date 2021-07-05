@@ -434,7 +434,7 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout5:
                 //调整上级
-                if (localUserInfo.getUserJob().equals("bdm")) {
+                if (localUserInfo.getUserJob().equals("BDM")) {
                     bundle.putString("job", "bd");
                     CommonUtil.gotoActivityWithData(getActivity(), AdjustSuperiorActivity.class, bundle);
                 } else {
@@ -445,7 +445,7 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout6:
                 //调整市场
-                if (localUserInfo.getUserJob().equals("bdm")) {
+                if (localUserInfo.getUserJob().equals("BDM")) {
                     bundle.putString("job", "bd");
                     CommonUtil.gotoActivityWithData(getActivity(), AdjustSuperiorActivity.class, bundle);
                 } else {
@@ -455,7 +455,7 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout7:
                 //调整岗位
-                if (localUserInfo.getUserJob().equals("bdm")) {
+                if (localUserInfo.getUserJob().equals("BDM")) {
                     myToast("调整岗位需CM及以上");
                     /*bundle.putString("job", "bd");
                     CommonUtil.gotoActivityWithData(getActivity(), AdjustJobActivity.class, bundle);*/
@@ -466,7 +466,7 @@ public class Fragment1_m extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //人事记录
-                if (localUserInfo.getUserJob().equals("cm"))
+                if (localUserInfo.getUserJob().equals("CM"))
                     CommonUtil.gotoActivity(getActivity(), AddBuyActivity.class);//申请采购
                 else
                     CommonUtil.gotoActivity(getActivity(), PersonnelActivity.class);

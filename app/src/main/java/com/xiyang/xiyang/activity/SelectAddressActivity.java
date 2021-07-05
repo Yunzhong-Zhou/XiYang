@@ -182,9 +182,7 @@ public class SelectAddressActivity extends BaseActivity {
                                 public void run() {
                                     MyLogger.i("tag", "输入>>>>>>" + s.toString());
                                     if (!et_addr.getText().toString().trim().equals("")) {
-
                                         request(et_addr.getText().toString().trim());
-
                                     }
                                 }
                             };

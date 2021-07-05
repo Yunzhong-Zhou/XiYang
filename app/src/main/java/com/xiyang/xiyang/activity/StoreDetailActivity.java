@@ -121,7 +121,7 @@ public class StoreDetailActivity extends BaseActivity {
         view4 = findViewByID_My(R.id.view4);
 
         right_btn1 = findViewByID_My(R.id.right_btn1);
-        if (localUserInfo.getUserJob().equals("bd"))
+        if (localUserInfo.getUserJob().equals("BD"))
             right_btn1.setVisibility(View.INVISIBLE);
         else right_btn1.setVisibility(View.VISIBLE);
 

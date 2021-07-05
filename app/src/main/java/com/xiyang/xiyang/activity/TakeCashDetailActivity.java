@@ -47,7 +47,8 @@ public class TakeCashDetailActivity extends BaseActivity {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                params.put("id",id);
+//                params.put("id",id);
+                params.clear();
                 request(params);
             }
 
@@ -94,7 +95,7 @@ public class TakeCashDetailActivity extends BaseActivity {
         }
     }
     private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.TakeCashDetail, params, headerMap, new CallBackUtil<TakeCashDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.TakeCashDetail+id, params, headerMap, new CallBackUtil<TakeCashDetailModel>() {
             @Override
             public TakeCashDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -173,7 +174,8 @@ public class TakeCashDetailActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
         showProgress(true, getString(R.string.app_loading2));
-        params.put("id",id);
+        params.clear();
+//        params.put("id",id);
         request(params);
     }
 

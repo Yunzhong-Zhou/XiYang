@@ -28,12 +28,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.TimeUtils;
-import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.AddContractActivity;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
@@ -45,8 +40,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 页面跳转辅助类

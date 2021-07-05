@@ -80,6 +80,21 @@ public class SetUpActivity extends BaseActivity {
                                 dialog.dismiss();
                                 showProgress(true, "正在注销登录，请稍候...");
                                 requestOut(params);
+
+                                localUserInfo.setUserId("");
+                                localUserInfo.setToken("");
+                                localUserInfo.setPhoneNumber("");
+                                localUserInfo.setNickname("");
+                                localUserInfo.setUserJob("");
+                                localUserInfo.setTokenType("");
+                                localUserInfo.setEmail("");
+                                localUserInfo.setUserImage("");
+
+                                //清除文件-压缩过的文件、拍照的文件
+                                FileUtils.deleteFilesInDir(FileUtil.getImageDownloadDir(SetUpActivity.this));
+
+                                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
+                                CommonUtil.gotoActivity(SetUpActivity.this, LoginActivity.class, true);
                             }
                         }, new View.OnClickListener() {
                             @Override

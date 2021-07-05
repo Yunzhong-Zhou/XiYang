@@ -162,7 +162,7 @@ public class MyCityActivity extends BaseActivity {
 
                     //获取下一级
                     showLoadingPage();
-                    if (localUserInfo.getUserJob().equals("rm")) {
+                    if (localUserInfo.getUserJob().equals("RM")) {
                         rv.setVisibility(View.VISIBLE);
                         iv.setImageResource(R.mipmap.ic_jiantou_down);
                         requestCity2(params, URLs.MyCity_RM, rv);
@@ -178,7 +178,7 @@ public class MyCityActivity extends BaseActivity {
                     tv.setTextColor(getResources().getColor(R.color.black2));
 
                     rv.setVisibility(View.GONE);
-                    if (localUserInfo.getUserJob().equals("rm")) {
+                    if (localUserInfo.getUserJob().equals("RM")) {
                         iv.setImageResource(R.mipmap.ic_jiantou_right);
                     } else {
                         iv.setImageResource(R.color.transparent);

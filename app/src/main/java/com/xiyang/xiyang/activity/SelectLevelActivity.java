@@ -27,7 +27,7 @@ public class SelectLevelActivity extends BaseActivity {
         shadowLayout2 = findViewByID_My(R.id.shadowLayout2);
         shadowLayout3 = findViewByID_My(R.id.shadowLayout3);
 
-        if (localUserInfo.getUserJob().equals("cm"))
+        if (localUserInfo.getUserJob().equals("CM"))
             shadowLayout1.setVisibility(View.GONE);
     }
 

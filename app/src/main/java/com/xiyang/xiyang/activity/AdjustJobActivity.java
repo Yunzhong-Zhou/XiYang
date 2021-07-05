@@ -93,7 +93,7 @@ public class AdjustJobActivity extends BaseActivity {
         editText1.setHint("请选择" + job.toUpperCase());
 
 
-        if (localUserInfo.getUserJob().equals("rm")) {
+        if (localUserInfo.getUserJob().equals("RM")) {
             if (!job.equals("cm")) {
                 list_juese.add("CM");
             }

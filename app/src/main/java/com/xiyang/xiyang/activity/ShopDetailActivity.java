@@ -104,7 +104,8 @@ public class ShopDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-                params.put("id", id);
+//                params.put("id", id);
+                params.clear();
                 request(params);
             }
 
@@ -217,7 +218,7 @@ public class ShopDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.ShopDetail, params, headerMap, new CallBackUtil<ShopDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.ShopDetail+id, params, headerMap, new CallBackUtil<ShopDetailModel>() {
             @Override
             public ShopDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -439,14 +440,15 @@ public class ShopDetailActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
-        params.put("id", id);
+        params.clear();
+//        params.put("id", id);
         request(params);
     }
 
     @Override
     protected void updateView() {
         titleView.setTitle("商户详情");
-        if (!localUserInfo.getUserJob().equals("bd")) {
+        if (!localUserInfo.getUserJob().equals("BD")) {
             titleView.showRightTxtBtn("立即指派", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

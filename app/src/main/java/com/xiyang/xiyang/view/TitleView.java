@@ -137,7 +137,7 @@ public class TitleView extends FrameLayout {
         right_text.setOnClickListener(listener);
     }
     /**
-     * 显示右边的textview，并设置值
+     * 显示右边的textview，并设置值-有边框
      */
     public void showRightTxtBtn(String str, OnClickListener listener) {
         right_txt_btn.setVisibility(View.VISIBLE);

@@ -7,26 +7,27 @@ import java.util.List;
  * Created by Mr.Z on 2021/4/22.
  */
 public class MyShopListModel implements Serializable {
-    private List<ListBean> list;
+    private List<RecordsBean> records;
 
-    public List<ListBean> getList() {
-        return list;
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public static class ListBean {
+    public static class RecordsBean {
         /**
-         * id : 21
-         * name : 阿斯顿马丁
-         * image : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F3e1d4ce08e17545ebba5de382bf2c603.png?e=1619066410&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:aE_L0oN60nU8SDRRAwVagLrzwbE=
-         * deviceNum : 30
-         * address : 110000120000130000
-         * status : 1
-         * statusTitle : 待签约
-         * money : 30000
+         * id : 1411214888369524736
+         * name : 11111111
+         * image : null
+         * deviceNum : null
+         * address : 重庆市
+         * status : null
+         * statusTitle : null
+         * money : null
+         * bddescription : null
          */
 
         private String id;
@@ -37,6 +38,7 @@ public class MyShopListModel implements Serializable {
         private String status;
         private String statusTitle;
         private String money;
+        private String bddescription;
 
         public String getId() {
             return id;
@@ -100,6 +102,14 @@ public class MyShopListModel implements Serializable {
 
         public void setMoney(String money) {
             this.money = money;
+        }
+
+        public String getBddescription() {
+            return bddescription;
+        }
+
+        public void setBddescription(String bddescription) {
+            this.bddescription = bddescription;
         }
     }
 }

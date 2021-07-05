@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
@@ -50,7 +51,7 @@ public class MyTakeCashActivity extends BaseActivity {
     private View view1, view2;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "";
+    String sort = "desc", status = "",orderField="";
     int i1 = 0;
     int i2 = 0;
 
@@ -74,7 +75,8 @@ public class MyTakeCashActivity extends BaseActivity {
                 params.put("page",page+"");
                 params.put("count","10");
                 params.put("status",status);
-                params.put("sort",sort);
+                params.put("orderField",orderField);
+                params.put("orderType",sort);
                 requestList(params);
             }
 
@@ -85,7 +87,8 @@ public class MyTakeCashActivity extends BaseActivity {
                 params.put("page",page+"");
                 params.put("count","10");
                 params.put("status",status);
-                params.put("sort",sort);
+                params.put("orderField",orderField);
+                params.put("orderType",sort);
                 requestListMore(params);
             }
         });
@@ -108,7 +111,7 @@ public class MyTakeCashActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.TakeCashList, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.TakeCashList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -170,7 +173,7 @@ public class MyTakeCashActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.TakeCashList, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.TakeCashList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -253,7 +256,8 @@ public class MyTakeCashActivity extends BaseActivity {
         params.put("page",page+"");
         params.put("count","10");
         params.put("status",status);
-        params.put("sort",sort);
+        params.put("orderField",orderField);
+        params.put("orderType",sort);
         requestList(params);
     }
 

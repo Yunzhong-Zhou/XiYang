@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +81,28 @@ public class AddShopActivity extends BaseActivity {
         textView8 = findViewByID_My(R.id.textView8);
         imageView1 = findViewByID_My(R.id.imageView1);
 
+        textView1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (!s.toString().trim().equals("") && s.length() == 11) {
+                    params.clear();
+                    params.put("phone", s.toString().trim());
+                    requestDetect(params);
+                }
+            }
+        });
     }
+
 
     @Override
     protected void initData() {
@@ -120,7 +142,7 @@ public class AddShopActivity extends BaseActivity {
                         @Override
                         public void onFailure(Call call, Exception e, String err) {
                             hideProgress();
-                            myToast("图片上传失败"+err);
+                            myToast("图片上传失败" + err);
                         }
 
                         @Override
@@ -287,7 +309,7 @@ public class AddShopActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddShop, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AddShop, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -305,6 +327,43 @@ public class AddShopActivity extends BaseActivity {
                 hideProgress();
 //                finish();
                 CommonUtil.gotoActivity(AddShopActivity.this, MyShopListActivity.class, true);
+            }
+        });
+    }
+
+    /**
+     * 检测账号是否存在
+     *
+     * @param params
+     */
+    private void requestDetect(HashMap<String, String> params) {
+        OkhttpUtil.okHttpPostJson(URLs.AddShop_Detect, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                if (err.contains("存在")) {
+                    showToast("该账号已存在是否同意\n切换为商户账号？", "同意", "取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            textView1.setText("");
+                        }
+                    });
+                } else
+                    myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
             }
         });
     }
@@ -400,7 +459,7 @@ public class AddShopActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
         params.put("id", parentId);
-        params.put("level", maxIdex_chengshi+"");
+        params.put("level", maxIdex_chengshi + "");
         OkhttpUtil.okHttpPostJson(URLs.Region, GsonUtils.toJson(params), headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {

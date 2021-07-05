@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -45,7 +46,7 @@ import okhttp3.Response;
  * 我的商户
  */
 public class MyStoreListActivity extends BaseActivity {
-    int requestCode = 0;
+    int requestCode = 0, selectItem = -1;
     private RecyclerView recyclerView;
     List<MyStoreListModel.ListBean> list = new ArrayList<>();
     CommonAdapter<MyStoreListModel.ListBean> mAdapter;
@@ -154,23 +155,24 @@ public class MyStoreListActivity extends BaseActivity {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("0")) {
-                                //待拜访
-                                imageView2.setImageResource(R.mipmap.bg_daibaifang);
-                            } else {
+                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("1")) {
+                                //已拜访
                                 imageView2.setImageResource(R.mipmap.bg_yibaifang);
+                            } else {
+                                imageView2.setImageResource(R.mipmap.bg_daibaifang);
+                            }
+                            RelativeLayout relativeLayout =  holder.getView(R.id.relativeLayout);
+                            if (selectItem == position){
+                                relativeLayout.setVisibility(View.VISIBLE);
+                            }else {
+                                relativeLayout.setVisibility(View.GONE);
                             }
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     if (requestCode == Constant.SELECT_STORE) {
-                                        Intent resultIntent = new Intent();
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("storeId", model.getId());
-                                        bundle.putString("storeName", model.getName());
-                                        resultIntent.putExtras(bundle);
-                                        MyStoreListActivity.this.setResult(RESULT_OK, resultIntent);
-                                        finish();
+                                        selectItem = position;
+                                        mAdapter.notifyDataSetChanged();
                                     } else {
                                         Bundle bundle = new Bundle();
                                         bundle.putString("id", model.getId());
@@ -252,8 +254,26 @@ public class MyStoreListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("我的门店");
-        if (localUserInfo.getUserJob().equals("bd")) {
+        if (requestCode == Constant.SELECT_STORE) {
+            titleView.setTitle("选择门店");
+            titleView.showRightTxtBtn("确定", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (selectItem >= 0) {
+                        Intent resultIntent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("storeId", list.get(selectItem).getId());
+                        bundle.putString("storeName", list.get(selectItem).getName());
+                        resultIntent.putExtras(bundle);
+                        MyStoreListActivity.this.setResult(RESULT_OK, resultIntent);
+                        finish();
+                    } else {
+                        myToast("请选择门店");
+                    }
+                }
+            });
+        } else if (localUserInfo.getUserJob().equals("BD")) {
+            titleView.setTitle("我的门店");
             titleView.showRightTextview("添加门店", true, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
