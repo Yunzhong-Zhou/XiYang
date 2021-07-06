@@ -7,9 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
@@ -38,15 +35,15 @@ import okhttp3.Response;
 public class ApproveContractListActivity extends BaseActivity {
     int item = 1;
     private RecyclerView recyclerView;
-    List<ApproveContractListModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<ApproveContractListModel.ListBean> mAdapter;
+    List<ApproveContractListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<ApproveContractListModel.RecordsBean> mAdapter;
 
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
 
     int page = 1;
-    String type = "", status = "", title = "", startTime = "", endTIme = "";
+    String status = "", title = "", startTime = "", endTIme = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +71,6 @@ public class ApproveContractListActivity extends BaseActivity {
                 params.put("count", "10");
                 params.put("status", status);//处理结果 1-已提交，2-进行中，3-完成
                 params.put("title", title);//搜索说明
-                params.put("type", type);//1商户2门店3合同4设备
                 params.put("startTime", startTime);
                 params.put("endTIme", endTIme);
                 requestList(params);
@@ -88,7 +84,6 @@ public class ApproveContractListActivity extends BaseActivity {
                 params.put("count", "10");
                 params.put("status", status);//处理结果 1-已提交，2-进行中，3-完成
                 params.put("title", title);//搜索说明
-                params.put("type", type);//1商户2门店3合同4设备
                 params.put("startTime", startTime);
                 params.put("endTIme", endTIme);
                 requestListMore(params);
@@ -127,14 +122,13 @@ public class ApproveContractListActivity extends BaseActivity {
         params.put("count", "10");
         params.put("status", status);//处理结果 1-已提交，2-进行中，3-完成
         params.put("title", title);//搜索说明
-        params.put("type", type);//1商户2门店3合同4设备
         params.put("startTime", startTime);
         params.put("endTIme", endTIme);
         requestList(params);
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Fragment3_m, params, headerMap, new CallBackUtil<ApproveContractListModel>() {
+        OkhttpUtil.okHttpGet(URLs.ApproveContractList, params, headerMap, new CallBackUtil<ApproveContractListModel>() {
             @Override
             public ApproveContractListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -152,38 +146,38 @@ public class ApproveContractListActivity extends BaseActivity {
             public void onResponse(ApproveContractListModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<ApproveContractListModel.ListBean>
+                    mAdapter = new CommonAdapter<ApproveContractListModel.RecordsBean>
                             (ApproveContractListActivity.this, R.layout.item_approvecontractlist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, ApproveContractListModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, ApproveContractListModel.RecordsBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(ApproveContractListActivity.this)
-                                    .load(model.getImage())
+                            /*Glide.with(ApproveContractListActivity.this)
+                                    .load(model.get)
 //                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(ApproveContractListActivity.this, 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
+                                    .into(imageView1);//加载图片*/
                             holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, "《" + model.getTypeTite() + "》");
-                            holder.setText(R.id.tv_time, model.getCreatedAt());
+//                            holder.setText(R.id.tv_shop, "《" + model.getTypeTite() + "》");
+                            holder.setText(R.id.tv_time, model.getCreateTime());
                             TextView tv_type = holder.getView(R.id.tv_type);
                             tv_type.setText(model.getStatusTitle());
                             switch (model.getStatus()) {
-                                case "0":
+                                case 0:
                                     //已提交
                                     tv_type.setTextColor(getResources().getColor(R.color.black3));
                                     break;
-                                case "1":
+                                case 1:
                                     //已通过
                                     tv_type.setTextColor(getResources().getColor(R.color.green));
                                     break;
-                                case "2":
+                                case 2:
                                     //失败
                                     tv_type.setTextColor(getResources().getColor(R.color.red));
                                     break;
@@ -210,7 +204,7 @@ public class ApproveContractListActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Fragment3_m, params, headerMap, new CallBackUtil<ApproveContractListModel>() {
+        OkhttpUtil.okHttpGet(URLs.ApproveContractList, params, headerMap, new CallBackUtil<ApproveContractListModel>() {
             @Override
             public ApproveContractListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -228,8 +222,8 @@ public class ApproveContractListActivity extends BaseActivity {
             public void onResponse(ApproveContractListModel response) {
 //                showContentPage();
                 hideProgress();
-                List<ApproveContractListModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<ApproveContractListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;
@@ -323,7 +317,6 @@ public class ApproveContractListActivity extends BaseActivity {
     protected void updateView() {
         titleView.setVisibility(View.GONE);
     }
-
 
 
     /*private void showPopupWindow1(View v) {

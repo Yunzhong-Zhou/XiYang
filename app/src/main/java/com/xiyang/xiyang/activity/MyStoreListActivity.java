@@ -254,6 +254,7 @@ public class MyStoreListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
+        titleView.setTitle("我的门店");
         if (requestCode == Constant.SELECT_STORE) {
             titleView.setTitle("选择门店");
             titleView.showRightTxtBtn("确定", new View.OnClickListener() {
@@ -273,7 +274,6 @@ public class MyStoreListActivity extends BaseActivity {
                 }
             });
         } else if (localUserInfo.getUserJob().equals("BD")) {
-            titleView.setTitle("我的门店");
             titleView.showRightTextview("添加门店", true, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.cy.dialog.BaseDialog;
 import com.luck.picture.lib.PictureSelector;
@@ -46,6 +47,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +83,7 @@ public class ApproveContractActivity extends BaseActivity {
     ArrayList<File> listFiles = new ArrayList<>();
     int num = 0;
 
+    Map<String, File> fileMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,33 +167,38 @@ public class ApproveContractActivity extends BaseActivity {
                     images = "";
                     showProgress(true, getString(R.string.app_loading1));
                     for (int i = 0; i < listFiles.size(); i++) {
-                        new UpFileToQiNiuUtil(ApproveContractActivity.this, listFiles.get(i), FileUtils.getFileExtension(listFiles.get(i))) {
+                        fileMap.clear();
+                        fileMap.put("file", listFiles.get(i));
+                        OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                             @Override
-                            public void complete(boolean isok, String result, String url) {
-                                if (isok) {
-                                    MyLogger.i(">>>>上传文件路径：" + url);
-                                    images = images + url + ",";
+                            public String onParseResponse(Call call, Response response) {
+                                return null;
+                            }
 
-                                    num--;
-                                    MyLogger.i(">>>>>>" + num);
-                                    if (num == 0) {
-                                        if (!images.equals("")) {
-                                            images = images.substring(0, images.length() - 1);
-                                        }
+                            @Override
+                            public void onFailure(Call call, Exception e, String err) {
+                                hideProgress();
+                                myToast("图片上传失败" + err);
+                            }
 
-                                        params.clear();
-                                        params.put("remark", remark);
-                                        params.put("images", images);
-                                        params.put("id", id);
-                                        params.put("status", status);
-                                        requestUpData(params);
+                            @Override
+                            public void onResponse(String response) {
+                                images = images + response + ",";
+                                num--;
+                                MyLogger.i(">>>>>>" + num);
+                                if (num == 0) {
+                                    if (!images.equals("")) {
+                                        images = images.substring(0, images.length() - 1);
                                     }
-                                } else {
-                                    myToast(result);
+                                    params.clear();
+                                    params.put("remark", remark);
+                                    params.put("images", images);
+                                    params.put("id", id);
+                                    params.put("status", status);
+                                    requestUpData(params);
                                 }
                             }
-                        };
-
+                        });
                     }
 
                 }
@@ -279,7 +287,7 @@ public class ApproveContractActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.ApproveContract, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.ApproveContract, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

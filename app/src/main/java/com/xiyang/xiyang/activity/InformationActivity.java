@@ -33,8 +33,8 @@ import okhttp3.Response;
  */
 public class InformationActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<InformationModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<InformationModel.ListBean> mAdapter;
+    List<InformationModel.NoticeVOListBean> list = new ArrayList<>();
+    CommonAdapter<InformationModel.NoticeVOListBean> mAdapter;
     int page = 1, channel = 1;
 
     @Override
@@ -96,14 +96,14 @@ public class InformationActivity extends BaseActivity {
             public void onResponse(InformationModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getNoticeVOList();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<InformationModel.ListBean>
+                    mAdapter = new CommonAdapter<InformationModel.NoticeVOListBean>
                             (InformationActivity.this, R.layout.item_information, list) {
                         @Override
-                        protected void convert(ViewHolder holder, InformationModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, InformationModel.NoticeVOListBean model, int position) {
                             holder.setText(R.id.textView1, model.getTitle());
                             holder.setText(R.id.textView2, model.getCreateTime());
 
@@ -121,6 +121,7 @@ public class InformationActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
+                                    bundle.putString("title", model.getTitle());
                                     bundle.putString("url", model.getContent());
                                     CommonUtil.gotoActivityWithData(InformationActivity.this, WebHTMLActivity.class, bundle, false);
                                 }
@@ -153,8 +154,8 @@ public class InformationActivity extends BaseActivity {
             public void onResponse(InformationModel response) {
 //                showContentPage();
                 hideProgress();
-                List<InformationModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<InformationModel.NoticeVOListBean> list1 = new ArrayList<>();
+                list1 = response.getNoticeVOList();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;

@@ -7,36 +7,46 @@ import java.util.List;
  * Created by Mr.Z on 2021/4/25.
  */
 public class ApproveContractListModel implements Serializable {
-    private List<ListBean> list;
+    /**
+     * records : [{"id":"1411214988161572866","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-03 14:47:27","name":"11111111"},{"id":"1411217586331574274","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-03 14:57:46","name":"11111111"},{"id":"1411218392921366529","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-03 15:00:43","name":"11111111"},{"id":"1411218726238511106","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-03 15:02:18","name":"11111111"},{"id":"1411950920137392130","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-05 15:31:47","name":"何总商户"},{"id":"1411960617112387585","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-05 16:10:19","name":"何总商户"},{"id":"1411960849556520961","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-05 16:11:14","name":"何总商户"},{"id":"1411986771147943937","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-05 17:54:14","name":"商户名称"},{"id":"1411989826388029442","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-05 18:06:23","name":"商户名称1"}]
+     * total : 0
+     * size : 10
+     * current : 1
+     * orders : []
+     * optimizeCountSql : true
+     * hitCount : false
+     * countId : null
+     * maxLimit : null
+     * searchCount : true
+     * pages : 0
+     */
 
-    public List<ListBean> getList() {
-        return list;
+    private List<RecordsBean> records;
+
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public static class ListBean {
+    public static class RecordsBean {
         /**
-         * id : 27
-         * name : 商户名称周
-         * image : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F20581441f6eb25ec75b27e20dca59f8c.png?e=1619342284&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:sC6kK7h4cjLHNKHxttjKNA_QoXc=
-         * typeTite : 商户签约
-         * type : merchant_sign
+         * id : 1411214988161572866
+         * type : 1
          * status : 0
-         * statusTitle : 已提交
-         * createdAt : 2021-04-25 16:22:08
+         * statusTitle : 需要审核
+         * createTime : 2021-07-03 14:47:27
+         * name : 11111111
          */
 
         private String id;
-        private String name;
-        private String image;
-        private String typeTite;
         private String type;
-        private String status;
+        private int status;
         private String statusTitle;
-        private String createdAt;
+        private String createTime;
+        private String name;
 
         public String getId() {
             return id;
@@ -44,30 +54,6 @@ public class ApproveContractListModel implements Serializable {
 
         public void setId(String id) {
             this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public String getTypeTite() {
-            return typeTite;
-        }
-
-        public void setTypeTite(String typeTite) {
-            this.typeTite = typeTite;
         }
 
         public String getType() {
@@ -78,11 +64,11 @@ public class ApproveContractListModel implements Serializable {
             this.type = type;
         }
 
-        public String getStatus() {
+        public int getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(int status) {
             this.status = status;
         }
 
@@ -94,12 +80,20 @@ public class ApproveContractListModel implements Serializable {
             this.statusTitle = statusTitle;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

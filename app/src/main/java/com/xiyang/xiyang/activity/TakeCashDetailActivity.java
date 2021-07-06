@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
@@ -113,19 +114,19 @@ public class TakeCashDetailActivity extends BaseActivity {
                 MyLogger.i(">>>>>>>>>提现详情" + response);
                 hideProgress();
                 if (response != null) {
-                    textView2.setText("¥ " + response.getMoney());//提现个数
+                    textView2.setText("¥ " + response.getAmount());//提现个数
 //                    textView5.setText("" + response.getShow_created_at());//提现处理中时间
 //                    textView7.setText("" + response.getShow_updated_at());//提现完成时间
 
-                    /*Glide.with(TakeCashDetailActivity.this)
-                            .load(IMGHOST + response.getBank_icon())
+                    Glide.with(TakeCashDetailActivity.this)
+                            .load(response.getBankLogo())
                             .centerCrop()
                             .placeholder(R.mipmap.ic_bank_blue)//加载站位图
                             .error(R.mipmap.ic_bank_blue)//加载失败
-                            .into(imageView3);//加载图片*/
-                    textView8.setText(response.getMember_bank_card_proceeds_name() +" "+ response.getMember_bank_card_account());//提现地址
+                            .into(imageView3);//加载图片
+                    textView8.setText(response.getBankUserName() +" "+ response.getBankCardNumber());//提现地址
 
-                    textView16.setText("¥ " + response.getService_charge_money());//手续费
+                    textView16.setText("¥ " + response.getTaxes());//手续费
                     textView.setText(response.getSn());//单号
                     /*if (response.getMoney_type() == 1) {
                         imageView3.setImageResource(R.mipmap.ic_usdt_green);
@@ -135,33 +136,38 @@ public class TakeCashDetailActivity extends BaseActivity {
                         textView16.setText(response.getService_charge_money() + getString(R.string.app_type_fil));//手续费
                     }*/
 
-                    textView1.setText(response.getCreated_at());//提现时间
-                    textView14.setText(response.getVerify_at());//到账时间
-                    textView15.setText(response.getStatus_title());//状态
+                    textView1.setText(response.getCreateTime());//提现时间
+                    textView14.setText(response.getCheckTime());//到账时间
 
-                    if (response.getStatus() == 2) {
+                    if (response.getStatus() == 1) {
                         //通过
                         imageView2.setImageResource(R.mipmap.ic_rechargedetail3);
                         prograssBar.setProgress(100);
                         textView6.setText("提现成功");
                         textView6.setTextColor(getResources().getColor(R.color.shengreen));
 
+                        textView15.setText("提现成功");//状态
+
                         textView17.setVisibility(View.GONE);
-                    } else if (response.getStatus() == 3) {
+                    } else if (response.getStatus() == 2) {
                         //未通过
                         imageView2.setImageResource(R.mipmap.ic_rechargedetail5);
                         prograssBar.setProgress(100);
                         textView6.setText("提现失败");
                         textView6.setTextColor(getResources().getColor(R.color.shengreen));
 
+                        textView15.setText("提现失败");//状态
+
                         textView17.setVisibility(View.VISIBLE);
-                        textView17.setText("提现失败原因：" + response.getStatus_rejected_cause());
+                        textView17.setText("提现失败原因：" + response.getStatus());
                     } else {
                         //进行中
                         imageView2.setImageResource(R.mipmap.ic_rechargedetail2);
                         prograssBar.setProgress(50);
                         textView6.setText("提现成功");
                         textView6.setTextColor(getResources().getColor(R.color.white1));
+
+                        textView15.setText("提现中");//状态
 
                         textView17.setVisibility(View.GONE);
                     }

@@ -21,11 +21,11 @@ import com.xiyang.xiyang.model.MyTakeCashModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.MyLogger;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-
-import org.json.JSONObject;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +43,15 @@ import okhttp3.Response;
 
 public class MyTakeCashActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyTakeCashModel> list = new ArrayList<>();
-    CommonAdapter<MyTakeCashModel> mAdapter;
+    List<MyTakeCashModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<MyTakeCashModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2;
     private TextView textView1, textView2;
     private View view1, view2;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "",orderField="";
+    String sort = "DESC", status = "0", orderField = "";
     int i1 = 0;
     int i2 = 0;
 
@@ -72,11 +72,11 @@ public class MyTakeCashActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                params.put("page",page+"");
-                params.put("count","10");
-                params.put("status",status);
-                params.put("orderField",orderField);
-                params.put("orderType",sort);
+                params.put("page", page + "");
+                params.put("size", "10");
+                params.put("status", status);
+                params.put("orderField", orderField);
+                params.put("orderType", sort);
                 requestList(params);
             }
 
@@ -84,11 +84,11 @@ public class MyTakeCashActivity extends BaseActivity {
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("page",page+"");
-                params.put("count","10");
-                params.put("status",status);
-                params.put("orderField",orderField);
-                params.put("orderType",sort);
+                params.put("page", page + "");
+                params.put("size", "10");
+                params.put("status", status);
+                params.put("orderField", orderField);
+                params.put("orderType", sort);
                 requestListMore(params);
             }
         });
@@ -111,9 +111,9 @@ public class MyTakeCashActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.TakeCashList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.TakeCashList, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyTakeCashModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public MyTakeCashModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -125,57 +125,57 @@ public class MyTakeCashActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(MyTakeCashModel response) {
                 showContentPage();
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
-                JSONObject jObj;
-                /*try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list.size() == 0) {
-                        showEmptyPage();//空数据
-                    } else {
-                        mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_mytakecash, list) {
-                            @Override
-                            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
-                                holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                                holder.setText(R.id.textView2, model.getCreated_at());//时间
-                                holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                                holder.setText(R.id.textView4, model.getStatus_title());//状态
+                list = response.getRecords();
+                if (list.size() == 0) {
+                    showEmptyPage();//空数据
+                } else {
+                    mAdapter = new CommonAdapter<MyTakeCashModel.RecordsBean>
+                            (MyTakeCashActivity.this, R.layout.item_mytakecash, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, MyTakeCashModel.RecordsBean model, int position) {
+                            switch (model.getStatus()) {
+                                case 0:
+                                    holder.setText(R.id.textView1, "提现中");//标题
+                                    break;
+                                case 1:
+                                    holder.setText(R.id.textView1, "提现成功");//标题
+                                    break;
+                                case 2:
+                                    holder.setText(R.id.textView1, "提现失败");//标题
+                                    break;
                             }
-                        };
-                        recyclerView.setAdapter(mAdapter);
-                        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("id", list.get(position).getId());
-                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, TakeCashDetailActivity.class, bundle1, false);
-                            }
+                            holder.setText(R.id.textView2, model.getCreateTime());//时间
+                            holder.setText(R.id.textView3, "-" + model.getAmount());//money
+//                            holder.setText(R.id.textView4, model.getStatus_title());//状态
+                        }
+                    };
+                    recyclerView.setAdapter(mAdapter);
+                    mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                            Bundle bundle1 = new Bundle();
+                            bundle1.putString("id", list.get(position).getId());
+                            CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, TakeCashDetailActivity.class, bundle1, false);
+                        }
 
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                return false;
-                            }
-                        });
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+                        @Override
+                        public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                            return false;
+                        }
+                    });
+                }
             }
         });
 
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.TakeCashList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.TakeCashList, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyTakeCashModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public MyTakeCashModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -188,28 +188,18 @@ public class MyTakeCashActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(MyTakeCashModel response) {
 //                showContentPage();
                 onHttpResult();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
-                /*JSONObject jObj;
-                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list1.size() == 0) {
-                        myToast(getString(R.string.app_nomore));
-                        page--;
-                    } else {
-                        list.addAll(list1);
-                        mAdapter.notifyDataSetChanged();
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+                List<MyTakeCashModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    page--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -253,11 +243,11 @@ public class MyTakeCashActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        params.put("page",page+"");
-        params.put("count","10");
-        params.put("status",status);
-        params.put("orderField",orderField);
-        params.put("orderType",sort);
+        params.put("page", page + "");
+        params.put("size", "10");
+        params.put("status", status);
+        params.put("orderField", orderField);
+        params.put("orderType", sort);
         requestList(params);
     }
 
@@ -306,9 +296,9 @@ public class MyTakeCashActivity extends BaseActivity {
                 adapter.notifyDataSetChanged();
                 i1 = i;
                 if (i == 0) {
-                    sort = "desc";
+                    sort = "DESC";
                 } else {
-                    sort = "asc";
+                    sort = "ASC";
                 }
 //                textView1.setText(list.get(i));
                 requestServer();

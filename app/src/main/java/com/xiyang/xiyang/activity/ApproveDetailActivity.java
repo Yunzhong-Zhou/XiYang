@@ -88,7 +88,8 @@ public class ApproveDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-                params.put("id", id);
+                params.clear();
+//                params.put("id", id);
                 request(params);
             }
 
@@ -151,7 +152,7 @@ public class ApproveDetailActivity extends BaseActivity {
                 if (model.getBase().getFile() != null && !model.getBase().getFile().equals("")) {
                     bundle.putString("url", model.getBase().getFile());
                     CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ShowPDFActivity.class, bundle, false);
-                }else myToast("暂无文件");
+                } else myToast("暂无文件");
 
                 break;
             case R.id.tv_shenpi:
@@ -187,12 +188,13 @@ public class ApproveDetailActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
-        params.put("id", id);
+        params.clear();
+//        params.put("id", id);
         request(params);
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.ApproveDetail, params, headerMap, new CallBackUtil<ApproveDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.ApproveDetail + id, params, headerMap, new CallBackUtil<ApproveDetailModel>() {
             @Override
             public ApproveDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -236,7 +238,7 @@ public class ApproveDetailActivity extends BaseActivity {
 
 
                 //签约合同
-                if (response.getBase().getExtra().getSole() != null){
+                if (response.getBase().getExtra().getSole() != null) {
                     list_contract.add(new KeyValueModel("签约期限", response.getBase().getExtra().getRenewalPeriod() + "年"));
                     if (response.getBase().getExtra().getSole().equals("1"))
                         list_contract.add(new KeyValueModel("是否独家", "是"));

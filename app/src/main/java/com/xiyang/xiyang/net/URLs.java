@@ -63,17 +63,31 @@ public class URLs {
      */
     public static final String Fragment1 = HOST + API + "merchant";
     //添加商户
-    public static final String AddShop = HOST + "/bd/Merchants";
+    public static final String AddShop = HOST + "/bd/merchants/Merchants";
     //添加商户-检测账号
     public static final String AddShop_Detect = HOST + "/bdservice/v2/Merchants";
     //商户列表
     public static final String ShopList = HOST + "/bd/merchants/app/merchant/record";
     //商户详情
     public static final String ShopDetail = HOST + "/bd/merchants/app/merchant/detail/";
-    //添加合同
-    public static final String AddContract = HOST + API + "contract/add";
+    //添加合同-签约
+    public static final String AddContract_qianyue = HOST + "/bd/bdservice/signContracts";
+    //添加合同-新增
+    public static final String AddContract_xinzeng = HOST + "/bd/bdservice/signContracts";
+    //添加合同-回收
+    public static final String AddContract_huishou = HOST + "/bd/bdservice/signContracts";
+    //添加合同-换绑
+    public static final String AddContract_huanbang = HOST + "/bd/bdservice/signContracts";
+    //添加合同-修改
+    public static final String AddContract_xiugai = HOST + "/bd/bdservice/signContracts";
+    //添加合同-续签
+    public static final String AddContract_xuqian = HOST + "/bd/bdservice/signContracts";
+    //添加合同-取消
+    public static final String AddContract_quxiao = HOST + "/bd/bdservice/signContracts";
+    //添加合同-调价
+    public static final String AddContract_tiaojia = HOST + "/bd/bdservice/signContracts";
     //我的合同列表
-    public static final String MyContract = HOST + API + "contract/record";
+    public static final String MyContract = HOST + "/bd/bdservice/getContractsListInfo";
     //合同详情
     public static final String ContractDetail = HOST + API + "merchant/detail";
     //划转商户
@@ -112,10 +126,12 @@ public class URLs {
      * ********************************审批*****************************************
      */
     public static final String Fragment3_m = HOST + API + "approval";
+    //合同审批
+    public static final String ApproveContractList = HOST + "/bd/bdservice/app/approval/contract";
     //审核详情
-    public static final String ApproveDetail = HOST + API + "approval/detail";
+    public static final String ApproveDetail = HOST + "/bd/bdservice/app/bdm/verfiy/detail/";
     //审核合同
-    public static final String ApproveContract = HOST + API + "approval/deal";
+    public static final String ApproveContract = HOST + "/bd/bdservice/app/approval/deal";
     /**
      * ********************************门店*****************************************
      */

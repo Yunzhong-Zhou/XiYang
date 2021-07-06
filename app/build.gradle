@@ -225,9 +225,6 @@ dependencies {
     //折线图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    //android 保活
-    implementation 'com.xdandroid:hellodaemon:+'
-
     //腾讯X5 WebView
     implementation 'com.tencent.tbs.tbssdk:sdk:43697'
 

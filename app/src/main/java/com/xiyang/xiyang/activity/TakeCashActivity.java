@@ -16,7 +16,6 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.AvailableAmountModel;
-import com.xiyang.xiyang.model.TakeCashModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -36,7 +35,7 @@ import okhttp3.Response;
  */
 
 public class TakeCashActivity extends BaseActivity {
-    ImageView imageView1, imageView2,imageView3;
+    ImageView imageView1, imageView2, imageView3;
     TextView tv_title, textView1, textView2, textView3, textView4, textView5, textView6, tv_confirm;
     EditText editText1, editText2, editText3;
 
@@ -113,12 +112,12 @@ public class TakeCashActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!editText1.getText().toString().trim().equals("")) {
+                if (!editText1.getText().toString().trim().equals("") && model!=null) {
                     input_money = editText1.getText().toString().trim();
                     MyLogger.i(">>>>>输入币数>>>>>" + input_money);
                     //手续费 = 输入币数 * 手续费率 /100
                     double service_money = Double.valueOf(model.getTaxRate()) * Double.valueOf(input_money);
-                    MyLogger.i(">>>>>手续费>>>>>" + service_money );
+                    MyLogger.i(">>>>>手续费>>>>>" + service_money);
                     textView4.setText("¥ " + String.format("%.2f", service_money));//手续费
 
                     //实际到账 =  (输入币数 - 手续费)
@@ -183,7 +182,7 @@ public class TakeCashActivity extends BaseActivity {
                     params.put("verificationCode", code);
                     params.put("tradePassword", password);//交易密码（不能小于6位数）
                     params.put("money", input_money);//提现金额
-                    params.put("taxes", String.format("%.2f", Double.valueOf(model.getTaxRate()) * Double.valueOf(input_money)));
+//                    params.put("taxes", String.format("%.2f", Double.valueOf(model.getTaxRate()) * Double.valueOf(input_money)));
 //                    params.put("token", localUserInfo.getToken());
 //                    params.put("hk", model.getHk());
                     requestTakeCash(params);//提现
@@ -241,7 +240,7 @@ public class TakeCashActivity extends BaseActivity {
                             .placeholder(R.mipmap.ic_bank_blue)//加载站位图
                             .error(R.mipmap.ic_bank_blue)//加载失败
                             .into(imageView3);//加载图片
-                    textView3.setText(response.getBankUserName()+"  "+response.getBankCardNumber());//地址
+                    textView3.setText(response.getBankUserName() + "  " + response.getBankCardNumber());//地址
                 } else {
                     textView3.setText("银行卡暂未设置，点此跳转设置");
                     showToast("需设置银行卡后才可操作",
@@ -270,9 +269,9 @@ public class TakeCashActivity extends BaseActivity {
 
     //提现
     private void requestTakeCash(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.TakeCash, GsonUtils.toJson(params), headerMap, new CallBackUtil<TakeCashModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.TakeCash, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
-            public TakeCashModel onParseResponse(Call call, Response response) {
+            public String onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -304,12 +303,12 @@ public class TakeCashActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(TakeCashModel response) {
+            public void onResponse(String response) {
                 tv_confirm.setClickable(true);
                 hideProgress();
-                MyLogger.i(">>>>>>>>>提现" + response);
-//                myToast(getString(R.string.takecash_h13));
-                requestServer();
+                myToast("提现成功");
+                finish();
+                /*requestServer();
                 if (response.getCode() == 1) {
                     showToast(getString(R.string.password_h2),
                             getString(R.string.password_h5), getString(R.string.password_h6),
@@ -348,7 +347,7 @@ public class TakeCashActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", response.getId());
                     CommonUtil.gotoActivityWithData(TakeCashActivity.this, TakeCashDetailActivity.class, bundle, true);
-                }
+                }*/
             }
         });
 

@@ -1,6 +1,7 @@
 package com.xiyang.xiyang.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by zyz on 2018/2/10.
@@ -8,76 +9,72 @@ import java.io.Serializable;
 
 public class MyTakeCashModel implements Serializable {
     /**
-     * id : c6b892875c10fe3c322a7824
-     * sn : WI1614312676525597
-     * input_money : 100.0000
-     * money : 97.0000
-     * status : 1
-     * created_at : 2021-02-26 12:11:16
-     * status_title : 待审核
+     * records : [{"id":"1412293993789788160","amount":100,"status":0,"createTime":"2021-07-06 14:15:02"},{"id":"1412297455629897728","amount":100,"status":0,"createTime":"2021-07-06 14:28:47"}]
+     * total : 2
+     * size : 10
+     * current : 1
+     * orders : []
+     * optimizeCountSql : true
+     * hitCount : false
+     * countId : null
+     * maxLimit : null
+     * searchCount : true
+     * pages : 1
      */
 
-    private String id;
-    private String sn;
-    private String input_money;
-    private String money;
-    private int status;
-    private String created_at;
-    private String status_title;
+    private List<RecordsBean> records;
 
-    public String getId() {
-        return id;
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public String getSn() {
-        return sn;
-    }
+    public static class RecordsBean {
+        /**
+         * id : 1412293993789788160
+         * amount : 100
+         * status : 0
+         * createTime : 2021-07-06 14:15:02
+         */
 
-    public void setSn(String sn) {
-        this.sn = sn;
-    }
+        private String id;
+        private String amount;
+        private int status;
+        private String createTime;
 
-    public String getInput_money() {
-        return input_money;
-    }
+        public String getId() {
+            return id;
+        }
 
-    public void setInput_money(String input_money) {
-        this.input_money = input_money;
-    }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-    public String getMoney() {
-        return money;
-    }
+        public String getAmount() {
+            return amount;
+        }
 
-    public void setMoney(String money) {
-        this.money = money;
-    }
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
 
-    public int getStatus() {
-        return status;
-    }
+        public int getStatus() {
+            return status;
+        }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+        public void setStatus(int status) {
+            this.status = status;
+        }
 
-    public String getCreated_at() {
-        return created_at;
-    }
+        public String getCreateTime() {
+            return createTime;
+        }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getStatus_title() {
-        return status_title;
-    }
-
-    public void setStatus_title(String status_title) {
-        this.status_title = status_title;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
     }
 }

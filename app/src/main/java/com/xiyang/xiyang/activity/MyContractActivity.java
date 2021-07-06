@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -80,7 +81,7 @@ public class MyContractActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pagesize", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
@@ -93,7 +94,7 @@ public class MyContractActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pagesize", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
@@ -118,7 +119,7 @@ public class MyContractActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyContract, params, headerMap, new CallBackUtil<MyContractModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.MyContract, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyContractModel>() {
             @Override
             public MyContractModel onParseResponse(Call call, Response response) {
                 return null;
@@ -203,7 +204,7 @@ public class MyContractActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyContract, params, headerMap, new CallBackUtil<MyContractModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.MyContract, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyContractModel>() {
             @Override
             public MyContractModel onParseResponse(Call call, Response response) {
                 return null;
@@ -282,7 +283,7 @@ public class MyContractActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("count", "10");
+        params.put("pagesize", "10");
         params.put("status", status);
         params.put("sort", sort);
         params.put("cityId", cityId);

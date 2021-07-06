@@ -8,14 +8,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.CommonUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -65,9 +66,10 @@ public class ForgetPasswordActivity extends BaseActivity {
                             "&mobile_state_code=" + localUserInfo.getMobile_State_Code();*/
                     ForgetPasswordActivity.this.showProgress(true, getString(R.string.app_sendcode_hint1));
                     textView1.setClickable(false);
-                    HashMap<String, String> params = new HashMap<>();
+                    params.clear();
+                    /*HashMap<String, String> params = new HashMap<>();
                     params.put("mobile", localUserInfo.getPhonenumber());
-                    params.put("type", "31");
+                    params.put("type", "31");*/
 //                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                     RequestCode(params);//获取验证码
                 }
@@ -79,7 +81,7 @@ public class ForgetPasswordActivity extends BaseActivity {
             public void onClick(View view) {
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    HashMap<String, String> params = new HashMap<>();
+                    params.clear();
 //                    params.put("qk", qk);
                     params.put("loginPassword", password1);//交易密码（不能小于6位数）
                     params.put("verificationCode", code);//手机验证码
@@ -131,6 +133,18 @@ public class ForgetPasswordActivity extends BaseActivity {
             public void onResponse(String response) {
                 hideProgress();
                 myToast("登录密码设置成功");
+
+                localUserInfo.setUserId("");
+                localUserInfo.setToken("");
+                localUserInfo.setPhoneNumber("");
+                localUserInfo.setNickname("");
+                localUserInfo.setUserJob("");
+                localUserInfo.setTokenType("");
+                localUserInfo.setEmail("");
+                localUserInfo.setUserImage("");
+
+                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
+                CommonUtil.gotoActivity(ForgetPasswordActivity.this, LoginActivity.class, true);
                 /*JSONObject jObj;
                 try {
                     jObj = new JSONObject(response);
@@ -139,7 +153,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }*/
-                finish();
+//                finish();
             }
         });
 

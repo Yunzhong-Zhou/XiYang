@@ -104,7 +104,7 @@ public class WebHTMLActivity extends BaseActivity {
         this.showProgress(true, getString(R.string.app_loading));
         String url = getIntent().getStringExtra("url");
         MyLogger.i(">>>>>>url" + url);
-
+        titleView.setTitle(getIntent().getStringExtra("title"));
         webView = findViewByID_My(R.id.webView);
 
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false

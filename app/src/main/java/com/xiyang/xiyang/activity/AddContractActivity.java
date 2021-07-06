@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
@@ -34,7 +35,6 @@ import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -69,7 +69,7 @@ public class AddContractActivity extends BaseActivity {
     List<WarehouseModel.ListBean> list_cangku = new ArrayList<>();
     List<String> list_huishou = new ArrayList<>();
     int item_hetong = 0, itme_truefalse = 1, item_qixian = -1, storetype = 0, item_cangku = -1,
-            item_huishou = 0, item_jianshaoyuanyin = -1, item_quxiaoyuanyin = -1,item_jifeidanyuan = -1;
+            item_huishou = 0, item_jianshaoyuanyin = -1, item_quxiaoyuanyin = -1, item_jifeidanyuan = -1;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,
@@ -250,7 +250,7 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent2 = new Intent(AddContractActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
-                bundle2.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                bundle2.putString("status", "2");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
@@ -328,216 +328,275 @@ public class AddContractActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
+                    Map<String, File> fileMap = new HashMap<>();
+                    fileMap.put("file", pdffile);
                     params.clear();
                     switch (item_hetong) {
                         case 0:
                             //签约合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-                                        new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                                            @Override
-                                            public void complete(boolean isok, String result, String url) {
-                                                if (isok) {
-                                                    licenseNoImage = url;//图片地址
-
-                                                    params.put("merchatId", shopId);
-                                                    params.put("contractType", contractType);
-                                                    params.put("file", file);
-                                                    params.put("sole", sole);
-                                                    params.put("renewalPeriod", renewalPeriod);
-                                                    params.put("signTime", signTime);
-                                                    params.put("licenseNo", licenseNo);
-                                                    params.put("licenseNoImage", licenseNoImage);
-                                                    requestUpData(params);
-                                                } else {
-                                                    hideProgress();
-                                                    myToast("图片上传失败" + result);
-                                                }
-                                            }
-                                        };
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
 
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+                                    fileMap.clear();
+                                    fileMap.put("file", imgfile);
+                                    OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
+                                        @Override
+                                        public String onParseResponse(Call call, Response response) {
+                                            return null;
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call call, Exception e, String err) {
+                                            hideProgress();
+                                            myToast("图片上传失败" + err);
+                                        }
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            licenseNoImage = response;//图片地址
+                                            params.put("merchantId", shopId);
+                                            params.put("contractType", contractType);
+                                            params.put("file", file);
+                                            params.put("sole", sole);
+                                            params.put("renewalPeriod", renewalPeriod);
+                                            params.put("signTime", signTime);
+                                            params.put("licenseNo", licenseNo);
+                                            params.put("certificateUrl", licenseNoImage);
+                                            requestUpData(URLs.AddContract_qianyue, params);
+                                        }
+                                    });
+                                }
+                            });
                             break;
                         case 1:
                             //新增合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-
-                                        params.put("storeId", storeId);
-                                        params.put("contractType", contractType);
-                                        params.put("file", file);
-                                        params.put("deviceNum", deviceNum);
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+
+                                    params.put("storeId", storeId);
+                                    params.put("contractType", contractType);
+                                    params.put("file", file);
+                                    params.put("deviceNum", deviceNum);
+                                    requestUpData(URLs.AddContract_xinzeng, params);
+                                }
+                            });
 
                             break;
                         case 2:
                             //回收合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-
-                                        params.put("merchantId", shopId);
-                                        params.put("storeId", storeId);
-                                        params.put("deviceNum", deviceNum);
-                                        params.put("contractType", contractType);
-                                        params.put("file", file);
-                                        params.put("reasonId", reasonId);
-                                        params.put("warehouseId", warehouseId);
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+
+                                    params.put("merchantId", shopId);
+                                    params.put("storeId", storeId);
+                                    params.put("deviceNum", deviceNum);
+                                    params.put("contractType", contractType);
+                                    params.put("file", file);
+                                    params.put("reasonId", reasonId);
+                                    params.put("warehouseId", warehouseId);
+                                    requestUpData(URLs.AddContract_huishou, params);
+
+                                }
+                            });
                             break;
                         case 3:
                             //换绑合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-
-                                        params.put("outStoreId", outStoreId);
-                                        params.put("inStoreId", inStoreId);
-                                        params.put("contractType", contractType);
-                                        params.put("file", file);
-                                        params.put("deviceNum", deviceNum);
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+
+                                    params.put("outStoreId", outStoreId);
+                                    params.put("inStoreId", inStoreId);
+                                    params.put("contractType", contractType);
+                                    params.put("file", file);
+                                    params.put("deviceNum", deviceNum);
+                                    requestUpData(URLs.AddContract_huanbang, params);
+                                }
+                            });
                             break;
                         case 4:
                             //修改合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-                                        new UpFileToQiNiuUtil(AddContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                                            @Override
-                                            public void complete(boolean isok, String result, String url) {
-                                                if (isok) {
-                                                    licenseNoImage = url;//图片地址
-                                                    logoUrl = url;
-
-                                                    params.put("merchatId", shopId);
-                                                    params.put("contractType", contractType);
-                                                    params.put("file", file);
-                                                    params.put("sole", sole);
-                                                    params.put("renewalPeriod", renewalPeriod);
-                                                    params.put("signTime", signTime);
-                                                    params.put("licenseNo", licenseNo);
-                                                    params.put("licenseNoImage", licenseNoImage);
-                                                    requestUpData(params);
-                                                } else {
-                                                    hideProgress();
-                                                    myToast("图片上传失败" + result);
-                                                }
-                                            }
-                                        };
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+                                    fileMap.clear();
+                                    fileMap.put("file", imgfile);
+                                    OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
+                                        @Override
+                                        public String onParseResponse(Call call, Response response) {
+                                            return null;
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call call, Exception e, String err) {
+                                            hideProgress();
+                                            myToast("图片上传失败" + err);
+                                        }
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            licenseNoImage = response;//图片地址
+                                            logoUrl = response;
+
+                                            params.put("merchantId", shopId);
+                                            params.put("contractType", contractType);
+                                            params.put("file", file);
+                                            params.put("sole", sole);
+                                            params.put("renewalPeriod", renewalPeriod);
+                                            params.put("signTime", signTime);
+                                            params.put("licenseNo", licenseNo);
+                                            params.put("certificateUrl", licenseNoImage);
+                                            requestUpData(URLs.AddContract_xiugai, params);
+                                        }
+                                    });
+                                }
+                            });
                             break;
                         case 5:
                             //续签合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-
-                                        params.put("merchantId", shopId);
-                                        params.put("sole", sole);
-                                        params.put("contractType", contractType);
-                                        params.put("file", file);
-                                        params.put("renewalPeriod", renewalPeriod);
-                                        params.put("renewalTime", renewalTime);
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+
+                                    params.put("merchantId", shopId);
+                                    params.put("sole", sole);
+                                    params.put("contractType", contractType);
+                                    params.put("file", file);
+                                    params.put("renewalPeriod", renewalPeriod);
+                                    params.put("renewalTime", renewalTime);
+                                    requestUpData(URLs.AddContract_xuqian, params);
+                                }
+                            });
                             break;
                         case 6:
                             //取消合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-
-                                        params.put("merchantId", shopId);
-                                        params.put("reasonId", reasonId);
-                                        params.put("contractType", contractType);
-                                        params.put("file", file);
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+
+                                    params.put("merchantId", shopId);
+                                    params.put("reasonId", reasonId);
+                                    params.put("contractType", contractType);
+                                    params.put("file", file);
+                                    requestUpData(URLs.AddContract_quxiao, params);
+                                }
+                            });
                             break;
                         case 7:
                             //调价合同
-                            new UpFileToQiNiuUtil(AddContractActivity.this, pdffile, FileUtils.getFileExtension(pdffile)) {
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        file = url;//文件地址
-
-                                        params.put("merchantId", shopId);
-                                        params.put("storeId", storeId);
-                                        params.put("contractType", contractType);
-                                        params.put("file", file);
-                                        params.put("storeUnit", storeUnit);
-                                        params.put("storeUnitPrice", storeUnitPrice);
-                                        params.put("storeCapping", storeCapping);
-                                        params.put("reason", reason);
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
                                 }
-                            };
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("文件上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    file = response;//文件地址
+
+                                    params.put("merchantId", shopId);
+                                    params.put("storeId", storeId);
+                                    params.put("contractType", contractType);
+                                    params.put("file", file);
+                                    params.put("storeUnit", storeUnit);
+                                    params.put("storeUnitPrice", storeUnitPrice);
+                                    params.put("storeCapping", storeCapping);
+                                    params.put("reason", reason);
+                                    requestUpData(URLs.AddContract_tiaojia, params);
+                                }
+                            });
                             break;
                     }
                 }
@@ -560,10 +619,10 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请输入营业执照号");
                     return false;
                 }
-                if (TextUtils.isEmpty(renewalPeriod)) {
+                /*if (TextUtils.isEmpty(renewalPeriod)) {
                     myToast("请选择签约期限");
                     return false;
-                }
+                }*/
                 sole = itme_truefalse + "";
                 if (TextUtils.isEmpty(sole)) {
                     myToast("请选择是否独家");
@@ -884,8 +943,8 @@ public class AddContractActivity extends BaseActivity {
         }
     }
 
-    private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddContract, params, headerMap, new CallBackUtil<String>() {
+    private void requestUpData(String url, Map<String, String> params) {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
