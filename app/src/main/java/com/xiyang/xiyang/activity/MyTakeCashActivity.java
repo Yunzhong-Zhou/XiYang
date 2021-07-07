@@ -51,7 +51,7 @@ public class MyTakeCashActivity extends BaseActivity {
     private View view1, view2;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "DESC", status = "0", orderField = "";
+    String sort = "DESC", status = "", orderField = "";
     int i1 = 0;
     int i2 = 0;
 

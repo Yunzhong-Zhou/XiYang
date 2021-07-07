@@ -53,8 +53,8 @@ public class Fragment1 extends BaseFragment {
     private RecyclerView recyclerView1, recyclerView2;
     List<MyFragment1Model> list1 = new ArrayList<>();
     CommonAdapter<MyFragment1Model> mAdapter1;
-    List<Fragment1Model.MerchantsBean> list2 = new ArrayList<>();
-    CommonAdapter<Fragment1Model.MerchantsBean> mAdapter2;
+    List<Fragment1Model.MerchantsListBean> list2 = new ArrayList<>();
+    CommonAdapter<Fragment1Model.MerchantsListBean> mAdapter2;
     TextView tv_mymore,tv_more;
 
     TextView textView1, textView2, textView3, textView4;
@@ -243,17 +243,15 @@ public class Fragment1 extends BaseFragment {
 
                 changeUI();
 
-
-
                 /**
                  * 商户列表
                  */
-                list2 = response.getMerchants();
+                list2 = response.getMerchantsList();
                 if (list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<Fragment1Model.MerchantsBean>
+                    mAdapter2 = new CommonAdapter<Fragment1Model.MerchantsListBean>
                             (getActivity(), R.layout.item_fragment1_2, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment1Model.MerchantsBean model, int position) {
+                        protected void convert(ViewHolder holder, Fragment1Model.MerchantsListBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
                             holder.setText(R.id.tv_shop, model.getDeviceNum());
                             holder.setText(R.id.tv_num, model.getMoney());//money
@@ -270,10 +268,10 @@ public class Fragment1 extends BaseFragment {
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
                             if (model.getStatus() != null && model.getStatus().equals("1")) {
+                                imageView2.setImageResource(R.mipmap.bg_yiqianyue);
+                            } else {
                                 //待签约
                                 imageView2.setImageResource(R.mipmap.bg_daiqianyue);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yiqianyue);
                             }
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -396,7 +394,7 @@ public class Fragment1 extends BaseFragment {
                 view3.setVisibility(View.INVISIBLE);
                 view4.setVisibility(View.INVISIBLE);
                 for (Fragment1Model.WaitSignBean bean:model.getWaitSign()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
                 }
                 break;
             case 2:
@@ -408,8 +406,8 @@ public class Fragment1 extends BaseFragment {
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
                 view4.setVisibility(View.INVISIBLE);
-                for (Fragment1Model.WaitCheckBean bean:model.getWaitCheck()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                for (Fragment1Model.WaitSignBean bean:model.getWaitCheck()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
                 }
                 break;
             case 3:
@@ -421,8 +419,8 @@ public class Fragment1 extends BaseFragment {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
                 view4.setVisibility(View.INVISIBLE);
-                for (Fragment1Model.HasRefuseBean bean:model.getHasRefuse()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                for (Fragment1Model.WaitSignBean bean:model.getHasRefuse()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
                 }
                 break;
             case 4:
@@ -434,8 +432,8 @@ public class Fragment1 extends BaseFragment {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
                 view4.setVisibility(View.VISIBLE);
-                for (Fragment1Model.HasCheckedBean bean:model.getHasChecked()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                for (Fragment1Model.WaitSignBean bean:model.getHasChecked()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
                 }
                 break;
 

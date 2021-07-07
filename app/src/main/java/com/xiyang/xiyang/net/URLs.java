@@ -61,7 +61,7 @@ public class URLs {
     /**
      * ********************************商户*****************************************
      */
-    public static final String Fragment1 = HOST + API + "merchant";
+    public static final String Fragment1 = HOST + "/bd/merchants/app/merchant";
     //添加商户
     public static final String AddShop = HOST + "/bd/merchants/Merchants";
     //添加商户-检测账号
@@ -253,11 +253,9 @@ public class URLs {
     //交易密码
     public static final String TransactionPassword = HOST + "/finace/user/tradePassword/setTradePassword";
     //我的收益
-    public static final String MyIncome = HOST + API + "wallet";
-    //收入列表
-    public static final String WalletIn = HOST + API + "wallet/in";
-    //支出列表
-    public static final String WalletOut = HOST + API + "wallet/out";
+    public static final String MyIncome = HOST + "/finace/balance/record/summary/data";
+    //我的收益列表
+    public static final String MyIncomeList = HOST + "/finace/balance/record/balanceChangePage";
     //提现-信息
     public static final String TakeCash_info = HOST + "/finace/user/withdrawalApply/withdrawalPageData";
     //提现

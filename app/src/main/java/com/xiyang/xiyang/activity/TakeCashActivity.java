@@ -307,7 +307,7 @@ public class TakeCashActivity extends BaseActivity {
                 tv_confirm.setClickable(true);
                 hideProgress();
                 myToast("提现成功");
-                finish();
+                CommonUtil.gotoActivity(TakeCashActivity.this, MyTakeCashActivity.class, true);
                 /*requestServer();
                 if (response.getCode() == 1) {
                     showToast(getString(R.string.password_h2),

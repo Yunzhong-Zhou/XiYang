@@ -1,225 +1,112 @@
 package com.xiyang.xiyang.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by zyz on 2019/6/6.
  */
 public class MyIncomeModel implements Serializable {
     /**
-     * id : 12
-     * roleType : bd
-     * nickname : admin3
-     * head : http://zhitiekj.oo/head/head.png
-     * amount : 0.00
-     * totalMoney : 0.00
-     * recommendMoney : 0.00
-     * operateMoney : 0.00
-     * out : [{"id":1,"type":"1","title":"充值","money":"1000","createdAt":"2021-03-25 14:04:54"}]
-     * in : [{"id":1,"type":"1","title":"充值","money":"1000","createdAt":"2021-03-25 14:04:54"}]
+     * availableMoney : 0.00
+     * toBePayMoney : null
+     * cumulativeRevenue : null
+     * equipmentRevenue : null
+     * recommendedRevenue : null
+     * cumulativeConsumption : null
+     * recommendedShare : null
+     * cumulativeWithdrawal : null
+     * operationMaintenanceShare : null
+     * totalRevenue : null
      */
 
-    private String id;
-    private String roleType;
-    private String nickname;
-    private String head;
-    private String amount;
-    private String totalMoney;
-    private String recommendMoney;
-    private String operateMoney;
-    private List<OutBean> out;
-    private List<InBean> in;
+    private String availableMoney;
+    private String toBePayMoney;
+    private String cumulativeRevenue;
+    private String equipmentRevenue;
+    private String recommendedRevenue;
+    private String cumulativeConsumption;
+    private String recommendedShare;
+    private String cumulativeWithdrawal;
+    private String operationMaintenanceShare;
+    private String totalRevenue;
 
-    public String getId() {
-        return id;
+    public String getAvailableMoney() {
+        return availableMoney;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAvailableMoney(String availableMoney) {
+        this.availableMoney = availableMoney;
     }
 
-    public String getRoleType() {
-        return roleType;
+    public String getToBePayMoney() {
+        return toBePayMoney;
     }
 
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
+    public void setToBePayMoney(String toBePayMoney) {
+        this.toBePayMoney = toBePayMoney;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getCumulativeRevenue() {
+        return cumulativeRevenue;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setCumulativeRevenue(String cumulativeRevenue) {
+        this.cumulativeRevenue = cumulativeRevenue;
     }
 
-    public String getHead() {
-        return head;
+    public String getEquipmentRevenue() {
+        return equipmentRevenue;
     }
 
-    public void setHead(String head) {
-        this.head = head;
+    public void setEquipmentRevenue(String equipmentRevenue) {
+        this.equipmentRevenue = equipmentRevenue;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getRecommendedRevenue() {
+        return recommendedRevenue;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setRecommendedRevenue(String recommendedRevenue) {
+        this.recommendedRevenue = recommendedRevenue;
     }
 
-    public String getTotalMoney() {
-        return totalMoney;
+    public String getCumulativeConsumption() {
+        return cumulativeConsumption;
     }
 
-    public void setTotalMoney(String totalMoney) {
-        this.totalMoney = totalMoney;
+    public void setCumulativeConsumption(String cumulativeConsumption) {
+        this.cumulativeConsumption = cumulativeConsumption;
     }
 
-    public String getRecommendMoney() {
-        return recommendMoney;
+    public String getRecommendedShare() {
+        return recommendedShare;
     }
 
-    public void setRecommendMoney(String recommendMoney) {
-        this.recommendMoney = recommendMoney;
+    public void setRecommendedShare(String recommendedShare) {
+        this.recommendedShare = recommendedShare;
     }
 
-    public String getOperateMoney() {
-        return operateMoney;
+    public String getCumulativeWithdrawal() {
+        return cumulativeWithdrawal;
     }
 
-    public void setOperateMoney(String operateMoney) {
-        this.operateMoney = operateMoney;
+    public void setCumulativeWithdrawal(String cumulativeWithdrawal) {
+        this.cumulativeWithdrawal = cumulativeWithdrawal;
     }
 
-    public List<OutBean> getOut() {
-        return out;
+    public String getOperationMaintenanceShare() {
+        return operationMaintenanceShare;
     }
 
-    public void setOut(List<OutBean> out) {
-        this.out = out;
+    public void setOperationMaintenanceShare(String operationMaintenanceShare) {
+        this.operationMaintenanceShare = operationMaintenanceShare;
     }
 
-    public List<InBean> getIn() {
-        return in;
+    public String getTotalRevenue() {
+        return totalRevenue;
     }
 
-    public void setIn(List<InBean> in) {
-        this.in = in;
-    }
-
-    public static class OutBean {
-        /**
-         * id : 1
-         * type : 1
-         * title : 充值
-         * money : 1000
-         * createdAt : 2021-03-25 14:04:54
-         */
-
-        private int id;
-        private String type;
-        private String title;
-        private String money;
-        private String createdAt;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getMoney() {
-            return money;
-        }
-
-        public void setMoney(String money) {
-            this.money = money;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
-    }
-
-    public static class InBean {
-        /**
-         * id : 1
-         * type : 1
-         * title : 充值
-         * money : 1000
-         * createdAt : 2021-03-25 14:04:54
-         */
-
-        private int id;
-        private String type;
-        private String title;
-        private String money;
-        private String createdAt;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getMoney() {
-            return money;
-        }
-
-        public void setMoney(String money) {
-            this.money = money;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
+    public void setTotalRevenue(String totalRevenue) {
+        this.totalRevenue = totalRevenue;
     }
 }

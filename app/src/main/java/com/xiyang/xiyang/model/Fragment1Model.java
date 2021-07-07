@@ -8,15 +8,15 @@ import java.util.List;
  */
 public class Fragment1Model implements Serializable {
     /**
-     * manageMerchantNum : 10
-     * signMerchantNum : 10
-     * recommendMerchantNum : 10
-     * money : 10000
-     * waitSign : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:03:08"}]
-     * waitCheck : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:03:08"}]
-     * hasRefuse : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:03:08"}]
-     * hasChecked : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:03:08"}]
-     * merchants : [{"id":"1","name":"万豪酒店","image":"a.png","deviceNum":"30","address":"重庆市沙坪坝","status":"1","statusTitle":"已签约","money":"30000"}]
+     * manageMerchantNum : 0
+     * signMerchantNum : 2
+     * recommendMerchantNum : 0
+     * money : 100000
+     * waitSign : [{"id":"1411240609229967360","name":"商户名称","createTime":null},{"id":"1411989698812973056","name":"商户名称1","createTime":null}]
+     * waitCheck : []
+     * hasRefuse : []
+     * hasChecked : []
+     * merchantsList : [{"id":"1411240609229967360","name":"商户名称","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/03/16253009550771625300772843.png","deviceNum":null,"address":"阿斯顿马丁路德金阿斯顿","status":"3","statusTitle":null,"money":null,"bddescription":null},{"id":"1411989698812973056","name":"商户名称1","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/05/16254795519841625479367281.png","deviceNum":null,"address":"啊水电费阿斯顿","status":"3","statusTitle":null,"money":null,"bddescription":null}]
      */
 
     private String manageMerchantNum;
@@ -24,10 +24,10 @@ public class Fragment1Model implements Serializable {
     private String recommendMerchantNum;
     private String money;
     private List<WaitSignBean> waitSign;
-    private List<WaitCheckBean> waitCheck;
-    private List<HasRefuseBean> hasRefuse;
-    private List<HasCheckedBean> hasChecked;
-    private List<MerchantsBean> merchants;
+    private List<WaitSignBean> waitCheck;
+    private List<WaitSignBean> hasRefuse;
+    private List<WaitSignBean> hasChecked;
+    private List<MerchantsListBean> merchantsList;
 
     public String getManageMerchantNum() {
         return manageMerchantNum;
@@ -69,48 +69,48 @@ public class Fragment1Model implements Serializable {
         this.waitSign = waitSign;
     }
 
-    public List<WaitCheckBean> getWaitCheck() {
+    public List<WaitSignBean> getWaitCheck() {
         return waitCheck;
     }
 
-    public void setWaitCheck(List<WaitCheckBean> waitCheck) {
+    public void setWaitCheck(List<WaitSignBean> waitCheck) {
         this.waitCheck = waitCheck;
     }
 
-    public List<HasRefuseBean> getHasRefuse() {
+    public List<WaitSignBean> getHasRefuse() {
         return hasRefuse;
     }
 
-    public void setHasRefuse(List<HasRefuseBean> hasRefuse) {
+    public void setHasRefuse(List<WaitSignBean> hasRefuse) {
         this.hasRefuse = hasRefuse;
     }
 
-    public List<HasCheckedBean> getHasChecked() {
+    public List<WaitSignBean> getHasChecked() {
         return hasChecked;
     }
 
-    public void setHasChecked(List<HasCheckedBean> hasChecked) {
+    public void setHasChecked(List<WaitSignBean> hasChecked) {
         this.hasChecked = hasChecked;
     }
 
-    public List<MerchantsBean> getMerchants() {
-        return merchants;
+    public List<MerchantsListBean> getMerchantsList() {
+        return merchantsList;
     }
 
-    public void setMerchants(List<MerchantsBean> merchants) {
-        this.merchants = merchants;
+    public void setMerchantsList(List<MerchantsListBean> merchantsList) {
+        this.merchantsList = merchantsList;
     }
 
     public static class WaitSignBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:03:08
+         * id : 1411240609229967360
+         * name : 商户名称
+         * createTime : null
          */
 
         private String id;
         private String name;
-        private String createdAt;
+        private String createTime;
 
         public String getId() {
             return id;
@@ -128,133 +128,26 @@ public class Fragment1Model implements Serializable {
             this.name = name;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
-    }
-
-    public static class WaitCheckBean {
-        /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:03:08
-         */
-
-        private String id;
-        private String name;
-        private String createdAt;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
     }
 
-    public static class HasRefuseBean {
+    public static class MerchantsListBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:03:08
-         */
-
-        private String id;
-        private String name;
-        private String createdAt;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
-    }
-
-    public static class HasCheckedBean {
-        /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:03:08
-         */
-
-        private String id;
-        private String name;
-        private String createdAt;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
-    }
-
-    public static class MerchantsBean {
-        /**
-         * id : 1
-         * name : 万豪酒店
-         * image : a.png
-         * deviceNum : 30
-         * address : 重庆市沙坪坝
-         * status : 1
-         * statusTitle : 已签约
-         * money : 30000
+         * id : 1411240609229967360
+         * name : 商户名称
+         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/03/16253009550771625300772843.png
+         * deviceNum : null
+         * address : 阿斯顿马丁路德金阿斯顿
+         * status : 3
+         * statusTitle : null
+         * money : null
+         * bddescription : null
          */
 
         private String id;
@@ -265,6 +158,7 @@ public class Fragment1Model implements Serializable {
         private String status;
         private String statusTitle;
         private String money;
+        private String bddescription;
 
         public String getId() {
             return id;
@@ -328,6 +222,14 @@ public class Fragment1Model implements Serializable {
 
         public void setMoney(String money) {
             this.money = money;
+        }
+
+        public String getBddescription() {
+            return bddescription;
+        }
+
+        public void setBddescription(String bddescription) {
+            this.bddescription = bddescription;
         }
     }
 }

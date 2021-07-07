@@ -84,10 +84,10 @@ public class Fragment3_m extends BaseFragment {
         textView3.setOnClickListener(this);
 
         switch (localUserInfo.getUserJob()){
-            case "cm":
+            case "CM":
                 textView3.setVisibility(View.INVISIBLE);
                 break;
-            case "bdm":
+            case "BDM":
                 textView2.setVisibility(View.INVISIBLE);
                 textView3.setVisibility(View.INVISIBLE);
                 break;

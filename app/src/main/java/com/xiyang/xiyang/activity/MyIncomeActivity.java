@@ -7,9 +7,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
+import com.xiyang.xiyang.model.MyIncomeListModel;
 import com.xiyang.xiyang.model.MyIncomeModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -34,12 +36,12 @@ import okhttp3.Response;
 public class MyIncomeActivity extends BaseActivity {
     int type = 1, page1 = 1, page2 = 1;
     MyIncomeModel model1;
-    private RecyclerView recyclerView;
-    List<MyIncomeModel.InBean> list1 = new ArrayList<>();
-    CommonAdapter<MyIncomeModel.InBean> mAdapter1;
 
-    List<MyIncomeModel.OutBean> list2 = new ArrayList<>();
-    CommonAdapter<MyIncomeModel.OutBean> mAdapter2;
+    String orderField = "", orderType = "DESC";
+
+    private RecyclerView recyclerView;
+    List<MyIncomeListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<MyIncomeListModel.RecordsBean> mAdapter;
     //头部一
 //    View headerView1;
     RelativeLayout head1_relativeLayout;
@@ -67,16 +69,30 @@ public class MyIncomeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        setSpringViewMore(false);//需要加载更多
+        setSpringViewMore(true);//需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                Request(params);
+                params.clear();
+                requestIncome(params);
             }
 
             @Override
             public void onLoadmore() {
-
+                params.clear();
+                //加载更多
+                if (type == 1) {
+                    page1 = page1 + 1;
+                    params.put("page", page1 + "");
+                }else {
+                    page2 = page2 + 1;
+                    params.put("page", page2 + "");
+                }
+                params.put("size", "10");
+                params.put("changeType", type + "");
+                params.put("orderField", orderField);
+                params.put("orderType", orderType);
+                requestListMore(params);
             }
         });
 
@@ -127,10 +143,56 @@ public class MyIncomeActivity extends BaseActivity {
 
     }
 
-    private void Request(Map<String, String> params) {
+    @Override
+    public void requestServer() {
+        super.requestServer();
+//        this.showLoadingPage();
+        showProgress(true, getString(R.string.app_loading2));
+        params.clear();
+        requestIncome(params);
+    }
+
+    private void requestIncome(Map<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<MyIncomeModel>() {
             @Override
             public MyIncomeModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                showErrorPage();
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(MyIncomeModel response) {
+//                showContentPage();
+                model1 = response;
+
+                head1_textView1.setText(response.getAvailableMoney());//可用余额
+                head1_textView2.setText("￥" + response.getOperationMaintenanceShare());//运维分成
+                head1_textView3.setText("￥" + response.getRecommendedShare());//推荐分成
+                head1_textView4.setText("￥" + response.getTotalRevenue());//总营收
+
+                params.clear();
+                page1 = 1;
+                page2 = 1;
+                params.put("size", "10");
+                params.put("page", page1 + "");
+                params.put("changeType", type + "");
+                params.put("orderField", orderField);
+                params.put("orderType", orderType);
+                requestList(params);
+            }
+        });
+    }
+
+    private void requestList(Map<String, String> params) {
+        OkhttpUtil.okHttpPostJson(URLs.MyIncomeList, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyIncomeListModel>() {
+            @Override
+            public MyIncomeListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -142,43 +204,67 @@ public class MyIncomeActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyIncomeModel response) {
+            public void onResponse(MyIncomeListModel response) {
                 showContentPage();
-                model1 = response;
-
-                head1_textView1.setText(response.getAmount());//可用余额
-                head1_textView2.setText("￥" + response.getOperateMoney());//运维分成
-                head1_textView3.setText("￥" + response.getRecommendMoney());//推荐分成
-                head1_textView4.setText("￥" + response.getTotalMoney());//总营收
-
-                list1 = response.getIn();
-                mAdapter1 = new CommonAdapter<MyIncomeModel.InBean>
-                        (MyIncomeActivity.this, R.layout.item_myincome, list1) {
-                    @Override
-                    protected void convert(ViewHolder holder, final MyIncomeModel.InBean model, int position) {
-                        holder.setText(R.id.textView1, model.getTitle());//标题
-//                        holder.setText(R.id.textView2, getString(R.string.recharge_h21) + model.get);//流水号
-                        holder.setText(R.id.textView3, model.getCreatedAt());//时间
-                        holder.setText(R.id.textView4, "+"+model.getMoney());//状态
-                    }
-                };
-
-                list2 = response.getOut();
-                mAdapter2 = new CommonAdapter<MyIncomeModel.OutBean>
-                        (MyIncomeActivity.this, R.layout.item_myincome, list2) {
-                    @Override
-                    protected void convert(ViewHolder holder, final MyIncomeModel.OutBean model, int position) {
-                        holder.setText(R.id.textView1, model.getTitle());//标题
-//                        holder.setText(R.id.textView2, getString(R.string.recharge_h21) + model.get);//流水号
-                        holder.setText(R.id.textView3, model.getCreatedAt());//时间
-                        holder.setText(R.id.textView4, "-"+model.getMoney());//状态
-                    }
-                };
-
-                changeUI();
                 hideProgress();
+                list = response.getRecords();
+                if (list.size() == 0) {
+                    showEmptyPage();//空数据
+                } else {
+                    mAdapter = new CommonAdapter<MyIncomeListModel.RecordsBean>
+                            (MyIncomeActivity.this, R.layout.item_myincome, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, MyIncomeListModel.RecordsBean model, int position) {
+                            holder.setText(R.id.textView1, model.getLogType());//标题
+//                        holder.setText(R.id.textView2, getString(R.string.recharge_h21) + model.get);//流水号
+                            holder.setText(R.id.textView3, model.getCreateTimeStr());//时间
+                            if (type == 1)
+                                holder.setText(R.id.textView4, "+" + model.getAvailableAmount());//金额
+                            else
+                                holder.setText(R.id.textView4, "-" + model.getAvailableAmount());//金额
+                        }
+                    };
+                    recyclerView.setAdapter(mAdapter);
+                }
             }
         });
+    }
+
+    private void requestListMore(Map<String, String> params) {
+        OkhttpUtil.okHttpPostJson(URLs.MyIncomeList, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyIncomeListModel>() {
+            @Override
+            public MyIncomeListModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                showErrorPage();
+                hideProgress();
+                myToast(err);
+                if (type == 1)
+                    page1--;
+                else page2--;
+            }
+
+            @Override
+            public void onResponse(MyIncomeListModel response) {
+//                showContentPage();
+                hideProgress();
+                List<MyIncomeListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    if (type == 1)
+                        page1--;
+                    else page2--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -219,14 +305,6 @@ public class MyIncomeActivity extends BaseActivity {
 //            head2_view1.setVisibility(View.VISIBLE);
 //            head2_view2.setVisibility(View.INVISIBLE);
 
-            if (list1.size() > 0) {
-                showContentPage();
-                recyclerView.setAdapter(mAdapter1);
-//                mAdapter1.notifyDataSetChanged();
-            } else {
-                showEmptyPage();
-            }
-
         } else if (type == 2) {
             textView1.setTextColor(getResources().getColor(R.color.black3));
             textView2.setTextColor(getResources().getColor(R.color.black1));
@@ -237,29 +315,17 @@ public class MyIncomeActivity extends BaseActivity {
             view2.setVisibility(View.VISIBLE);
 //            head2_view1.setVisibility(View.INVISIBLE);
 //            head2_view2.setVisibility(View.VISIBLE);
-            if (list2.size() > 0) {
-                showContentPage();
-                recyclerView.setAdapter(mAdapter2);
-//                mAdapter2.notifyDataSetChanged();
-            } else {
-                showEmptyPage();
-            }
 
         }
-    }
-
-    @Override
-    public void requestServer() {
-        super.requestServer();
-//        this.showLoadingPage();
-        showProgress(true, getString(R.string.app_loading2));
-        /*params.clear();
+        params.clear();
         page1 = 1;
-        page2 = 2;
-        params.put("count", "10");
-        params.put("page", page1+"");*/
-        Request(params);
-
+        page2 = 1;
+        params.put("size", "10");
+        params.put("page", page1 + "");
+        params.put("changeType", type + "");
+        params.put("orderField", orderField);
+        params.put("orderType", orderType);
+        requestList(params);
     }
 
     @Override

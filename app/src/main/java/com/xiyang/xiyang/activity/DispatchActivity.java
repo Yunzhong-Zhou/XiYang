@@ -86,7 +86,7 @@ public class DispatchActivity extends BaseActivity {
         rl_xuanzexinBDM.setVisibility(View.GONE);
         rl_shebeifencheng.setVisibility(View.GONE);
         switch (localUserInfo.getUserJob()){
-            case "rm":
+            case "RM":
                 titleView.setTitle("分派CM");
                 rl_xuanzesheng.setVisibility(View.VISIBLE);
                 rl_xuanzeleixing.setVisibility(View.VISIBLE);
@@ -94,7 +94,7 @@ public class DispatchActivity extends BaseActivity {
                 rl_dangqianCM.setVisibility(View.VISIBLE);
                 rl_xuanzexinCM.setVisibility(View.VISIBLE);
                 break;
-            case "cm":
+            case "CM":
                 titleView.setTitle("分派BDM");
                 rl_xuanzechengshi.setVisibility(View.VISIBLE);
                 rl_xuanzezhuangtai.setVisibility(View.VISIBLE);
@@ -103,7 +103,7 @@ public class DispatchActivity extends BaseActivity {
                 rl_xuanzexinBDM.setVisibility(View.VISIBLE);
 
                 break;
-            case "bdm":
+            case "BDM":
                 titleView.setTitle("分派BD");
                 rl_xuanzezhuangtai.setVisibility(View.VISIBLE);
                 rl_xuanzemendian.setVisibility(View.VISIBLE);

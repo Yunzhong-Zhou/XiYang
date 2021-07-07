@@ -58,13 +58,13 @@ public class MyCityActivity extends BaseActivity {
 
         rv1.setVisibility(View.VISIBLE);
         switch (localUserInfo.getUserJob()) {
-            case "rm":
+            case "RM":
                 titleView.setTitle("我的城市");
                 break;
-            case "cm":
+            case "CM":
                 titleView.setTitle("我的市区");
                 break;
-            case "bdm":
+            case "BDM":
                 titleView.setTitle("我的区域");
                 rv1.setVisibility(View.GONE);
                 break;
@@ -77,13 +77,13 @@ public class MyCityActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 switch (localUserInfo.getUserJob()) {
-                    case "rm":
+                    case "RM":
                         requestCityMore(params, URLs.MyCity_RM);
                         break;
-                    case "cm":
+                    case "CM":
                         requestCityMore(params, URLs.MyCity_RM);
                         break;
-                    case "bdm":
+                    case "BDM":
                         requestCityMore(params, URLs.MyCity_RM);
                         break;
                 }
@@ -315,10 +315,10 @@ public class MyCityActivity extends BaseActivity {
                         holder.setText(R.id.tv_city, model.getName());
                         TextView tv_name = holder.getView(R.id.tv_name);
                         switch (localUserInfo.getUserJob()) {
-                            case "rm":
+                            case "RM":
                                 tv_name.setText("CM:" + model.getCmName());
                                 break;
-                            case "cm":
+                            case "CM":
                                 tv_name.setText("BDM:" + model.getCmName());
                                 break;
                         }
@@ -408,13 +408,13 @@ public class MyCityActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         switch (localUserInfo.getUserJob()) {
-            case "rm":
+            case "RM":
                 requestCity1(params, URLs.MyCity_RM);
                 break;
-            case "cm":
+            case "CM":
                 requestCity1(params, URLs.MyCity_RM);
                 break;
-            case "bdm":
+            case "BDM":
                 requestCity1(params, URLs.MyCity_RM);
                 break;
         }

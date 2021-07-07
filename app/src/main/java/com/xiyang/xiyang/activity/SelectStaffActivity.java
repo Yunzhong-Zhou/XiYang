@@ -140,20 +140,20 @@ public class SelectStaffActivity extends BaseActivity {
 
 
                             switch (localUserInfo.getUserJob()) {
-                                case "cm":
+                                case "CM":
                                     tv_bdm.setText("BDM:" + model.getBdmNum());
                                     tv_bd.setText("BD:" + model.getBdNum());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
-                                case "bdm":
+                                case "BDM":
                                     tv_bdm.setVisibility(View.GONE);
 
                                     tv_bd.setText("BD:" + model.getBdNum());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
-                                case "bd":
+                                case "BD":
                                     tv_bdm.setVisibility(View.GONE);
                                     tv_bd.setVisibility(View.GONE);
                                     tv_city2.setVisibility(View.VISIBLE);

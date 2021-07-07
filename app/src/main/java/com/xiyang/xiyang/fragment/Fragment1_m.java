@@ -182,7 +182,7 @@ public class Fragment1_m extends BaseFragment {
         imageView8 = findViewByID_My(R.id.imageView8);
 
         switch (localUserInfo.getUserJob()) {
-            case "rm":
+            case "RM":
                 textView1.setText("我的城市");
 
                 textView8.setText("人事记录");
@@ -195,7 +195,7 @@ public class Fragment1_m extends BaseFragment {
                 type = 1;
 
                 break;
-            case "cm":
+            case "CM":
                 textView1.setText("我的市区");
 
                 textView8.setText("申请采购");
@@ -208,7 +208,7 @@ public class Fragment1_m extends BaseFragment {
 
                 type = 2;
                 break;
-            case "bdm":
+            case "BDM":
                 textView1.setText("我的市区");
 
                 textView8.setText("人事记录");
@@ -262,7 +262,7 @@ public class Fragment1_m extends BaseFragment {
                  */
                 list_tongji.clear();
                 switch (localUserInfo.getUserJob()) {
-                    case "rm":
+                    case "RM":
                         list_tongji.add(new KeyValueModel_m("总CM", response.getBase().getCmNum(), "人"));
                         list_tongji.add(new KeyValueModel_m("总BDM", response.getBase().getBdmNum(), "人"));
                         list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
@@ -274,7 +274,7 @@ public class Fragment1_m extends BaseFragment {
                         list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
 
                         break;
-                    case "cm":
+                    case "CM":
                         list_tongji.add(new KeyValueModel_m("总BDM", response.getBase().getBdmNum(), "人"));
                         list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
                         list_tongji.add(new KeyValueModel_m("可用指标", response.getBase().getBdNum(), ""));
@@ -286,7 +286,7 @@ public class Fragment1_m extends BaseFragment {
                         list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
 
                         break;
-                    case "bdm":
+                    case "BDM":
                         list_tongji.add(new KeyValueModel_m("总商户", response.getBase().getStoreNum(), "个"));
                         list_tongji.add(new KeyValueModel_m("总门店", response.getBase().getStoreNum(), "个"));
                         list_tongji.add(new KeyValueModel_m("总设备", response.getBase().getDeviceNum(), "台"));
@@ -372,20 +372,20 @@ public class Fragment1_m extends BaseFragment {
 
 
                             switch (localUserInfo.getUserJob()) {
-                                case "cm":
+                                case "CM":
                                     tv_bdm.setText("BDM:" + model.getBdmNum());
                                     tv_bd.setText("BD:" + model.getBdNum());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
-                                case "bdm":
+                                case "BDM":
                                     tv_bdm.setVisibility(View.GONE);
 
                                     tv_bd.setText("BD:" + model.getBdNum());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
-                                case "bd":
+                                case "BD":
                                     tv_bdm.setVisibility(View.GONE);
                                     tv_bd.setVisibility(View.GONE);
                                     tv_city2.setVisibility(View.VISIBLE);

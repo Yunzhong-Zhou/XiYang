@@ -190,13 +190,13 @@ public class AddStaffActivity extends BaseActivity {
     @Override
     protected void updateView() {
         switch (localUserInfo.getUserJob()) {
-            case "rm":
+            case "RM":
                 titleView.setTitle("添加CM");
                 break;
-            case "cm":
+            case "CM":
                 titleView.setTitle("添加BDM");
                 break;
-            case "bdm":
+            case "BDM":
                 titleView.setTitle("添加BD");
                 rl_chengshi.setVisibility(View.GONE);
                 break;
