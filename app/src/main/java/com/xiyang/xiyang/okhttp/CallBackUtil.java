@@ -136,25 +136,8 @@ public abstract class CallBackUtil<T> {
                         case 40002:
                             //会员token无效 - 跳转登录
                             ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                            LocalUserInfo.getInstance(MyApplication.getContext()).setUserHash("");
+                            LocalUserInfo.getInstance(MyApplication.getContext()).setToken("");
                             CommonUtil.gotoActivity(MyApplication.getContext(), LoginActivity.class);
-
-                        /*OkhttpUtil.okHttpPost(URLs.Login1, params, new CallBackUtil<LoginModel>() {
-                            @Override
-                            public LoginModel onParseResponse(Call call, Response response) {
-                                return null;
-                            }
-
-                            @Override
-                            public void onFailure(Call call, Exception e, String err) {
-
-                            }
-
-                            @Override
-                            public void onResponse(LoginModel response) {
-
-                            }
-                        });*/
                             break;
                         case 50007:
                             //请求时误差时间超时

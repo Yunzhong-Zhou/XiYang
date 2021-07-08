@@ -140,7 +140,7 @@ public class GridImageAdapter extends
         //少于8张，显示继续添加的图标
         if (getItemViewType(position) == TYPE_CAMERA) {
             viewHolder.mImg.setImageResource(R.mipmap.ic_add_gray);
-            viewHolder.mImg.setOnClickListener(v -> mOnAddPicClickListener.onAddPicClick());
+            viewHolder.mImg.setOnClickListener(v -> mOnAddPicClickListener.onAddPicClick());//跳转选择图片
             viewHolder.mIvDel.setVisibility(View.INVISIBLE);
         } else {
             viewHolder.mIvDel.setVisibility(View.VISIBLE);
@@ -152,6 +152,8 @@ public class GridImageAdapter extends
                     list.remove(index);
                     notifyItemRemoved(index);
                     notifyItemRangeChanged(index, list.size());
+
+//                    mOnAddPicClickListener.onAddPicClick();//跳转选择图片
                 }
             });
             LocalMedia media = list.get(position);
@@ -188,6 +190,8 @@ public class GridImageAdapter extends
                 Log.i(TAG, "是否开启原图功能::" + true);
                 Log.i(TAG, "开启原图功能后地址::" + media.getOriginalPath());
             }
+
+
 
             long duration = media.getDuration();
             viewHolder.tvDuration.setVisibility(PictureMimeType.isHasVideo(media.getMimeType())

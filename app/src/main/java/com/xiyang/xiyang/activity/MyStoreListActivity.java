@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -78,7 +79,7 @@ public class MyStoreListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 requestList(params);
@@ -89,7 +90,7 @@ public class MyStoreListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 requestListMore(params);
@@ -115,7 +116,7 @@ public class MyStoreListActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyStoreList, params, headerMap, new CallBackUtil<MyStoreListModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.MyStoreList, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyStoreListModel>() {
             @Override
             public MyStoreListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -192,7 +193,7 @@ public class MyStoreListActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyStoreList, params, headerMap, new CallBackUtil<MyStoreListModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.MyStoreList, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyStoreListModel>() {
             @Override
             public MyStoreListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -289,7 +290,7 @@ public class MyStoreListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("count", "10");
+        params.put("pageSize", "10");
         params.put("status", status);
         params.put("sort", sort);
         requestList(params);

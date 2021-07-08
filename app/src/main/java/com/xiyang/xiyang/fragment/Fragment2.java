@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
@@ -21,7 +18,6 @@ import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.MyVisitListActivity;
 import com.xiyang.xiyang.activity.SelectAddressActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
-import com.xiyang.xiyang.activity.StoreDetailActivity;
 import com.xiyang.xiyang.activity.TransferStoreActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment2Model;
@@ -32,7 +28,6 @@ import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -205,7 +200,7 @@ public class Fragment2 extends BaseFragment {
     }
 
     private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Fragment2, params, headerMap, new CallBackUtil<Fragment2Model>() {
+        OkhttpUtil.okHttpPostJson(URLs.Fragment2, GsonUtils.toJson(params), headerMap, new CallBackUtil<Fragment2Model>() {
             @Override
             public Fragment2Model onParseResponse(Call call, Response response) {
                 return null;
@@ -224,7 +219,7 @@ public class Fragment2 extends BaseFragment {
                 hideProgress();
                 showContentPage();
 
-                model = response;
+                /*model = response;
                 textView1.setText(response.getStoreNum());
                 textView2.setText(response.getWaitVisitedNum());
                 textView3.setText(response.getWaitInstallNum());
@@ -263,12 +258,12 @@ public class Fragment2 extends BaseFragment {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            /*if (model.getVisitStatus() != null && model.getVisitStatus().equals("0")) {
+                            *//*if (model.getVisitStatus() != null && model.getVisitStatus().equals("0")) {
                                 //待拜访
                                 imageView2.setImageResource(R.mipmap.bg_daibaifang);
                             } else {
                                 imageView2.setImageResource(R.mipmap.bg_yibaifang);
-                            }*/
+                            }*//*
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -285,7 +280,7 @@ public class Fragment2 extends BaseFragment {
                     showEmptyPage();
                 }
 
-                MainActivity.isOver = true;
+                MainActivity.isOver = true;*/
 
             }
         });

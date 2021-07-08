@@ -33,21 +33,11 @@ import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.LocalUserInfo;
-import com.xiyang.xiyang.utils.MyLogger;
 
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import androidx.appcompat.app.AlertDialog;
 import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 
@@ -142,7 +132,8 @@ public class LoginActivity extends BaseActivity {
                     showProgress(true, "正在获取短信验证码...");
                     textView1.setClickable(false);
                     params.clear();
-                    params.put("phone", phonenum);
+                    params.put("mobile", phonenum);
+                    params.put("appType", "1");
                     params.put("type", "1");
                     RequestCode(params);//获取验证码
                 }
@@ -159,24 +150,21 @@ public class LoginActivity extends BaseActivity {
                     /*headerMap.clear();
                     headerMap.put("Authorization","Basic YWRtaW46YWRtaW4=");
                     headerMap.put("isToken","false");*/
-                    //测试数据
                     if (type == 1) {
-                       /* params.put("phone", phonenum);
+                        params.put("mobile", phonenum);
                         params.put("code", code);
-                        params.put("grant_type", "sms_login");*/
-                        String url = "?phone=" + phonenum
-                                + "&grant_type=" + "sms_login"
-                                + "&code=" + code;
-                        RequestLogin1(params,URLs.Login1+url);//登录
+                        params.put("appType", "1");
+                        params.put("type", "1");
+                        RequestLogin(params);//登录
                     } else {
                         params.put("username", phonenum);
                         params.put("password", password);
+                        params.put("appType", "2");
                         params.put("type", "1");
-                        RequestLogin2(params);//登录
+                        RequestLogin(params);//登录
                     }
                 }
 //                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-//                CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
                 break;
             /*case R.id.image_wechat:
                 //微信登录
@@ -229,51 +217,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     //登录
-    private void RequestLogin1(Map<String, String> params,String url) {
-//        MyLogger.i(">>>"+GsonUtils.toJson(params));
-        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<LoginModel>() {
-            @Override
-            public LoginModel onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-                hideProgress();
-                textView2.setClickable(true);
-                myToast(err);
-
-            }
-
-            @Override
-            public void onResponse(LoginModel response) {
-                textView2.setClickable(true);
-                hideProgress();
-
-                //保存Token
-                localUserInfo.setToken(response.getToken());
-                //保存Token类型
-                localUserInfo.setTokenType(response.getTokentype());
-                //保存电话号码
-                localUserInfo.setPhoneNumber(response.getMobile());
-                //保存是否认证
-//                localUserInfo.setIsVerified(response.getIs_certification() + "");//1 认证 2 未认证
-                //保存昵称
-                localUserInfo.setNickname(response.getNickname());
-                //保存头像
-                localUserInfo.setUserImage(response.getAvatar());
-                //保存职位
-                localUserInfo.setUserJob(response.getJobTitle());//1、BD
-
-                MainActivity.isOver = false;
-                ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-            }
-        });
-    }
-
-    //登录
-    private void RequestLogin2(Map<String, String> params) {
+    private void RequestLogin(Map<String, String> params) {
         OkhttpUtil.okHttpPostJson(URLs.Login2, GsonUtils.toJson(params), headerMap, new CallBackUtil<LoginModel>() {
             @Override
             public LoginModel onParseResponse(Call call, Response response) {
@@ -310,18 +254,12 @@ public class LoginActivity extends BaseActivity {
                 MainActivity.isOver = false;
                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
                 CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-
-                /*if (response.getRoleType().equals("bd")) {//RM、CM、BDM、BD
-                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity.class, true);
-                } else {
-                    CommonUtil.gotoActivity(LoginActivity.this, MainActivity_m.class, true);
-                }*/
             }
         });
     }
 
     private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPut(URLs.Code_yonghu, params, headerMap, new CallBackUtil<CodeModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.Code_denglu, GsonUtils.toJson(params), headerMap, new CallBackUtil<CodeModel>() {
             @Override
             public CodeModel onParseResponse(Call call, Response response) {
                 return null;
@@ -615,127 +553,5 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        resultCode = getIntent().getStringExtra("code");
-        MyLogger.i(">>>>>>>" + resultCode);
-        if (resultCode != null && !resultCode.equals("")) {
-
-            this.showProgress(true, "正在获取微信登录参数，请稍候...");
-            String url = "https://api.weixin.qq.com/sns/oauth2/access_token"
-                    + "?appid=" + "wx43d4928b7bbf4d5c"
-                    + "&secret=" + "40629341d0e10ab69fbfe4a81c9d8a06"
-                    + "&code=" + resultCode
-                    + "&grant_type=authorization_code";
-            requestWeChat1(url);
-
-            getIntent().removeExtra("code");
-           /* getIntent().removeExtra("code");
-            this.showProgress(true, "正在登录，请稍候...");
-            Map<String, String> params = new HashMap<>();
-            params.put("user_phone", phonenum);
-            params.put("vcode", password);
-            params.put("t_token", code);
-            params.put("action", "2");//1为验证码登陆 2为第三方登陆
-            RequestWeChatLogin(params);//微信登录*/
-        }
-    }
-
-    //获取微信数据1
-    private void requestWeChat1(String string) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(string)
-                .get()//默认就是GET请求，可以不写
-                .build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseInfo = response.body().string();
-                MyLogger.i(">>>>>>>>>微信数据1:\n" + responseInfo);
-                String access_token = "";
-                String openId = "";
-                String refresh_token = "";
-                try {
-                    JSONObject jsonObject = new JSONObject(responseInfo);
-                    refresh_token = jsonObject.getString("refresh_token");
-                    access_token = jsonObject.getString("access_token");
-                    openId = jsonObject.getString("openid");
-
-                    String url = "https://api.weixin.qq.com/sns/userinfo"
-                            + "?access_token=" + access_token
-                            + "&openid=" + openId;
-                    requestWeChat2(url);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                hideProgress();
-            }
-        });
-
-    }
-
-    //获取微信数据2
-    private void requestWeChat2(String string) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(string)
-                .get()//默认就是GET请求，可以不写
-                .build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseInfo = response.body().string();
-                MyLogger.i(">>>>>>>>>微信数据2:\n" + responseInfo);
-				/*
-				{
-  "openid": "OPENID",
-  "nickname": "NICKNAME",
-  "sex": 1,
-  "province": "PROVINCE",
-  "city": "CITY",
-  "country": "COUNTRY",
-  "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
-  "privilege": ["PRIVILEGE1", "PRIVILEGE2"],
-  "unionid": " o6_bmasdasdsad6_2sgVt7hMZOPfL"
-}
-				* */
-
-                String openid = "";
-                String nickname = "";
-                String sex = "";
-                String city = "";
-                String headimgurl = "";
-                try {
-                    JSONObject jsonObject = new JSONObject(responseInfo);
-                    openid = jsonObject.getString("openid");
-                    nickname = jsonObject.getString("nickname");
-                    headimgurl = jsonObject.getString("headimgurl");
-
-//                    hideProgress();
-//                    showProgress(true, "正在登录，请稍候...");
-                    Map<String, String> params = new HashMap<>();
-                    params.put("user_phone", phonenum);
-                    params.put("vcode", password);
-                    params.put("t_token", openid);
-                    params.put("head_portrait", headimgurl);
-                    params.put("action", "2");//1为验证码登陆 2为第三方登陆
-                    RequestLogin2(params);//微信登录
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                hideProgress();
-            }
-        });
-
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.ApproveContractListActivity;
 import com.xiyang.xiyang.activity.PersonnelActivity;
@@ -21,6 +22,7 @@ import com.xiyang.xiyang.utils.MyLogger;
  */
 public class Fragment3_m extends BaseFragment {
     TextView textView1, textView2, textView3;
+    ShadowLayout shadowLayout1,shadowLayout2,shadowLayout3;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment3_m, container, false);
@@ -83,13 +85,18 @@ public class Fragment3_m extends BaseFragment {
         textView2.setOnClickListener(this);
         textView3.setOnClickListener(this);
 
+        shadowLayout1 = findViewByID_My(R.id.shadowLayout1);
+        shadowLayout2 = findViewByID_My(R.id.shadowLayout2);
+        shadowLayout3 = findViewByID_My(R.id.shadowLayout3);
+
+
         switch (localUserInfo.getUserJob()){
             case "CM":
-                textView3.setVisibility(View.INVISIBLE);
+                shadowLayout3.setVisibility(View.GONE);
                 break;
             case "BDM":
-                textView2.setVisibility(View.INVISIBLE);
-                textView3.setVisibility(View.INVISIBLE);
+                shadowLayout2.setVisibility(View.GONE);
+                shadowLayout3.setVisibility(View.GONE);
                 break;
         }
 

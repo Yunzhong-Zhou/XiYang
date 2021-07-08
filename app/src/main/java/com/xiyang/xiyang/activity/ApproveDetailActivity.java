@@ -66,8 +66,8 @@ public class ApproveDetailActivity extends BaseActivity {
     LinearLayout ll_shenhe;
     TextView tv_shenpi;
     RecyclerView rv_shenhe;
-    List<ApproveDetailModel.VerifyLogBean> list_shenhe = new ArrayList<>();
-    CommonAdapter<ApproveDetailModel.VerifyLogBean> mAdapter_shenhe;
+    List<ApproveDetailModel.WorkFlowApplylogOperateVoBean> list_shenhe = new ArrayList<>();
+    CommonAdapter<ApproveDetailModel.WorkFlowApplylogOperateVoBean> mAdapter_shenhe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,15 +149,15 @@ public class ApproveDetailActivity extends BaseActivity {
                 /*PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ApproveDetailActivity.this,
                         URLs.IMGHOST + "");
                 photoShowDialog.show();*/
-                if (model.getBase().getFile() != null && !model.getBase().getFile().equals("")) {
-                    bundle.putString("url", model.getBase().getFile());
+                if (model.getContractsVo().getContractsFile() != null && !model.getContractsVo().getContractsFile().equals("")) {
+                    bundle.putString("url", model.getContractsVo().getContractsFile());
                     CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ShowPDFActivity.class, bundle, false);
                 } else myToast("暂无文件");
 
                 break;
             case R.id.tv_shenpi:
                 //立即审批
-                bundle.putString("id", model.getHead().getId());
+                bundle.putString("id", id);
                 CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ApproveContractActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
@@ -211,12 +211,12 @@ public class ApproveDetailActivity extends BaseActivity {
                 hideProgress();
                 model = response;
 
-                tv_name.setText(response.getHead().getName());
-                tv_shop.setText("《" + response.getHead().getContactTitle() + "》");
-                tv_num.setText(response.getHead().getStatusTitle());
-                tv_addr.setText(response.getBase().getCreatedAt());
+                tv_name.setText(response.getWorkFlowApplyLogVo().getName());
+                tv_shop.setText("《" + response.getWorkFlowApplyLogVo().getTypeTitle() + "》");
+                tv_num.setText(response.getWorkFlowApplyLogVo().getStatusTitle());
+                tv_addr.setText(response.getContractsVo().getContractNumber());
                 Glide.with(ApproveDetailActivity.this)
-                        .load(model.getHead().getImage())
+                        .load(model.getWorkFlowApplyLogVo().getImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
@@ -224,29 +224,32 @@ public class ApproveDetailActivity extends BaseActivity {
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
 
-                if (response.getBase().getStatus().equals("0")) {//需要审核
+
+                tv_shenpi.setVisibility(View.VISIBLE);
+                /*if (response.getContractsVo().getStatus().equals("1")) {//需要审核
                     tv_shenpi.setVisibility(View.VISIBLE);
                 } else {
                     tv_shenpi.setVisibility(View.GONE);
-                }
+                }*/
                 /**
                  * 合同信息
                  */
                 list_contract.clear();
-                list_contract.add(new KeyValueModel("选择类型", response.getBase().getContactTitle()));
-                list_contract.add(new KeyValueModel("选择商户", response.getHead().getName()));
+                list_contract.add(new KeyValueModel("合同类型", response.getWorkFlowApplyLogVo().getTypeTitle()));
+                list_contract.add(new KeyValueModel("商户名称", response.getWorkFlowApplyLogVo().getName()));
 
 
                 //签约合同
-                if (response.getBase().getExtra().getSole() != null) {
+                /*if (response.getBase().getExtra().getSole() != null) {
                     list_contract.add(new KeyValueModel("签约期限", response.getBase().getExtra().getRenewalPeriod() + "年"));
                     if (response.getBase().getExtra().getSole().equals("1"))
                         list_contract.add(new KeyValueModel("是否独家", "是"));
                     else list_contract.add(new KeyValueModel("是否独家", "否"));
-                }
+                }*/
 
 
-                list_contract.add(new KeyValueModel("审核时间", response.getBase().getCreatedAt()));
+                list_contract.add(new KeyValueModel("审核时间", response.getContractsVo().getApprovalTime()));
+
                 mAdapter_contract = new CommonAdapter<KeyValueModel>
                         (ApproveDetailActivity.this, R.layout.item_keyvalue, list_contract) {
                     @Override
@@ -257,7 +260,7 @@ public class ApproveDetailActivity extends BaseActivity {
                 };
                 rv_contract.setAdapter(mAdapter_contract);
                 Glide.with(ApproveDetailActivity.this)
-                        .load(response.getBase().getExtra().getLicenseNoImage())
+                        .load(response.getWorkFlowApplyLogVo().getImage())
                         .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
@@ -268,13 +271,13 @@ public class ApproveDetailActivity extends BaseActivity {
                 /**
                  * 审核合同
                  */
-                list_shenhe = response.getVerifyLog();
+                list_shenhe = response.getWorkFlowApplylogOperateVo();
                 if (list_shenhe.size() > 0) {
                     showContentPage();
-                    mAdapter_shenhe = new CommonAdapter<ApproveDetailModel.VerifyLogBean>
+                    mAdapter_shenhe = new CommonAdapter<ApproveDetailModel.WorkFlowApplylogOperateVoBean>
                             (ApproveDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
                         @Override
-                        protected void convert(ViewHolder holder, ApproveDetailModel.VerifyLogBean model, int position) {
+                        protected void convert(ViewHolder holder, ApproveDetailModel.WorkFlowApplylogOperateVoBean model, int position) {
                             //隐藏最前和最后的竖线
                             View view_top = holder.getView(R.id.view_top);
                             View view_bottom = holder.getView(R.id.view_bottom);
@@ -290,7 +293,7 @@ public class ApproveDetailActivity extends BaseActivity {
                             }
                             //状态图片
                             ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
-                            switch (model.getStatus()) {
+                            switch (model.getAuditStat()) {
                                 case "1":
                                     iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
                                     break;
@@ -304,9 +307,9 @@ public class ApproveDetailActivity extends BaseActivity {
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            for (String s : model.getImage()) {
+                            /*for (String s : model.getImage()) {
                                 list_img.add(s);
-                            }
+                            }*/
                             RecyclerView rv = holder.getView(R.id.rv);
                             LinearLayoutManager llm1 = new LinearLayoutManager(ApproveDetailActivity.this);
                             llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
@@ -340,18 +343,18 @@ public class ApproveDetailActivity extends BaseActivity {
                             rv.setAdapter(ca);
 
                             ImageView iv_head = holder.getView(R.id.iv_head);
-                            Glide.with(ApproveDetailActivity.this)
+                            /*Glide.with(ApproveDetailActivity.this)
                                     .load(model.getHead())
                                     .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 3))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.headimg)//加载失败
-                                    .into(iv_head);//加载图片
-                            holder.setText(R.id.tv_name, model.getName());
-                            holder.setText(R.id.tv_time, model.getCreatedAt());
-                            holder.setText(R.id.tv_type, model.getStatusTitle());
-                            holder.setText(R.id.tv_content, model.getRemark());
+                                    .into(iv_head);//加载图片*/
+                            holder.setText(R.id.tv_name, model.getUserName());
+                            holder.setText(R.id.tv_time, model.getAuditTime());
+                            holder.setText(R.id.tv_type, model.getAuditStat());
+                            holder.setText(R.id.tv_content, model.getReason());
                         }
                     };
                     rv_shenhe.setAdapter(mAdapter_shenhe);

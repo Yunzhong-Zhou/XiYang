@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
@@ -155,16 +158,16 @@ public class ApproveContractListActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, ApproveContractListModel.RecordsBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
-                            /*Glide.with(ApproveContractListActivity.this)
-                                    .load(model.get)
+                            Glide.with(ApproveContractListActivity.this)
+                                    .load(model.getImage())
 //                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(ApproveContractListActivity.this, 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片*/
+                                    .into(imageView1);//加载图片
                             holder.setText(R.id.tv_name, model.getName());//标题
-//                            holder.setText(R.id.tv_shop, "《" + model.getTypeTite() + "》");
+                            holder.setText(R.id.tv_shop, "《" + model.getTypeTitle() + "》");
                             holder.setText(R.id.tv_time, model.getCreateTime());
                             TextView tv_type = holder.getView(R.id.tv_type);
                             tv_type.setText(model.getStatusTitle());

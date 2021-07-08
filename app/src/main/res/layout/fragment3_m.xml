@@ -16,6 +16,7 @@
         android:orientation="vertical">
 
         <com.lihang.ShadowLayout
+            android:id="@+id/shadowLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -45,6 +46,7 @@
         </com.lihang.ShadowLayout>
 
         <com.lihang.ShadowLayout
+            android:id="@+id/shadowLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -74,6 +76,7 @@
         </com.lihang.ShadowLayout>
 
         <com.lihang.ShadowLayout
+            android:id="@+id/shadowLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

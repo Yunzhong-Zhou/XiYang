@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class ApproveContractListModel implements Serializable {
     /**
-     * records : [{"id":"1411214988161572866","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-03 14:47:27","name":"11111111"},{"id":"1411217586331574274","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-03 14:57:46","name":"11111111"},{"id":"1411218392921366529","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-03 15:00:43","name":"11111111"},{"id":"1411218726238511106","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-03 15:02:18","name":"11111111"},{"id":"1411950920137392130","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-05 15:31:47","name":"何总商户"},{"id":"1411960617112387585","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-05 16:10:19","name":"何总商户"},{"id":"1411960849556520961","type":"1","status":1,"statusTitle":"审核通过","createTime":"2021-07-05 16:11:14","name":"何总商户"},{"id":"1411986771147943937","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-05 17:54:14","name":"商户名称"},{"id":"1411989826388029442","type":"1","status":0,"statusTitle":"需要审核","createTime":"2021-07-05 18:06:23","name":"商户名称1"}]
-     * total : 0
+     * records : [{"id":"1411986771147943937","type":"merchant_sign","typeTitle":"商户签约","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/03/16253009550771625300772843.png","status":0,"statusTitle":"需要审核","createTime":"2021-07-05 17:54:14","name":"商户名称"},{"id":"1411989826388029442","type":"merchant_sign","typeTitle":"商户签约","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/05/16254795519841625479367281.png","status":0,"statusTitle":"需要审核","createTime":"2021-07-05 18:06:23","name":"商户名称1"}]
+     * total : 2
      * size : 10
      * current : 1
      * orders : []
@@ -18,7 +18,7 @@ public class ApproveContractListModel implements Serializable {
      * countId : null
      * maxLimit : null
      * searchCount : true
-     * pages : 0
+     * pages : 1
      */
 
     private List<RecordsBean> records;
@@ -33,16 +33,20 @@ public class ApproveContractListModel implements Serializable {
 
     public static class RecordsBean {
         /**
-         * id : 1411214988161572866
-         * type : 1
+         * id : 1411986771147943937
+         * type : merchant_sign
+         * typeTitle : 商户签约
+         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/03/16253009550771625300772843.png
          * status : 0
          * statusTitle : 需要审核
-         * createTime : 2021-07-03 14:47:27
-         * name : 11111111
+         * createTime : 2021-07-05 17:54:14
+         * name : 商户名称
          */
 
         private String id;
         private String type;
+        private String typeTitle;
+        private String image;
         private int status;
         private String statusTitle;
         private String createTime;
@@ -62,6 +66,22 @@ public class ApproveContractListModel implements Serializable {
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public String getTypeTitle() {
+            return typeTitle;
+        }
+
+        public void setTypeTitle(String typeTitle) {
+            this.typeTitle = typeTitle;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
         }
 
         public int getStatus() {

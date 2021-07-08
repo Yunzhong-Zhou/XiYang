@@ -8,55 +8,71 @@ import java.util.List;
  */
 public class ApproveDetailModel implements Serializable {
     /**
-     * head : {"id":"27","name":"商户名称周","image":"http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F20581441f6eb25ec75b27e20dca59f8c.png?e=1619342284&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:sC6kK7h4cjLHNKHxttjKNA_QoXc=","contactTitle":"商户签约","status":"0","statusTitle":"已提交"}
-     * base : {"contactTitle":"商户签约","file":null,"extra":{"sole":"1","signTime":"1619280000000","licenseNo":"12445677898655","renewalPeriod":"2","licenseNoImage":"http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F7f7ca2d37abf6bab6ccfde69c823cfae.png?e=1619342525&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:r1KUXiMYSjfnXjHUTX2oMUNIgvQ="},"status":"0","statusTitle":"已提交","createdAt":"2021-04-25 16:22:08"}
-     * verifyLog : [{"id":"27","name":"bdm周","head":"http://localhost:8000/head/head.png","remark":null,"image":["a.png"],"status":"0","statusTitle":"已提交","createdAt":"2021-04-25 16:22:08"}]
+     * contractsVo : {"id":"1412963273288060928","contractNumber":"f7514dd5-8cd7-4840-bcfa-5964b23092f6","name":"商户名称1","image":null,"contractType":"merchant_sign","status":"1","statusTitle":null,"createdAt":null,"merchantsName":null,"signExpied":null,"isExclusive":null,"approvalTime":null,"contractsFile":null,"uploadQualification":null}
+     * workFlowApplylogOperateVo : [{"userName":"1200020020002","auditTime":null,"auditStat":0,"reason":null}]
+     * workFlowApplyLogVo : {"id":"1412963273666646017","type":"merchant_sign","typeTitle":null,"image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/07/16256385343791625638348687.png","status":0,"statusTitle":null,"createTime":"2021-07-08 10:34:31","name":"商户名称1"}
      */
 
-    private HeadBean head;
-    private BaseBean base;
-    private List<VerifyLogBean> verifyLog;
+    private ContractsVoBean contractsVo;
+    private WorkFlowApplyLogVoBean workFlowApplyLogVo;
+    private List<WorkFlowApplylogOperateVoBean> workFlowApplylogOperateVo;
 
-    public HeadBean getHead() {
-        return head;
+    public ContractsVoBean getContractsVo() {
+        return contractsVo;
     }
 
-    public void setHead(HeadBean head) {
-        this.head = head;
+    public void setContractsVo(ContractsVoBean contractsVo) {
+        this.contractsVo = contractsVo;
     }
 
-    public BaseBean getBase() {
-        return base;
+    public WorkFlowApplyLogVoBean getWorkFlowApplyLogVo() {
+        return workFlowApplyLogVo;
     }
 
-    public void setBase(BaseBean base) {
-        this.base = base;
+    public void setWorkFlowApplyLogVo(WorkFlowApplyLogVoBean workFlowApplyLogVo) {
+        this.workFlowApplyLogVo = workFlowApplyLogVo;
     }
 
-    public List<VerifyLogBean> getVerifyLog() {
-        return verifyLog;
+    public List<WorkFlowApplylogOperateVoBean> getWorkFlowApplylogOperateVo() {
+        return workFlowApplylogOperateVo;
     }
 
-    public void setVerifyLog(List<VerifyLogBean> verifyLog) {
-        this.verifyLog = verifyLog;
+    public void setWorkFlowApplylogOperateVo(List<WorkFlowApplylogOperateVoBean> workFlowApplylogOperateVo) {
+        this.workFlowApplylogOperateVo = workFlowApplylogOperateVo;
     }
 
-    public static class HeadBean {
+    public static class ContractsVoBean {
         /**
-         * id : 27
-         * name : 商户名称周
-         * image : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F20581441f6eb25ec75b27e20dca59f8c.png?e=1619342284&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:sC6kK7h4cjLHNKHxttjKNA_QoXc=
-         * contactTitle : 商户签约
-         * status : 0
-         * statusTitle : 已提交
+         * id : 1412963273288060928
+         * contractNumber : f7514dd5-8cd7-4840-bcfa-5964b23092f6
+         * name : 商户名称1
+         * image : null
+         * contractType : merchant_sign
+         * status : 1
+         * statusTitle : null
+         * createdAt : null
+         * merchantsName : null
+         * signExpied : null
+         * isExclusive : null
+         * approvalTime : null
+         * contractsFile : null
+         * uploadQualification : null
          */
 
         private String id;
+        private String contractNumber;
         private String name;
         private String image;
-        private String contactTitle;
+        private String contractType;
         private String status;
         private String statusTitle;
+        private String createdAt;
+        private String merchantsName;
+        private String signExpied;
+        private String isExclusive;
+        private String approvalTime;
+        private String contractsFile;
+        private String uploadQualification;
 
         public String getId() {
             return id;
@@ -64,6 +80,14 @@ public class ApproveDetailModel implements Serializable {
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public String getContractNumber() {
+            return contractNumber;
+        }
+
+        public void setContractNumber(String contractNumber) {
+            this.contractNumber = contractNumber;
         }
 
         public String getName() {
@@ -82,70 +106,12 @@ public class ApproveDetailModel implements Serializable {
             this.image = image;
         }
 
-        public String getContactTitle() {
-            return contactTitle;
+        public String getContractType() {
+            return contractType;
         }
 
-        public void setContactTitle(String contactTitle) {
-            this.contactTitle = contactTitle;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getStatusTitle() {
-            return statusTitle;
-        }
-
-        public void setStatusTitle(String statusTitle) {
-            this.statusTitle = statusTitle;
-        }
-    }
-
-    public static class BaseBean {
-        /**
-         * contactTitle : 商户签约
-         * file : null
-         * extra : {"sole":"1","signTime":"1619280000000","licenseNo":"12445677898655","renewalPeriod":"2","licenseNoImage":"http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F7f7ca2d37abf6bab6ccfde69c823cfae.png?e=1619342525&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:r1KUXiMYSjfnXjHUTX2oMUNIgvQ="}
-         * status : 0
-         * statusTitle : 已提交
-         * createdAt : 2021-04-25 16:22:08
-         */
-
-        private String contactTitle;
-        private String file;
-        private ExtraBean extra;
-        private String status;
-        private String statusTitle;
-        private String createdAt;
-
-        public String getContactTitle() {
-            return contactTitle;
-        }
-
-        public void setContactTitle(String contactTitle) {
-            this.contactTitle = contactTitle;
-        }
-
-        public String getFile() {
-            return file;
-        }
-
-        public void setFile(String file) {
-            this.file = file;
-        }
-
-        public ExtraBean getExtra() {
-            return extra;
-        }
-
-        public void setExtra(ExtraBean extra) {
-            this.extra = extra;
+        public void setContractType(String contractType) {
+            this.contractType = contractType;
         }
 
         public String getStatus() {
@@ -172,83 +138,75 @@ public class ApproveDetailModel implements Serializable {
             this.createdAt = createdAt;
         }
 
-        public static class ExtraBean {
-            /**
-             * sole : 1
-             * signTime : 1619280000000
-             * licenseNo : 12445677898655
-             * renewalPeriod : 2
-             * licenseNoImage : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F7f7ca2d37abf6bab6ccfde69c823cfae.png?e=1619342525&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:r1KUXiMYSjfnXjHUTX2oMUNIgvQ=
-             */
+        public String getMerchantsName() {
+            return merchantsName;
+        }
 
-            private String sole;
-            private String signTime;
-            private String licenseNo;
-            private String renewalPeriod;
-            private String licenseNoImage;
+        public void setMerchantsName(String merchantsName) {
+            this.merchantsName = merchantsName;
+        }
 
-            public String getSole() {
-                return sole;
-            }
+        public String getSignExpied() {
+            return signExpied;
+        }
 
-            public void setSole(String sole) {
-                this.sole = sole;
-            }
+        public void setSignExpied(String signExpied) {
+            this.signExpied = signExpied;
+        }
 
-            public String getSignTime() {
-                return signTime;
-            }
+        public String getIsExclusive() {
+            return isExclusive;
+        }
 
-            public void setSignTime(String signTime) {
-                this.signTime = signTime;
-            }
+        public void setIsExclusive(String isExclusive) {
+            this.isExclusive = isExclusive;
+        }
 
-            public String getLicenseNo() {
-                return licenseNo;
-            }
+        public String getApprovalTime() {
+            return approvalTime;
+        }
 
-            public void setLicenseNo(String licenseNo) {
-                this.licenseNo = licenseNo;
-            }
+        public void setApprovalTime(String approvalTime) {
+            this.approvalTime = approvalTime;
+        }
 
-            public String getRenewalPeriod() {
-                return renewalPeriod;
-            }
+        public String getContractsFile() {
+            return contractsFile;
+        }
 
-            public void setRenewalPeriod(String renewalPeriod) {
-                this.renewalPeriod = renewalPeriod;
-            }
+        public void setContractsFile(String contractsFile) {
+            this.contractsFile = contractsFile;
+        }
 
-            public String getLicenseNoImage() {
-                return licenseNoImage;
-            }
+        public String getUploadQualification() {
+            return uploadQualification;
+        }
 
-            public void setLicenseNoImage(String licenseNoImage) {
-                this.licenseNoImage = licenseNoImage;
-            }
+        public void setUploadQualification(String uploadQualification) {
+            this.uploadQualification = uploadQualification;
         }
     }
 
-    public static class VerifyLogBean {
+    public static class WorkFlowApplyLogVoBean {
         /**
-         * id : 27
-         * name : bdm周
-         * head : http://localhost:8000/head/head.png
-         * remark : null
-         * image : ["a.png"]
+         * id : 1412963273666646017
+         * type : merchant_sign
+         * typeTitle : null
+         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/07/16256385343791625638348687.png
          * status : 0
-         * statusTitle : 已提交
-         * createdAt : 2021-04-25 16:22:08
+         * statusTitle : null
+         * createTime : 2021-07-08 10:34:31
+         * name : 商户名称1
          */
 
         private String id;
-        private String name;
-        private String head;
-        private String remark;
-        private String status;
+        private String type;
+        private String typeTitle;
+        private String image;
+        private int status;
         private String statusTitle;
-        private String createdAt;
-        private List<String> image;
+        private String createTime;
+        private String name;
 
         public String getId() {
             return id;
@@ -258,35 +216,35 @@ public class ApproveDetailModel implements Serializable {
             this.id = id;
         }
 
-        public String getName() {
-            return name;
+        public String getType() {
+            return type;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setType(String type) {
+            this.type = type;
         }
 
-        public String getHead() {
-            return head;
+        public String getTypeTitle() {
+            return typeTitle;
         }
 
-        public void setHead(String head) {
-            this.head = head;
+        public void setTypeTitle(String typeTitle) {
+            this.typeTitle = typeTitle;
         }
 
-        public String getRemark() {
-            return remark;
+        public String getImage() {
+            return image;
         }
 
-        public void setRemark(String remark) {
-            this.remark = remark;
+        public void setImage(String image) {
+            this.image = image;
         }
 
-        public String getStatus() {
+        public int getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(int status) {
             this.status = status;
         }
 
@@ -298,20 +256,66 @@ public class ApproveDetailModel implements Serializable {
             this.statusTitle = statusTitle;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
 
-        public List<String> getImage() {
-            return image;
+        public String getName() {
+            return name;
         }
 
-        public void setImage(List<String> image) {
-            this.image = image;
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    public static class WorkFlowApplylogOperateVoBean {
+        /**
+         * userName : 1200020020002
+         * auditTime : null
+         * auditStat : 0
+         * reason : null
+         */
+
+        private String userName;
+        private String auditTime;
+        private String auditStat;
+        private String reason;
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getAuditTime() {
+            return auditTime;
+        }
+
+        public void setAuditTime(String auditTime) {
+            this.auditTime = auditTime;
+        }
+
+        public String getAuditStat() {
+            return auditStat;
+        }
+
+        public void setAuditStat(String auditStat) {
+            this.auditStat = auditStat;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
         }
     }
 }

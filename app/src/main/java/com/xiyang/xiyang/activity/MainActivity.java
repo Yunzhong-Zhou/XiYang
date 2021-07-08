@@ -35,7 +35,6 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
-import com.xiyang.xiyang.utils.TraceServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -258,20 +257,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
-        /*//获取上传文件token - 20分钟更新一次
-        if (timer == null) {
-            timer = new Timer();
-        }
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-            // 执行的方法
-                RequestUpLoadToken(params);
-            }
-        }, 20*60*1000);*/
-
-
         //更新
         /*Map<String, String> params = new HashMap<>();
         params.put("type", "1");
@@ -284,7 +269,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public EasyNavigationBar getNavigationBar() {
-//使用       ((MainActivity) getActivity()).getNavigationBar().setMsgPointCount(1, response.getDai_shi_gong_sum());
         return navigationBar;
     }
 
@@ -321,7 +305,7 @@ public class MainActivity extends BaseActivity {
         } else {
             //退出
 //            AbsWorkService.cancelJobAlarmSub();//取消定时唤醒
-            TraceServiceImpl.stopService();//停止服务.
+//            TraceServiceImpl.stopService();//停止服务.
 
 //            ActivityUtils.finishAllActivities();//结束所有 Activity
             AppUtils.exitApp();//退出APP

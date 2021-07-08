@@ -1023,8 +1023,8 @@ public class AddContractActivity extends BaseActivity {
                 tv_img.setText("执照上传");
                 iv_add.setVisibility(View.VISIBLE);
 
-                params.put("type", "renewalPeriod");
-                request(params);
+//                params.put("type", "renewalPeriod");
+                request(URLs.AddContract_qianyue, params);
                 break;
             case 1:
                 //新增合同
@@ -1047,7 +1047,7 @@ public class AddContractActivity extends BaseActivity {
 
                 requestChangKu(params);
                 params.put("type", "merchantRecoverReason");
-                request(params);
+                request(URLs.AddContract_huishou,params);
 
                 break;
             case 3:
@@ -1076,7 +1076,7 @@ public class AddContractActivity extends BaseActivity {
                 iv_add.setVisibility(View.VISIBLE);
 
                 params.put("type", "renewalPeriod");
-                request(params);
+                request(URLs.AddContract_xiugai,params);
 
                 break;
             case 5:
@@ -1094,7 +1094,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_xuanzeyuanyin.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
                 params.put("type", "merchantCancelReason");
-                request(params);
+                request(URLs.AddContract_quxiao,params);
                 break;
             case 7:
                 //调价合同
@@ -1109,7 +1109,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_tiaojialiyou.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
                 params.put("type", "storeUnit");
-                request(params);
+                request(URLs.AddContract_tiaojia,params);
                 break;
         }
     }
@@ -1119,8 +1119,8 @@ public class AddContractActivity extends BaseActivity {
      *
      * @param params
      */
-    private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Common, params, headerMap, new CallBackUtil<CommonModel>() {
+    private void request(String url, Map<String, String> params) {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {
                 return null;

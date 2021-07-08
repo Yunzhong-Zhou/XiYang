@@ -1,10 +1,6 @@
 package com.xiyang.xiyang.activity;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -14,9 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.ImageUtils;
 import com.cy.dialog.BaseDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -28,14 +22,10 @@ import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.CommonModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.FileUtil;
-import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.xiyang.xiyang.view.pictureselector.FullyGridLayoutManager;
 import com.xiyang.xiyang.view.pictureselector.GlideCacheEngine;
 import com.xiyang.xiyang.view.pictureselector.GlideEngine;
@@ -57,15 +47,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
-import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
-
 /**
  * Created by Mr.Z on 2021/4/6.
  * 审批合同
  */
 public class ApproveContractActivity extends BaseActivity {
-    List<CommonModel.StatusBean> list_jieguo = new ArrayList<>();
+    List<String> list_jieguo = new ArrayList<>();
     int i_jieguo = -1;
     //    RelativeLayout rl_jieguo, rl_shuoming;
     EditText tv_jieguo, tv_shuoming;
@@ -84,6 +71,7 @@ public class ApproveContractActivity extends BaseActivity {
     int num = 0;
 
     Map<String, File> fileMap = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,8 +92,29 @@ public class ApproveContractActivity extends BaseActivity {
         }
         mAdapter.setSelectMax(maxSelectNum);
         mRecyclerView.setAdapter(mAdapter);
-    }
 
+        /*// 注册广播
+        BroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                BroadcastAction.ACTION_DELETE_PREVIEW_POSITION);*/
+    }
+    /*private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            if (BroadcastAction.ACTION_DELETE_PREVIEW_POSITION.equals(action)) {
+                // 外部预览删除按钮回调
+                Bundle extras = intent.getExtras();
+                if (extras != null) {
+                    int position = extras.getInt(PictureConfig.EXTRA_PREVIEW_DELETE_POSITION);
+                    mAdapter.remove(position);
+                    mAdapter.notifyItemRemoved(position);
+                }
+            }
+        }
+    };*/
     @Override
     protected void initView() {
 //        rl_jieguo = findViewByID_My(R.id.rl_jieguo);
@@ -121,10 +130,13 @@ public class ApproveContractActivity extends BaseActivity {
     protected void initData() {
         id = getIntent().getStringExtra("id");
 
-        request(params);
+        list_jieguo.add("通过");
+        list_jieguo.add("不通过");
+
+//        request(params);
     }
 
-    private void request(Map<String, String> params) {
+    /*private void request(Map<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.ApproveContract, params, headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {
@@ -142,11 +154,11 @@ public class ApproveContractActivity extends BaseActivity {
                 hideProgress();
                 i_jieguo = -1;
                 status = "";
-                list_jieguo = response.getStatus();
+//                list_jieguo = response.getStatus();
             }
         });
 
-    }
+    }*/
 
     @Override
     protected void updateView() {
@@ -167,6 +179,7 @@ public class ApproveContractActivity extends BaseActivity {
                     images = "";
                     showProgress(true, getString(R.string.app_loading1));
                     for (int i = 0; i < listFiles.size(); i++) {
+                        params.clear();
                         fileMap.clear();
                         fileMap.put("file", listFiles.get(i));
                         OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
@@ -191,7 +204,7 @@ public class ApproveContractActivity extends BaseActivity {
                                         images = images.substring(0, images.length() - 1);
                                     }
                                     params.clear();
-                                    params.put("remark", remark);
+                                    params.put("reason", remark);
                                     params.put("images", images);
                                     params.put("id", id);
                                     params.put("status", status);
@@ -216,6 +229,14 @@ public class ApproveContractActivity extends BaseActivity {
             myToast("请输入处理说明");
             return false;
         }
+        listFiles.clear();
+        for (LocalMedia media : mAdapter.getData()) {
+            MyLogger.i(">>>>>>压缩地址：" + media.getCompressPath());
+            File file = new File(media.getCompressPath());
+            listFiles.add(file);
+            // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
+        }
+        MyLogger.i(">>>>>>"+listFiles.size());
         num = listFiles.size();
         if (num == 0) {
             myToast("请选择上传照片");
@@ -225,67 +246,8 @@ public class ApproveContractActivity extends BaseActivity {
     }
 
     /**
-     * *****************************************选择图片********************************************
+     * 提交数据
      */
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            File imgfile = null;
-            String imgpath = null;
-            Uri uri = null;
-            switch (requestCode) {
-                case REQUEST_CODE_CAPTURE_CAMEIA:
-                    //相机
-                    uri = Uri.parse("");
-                    uri = Uri.fromFile(new File(MyChooseImages.imagepath));
-                    imgpath = uri.getPath();
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
-                    break;
-                case REQUEST_CODE_PICK_IMAGE:
-                    //相册
-                    uri = data.getData();
-                    imgpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + imgpath + ">>>>>后缀名：" + FileUtils.getFileExtension(imgpath));
-                    break;
-
-            }
-            if (imgpath != null) {
-//                showProgress(true, getString(R.string.app_loading1));
-//                imgfile = new File(uri.getPath());
-                //压缩
-                Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
-                //如果是拍照，则旋转
-                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
-                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
-                }
-                imageView1.setImageBitmap(bitmap);
-                imgfile = FileUtil.bytesToImageFile(ApproveContractActivity.this,
-                        ImageUtils.compressByQuality(bitmap, 50));
-
-                new UpFileToQiNiuUtil(ApproveContractActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                    @Override
-                    public void complete(boolean isok, String result, String url) {
-//                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-
-                            images = url;
-                           /* Map<String, String> params = new HashMap<>();
-                            params.put("head",url);
-                            RequestUpFile(params);*/
-
-                        } else {
-                            myToast(result);
-                        }
-                    }
-                };
-            }
-        }
-
-    }
-
     private void requestUpData(Map<String, String> params) {
         OkhttpUtil.okHttpPostJson(URLs.ApproveContract, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
@@ -322,12 +284,12 @@ public class ApproveContractActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.StatusBean> adapter = new CommonAdapter<CommonModel.StatusBean>
+        CommonAdapter<String> adapter = new CommonAdapter<String>
                 (ApproveContractActivity.this, R.layout.item_help, list_jieguo) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.StatusBean model, int position) {
+            protected void convert(ViewHolder holder, String model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model);
                 if (i_jieguo == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -338,8 +300,8 @@ public class ApproveContractActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 i_jieguo = position;
-                textView.setText(list_jieguo.get(position).getVal());
-                status = list_jieguo.get(position).getKey();
+                textView.setText(list_jieguo.get(position));
+                status = position + 1 + "";
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
 
@@ -380,7 +342,7 @@ public class ApproveContractActivity extends BaseActivity {
                     //.maxVideoSelectNum(1) // 视频最大选择数量
                     //.minVideoSelectNum(1)// 视频最小选择数量
                     .imageSpanCount(4)// 每行显示个数
-                    .isReturnEmpty(false)// 未选择数据时点击按钮是否可以返回
+                    .isReturnEmpty(true)// 未选择数据时点击按钮是否可以返回
                     .closeAndroidQChangeWH(true)//如果图片有旋转角度则对换宽高,默认为true
                     .closeAndroidQChangeVideoWH(!SdkVersionUtils.checkedAndroid_Q())// 如果视频有旋转角度则对换宽高,默认为false
                     //.isAndroidQTransform(false)// 是否需要处理Android Q 拷贝至应用沙盒的操作，只针对compress(false); && .isEnableCrop(false);有效,默认处理
@@ -441,13 +403,15 @@ public class ApproveContractActivity extends BaseActivity {
 
         @Override
         public void onResult(List<LocalMedia> result) {
+            /*
+            //以下代码应该写在提交，否则删除的图片会提交
             listFiles.clear();
             for (LocalMedia media : result) {
                 MyLogger.i(">>>>>>压缩地址：" + media.getCompressPath());
                 File file = new File(media.getCompressPath());
                 listFiles.add(file);
                 // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
-            }
+            }*/
             if (mAdapterWeakReference.get() != null) {
                 mAdapterWeakReference.get().setList(result);
                 mAdapterWeakReference.get().notifyDataSetChanged();
@@ -456,7 +420,7 @@ public class ApproveContractActivity extends BaseActivity {
 
         @Override
         public void onCancel() {
-//            Log.i(TAG, "图片选择取消");
+//            MyLogger.i("图片选择取消");
         }
     }
 }

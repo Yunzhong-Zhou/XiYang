@@ -55,8 +55,8 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        showProgress(true, getString(R.string.app_loading2));
-        Request(params);
+//        showProgress(true, getString(R.string.app_loading2));
+//        Request(params);
     }
 
     private void Request(Map<String, String> params) {

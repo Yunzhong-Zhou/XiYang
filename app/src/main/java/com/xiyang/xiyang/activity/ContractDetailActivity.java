@@ -92,6 +92,13 @@ public class ContractDetailActivity extends BaseActivity {
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
+
+        tv_name = findViewByID_My(R.id.tv_name);
+        tv_shop = findViewByID_My(R.id.tv_shop);
+        tv_num = findViewByID_My(R.id.tv_num);
+        tv_addr = findViewByID_My(R.id.tv_addr);
+        imageView1 = findViewByID_My(R.id.imageView1);
+        imageView2 = findViewByID_My(R.id.imageView2);
         /**
          *商户信息
          */
@@ -178,7 +185,24 @@ public class ContractDetailActivity extends BaseActivity {
             public void onResponse(ContractDetailModel response) {
                 hideProgress();
                 model = response;
-
+               /* tv_name.setText(response.getContractsVo().getName());
+                tv_shop.setText("《"+response.getContractsVo().getMerchantsName()+"》");
+                tv_num.setText(response.getContractsVo().get);
+                tv_addr.setText(response.getContractsVo().getContractNumber());
+                Glide.with(ShopDetailActivity.this)
+                        .load(model.getImage())
+//                                .fitCenter()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(ShopDetailActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(imageView1);//加载图片
+                if (model.getStatus().equals("1")) {
+                    //待签约
+                    imageView2.setImageResource(R.mipmap.bg_daiqianyue);
+                } else {
+                    imageView2.setImageResource(R.mipmap.bg_yiqianyue);
+                }*/
 
             }
         });

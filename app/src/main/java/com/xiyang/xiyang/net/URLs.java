@@ -28,6 +28,8 @@ public class URLs {
     public static final String Upgrade = HOST + API + "article/sys-upgrade";
     //引导页
     public static final String Guide = HOST + API + "app-banner/index";
+    //发送验证码-登录
+    public static final String Code_denglu = HOST + "/user/sendSms";
     //发送验证码-个人中心
     public static final String Code_yonghu = HOST + "/user/sms/verificationCode/issue";
     //发送验证码-交易密码
@@ -135,15 +137,15 @@ public class URLs {
     /**
      * ********************************门店*****************************************
      */
-    public static final String Fragment2 = HOST + API + "store";
+    public static final String Fragment2 = HOST + "/bd/store/homeStore/{id}";
     //拜访列表
     public static final String MyVisitList = HOST + API + "store/visit/record";
     //拜访详情
     public static final String VisitDetail = HOST + API + "store/visit/detail";
     //门店列表
-    public static final String MyStoreList = HOST + API + "store/record";
+    public static final String MyStoreList = HOST + "/bd/store/listStore";
     //添加门店
-    public static final String AddStore = HOST + API + "store/add";
+    public static final String AddStore = HOST + "/bd/store/addStore";
     //门店详情
     public static final String StoreDetail = HOST + API + "store/detail";
     //房号管理
@@ -265,7 +267,7 @@ public class URLs {
     //提现详情
     public static final String TakeCashDetail = HOST + "/finace/user/withdrawalApply/withdrawalRecord/detail/";
     //帮助列表
-    public static final String Help = HOST + API + "help";
+    public static final String Help = HOST  + "/appnet/help/queryProblemList";
     //在线客服
     public static final String OnlineService = HOST + API + "onlineConsult";
     //创建留言

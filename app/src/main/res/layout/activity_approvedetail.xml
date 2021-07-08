@@ -96,7 +96,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:drawableLeft="@mipmap/ic_time_gray"
+                                android:drawableLeft="@mipmap/ic_bianhao_gray"
                                 android:drawablePadding="6dp"
                                 android:text="addr"
                                 android:textColor="@color/black3"

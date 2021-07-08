@@ -41,6 +41,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -203,33 +204,56 @@ public class AddStoreActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
+                    Map<String, File> fileMap = new HashMap<>();
+                    fileMap.put("file", imgfile);
+                    params.clear();
+                    OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
+                        @Override
+                        public String onParseResponse(Call call, Response response) {
+                            return null;
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Exception e, String err) {
+                            hideProgress();
+                            myToast("图片上传失败" + err);
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            image = response;
+                            params.clear();
+//                                params.put("compulsoryNormalUserToStoreUserType","true");//是否强制更改为门店用户,默认false
+//                                params.put("storeSn", "");//门店编号
+
+                            params.put("merchantId", merchantId);//商户id
+                            params.put("name", name);//门店名称
+                            params.put("childName", childName);//分店名称
+                            params.put("account", account);//门店账号
+                            params.put("contactName", contactName);//门店联系人
+                            params.put("contactPhone", contactPhone);//门店联系电话
+                            params.put("industryId", industryId);//行业
+                            params.put("provinceId", provinceId);//省
+                            params.put("cityId", cityId);//市
+                            params.put("areaId", areaId);//区
+                            params.put("latitude", latitude);
+                            params.put("longitude", longitude);
+                            params.put("address", address);//详细地址
+                            params.put("businessHours", businessHours);//营业时间
+                            params.put("isTrsanfter", isTrsanfter);//是否划转
+                            params.put("storeShareRate", storeScale);//门店分成
+                            params.put("workerShareRate", workerScale);//员工分成
+                            params.put("deviceShareRate", deviceScale);//设备分成
+                            params.put("image", image);//门头照片
+                            requestUpData(params);
+                        }
+                    });
                     new UpFileToQiNiuUtil(AddStoreActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                         @Override
                         public void complete(boolean isok, String result, String url) {
                             if (isok) {
                                 MyLogger.i(">>>>上传文件路径：" + url);
-                                image = url;
-                                params.clear();
-                                params.put("name", name);
-                                params.put("merchantId", merchantId);
-                                params.put("contactName", contactName);
-                                params.put("contactPhone", contactPhone);
-                                params.put("childName", childName);
-                                params.put("businessHours", businessHours);
-                                params.put("isTrsanfter", isTrsanfter);
-                                params.put("storeScale", storeScale);
-                                params.put("account", account);
-                                params.put("workerScale", workerScale);
-                                params.put("deviceScale", deviceScale);
-                                params.put("address", address);
-                                params.put("image", image);
-                                params.put("industryId", industryId);
-                                params.put("provinceId", provinceId);
-                                params.put("cityId", cityId);
-                                params.put("areaId", areaId);
-                                params.put("latitude", latitude);
-                                params.put("longitude", longitude);
-                                requestUpData(params);
+
 
                             } else {
                                 hideProgress();
@@ -398,8 +422,12 @@ public class AddStoreActivity extends BaseActivity {
 
     }
 
+    /**
+     * 提交数据
+     * @param params
+     */
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddStore, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AddStore, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
