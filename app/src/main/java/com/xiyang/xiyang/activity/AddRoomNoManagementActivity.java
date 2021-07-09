@@ -21,6 +21,7 @@ import com.xiyang.xiyang.model.StoreDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -43,7 +44,6 @@ public class AddRoomNoManagementActivity extends BaseActivity {
     int type = 1, item1 = -1, item2 = -1, item3 = -1, item4 = -1;
     String parentId1 = "0", parentId2 = "", parentId3 = "", parentId4 = "",
             name1 = "", name2 = "", name3 = "", name4 = "";
-
 
     String title = "", parentId = "", name = "";
 
@@ -153,11 +153,11 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 break;
             case R.id.textView2:
                 //楼栋
-                dialogList(textView2, parentId1, 2);
+                dialogList(textView2, parentId2, 2);
                 break;
             case R.id.textView3:
                 //楼层
-                dialogList(textView3, parentId2, 3);
+                dialogList(textView3, parentId3, 3);
                 break;
             case R.id.tv_add:
                 //添加
@@ -171,6 +171,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 break;
             case R.id.tv_confirm:
                 //保存
+                MyLogger.i(">>>>>"+parentId);
                 if (!parentId.equals("")) {
                     name = "";
                     for (String s : list) {
@@ -308,15 +309,15 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                         textView.setText(response.getStoreRoomsList().get(position).getName());
                         switch (i) {
-                            case 1:
-                                parentId1 = response.getStoreRoomsList().get(position).getId();
+                            case 1://区域
+                                parentId1 = response.getStoreRoomsList().get(position).getParentId();
                                 name1 = response.getStoreRoomsList().get(position).getName();
                                 item1 = position;
 
                                 //选择的区域-清空后三项
                                 name2 = "";
                                 textView2.setText("");
-                                parentId2 = "";
+                                parentId2 = response.getStoreRoomsList().get(position).getId();
                                 item2 = -1;
 
                                 name3 = "";
@@ -329,15 +330,15 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                                 parentId4 = "";
                                 item4 = -1;
                                 break;
-                            case 2:
-                                parentId2 = response.getStoreRoomsList().get(position).getId();
+                            case 2://楼栋
+                                parentId2 = response.getStoreRoomsList().get(position).getParentId();
                                 name2 = response.getStoreRoomsList().get(position).getName();
                                 item2 = position;
 
                                 //选择的楼栋-清空后两项
                                 name3 = "";
                                 textView3.setText("");
-                                parentId3 = "";
+                                parentId3 = response.getStoreRoomsList().get(position).getId();
                                 item3 = -1;
 
                                 name4 = "";
@@ -345,16 +346,16 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                                 parentId4 = "";
                                 item4 = -1;
                                 break;
-                            case 3:
+                            case 3://房层
                                 //选择的楼层
-                                parentId3 = response.getStoreRoomsList().get(position).getId();
+                                parentId3 = response.getStoreRoomsList().get(position).getParentId();
                                 name3 = response.getStoreRoomsList().get(position).getName();
                                 item3 = position;
 
                                 //选择的楼栋-清空后一项
                                 name4 = "";
 //                                textView4.setText("");
-                                parentId4 = "";
+                                parentId4 = response.getStoreRoomsList().get(position).getId();
                                 item4 = -1;
                                 break;
                         }
@@ -442,7 +443,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 tv_title.setText("区域添加");
                 editText1.setHint("请输入区域名称");
 
-                parentId = "0";
+                parentId = parentId1;
 
                 break;
             case 2:
@@ -454,7 +455,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 tv_title.setText("楼栋添加");
                 editText1.setHint("请输入楼栋");
 
-                parentId = parentId1;
+                parentId = parentId2;
                 textView1.setText(name1);//显示选择的区域
 
                 break;
@@ -467,7 +468,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 tv_title.setText("楼层添加");
                 editText1.setHint("请输入楼层");
 
-                parentId = parentId2;
+                parentId = parentId3;
                 textView1.setText(name1);//显示选择的区域
                 textView2.setText(name2);//显示选择的楼栋
                 break;
@@ -480,7 +481,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 tv_title.setText("房号添加");
                 editText1.setHint("请输入房号");
 
-                parentId = parentId3;
+                parentId = parentId4;
                 textView1.setText(name1);//显示选择的区域
                 textView2.setText(name2);//显示选择的楼栋
                 textView3.setText(name3);//显示选择的楼层

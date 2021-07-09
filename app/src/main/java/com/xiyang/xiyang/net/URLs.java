@@ -151,7 +151,7 @@ public class URLs {
     //门店详情
     public static final String StoreDetail = HOST + "/bd/store/select/";
     //房号管理
-    public static final String RoomNoManagement = HOST + "/bd/storeRoom/appQueryStoreRoomByLevelIdAndStoreId";
+    public static final String RoomNoManagement = HOST + "/bd/storeRoom/appQueryRoomByStoreIdAndParentId";
     //添加房号
     public static final String AddRoom = HOST + "/bd/storeRoom/appAddRoom";
     //修改房号
