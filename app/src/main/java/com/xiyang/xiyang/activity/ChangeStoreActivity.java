@@ -46,19 +46,19 @@ public class ChangeStoreActivity extends BaseActivity {
     @Override
     protected void initData() {
         model_sdm = (StoreDetailModel) getIntent().getSerializableExtra("StoreDetailModel");
-        textView1.setText(model_sdm.getBase().getName());
-//        textView2.setText(model_sdm.getBase().getchildName());
-//        textView3.setHint(model_sdm.getBase().getaccount);
-        textView4.setText(model_sdm.getBase().getContact());
-        textView5.setText(model_sdm.getBase().getContactMobile());
-//        textView6.setHint(model_sdm.getBase().get);
-//        textView7.setText(model_sdm.getBase().get);
-        textView8.setText(model_sdm.getBase().getAddress());
-        textView9.setText(model_sdm.getBase().getBusinessHours());
-        textView10.setText(model_sdm.getBase().getIsTransfter());
+        textView1.setText(model_sdm.getStoreInfo().getName());
+        textView2.setText(model_sdm.getStoreInfo().getChildName());
+        textView3.setHint(model_sdm.getStoreInfo().getAccount());
+        textView4.setText(model_sdm.getStoreInfo().getContactName());
+        textView5.setText(model_sdm.getStoreInfo().getContactPhone());
+//        textView6.setHint(model_sdm.getStoreInfo().get);
+//        textView7.setText(model_sdm.getStoreInfo().get);
+        textView8.setText(model_sdm.getStoreInfo().getAddress());
+        textView9.setText(model_sdm.getStoreInfo().getBusinessHours());
+        textView10.setText(model_sdm.getStoreInfo().getIsLoss());
 
         Glide.with(ChangeStoreActivity.this)
-                .load(model_sdm.getImage())
+                .load(model_sdm.getStoreInfo().getImage())
                 .centerCrop()
                 .apply(RequestOptions.bitmapTransform(new
                         RoundedCorners(CommonUtil.dip2px(ChangeStoreActivity.this, 10))))

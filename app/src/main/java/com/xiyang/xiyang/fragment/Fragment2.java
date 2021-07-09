@@ -219,13 +219,13 @@ public class Fragment2 extends BaseFragment {
                 hideProgress();
                 showContentPage();
 
-                /*model = response;
-                textView1.setText(response.getStoreNum());
-                textView2.setText(response.getWaitVisitedNum());
-                textView3.setText(response.getWaitInstallNum());
+                model = response;
+                textView1.setText(response.getStoreNumber());
+                textView2.setText(response.getNotVisitNumber());
+                textView3.setText(response.getNotInstallNumber());
                 textView4.setText(response.getMoney());
 
-                mAdapter1 = new CommonAdapter<MyFragment1Model>
+                /*mAdapter1 = new CommonAdapter<MyFragment1Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
                     @Override
                     protected void convert(ViewHolder holder, MyFragment1Model model, int position) {
@@ -258,11 +258,11 @@ public class Fragment2 extends BaseFragment {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            *//*if (model.getVisitStatus() != null && model.getVisitStatus().equals("0")) {
+                            *//*if (model.getVisitStatus() != null && model.getVisitStatus().equals("2")) {
+                                imageView2.setImageResource(R.mipmap.bg_yibaifang);
+                            } else {
                                 //待拜访
                                 imageView2.setImageResource(R.mipmap.bg_daibaifang);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yibaifang);
                             }*//*
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -278,9 +278,9 @@ public class Fragment2 extends BaseFragment {
                     recyclerView2.setAdapter(mAdapter2);
                 } else {
                     showEmptyPage();
-                }
+                }*/
 
-                MainActivity.isOver = true;*/
+                MainActivity.isOver = true;
 
             }
         });

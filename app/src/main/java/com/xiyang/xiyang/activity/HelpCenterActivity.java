@@ -31,8 +31,8 @@ import okhttp3.Response;
 public class HelpCenterActivity extends BaseActivity {
     HelpModel model;
     RecyclerView recyclerView;
-    List<HelpModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<HelpModel.ListBean> mAdapter;
+    List<HelpModel.ProblemVoListBean> list = new ArrayList<>();
+    CommonAdapter<HelpModel.ProblemVoListBean> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +131,14 @@ public class HelpCenterActivity extends BaseActivity {
                 hideProgress();
                 model = response;
 //                textView1.setText(getString(R.string.onlineservice_h3) + response.getLandline_number());
-                list = response.getList();
+                list = response.getProblemVoList();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<HelpModel.ListBean>
+                    mAdapter = new CommonAdapter<HelpModel.ProblemVoListBean>
                             (HelpCenterActivity.this, R.layout.item_help, list) {
                         @Override
-                        protected void convert(ViewHolder holder, HelpModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, HelpModel.ProblemVoListBean model, int position) {
                             holder.setText(R.id.textView1, model.getName());
                         }
                     };
@@ -147,8 +147,9 @@ public class HelpCenterActivity extends BaseActivity {
                         @Override
                         public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                             Bundle bundle = new Bundle();
-//                            bundle.putString("url", list.get(position).getUrl());
-                            CommonUtil.gotoActivityWithData(HelpCenterActivity.this, WebContentActivity.class, bundle, false);
+                            bundle.putString("title", model.getProblemVoList().get(position).getName());
+                            bundle.putString("url", model.getProblemVoList().get(position).getDescs());
+                            CommonUtil.gotoActivityWithData(HelpCenterActivity.this, WebHTMLActivity.class, bundle, false);
                         }
 
                         @Override

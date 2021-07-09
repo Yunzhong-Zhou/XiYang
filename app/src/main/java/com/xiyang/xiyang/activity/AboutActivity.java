@@ -55,8 +55,6 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        showProgress(true, getString(R.string.app_loading2));
-//        Request(params);
     }
 
     private void Request(Map<String, String> params) {
@@ -76,7 +74,15 @@ public class AboutActivity extends BaseActivity {
             public void onResponse(AboutModel response) {
                 hideProgress();
                 model = response;
-                textView2.setText(model.getVersion_title());
+//                textView2.setText(model.getVersion_title());
+                 if (Integer.valueOf(CommonUtil.getVersionCode(AboutActivity.this)) < Integer.valueOf(model.getVersion_code())) {
+//                    handler1.sendEmptyMessage(0);
+//                    textView2.setText(model.getVersion_title());
+                    showUpdateDialog();
+                } else {
+//                    textView2.setText("");
+                    showToast(getString(R.string.about_h5));
+                }
             }
         });
 
@@ -101,14 +107,8 @@ public class AboutActivity extends BaseActivity {
                 break;
             case R.id.linearLayout3:
                 //更新
-                if (Integer.valueOf(CommonUtil.getVersionCode(AboutActivity.this)) < Integer.valueOf(model.getVersion_code())) {
-//                    handler1.sendEmptyMessage(0);
-//                    textView2.setText(model.getVersion_title());
-                    showUpdateDialog();
-                } else {
-//                    textView2.setText("");
-                    showToast(getString(R.string.about_h5));
-                }
+                showProgress(true, "正在检查更新...");
+                Request(params);
                 /*bundle.putInt("type",3);
                 bundle.putString("url",model.getDownload_url());
                 CommonUtil.gotoActivityWithData(AboutActivity.this,WebContentActivity.class,bundle,false);*/

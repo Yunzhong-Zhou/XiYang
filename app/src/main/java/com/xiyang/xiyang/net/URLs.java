@@ -75,7 +75,7 @@ public class URLs {
     //添加合同-签约
     public static final String AddContract_qianyue = HOST + "/bd/bdservice/signContracts";
     //添加合同-新增
-    public static final String AddContract_xinzeng = HOST + "/bd/bdservice/signContracts";
+    public static final String AddContract_xinzeng = HOST + "/bd/bdservice/applyContracts";
     //添加合同-回收
     public static final String AddContract_huishou = HOST + "/bd/bdservice/signContracts";
     //添加合同-换绑
@@ -118,6 +118,8 @@ public class URLs {
     public static final String SelectStaff = HOST + API + "manage/subordinate";
     //人事记录
     public static final String PersonnelList = HOST + API + "manage/subordinate";
+    //采购申请
+    public static final String AddBuy = HOST  + "/purchase/Apply/add";
     /**
      * ********************************分派*****************************************
      */
@@ -137,7 +139,7 @@ public class URLs {
     /**
      * ********************************门店*****************************************
      */
-    public static final String Fragment2 = HOST + "/bd/store/homeStore/{id}";
+    public static final String Fragment2 = HOST + "/bd/store/home";
     //拜访列表
     public static final String MyVisitList = HOST + API + "store/visit/record";
     //拜访详情
@@ -147,15 +149,15 @@ public class URLs {
     //添加门店
     public static final String AddStore = HOST + "/bd/store/addStore";
     //门店详情
-    public static final String StoreDetail = HOST + API + "store/detail";
+    public static final String StoreDetail = HOST + "/bd/store/select/";
     //房号管理
-    public static final String RoomNoManagement = HOST + "/applet/room/queryRoomByStoreIdAndParentId";
+    public static final String RoomNoManagement = HOST + "/bd/storeRoom/appQueryStoreRoomByLevelIdAndStoreId";
     //添加房号
-    public static final String AddRoom = HOST + "/applet/room/addStoreRoom";
+    public static final String AddRoom = HOST + "/bd/storeRoom/appAddRoom";
     //修改房号
-    public static final String ChageRoom = HOST + "/applet/room/editStoreRoom";
+    public static final String ChageRoom = HOST + "/bd/storeRoom/appEditRoom";
     //删除房号
-    public static final String DeleteRoom = HOST + "/applet/room/deleteStoreRoom";
+    public static final String DeleteRoom = HOST + "/bd/storeRoom/appDeleteRoom";
     //员工管理
     public static final String StaffManagement = HOST + "/applet/user/queryUserList";
     //添加员工
@@ -201,7 +203,7 @@ public class URLs {
     //处理工单
     public static final String ChangeWorkList = HOST + API + "work/orders/deal";
     //添加拜访
-    public static final String AddVisit = HOST + API + "store/visit/add";
+    public static final String AddVisit = HOST + "/bd/store/visit/addStoreVisitLog";
     //事务列表
     public static final String AffairList = HOST + API + "transactions";
     //事务详情
@@ -267,7 +269,7 @@ public class URLs {
     //提现详情
     public static final String TakeCashDetail = HOST + "/finace/user/withdrawalApply/withdrawalRecord/detail/";
     //帮助列表
-    public static final String Help = HOST  + "/appnet/help/queryProblemList";
+    public static final String Help = HOST  + "/applet/help/queryProblemList";
     //在线客服
     public static final String OnlineService = HOST + API + "onlineConsult";
     //创建留言

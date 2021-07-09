@@ -61,7 +61,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_qixian = new ArrayList<>();
+    List<String> list_qixian = new ArrayList<>();
     List<CommonModel.WorkOrderTypeBean> list_jianshaoyuanyin = new ArrayList<>();
     List<CommonModel.WorkOrderTypeBean> list_quxiaoyuanyin = new ArrayList<>();
     List<CommonModel.WorkOrderTypeBean> list_jifeidanyuan = new ArrayList<>();
@@ -208,6 +208,10 @@ public class AddContractActivity extends BaseActivity {
 
         list_huishou.add("邮寄");
         list_huishou.add("自取");
+
+        list_qixian.add("一年");
+        list_qixian.add("二年");
+        list_qixian.add("三年");
 
 
         item_hetong = getIntent().getIntExtra("item_hetong", 0);
@@ -1047,7 +1051,7 @@ public class AddContractActivity extends BaseActivity {
 
                 requestChangKu(params);
                 params.put("type", "merchantRecoverReason");
-                request(URLs.AddContract_huishou,params);
+                request(URLs.AddContract_huishou, params);
 
                 break;
             case 3:
@@ -1076,7 +1080,7 @@ public class AddContractActivity extends BaseActivity {
                 iv_add.setVisibility(View.VISIBLE);
 
                 params.put("type", "renewalPeriod");
-                request(URLs.AddContract_xiugai,params);
+                request(URLs.AddContract_xiugai, params);
 
                 break;
             case 5:
@@ -1094,7 +1098,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_xuanzeyuanyin.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
                 params.put("type", "merchantCancelReason");
-                request(URLs.AddContract_quxiao,params);
+                request(URLs.AddContract_quxiao, params);
                 break;
             case 7:
                 //调价合同
@@ -1109,7 +1113,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_tiaojialiyou.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
                 params.put("type", "storeUnit");
-                request(URLs.AddContract_tiaojia,params);
+                request(URLs.AddContract_tiaojia, params);
                 break;
         }
     }
@@ -1139,7 +1143,7 @@ public class AddContractActivity extends BaseActivity {
                 item_qixian = -1;
                 item_jianshaoyuanyin = -1;
                 renewalPeriod = "";
-                list_qixian = response.getRenewalPeriod();
+//                list_qixian = response.getRenewalPeriod();
                 list_jianshaoyuanyin = response.getMerchantRecoverReason();
                 list_quxiaoyuanyin = response.getMerchantCancelReason();
 //                list_jifeidanyuan = response.get;
@@ -1195,11 +1199,11 @@ public class AddContractActivity extends BaseActivity {
             @Override
             public void onResponse(StoreDetailModel response) {
                 hideProgress();
-                shopId = response.getMerchantId();
-                tv_shougexiaoshi.setText(response.getFees().getSystemPrice());
-                tv_jichujijia.setText(response.getFees().getUnitPrice());
-                tv_meirifengding.setText(response.getFees().getSystemCapping());
-                tv_mianfeishichang.setText(response.getFees().getFreeTime());
+                shopId = response.getStoreInfo().getMerchantId();
+//                tv_shougexiaoshi.setText(response.getStoreInfo().getSystemPrice());
+//                tv_jichujijia.setText(response.getStoreInfo().getUnitPrice());
+//                tv_meirifengding.setText(response.getStoreInfo().getSystemCapping());
+//                tv_mianfeishichang.setText(response.getStoreInfo().getFreeTime());
 
             }
         });
@@ -1353,12 +1357,12 @@ public class AddContractActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<String> adapter = new CommonAdapter<String>
                 (AddContractActivity.this, R.layout.item_help, list_qixian) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, String model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model);
                 if (item_qixian == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -1369,8 +1373,8 @@ public class AddContractActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_qixian = position;
-                textView.setText(list_qixian.get(position).getVal());
-                renewalPeriod = list_qixian.get(position).getKey();
+                textView.setText(list_qixian.get(position));
+                renewalPeriod = position + 1 + "";
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
 

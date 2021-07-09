@@ -110,15 +110,15 @@ public class AddRoomNoManagementActivity extends BaseActivity {
 
         //门店信息
         Glide.with(AddRoomNoManagementActivity.this)
-                .load(model.getImage())
+                .load(model.getStoreInfo().getImage())
 //                                .fitCenter()
 //                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(CommonUtil.dip2px(StoreDetailActivity.this, 10))))
                 .placeholder(R.mipmap.loading)//加载站位图
                 .error(R.mipmap.zanwutupian)//加载失败
                 .into(imageView1);//加载图片
-        tv_name.setText(model.getBase().getName());
-        tv_shop.setText(model.getDeviceNum());
-        tv_addr.setText(model.getBase().getAddress());
+        tv_name.setText(model.getStoreInfo().getName());
+        tv_shop.setText(model.getStoreInfo().getNeedInstallDeviceNum());
+        tv_addr.setText(model.getStoreInfo().getAddress());
 
         ChangeUI();
 
@@ -182,9 +182,9 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                         params.clear();
                         params.put("name", name);
                         params.put("fullName", "");
-                        params.put("level", type+"");
+                        params.put("level", type + "");
                         params.put("parentId", parentId);
-                        params.put("storeId", model.getId());
+                        params.put("storeId", model.getStoreInfo().getId());
                         requestUpData(params);
 
                     } else myToast("请" + title);
@@ -246,8 +246,8 @@ public class AddRoomNoManagementActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
         params.put("parentId", s);
-        params.put("storeId", model.getId());
-        params.put("level", type+"");
+        params.put("storeId", model.getStoreInfo().getId());
+        params.put("level", i + "");
         OkhttpUtil.okHttpPostJson(URLs.RoomNoManagement, GsonUtils.toJson(params), headerMap, new CallBackUtil<RoomNoManagementModel>() {
             @Override
             public RoomNoManagementModel onParseResponse(Call call, Response response) {
@@ -275,10 +275,10 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                         .show();
                 RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
                 rv_list.setLayoutManager(new LinearLayoutManager(AddRoomNoManagementActivity.this));
-                CommonAdapter<RoomNoManagementModel.ListBean> adapter = new CommonAdapter<RoomNoManagementModel.ListBean>
-                        (AddRoomNoManagementActivity.this, R.layout.item_help, response.getList()) {
+                CommonAdapter<RoomNoManagementModel.StoreRoomsListBean> adapter = new CommonAdapter<RoomNoManagementModel.StoreRoomsListBean>
+                        (AddRoomNoManagementActivity.this, R.layout.item_help, response.getStoreRoomsList()) {
                     @Override
-                    protected void convert(ViewHolder holder, RoomNoManagementModel.ListBean model, int position) {
+                    protected void convert(ViewHolder holder, RoomNoManagementModel.StoreRoomsListBean model, int position) {
                         TextView tv = holder.getView(R.id.textView1);
                         tv.setText(model.getName());
                         int item = -1;
@@ -306,11 +306,11 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                 adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                        textView.setText(response.getList().get(position).getName());
+                        textView.setText(response.getStoreRoomsList().get(position).getName());
                         switch (i) {
                             case 1:
-                                parentId1 = response.getList().get(position).getId();
-                                name1 = response.getList().get(position).getName();
+                                parentId1 = response.getStoreRoomsList().get(position).getId();
+                                name1 = response.getStoreRoomsList().get(position).getName();
                                 item1 = position;
 
                                 //选择的区域-清空后三项
@@ -330,8 +330,8 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                                 item4 = -1;
                                 break;
                             case 2:
-                                parentId2 = response.getList().get(position).getId();
-                                name2 = response.getList().get(position).getName();
+                                parentId2 = response.getStoreRoomsList().get(position).getId();
+                                name2 = response.getStoreRoomsList().get(position).getName();
                                 item2 = position;
 
                                 //选择的楼栋-清空后两项
@@ -347,8 +347,8 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                                 break;
                             case 3:
                                 //选择的楼层
-                                parentId3 = response.getList().get(position).getId();
-                                name3 = response.getList().get(position).getName();
+                                parentId3 = response.getStoreRoomsList().get(position).getId();
+                                name3 = response.getStoreRoomsList().get(position).getName();
                                 item3 = position;
 
                                 //选择的楼栋-清空后一项
@@ -361,8 +361,9 @@ public class AddRoomNoManagementActivity extends BaseActivity {
                         //获取下一级
                         showProgress(true, getString(R.string.app_loading2));
                         params.clear();
-                        params.put("parentId", response.getList().get(position).getId());
-                        params.put("storeId", model.getId());
+                        params.put("parentId", response.getStoreRoomsList().get(position).getId());
+                        params.put("storeId", model.getStoreInfo().getId());
+                        params.put("level", i + 1 + "");
                         requestNext(params, i);
 
                         dialog.dismiss();
@@ -381,7 +382,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
 
     //获取下一级
     private void requestNext(HashMap<String, String> params, int i) {
-        OkhttpUtil.okHttpGet(URLs.RoomNoManagement, params, headerMap, new CallBackUtil<RoomNoManagementModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.RoomNoManagement, GsonUtils.toJson(params), headerMap, new CallBackUtil<RoomNoManagementModel>() {
             @Override
             public RoomNoManagementModel onParseResponse(Call call, Response response) {
                 return null;
@@ -396,7 +397,7 @@ public class AddRoomNoManagementActivity extends BaseActivity {
             @Override
             public void onResponse(RoomNoManagementModel response) {
                 hideProgress();
-                if (response.getList().size() == 0) {//没有数据
+                if (response.getStoreRoomsList().size() == 0) {//没有数据
                     switch (i) {
                         case 1:
                             //区域

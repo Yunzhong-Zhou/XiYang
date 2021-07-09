@@ -18,37 +18,37 @@ public class Fragment2Model implements Serializable {
      * stores : [{"id":"1","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"2","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"3","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"4","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"5","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"6","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"7","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"8","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"9","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"10","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"11","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"12","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"13","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"14","image":"a.png","title":"乐高早教","deviceNum":"0","address":null},{"id":"15","image":"a.png","title":"乐高早教","deviceNum":"0","address":null},{"id":"16","image":"a.png","title":"宇通酒店","deviceNum":"0","address":"重庆市江北区信达国际"},{"id":"17","image":"http://qqxfw8hz4.hn-bkt.clouddn.com/store%2Fd5b55904ea197961c5b321782ed98323.png?e=1619089273&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:xvukO0NU2PCO5JbzXxDtaBXnR8Q=","title":"阿斯顿马丁","deviceNum":"0","address":"阿斯顿1"},{"id":"18","image":"store/4422ec739b6b634540a9eef1277f25f8.png","title":"糖小糖","deviceNum":"0","address":"你就"},{"id":"19","image":"http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F161e4bda16efdf907846347ebf3605dc.png?e=1619495042&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:s45gMniysuMy-thQHy25XsVmreQ=","title":"门店名称周","deviceNum":"0","address":"阿斯顿马丁路德金"}]
      */
 
-    private String storeNum;
-    private String waitVisitedNum;
-    private String waitInstallNum;
+    private String storeNumber;
+    private String notVisitNumber;
+    private String notInstallNumber;
     private String money;
     private List<WaitVisitedBean> waitVisited;
     private List<WaitTransferredBean> waitTransferred;
     private List<WaitShowBean> waitShow;
     private List<StoresBean> stores;
 
-    public String getStoreNum() {
-        return storeNum;
+    public String getStoreNumber() {
+        return storeNumber;
     }
 
-    public void setStoreNum(String storeNum) {
-        this.storeNum = storeNum;
+    public void setStoreNumber(String storeNumber) {
+        this.storeNumber = storeNumber;
     }
 
-    public String getWaitVisitedNum() {
-        return waitVisitedNum;
+    public String getNotVisitNumber() {
+        return notVisitNumber;
     }
 
-    public void setWaitVisitedNum(String waitVisitedNum) {
-        this.waitVisitedNum = waitVisitedNum;
+    public void setNotVisitNumber(String notVisitNumber) {
+        this.notVisitNumber = notVisitNumber;
     }
 
-    public String getWaitInstallNum() {
-        return waitInstallNum;
+    public String getNotInstallNumber() {
+        return notInstallNumber;
     }
 
-    public void setWaitInstallNum(String waitInstallNum) {
-        this.waitInstallNum = waitInstallNum;
+    public void setNotInstallNumber(String notInstallNumber) {
+        this.notInstallNumber = notInstallNumber;
     }
 
     public String getMoney() {

@@ -7,41 +7,40 @@ import java.util.List;
  * Created by Mr.Z on 2021/4/23.
  */
 public class MyStoreListModel implements Serializable {
-    private List<ListBean> list;
+    /**
+     * records : [{"id":"1412691587682668544","name":"门店名称","address":"北新区洪湖西路51号","visitStatus":1}]
+     * total : 1
+     * size : 10
+     * current : 1
+     * orders : []
+     * optimizeCountSql : true
+     * hitCount : false
+     * searchCount : true
+     * pages : 1
+     */
 
-    public List<ListBean> getList() {
-        return list;
+    private List<RecordsBean> records;
+
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public static class ListBean {
+    public static class RecordsBean {
         /**
-         * id : 17
-         * name : 阿斯顿马丁
-         * image : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2Fd5b55904ea197961c5b321782ed98323.png?e=1619089273&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:xvukO0NU2PCO5JbzXxDtaBXnR8Q=
-         * deviceNum : 0
-         * address : 阿斯顿1
-         * money : 0.00
+         * id : 1412691587682668544
+         * name : 门店名称
+         * address : 北新区洪湖西路51号
+         * visitStatus : 1
          */
 
         private String id;
         private String name;
-        private String image;
-        private String deviceNum;
         private String address;
-        private String money;
         private String visitStatus;
-
-        public String getVisitStatus() {
-            return visitStatus;
-        }
-
-        public void setVisitStatus(String visitStatus) {
-            this.visitStatus = visitStatus;
-        }
 
         public String getId() {
             return id;
@@ -59,22 +58,6 @@ public class MyStoreListModel implements Serializable {
             this.name = name;
         }
 
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public String getDeviceNum() {
-            return deviceNum;
-        }
-
-        public void setDeviceNum(String deviceNum) {
-            this.deviceNum = deviceNum;
-        }
-
         public String getAddress() {
             return address;
         }
@@ -83,12 +66,12 @@ public class MyStoreListModel implements Serializable {
             this.address = address;
         }
 
-        public String getMoney() {
-            return money;
+        public String getVisitStatus() {
+            return visitStatus;
         }
 
-        public void setMoney(String money) {
-            this.money = money;
+        public void setVisitStatus(String visitStatus) {
+            this.visitStatus = visitStatus;
         }
     }
 }

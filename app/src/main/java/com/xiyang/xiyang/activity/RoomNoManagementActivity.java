@@ -48,8 +48,8 @@ public class RoomNoManagementActivity extends BaseActivity {
             name1 = "", name2 = "", name3 = "", name4 = "";
     TextView textView1, textView2;
     RecyclerView recyclerView;
-    List<RoomNoManagementModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<RoomNoManagementModel.ListBean> mAdapter;
+    List<RoomNoManagementModel.StoreRoomsListBean> list = new ArrayList<>();
+    CommonAdapter<RoomNoManagementModel.StoreRoomsListBean> mAdapter;
     int type = 1, item1 = -1, item2 = -1, item3 = -1, item4 = -1;
     TextView tv_tab1, tv_tab2, tv_tab3, tv_tab4;
     LinearLayout ll_tab1, ll_tab2, ll_tab3, ll_tab4;
@@ -75,7 +75,7 @@ public class RoomNoManagementActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 params.put("parentId", parentId);
-                params.put("storeId", model_sdm.getId());
+                params.put("storeId", model_sdm.getStoreInfo().getId());
                 params.put("level", type+"");
                 request(params);
             }
@@ -119,7 +119,7 @@ public class RoomNoManagementActivity extends BaseActivity {
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
         params.put("parentId", parentId);
-        params.put("storeId", model_sdm.getId());
+        params.put("storeId", model_sdm.getStoreInfo().getId());
         params.put("level", type+"");
         request(params);
     }
@@ -144,12 +144,12 @@ public class RoomNoManagementActivity extends BaseActivity {
                 showContentPage();
                 model_rnm = response;
 
-                list = response.getList();
+                list = response.getStoreRoomsList();
                 if (list.size() > 0) {
-                    mAdapter = new CommonAdapter<RoomNoManagementModel.ListBean>
+                    mAdapter = new CommonAdapter<RoomNoManagementModel.StoreRoomsListBean>
                             (RoomNoManagementActivity.this, R.layout.item_roomnomanagement, list) {
                         @Override
-                        protected void convert(ViewHolder holder, RoomNoManagementModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, RoomNoManagementModel.StoreRoomsListBean model, int position) {
                             LinearLayout ll = holder.getView(R.id.ll);
                             TextView tv = holder.getView(R.id.tv);
                             tv.setText(model.getName());
@@ -255,7 +255,7 @@ public class RoomNoManagementActivity extends BaseActivity {
                                             showProgress(false, getString(R.string.app_loading1));
                                             params.clear();
                                             params.put("storeRoomId", list.get(position).getId());
-                                            params.put("storeId", model_sdm.getId());
+                                            params.put("storeId", model_sdm.getStoreInfo().getId());
                                             requestChange(params, URLs.DeleteRoom, 2);//删除
                                         }
                                     }, new View.OnClickListener() {

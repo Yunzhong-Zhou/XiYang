@@ -16,9 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
@@ -49,8 +46,8 @@ import okhttp3.Response;
 public class MyStoreListActivity extends BaseActivity {
     int requestCode = 0, selectItem = -1;
     private RecyclerView recyclerView;
-    List<MyStoreListModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<MyStoreListModel.ListBean> mAdapter;
+    List<MyStoreListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<MyStoreListModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
@@ -133,30 +130,30 @@ public class MyStoreListActivity extends BaseActivity {
             public void onResponse(MyStoreListModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<MyStoreListModel.ListBean>
+                    mAdapter = new CommonAdapter<MyStoreListModel.RecordsBean>
                             (MyStoreListActivity.this, R.layout.item_fragment2_2, list) {
                         @Override
-                        protected void convert(ViewHolder holder, MyStoreListModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, MyStoreListModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, model.getDeviceNum());
-                            holder.setText(R.id.tv_num, model.getMoney());//money
+//                            holder.setText(R.id.tv_shop, model.getDeviceNum());
+//                            holder.setText(R.id.tv_num, model.getMoney());//money
                             holder.setText(R.id.tv_addr, model.getAddress());
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(MyStoreListActivity.this)
+                           /* Glide.with(MyStoreListActivity.this)
                                     .load(model.getImage())
 //                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(MyStoreListActivity.this, 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
+                                    .into(imageView1);//加载图片*/
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("1")) {
+                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("2")) {
                                 //已拜访
                                 imageView2.setImageResource(R.mipmap.bg_yibaifang);
                             } else {
@@ -179,7 +176,6 @@ public class MyStoreListActivity extends BaseActivity {
                                         bundle.putString("id", model.getId());
                                         CommonUtil.gotoActivityWithData(MyStoreListActivity.this, StoreDetailActivity.class, bundle, false);
                                     }
-
                                 }
                             });
                         }
@@ -211,8 +207,8 @@ public class MyStoreListActivity extends BaseActivity {
             public void onResponse(MyStoreListModel response) {
 //                showContentPage();
                 onHttpResult();
-                List<MyStoreListModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<MyStoreListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -31,13 +32,13 @@ import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class AddVisitActivity extends BaseActivity {
     List<CommonModel.WorkOrderTypeBean> list_jingdui = new ArrayList<>();
     List<CommonModel.WorkOrderTypeBean> list_yuanyin = new ArrayList<>();
 
-    int type = 0;// 0-远程拜访，1-上门拜访，2-陌生拜访
+    int type = 1;//  1-远程拜访，2-上门拜访,3-陌生拜访
     int item_fangshi = -1, item_yingye = -1, item_fengxian = -1, item_fankui = -1, item_jingdui = -1, item_yuanyin = -1, itme_truefalse = 1;
     RelativeLayout rl_xuanzefangshi, rl_xuanzemendian, rl_baifangjilu, rl_yingyeqingkuang, rl_hezuofengxian,
             rl_baifangmendian, rl_baifangrenyuan, rl_lianxidianhua, rl_baifangshijian, rl_mendiandizhi,
@@ -135,7 +136,7 @@ public class AddVisitActivity extends BaseActivity {
         list_truefalse.add("否");
         list_truefalse.add("是");
 
-        type = getIntent().getIntExtra("type", 0);
+        type = getIntent().getIntExtra("type", 1);
         tv_xuanzefangshi.setText(list_visit.get(type));
         titleView.setTitle(list_visit.get(type));
 
@@ -225,17 +226,18 @@ public class AddVisitActivity extends BaseActivity {
             case R.id.tv_baifangjilu:
                 //拜访记录
                 Bundle bundle = new Bundle();
-                switch (type){
-                    case 0:
+                bundle.putString("type",type+"");
+                /*switch (type){
+                    case 1:
                         bundle.putString("type","2");
                         break;
-                    case 1:
+                    case 2:
                         bundle.putString("type","3");
                         break;
-                    case 2:
+                    case 3:
                         bundle.putString("type","1");
                         break;
-                }
+                }*/
                 CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class,bundle,true);
                 break;
             case R.id.imageView1:
@@ -246,87 +248,58 @@ public class AddVisitActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
+                    Map<String, File> fileMap = new HashMap<>();
+                    fileMap.put("file", imgfile);
                     params.clear();
-                    switch (type) {
-                        case 0:
-                            //远程拜访
-                            new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                                @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        images = url;//文件地址
-                                        params.put("type", "2");//1陌生2远程3上门
-                                        params.put("storeId", storeId);
-                                        params.put("isBusiness", isBusiness);
-                                        params.put("reportStatus", reportStatus);
-                                        params.put("visitChannel", visitChannel);
-                                        params.put("contactName", contactName);
-                                        params.put("reason", reason);
-                                        params.put("feedback", feedback);
-                                        params.put("isAdver", isAdver);
-                                        params.put("remark", remark);
-                                        params.put("images", images);
-                                        requestUpData(params);
+                    OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
+                        @Override
+                        public String onParseResponse(Call call, Response response) {
+                            return null;
+                        }
 
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
-                                }
-                            };
-                            break;
-                        case 1:
-                            //上门拜访
-                            new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                                @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        images = url;//文件地址
+                        @Override
+                        public void onFailure(Call call, Exception e, String err) {
+                            hideProgress();
+                            myToast("图片上传失败" + err);
+                        }
 
-                                        params.put("type", "3");//1陌生2远程3上门
-                                        params.put("storeId", storeId);
-                                        params.put("isBusiness", isBusiness);
-                                        params.put("reportStatus", reportStatus);
-                                        params.put("visitChannel", visitChannel);
-                                        params.put("contactName", contactName);
-                                        params.put("reason", reason);
-                                        params.put("feedback", feedback);
-                                        params.put("isAdver", isAdver);
-                                        params.put("remark", remark);
-                                        params.put("images", images);
-                                        requestUpData(params);
+                        @Override
+                        public void onResponse(String response) {
+                            MyLogger.i(">>>>上传文件路径：" + response);
+                            images = response;//文件地址
+                            switch (type) {
+                                case 1:
+                                    //远程拜访
+                                case 2:
+                                    //上门拜访
+                                    params.put("type", type+"");//拜访方式 1-远程拜访，2-上门拜访,3-陌生拜访
+                                    params.put("storeId", storeId);//门店id 陌生拜访为0
+                                    params.put("isBusiness", isBusiness);//当前营业状况 1-是，2-否
+                                    params.put("reportStatus", reportStatus);//合作风险上报
+                                    params.put("way", visitChannel);//拜访方式
+                                    params.put("contactName", contactName);
+                                    params.put("reason", reason);//拜访原因
+                                    params.put("feedback", feedback);//拜访反馈
+                                    params.put("isAdver", isAdver);//商户存在竟对
+                                    params.put("remark", remark);//补充说明
+                                    params.put("images", images);
+                                    requestUpData(params);
+                                    break;
+                                case 3:
+                                    //陌生拜访
+                                    params.put("type", type+"");
+                                    params.put("storeId", "0");
+                                    params.put("way", visitChannel);//拜访方式
+                                    params.put("intention", intention);
+                                    params.put("remark", remark);
+                                    params.put("images", images);
+                                    requestUpData(params);
 
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
-                                }
-                            };
-                            break;
-                        case 2:
-                            //陌生拜访
-                            new UpFileToQiNiuUtil(AddVisitActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                                @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        images = url;//文件地址
-                                        params.put("type", "1");//1陌生2远程3上门
-                                        params.put("storeId", "0");
+                                    break;
+                            }
+                        }
+                    });
 
-                                        params.put("visitChannel", visitChannel);
-                                        params.put("intention", intention);
-                                        params.put("remark", remark);
-                                        params.put("images", images);
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("文件上传失败" + result);
-                                    }
-                                }
-                            };
-                            break;
-                    }
                 }
 
                 break;
@@ -335,9 +308,9 @@ public class AddVisitActivity extends BaseActivity {
     }
     private boolean match() {
         switch (type) {
-            case 0:
-                //远程拜访
             case 1:
+                //远程拜访
+            case 2:
                 //上门拜访
                 if (TextUtils.isEmpty(storeId)) {
                     myToast("请选择门店");
@@ -383,7 +356,7 @@ public class AddVisitActivity extends BaseActivity {
                 }
 
                 break;
-            case 2:
+            case 3:
                 //陌生拜访
                 if (TextUtils.isEmpty(visitChannel)) {
                     myToast("请选择拜访方式");
@@ -462,7 +435,7 @@ public class AddVisitActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddVisit, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AddVisit, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -479,7 +452,8 @@ public class AddVisitActivity extends BaseActivity {
                 myToast("提交成功");
                 hideProgress();
                 Bundle bundle = new Bundle();
-                switch (type){
+                bundle.putString("type",type+"");
+                /*switch (type){
                     case 0:
                         bundle.putString("type","2");
                         break;
@@ -489,7 +463,7 @@ public class AddVisitActivity extends BaseActivity {
                     case 2:
                         bundle.putString("type","1");
                         break;
-                }
+                }*/
                 CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class,bundle,true);
             }
         });
@@ -514,9 +488,9 @@ public class AddVisitActivity extends BaseActivity {
         rl_shanghujingdui.setVisibility(View.GONE);
         rl_buchongshuoming.setVisibility(View.VISIBLE);
         switch (type) {
-            case 0:
-                //远程拜访
             case 1:
+                //远程拜访
+            case 2:
                 //上门拜访
                 rl_xuanzemendian.setVisibility(View.VISIBLE);
                 rl_baifangjilu.setVisibility(View.VISIBLE);
@@ -529,7 +503,7 @@ public class AddVisitActivity extends BaseActivity {
                 rl_baifangfankui.setVisibility(View.VISIBLE);
                 rl_shanghujingdui.setVisibility(View.VISIBLE);
                 break;
-            case 2:
+            case 3:
                 //陌生拜访
                 rl_baifangmendian.setVisibility(View.VISIBLE);
                 rl_baifangrenyuan.setVisibility(View.VISIBLE);
@@ -608,7 +582,7 @@ public class AddVisitActivity extends BaseActivity {
             protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
                 tv.setText(model.getVal());
-                if (item_fangshi == position)
+                if (item_fangshi-1 == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
                     tv.setTextColor(getResources().getColor(R.color.black1));
@@ -617,7 +591,7 @@ public class AddVisitActivity extends BaseActivity {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                item_fangshi = position;
+                item_fangshi = position+1;
                 tv_baifangfangshi.setText(list_fangshi.get(position).getVal());
 
                 visitChannel = list_fangshi.get(position).getKey();
