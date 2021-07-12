@@ -45,8 +45,8 @@ import okhttp3.Response;
  */
 public class MyContractActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyContractModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<MyContractModel.ListBean> mAdapter;
+    List<MyContractModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<MyContractModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
@@ -81,7 +81,7 @@ public class MyContractActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("pagesize", "10");
+                params.put("count", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
@@ -94,7 +94,7 @@ public class MyContractActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("pagesize", "10");
+                params.put("count", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
@@ -136,16 +136,16 @@ public class MyContractActivity extends BaseActivity {
             public void onResponse(MyContractModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<MyContractModel.ListBean>
+                    mAdapter = new CommonAdapter<MyContractModel.RecordsBean>
                             (MyContractActivity.this, R.layout.item_mycontract, list) {
                         @Override
-                        protected void convert(ViewHolder holder, MyContractModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, MyContractModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, "《" + model.getContractType() + "》");
+                            holder.setText(R.id.tv_shop, "《" + model.getStatusTitle() + "》");
                             holder.setText(R.id.tv_num, model.getStatusTitle());//money
                             holder.setText(R.id.tv_addr, model.getCreatedAt());
 
@@ -179,7 +179,8 @@ public class MyContractActivity extends BaseActivity {
 //                                    } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("id", model.getId());
-                                    switch (model.getContractType()){
+                                    CommonUtil.gotoActivityWithData(MyContractActivity.this, ContractDetailActivity.class, bundle, false);
+                                    /*switch (model.getContractType()){
                                         case "设备添加":
                                             //新增事务
                                             CommonUtil.gotoActivityWithData(MyContractActivity.this, AffairDetailActivity.class, bundle, false);
@@ -188,7 +189,7 @@ public class MyContractActivity extends BaseActivity {
                                         default:
                                             CommonUtil.gotoActivityWithData(MyContractActivity.this, ContractDetailActivity.class, bundle, false);
                                             break;
-                                    }
+                                    }*/
 
 //                                    }
 
@@ -222,8 +223,8 @@ public class MyContractActivity extends BaseActivity {
             public void onResponse(MyContractModel response) {
                 showContentPage();
                 onHttpResult();
-                List<MyContractModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<MyContractModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;
@@ -283,7 +284,7 @@ public class MyContractActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("pagesize", "10");
+        params.put("count", "10");
         params.put("status", status);
         params.put("sort", sort);
         params.put("cityId", cityId);

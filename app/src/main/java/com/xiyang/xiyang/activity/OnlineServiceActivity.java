@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
@@ -28,9 +29,6 @@ import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +39,6 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.xiyang.xiyang.utils.Constant.SELECT_PDF_FILE;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_CAPTURE_CAMEIA;
 import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
@@ -53,7 +50,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 
 public class OnlineServiceActivity extends BaseActivity {
     private ListView listView;
-    List<OnlineServiceModel.LeaveMessageListBean> list;
+    List<OnlineServiceModel.RecordsBean> list;
     OnlineServiceAdapter adapter;
     EditText editText;
     ImageView imageView;
@@ -87,16 +84,15 @@ public class OnlineServiceActivity extends BaseActivity {
                         }
 
                         showProgress(true, getString(R.string.app_loading1));
-                        Map<String, String> params = new HashMap<>();
-                        params.put("type","2");//1图片2文本
-                        params.put("message",editText.getText().toString().trim());
+                        params.clear();
+                        params.put("type", "2");//1图片2文本
+                        params.put("message", editText.getText().toString().trim());
                         RequestAddMessage(params);
                         /*params.put("software_version", CommonUtil.getVersionName(OnlineServiceActivity.this));
                         params.put("facility", getString(R.string.onlineservice_system1) + CommonUtil.getDeviceBrand()
                                 + getString(R.string.onlineservice_system2) + CommonUtil.getSystemModel()
                                 + getString(R.string.onlineservice_system3) + CommonUtil.getSystemVersion() +
                                 getString(R.string.onlineservice_system4) + CommonUtil.getVersionName(OnlineServiceActivity.this));*/
-                        RequestAddMessage(params);//创建留言
                     } else {
                         myToast(getString(R.string.onlineservice_hint));
                     }
@@ -119,9 +115,10 @@ public class OnlineServiceActivity extends BaseActivity {
                 //刷新
                 page = page + 1;
                 params.clear();
-                params.put("nextId","");
-                params.put("page",page+"");
-                params.put("count","10");
+                params.put("orderType", "ASC");
+                params.put("orderField", "updateDataTime");
+                params.put("page", page + "");
+                params.put("size", "10");
                 RequestOnlineServiceMore(params);
             }
 
@@ -130,9 +127,10 @@ public class OnlineServiceActivity extends BaseActivity {
                 //加载更多
                 page = 1;
                 params.clear();
-                params.put("nextId","");
-                params.put("page",page+"");
-                params.put("count","10");
+                params.put("orderType", "ASC");
+                params.put("orderField", "updateDataTime");
+                params.put("page", page + "");
+                params.put("size", "10");
                 RequestOnlineService(params);
             }
         });
@@ -215,7 +213,7 @@ public class OnlineServiceActivity extends BaseActivity {
 
     //对话列表
     private void RequestOnlineService(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.OnlineService, params, headerMap, new CallBackUtil<OnlineServiceModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.OnlineService, GsonUtils.toJson(params), headerMap, new CallBackUtil<OnlineServiceModel>() {
             @Override
             public OnlineServiceModel onParseResponse(Call call, Response response) {
                 return null;
@@ -232,17 +230,12 @@ public class OnlineServiceActivity extends BaseActivity {
             public void onResponse(OnlineServiceModel response) {
                 hideProgress();
                 showContentPage();
-                JSONObject jObj;
-                List<OnlineServiceModel.LeaveMessageListBean> list1 = new ArrayList<OnlineServiceModel.LeaveMessageListBean>();
-                list = new ArrayList<>();
-                list1 = response.getLeave_message_list();
-                if (list1.size() == 0) {
+                list = response.getRecords();
+                if (list.size() == 0) {
                     showEmptyPage();
                 } else {
                     //反转数据
-                    for (int i = list1.size() - 1; i >= 0; i--) {
-                        list.add(list1.get(i));
-                    }
+//                    Collections.reverse(list);
                     adapter = new OnlineServiceAdapter(OnlineServiceActivity.this, list);
                     listView.setAdapter(adapter);
                     listView.post(new Runnable() {
@@ -266,7 +259,7 @@ public class OnlineServiceActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call call, Exception e, String err) {
-                showErrorPage();
+//                showErrorPage();
                 hideProgress();
                 myToast(err);
                 page--;
@@ -274,23 +267,18 @@ public class OnlineServiceActivity extends BaseActivity {
 
             @Override
             public void onResponse(OnlineServiceModel response) {
-                hideProgress();
+//                hideProgress();
                 showContentPage();
-                JSONObject jObj;
-                List<OnlineServiceModel.LeaveMessageListBean> list1_1 = new ArrayList<OnlineServiceModel.LeaveMessageListBean>();
-                list1_1 = response.getLeave_message_list();
-                if (list1_1.size() == 0) {
+                List<OnlineServiceModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
+                if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;
                 } else {
                     //反转数据
-                    List<OnlineServiceModel.LeaveMessageListBean> list1 = new ArrayList<OnlineServiceModel.LeaveMessageListBean>();
-                    for (int i = list1_1.size() - 1; i >= 0; i--) {
-                        list1.add(list1_1.get(i));
-                    }
-                    list1.addAll(list);
-                    adapter = new OnlineServiceAdapter(OnlineServiceActivity.this, list1);
-                    listView.setAdapter(adapter);
+//                    Collections.reverse(list1);
+                    list.addAll(list1);
+                    adapter.notifyDataSetChanged();
                         /*listView.post(new Runnable() {
                             @Override
                             public void run() {
@@ -316,16 +304,11 @@ public class OnlineServiceActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         page = 1;
         params.clear();
-        params.put("nextId","");
-        params.put("page",page+"");
-        params.put("count","10");
+        params.put("orderType", "ASC");
+        params.put("orderField", "updateDataTime");
+        params.put("page", page + "");
+        params.put("size", "10");
         RequestOnlineService(params);
-    }
-
-    public void onHttpResult() {
-        hideProgress();
-        springView.onFinishFreshAndLoad();
-
     }
 
     /**
@@ -335,25 +318,10 @@ public class OnlineServiceActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            File pdffile = null;
             File imgfile = null;
             String imgpath = null;
             Uri uri = null;
             switch (requestCode) {
-                case SELECT_PDF_FILE:
-                    //选取PDF文件
-                    uri = data.getData();
-                    String pdfpath = FileUtil.getPath(this, uri);
-                    MyLogger.i(">>>>>>>>>选取的文件路径：" + pdfpath + ">>>>>后缀名：" + FileUtils.getFileExtension(pdfpath));
-                    if (pdfpath != null) {
-                        if (FileUtils.getFileExtension(pdfpath).equals("pdf")) {
-                            pdffile = new File(pdfpath);
-                        } else {
-                            myToast("请选择PDF文件上传");
-                            return;
-                        }
-                    }
-                    break;
                 case REQUEST_CODE_CAPTURE_CAMEIA:
                     //相机
                     uri = Uri.parse("");
@@ -371,34 +339,47 @@ public class OnlineServiceActivity extends BaseActivity {
             }
             if (imgpath != null) {
                 showProgress(true, getString(R.string.app_loading1));
-//                imgfile = new File(uri.getPath());
                 //压缩
                 Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                //如果是拍照，则旋转
+                if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+                    bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
+                }
                 imgfile = FileUtil.bytesToImageFile(OnlineServiceActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
 
-                new UpFileToQiNiuUtil(OnlineServiceActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                //上传头像
+                Map<String, File> fileMap = new HashMap<>();
+                fileMap.put("file", imgfile);
+                params.clear();
+                OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                     @Override
-                    public void complete(boolean isok, String result, String url) {
-//                        hideProgress();
-                        if (isok) {
-                            MyLogger.i(">>>>上传文件路径：" + url);
-                            Map<String, String> params = new HashMap<>();
-                            params.put("type","1");//1图片2文本
-                            params.put("message",url);
-                            RequestAddMessage(params);
-
-                        } else {
-                            myToast(result);
-                        }
+                    public String onParseResponse(Call call, Response response) {
+                        return null;
                     }
-                };
+
+                    @Override
+                    public void onFailure(Call call, Exception e, String err) {
+                        hideProgress();
+                        myToast("图片上传失败" + err);
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//                        hideProgress();
+                        params.clear();
+                        params.put("type", "1");//1图片2文本
+                        params.put("message", response);
+                        RequestAddMessage(params);
+                    }
+                });
             }
         }
 
     }
+
     private void RequestAddMessage(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddMessage, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AddMessage, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -413,6 +394,7 @@ public class OnlineServiceActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 hideProgress();
+                editText.setText("");
                 requestServer();
             }
         });

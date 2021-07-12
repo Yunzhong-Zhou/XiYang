@@ -107,7 +107,7 @@ public class SetUpActivity extends BaseActivity {
     }
 
     private void requestOut(Map<String, String> params) {
-        OkhttpUtil.okHttpDelete(URLs.LoginOut, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.LoginOut, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -123,7 +123,7 @@ public class SetUpActivity extends BaseActivity {
             public void onResponse(String response) {
                 hideProgress();
 
-                localUserInfo.setUserId("");
+                /*localUserInfo.setUserId("");
                 localUserInfo.setToken("");
                 localUserInfo.setPhoneNumber("");
                 localUserInfo.setNickname("");
@@ -136,7 +136,7 @@ public class SetUpActivity extends BaseActivity {
                 FileUtils.deleteFilesInDir(FileUtil.getImageDownloadDir(SetUpActivity.this));
 
                 ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
-                CommonUtil.gotoActivity(SetUpActivity.this, LoginActivity.class, true);
+                CommonUtil.gotoActivity(SetUpActivity.this, LoginActivity.class, true);*/
             }
         });
     }

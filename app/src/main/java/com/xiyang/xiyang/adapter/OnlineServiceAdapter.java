@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.model.OnlineServiceModel;
-import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.popupwindow.ZoomIMGPopupWindow;
 import com.xiyang.xiyang.utils.LocalUserInfo;
 
@@ -27,10 +26,10 @@ import java.util.List;
  */
 public class OnlineServiceAdapter extends BaseAdapter {
     private Context context;
-    private List<OnlineServiceModel.LeaveMessageListBean> list;
+    private List<OnlineServiceModel.RecordsBean> list;
     private int selectIndex = 0;
 
-    public OnlineServiceAdapter(Context context, List<OnlineServiceModel.LeaveMessageListBean> list) {
+    public OnlineServiceAdapter(Context context, List<OnlineServiceModel.RecordsBean> list) {
         super();
         this.context = context;
         this.list = list;
@@ -79,46 +78,52 @@ public class OnlineServiceAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (list.get(position).getUser_id().equals("")){
+        if (list.get(position).getL() == 1) {
+            //对方的消息
+            holder.linearLayout1.setVisibility(View.GONE);
+            holder.linearLayout2.setVisibility(View.VISIBLE);
+            holder.textView2_2.setText(list.get(position).getMessage());
+            holder.textView2_1.setText(list.get(position).getCreateTime());
+        } else {
             //自己的消息
             holder.linearLayout1.setVisibility(View.VISIBLE);
             holder.linearLayout2.setVisibility(View.GONE);
             //时间
-            holder.textView1_1.setText(list.get(position).getCreated_at());
+            holder.textView1_1.setText(list.get(position).getCreateTime());
             //自己的头像
             if (!LocalUserInfo.getInstance(context).getUserImage().equals(""))
                 Glide.with(context)
-                        .load(URLs.IMGHOST + LocalUserInfo.getInstance(context).getUserImage())
-                        .centerCrop().into(holder.imageView1_2);//加载图片
+                        .load(LocalUserInfo.getInstance(context).getUserImage())
+                        .centerCrop()
+                        .into(holder.imageView1_2);//加载图片
             else
                 holder.imageView2_1.setImageResource(R.mipmap.headimg);
             //内容
-            if (list.get(position).getPic() == null){
-                //文字消息
-                holder.imageView1_1.setVisibility(View.GONE);
-                holder.linearLayout1_1.setVisibility(View.VISIBLE);
-                holder.textView1_2.setText(list.get(position).getContent());
-            }else {
+            if (list.get(position).getType() == 1) {
                 //图片消息
                 holder.imageView1_1.setVisibility(View.VISIBLE);
                 holder.linearLayout1_1.setVisibility(View.GONE);
-                Glide.with(context).load(URLs.IMGHOST + list.get(position).getPic()).into(holder.imageView1_1);//加载图片
+                Glide.with(context)
+                        .load(list.get(position).getMessage())
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(holder.imageView1_1);//加载图片
 
                 final ViewHolder finalHolder = holder;
                 holder.imageView1_1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(context,URLs.IMGHOST + list.get(position).getPic());
+                        ZoomIMGPopupWindow popupwindow = new ZoomIMGPopupWindow(context, list.get(position).getMessage());
                         popupwindow.showAtLocation(finalHolder.imageView1_2, Gravity.CENTER, 0, 0);
                     }
                 });
+            } else {
+                //文字消息
+                holder.imageView1_1.setVisibility(View.GONE);
+                holder.linearLayout1_1.setVisibility(View.VISIBLE);
+                holder.textView1_2.setText(list.get(position).getMessage());
+
             }
-        }else {
-            //对方的消息
-            holder.linearLayout1.setVisibility(View.GONE);
-            holder.linearLayout2.setVisibility(View.VISIBLE);
-            holder.textView2_2.setText(list.get(position).getContent());
-            holder.textView2_1.setText(list.get(position).getCreated_at());
         }
         /*if (list.get(position).getStatus() == 2) {
             //已回复
@@ -210,7 +215,7 @@ public class OnlineServiceAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
-        LinearLayout linearLayout1, linearLayout2,linearLayout1_1,linearLayout2_1;
+        LinearLayout linearLayout1, linearLayout2, linearLayout1_1, linearLayout2_1;
         ImageView imageView1_1;
         ImageView imageView1_2, imageView2_1, imageView2_2;
         TextView textView1_1, textView1_2, textView2_1, textView2_2;

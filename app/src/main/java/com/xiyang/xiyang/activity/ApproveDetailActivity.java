@@ -158,6 +158,8 @@ public class ApproveDetailActivity extends BaseActivity {
             case R.id.tv_shenpi:
                 //立即审批
                 bundle.putString("id", id);
+                if (localUserInfo.getUserJob().equals("CM") && model.getWorkFlowApplyLogVo().getType().equals("device_add"))
+                    bundle.putString("type", "device_add");
                 CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ApproveContractActivity.class, bundle);
                 break;
             case R.id.ll_tab1:

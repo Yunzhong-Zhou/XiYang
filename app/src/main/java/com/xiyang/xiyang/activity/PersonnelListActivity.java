@@ -268,6 +268,25 @@ public class PersonnelListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
+        params.clear();
+        switch (type) {
+            case 1:
+                //调整上级
+                titleView.setTitle("调整上级列表");
+                break;
+            case 2:
+                //调整市场
+                titleView.setTitle("调整市场列表");
+                break;
+            case 3:
+                //升职降职
+                titleView.setTitle("升职降职列表");
+                break;
+            case 4:
+                //采购审批
+                titleView.setTitle("采购审批列表");
+                break;
+        }
         params.put("page", page + "");
         params.put("count", "10");
         params.put("sort", sort);

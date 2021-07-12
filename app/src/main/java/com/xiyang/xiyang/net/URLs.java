@@ -47,7 +47,7 @@ public class URLs {
     //图片上传
     public static final String UpFile = HOST + "/aliyunoss/file/manage/upload";
     //退出登录
-    public static final String LoginOut = HOST + "/auth/token/logout";
+    public static final String LoginOut = HOST + "/applet/user/loginOut";
     //行业列表（2级）
     public static final String Industry = HOST + "/baseinfo/industry/dropDown/";
     //省市区列表（3级）
@@ -91,7 +91,7 @@ public class URLs {
     //我的合同列表
     public static final String MyContract = HOST + "/bd/bdservice/getContractsListInfo";
     //合同详情
-    public static final String ContractDetail = HOST + API + "merchant/detail";
+    public static final String ContractDetail = HOST + "/bd/bdservice/getContractsDetailInfo/";
     //划转商户
     public static final String TransferShop = HOST + API + "merchant/transfer";
     /**
@@ -117,7 +117,9 @@ public class URLs {
     //选择员工
     public static final String SelectStaff = HOST + API + "manage/subordinate";
     //人事记录
-    public static final String PersonnelList = HOST + API + "manage/subordinate";
+    public static final String PersonnelList = HOST + "manage/subordinate";
+    //厂库信息
+    public static final String CangKu = HOST  + "/purchase/CmWarehouse/get";
     //采购申请
     public static final String AddBuy = HOST  + "/purchase/Apply/add";
     /**
@@ -205,7 +207,7 @@ public class URLs {
     //添加拜访
     public static final String AddVisit = HOST + "/bd/store/visit/addStoreVisitLog";
     //事务列表
-    public static final String AffairList = HOST + API + "transactions";
+    public static final String AffairList = HOST + "/bd/transaction/listTransaction";
     //事务详情
     public static final String AffairDetail = HOST + API + "transactions/detail";
     //事务详情-申领-邮寄方式
@@ -214,6 +216,8 @@ public class URLs {
     public static final String DeviceDetail = HOST + API + "device/detail";
     //安装设备
     public static final String InstallDevice = HOST + API + "device/install/add";
+    //开启设备
+    public static final String Device = HOST + "/device/aliyuniot/controlDevice";
     //调试设备
     public static final String DebugDevice = HOST + API + "device/properties";
     //控制设备
@@ -271,9 +275,9 @@ public class URLs {
     //帮助列表
     public static final String Help = HOST  + "/applet/help/queryProblemList";
     //在线客服
-    public static final String OnlineService = HOST + API + "onlineConsult";
+    public static final String OnlineService = HOST + "/baseinfo/onlineConsult/page";
     //创建留言
-    public static final String AddMessage = HOST + API + "online/consult/add";
+    public static final String AddMessage = HOST+ "/baseinfo/onlineConsult/create";
     //关于我们
     public static final String About = HOST + API + "about";
     //分润记录

@@ -2,31 +2,20 @@ package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
-import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.CommonModel;
+import com.xiyang.xiyang.model.AddBuyModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -35,8 +24,8 @@ import okhttp3.Response;
  * 采购申请
  */
 public class AddBuyActivity extends BaseActivity {
-    List<String> list_cangku = new ArrayList<>();
-    int i_cangku = -1;
+    //    List<String> list_cangku = new ArrayList<>();
+//    int i_cangku = -1;
     EditText editText1, editText2, editText3;
     String num = "", time = "", cangku = "";
 
@@ -61,9 +50,9 @@ public class AddBuyActivity extends BaseActivity {
     }
 
     private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.AddBuy, params, headerMap, new CallBackUtil<CommonModel>() {
+        OkhttpUtil.okHttpGet(URLs.CangKu, params, headerMap, new CallBackUtil<AddBuyModel>() {
             @Override
-            public CommonModel onParseResponse(Call call, Response response) {
+            public AddBuyModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -74,10 +63,10 @@ public class AddBuyActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CommonModel response) {
+            public void onResponse(AddBuyModel response) {
                 hideProgress();
-                i_cangku = -1;
-//                list_cangku = response.getStatus();
+//                i_cangku = -1;
+                editText3.setText(response.getWarehouse().getName());
             }
         });
 
@@ -94,7 +83,7 @@ public class AddBuyActivity extends BaseActivity {
                 break;
             case R.id.editText3:
                 //选择仓库
-                dialogList_cangku(editText3);
+//                dialogList_cangku(editText3);
                 break;
 
             case R.id.tv_confirm:
@@ -103,8 +92,8 @@ public class AddBuyActivity extends BaseActivity {
                     showProgress(true, getString(R.string.app_loading1));
                     params.clear();
                     params.put("num", num);
-                    params.put("time", time);
-                    params.put("cangku", cangku);
+                    params.put("fetchAt", time);
+//                    params.put("cangku", cangku);
                     requestUpData(params);
                 }
                 break;
@@ -122,10 +111,10 @@ public class AddBuyActivity extends BaseActivity {
             myToast("请选择提货时间");
             return false;
         }
-        if (TextUtils.isEmpty(cangku)) {
+        /*if (TextUtils.isEmpty(cangku)) {
             myToast("请选择提货仓库");
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -157,7 +146,7 @@ public class AddBuyActivity extends BaseActivity {
 //                finish();
                 Bundle bundle = new Bundle();
                 bundle.putInt("type", 4);
-                CommonUtil.gotoActivityWithData(AddBuyActivity.this, PersonnelListActivity.class, bundle,false);
+                CommonUtil.gotoActivityWithData(AddBuyActivity.this, PersonnelListActivity.class, bundle, false);
             }
         });
     }
@@ -165,7 +154,7 @@ public class AddBuyActivity extends BaseActivity {
     /**
      * 选择仓库
      */
-    private void dialogList_cangku(TextView textView) {
+    /*private void dialogList_cangku(TextView textView) {
         dialog.contentView(R.layout.dialog_list_top)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -205,6 +194,6 @@ public class AddBuyActivity extends BaseActivity {
             }
         });
         rv_list.setAdapter(adapter);
-    }
+    }*/
 
 }

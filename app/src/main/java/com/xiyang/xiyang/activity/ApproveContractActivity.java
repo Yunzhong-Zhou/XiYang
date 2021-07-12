@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
@@ -54,11 +55,11 @@ import okhttp3.Response;
 public class ApproveContractActivity extends BaseActivity {
     List<String> list_jieguo = new ArrayList<>();
     int i_jieguo = -1;
-    //    RelativeLayout rl_jieguo, rl_shuoming;
-    EditText tv_jieguo, tv_shuoming;
+    RelativeLayout rl_shuliang;
+    EditText tv_jieguo, tv_shuoming, tv_shuliang;
     ImageView imageView1;
 
-    String id = "", status = "", remark = "", images = "";
+    String id = "", status = "", remark = "", images = "", type = "",deviceNum = "";
 
     /**
      * 选择图片
@@ -97,6 +98,7 @@ public class ApproveContractActivity extends BaseActivity {
         BroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 BroadcastAction.ACTION_DELETE_PREVIEW_POSITION);*/
     }
+
     /*private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -119,9 +121,13 @@ public class ApproveContractActivity extends BaseActivity {
     protected void initView() {
 //        rl_jieguo = findViewByID_My(R.id.rl_jieguo);
 //        rl_shuoming = findViewByID_My(R.id.rl_shuoming);
+        rl_shuliang = findViewByID_My(R.id.rl_shuliang);
+        rl_shuliang.setVisibility(View.GONE);
 
         tv_jieguo = findViewByID_My(R.id.tv_jieguo);
+        tv_shuliang = findViewByID_My(R.id.tv_shuliang);
         tv_shuoming = findViewByID_My(R.id.tv_shuoming);
+
 
         imageView1 = findViewByID_My(R.id.imageView1);
     }
@@ -129,6 +135,9 @@ public class ApproveContractActivity extends BaseActivity {
     @Override
     protected void initData() {
         id = getIntent().getStringExtra("id");
+        type = getIntent().getStringExtra("type");
+        if (type != null && type.equals("device_add"))
+            rl_shuliang.setVisibility(View.VISIBLE);
 
         list_jieguo.add("通过");
         list_jieguo.add("不通过");
@@ -208,6 +217,7 @@ public class ApproveContractActivity extends BaseActivity {
                                     params.put("images", images);
                                     params.put("id", id);
                                     params.put("status", status);
+                                    params.put("deviceNum", deviceNum);
                                     requestUpData(params);
                                 }
                             }
@@ -229,6 +239,14 @@ public class ApproveContractActivity extends BaseActivity {
             myToast("请输入处理说明");
             return false;
         }
+        if (type != null && type.equals("device_add")){
+            deviceNum = tv_shuliang.getText().toString().trim();
+            if (TextUtils.isEmpty(deviceNum)) {
+                myToast("请输入审批数量");
+                return false;
+            }
+        }
+
         listFiles.clear();
         for (LocalMedia media : mAdapter.getData()) {
             MyLogger.i(">>>>>>压缩地址：" + media.getCompressPath());
@@ -236,7 +254,6 @@ public class ApproveContractActivity extends BaseActivity {
             listFiles.add(file);
             // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
         }
-        MyLogger.i(">>>>>>"+listFiles.size());
         num = listFiles.size();
         if (num == 0) {
             myToast("请选择上传照片");

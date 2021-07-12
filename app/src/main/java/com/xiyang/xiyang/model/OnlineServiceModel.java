@@ -9,69 +9,73 @@ import java.util.List;
  */
 
 public class OnlineServiceModel implements Serializable {
-    private List<LeaveMessageListBean> leave_message_list;
+    /**
+     * records : [{"message":"test","type":1,"createTime":"2021-06-10 09:25:16","l":2},{"message":"123","type":2,"createTime":"2021-07-07 15:57:14","l":2},{"message":"123","type":2,"createTime":"2021-07-07 17:06:41","l":2},{"message":"123","type":2,"createTime":"2021-07-07 17:32:22","l":2},{"message":"234","type":1,"createTime":"2021-07-10 11:10:51","l":2},{"message":"1234","type":1,"createTime":"2021-07-10 11:10:49","l":2},{"message":"123","type":2,"createTime":"2021-07-08 08:52:12","l":2},{"message":"1234","type":1,"createTime":"2021-07-10 11:10:47","l":2},{"message":"11111","type":1,"createTime":"2021-07-09 18:11:17","l":2},{"message":"你好李艳","type":1,"createTime":"2021-07-09 18:11:29","l":2}]
+     * total : 0
+     * size : 10
+     * current : 1
+     * orders : []
+     * optimizeCountSql : true
+     * hitCount : false
+     * countId : null
+     * maxLimit : null
+     * searchCount : true
+     * pages : 0
+     */
 
-    public List<LeaveMessageListBean> getLeave_message_list() {
-        return leave_message_list;
+    private List<RecordsBean> records;
+
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setLeave_message_list(List<LeaveMessageListBean> leave_message_list) {
-        this.leave_message_list = leave_message_list;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public static class LeaveMessageListBean {
+    public static class RecordsBean {
         /**
-         * member_id : 6d3f2f6a08905ad516c3c2f94d1c629b
-         * user_id :
-         * content :
-         * pic : /upload/leave-message/2018-06-25/f8d1e5b798e96f923de99edd60b2adc0.jpg
-         * created_at : 2018-06-25 15:53:58
+         * message : test
+         * type : 1
+         * createTime : 2021-06-10 09:25:16
+         * l : 2
          */
 
-        private String member_id;
-        private String user_id;
-        private String content;
-        private String pic;
-        private String created_at;
+        private String message;
+        private int type;
+        private String createTime;
+        private int l;
 
-        public String getMember_id() {
-            return member_id;
+        public String getMessage() {
+            return message;
         }
 
-        public void setMember_id(String member_id) {
-            this.member_id = member_id;
+        public void setMessage(String message) {
+            this.message = message;
         }
 
-        public String getUser_id() {
-            return user_id;
+        public int getType() {
+            return type;
         }
 
-        public void setUser_id(String user_id) {
-            this.user_id = user_id;
+        public void setType(int type) {
+            this.type = type;
         }
 
-        public String getContent() {
-            return content;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setContent(String content) {
-            this.content = content;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
 
-        public String getPic() {
-            return pic;
+        public int getL() {
+            return l;
         }
 
-        public void setPic(String pic) {
-            this.pic = pic;
-        }
-
-        public String getCreated_at() {
-            return created_at;
-        }
-
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setL(int l) {
+            this.l = l;
         }
     }
 }

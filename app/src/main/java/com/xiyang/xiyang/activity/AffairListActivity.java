@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -80,7 +81,7 @@ public class AffairListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
@@ -93,7 +94,7 @@ public class AffairListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
@@ -118,7 +119,7 @@ public class AffairListActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.AffairList, params, headerMap, new CallBackUtil<AffairListModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.AffairList, GsonUtils.toJson(params), headerMap, new CallBackUtil<AffairListModel>() {
             @Override
             public AffairListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -264,7 +265,7 @@ public class AffairListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("count", "10");
+        params.put("pageSize", "10");
         params.put("status", status);
         params.put("sort", sort);
         params.put("cityId", cityId);
