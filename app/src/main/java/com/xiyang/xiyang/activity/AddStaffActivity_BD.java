@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -32,7 +33,6 @@ import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -60,7 +60,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class AddStaffActivity_BD extends BaseActivity {
     ImageView imageView1;
     RelativeLayout rl_xingming, rl_xingbie, rl_zhanghao, rl_lianxidianhua, rl_bumen, rl_leixing, rl_chengshi;
-    EditText tv_xingming, tv_xingbie, tv_zhanghao, tv_lianxidianhua, tv_chengshi, tv_leixing,editText1;
+    EditText tv_xingming, tv_xingbie, tv_zhanghao, tv_lianxidianhua, tv_chengshi, tv_leixing, editText1;
     TextView textView1;
 
     String account = "", name = "", head = "", sex = "1", contactPhone = "", postionIds = "",
@@ -100,9 +100,9 @@ public class AddStaffActivity_BD extends BaseActivity {
         tv_leixing = findViewByID_My(R.id.tv_leixing);
 
         rl_chengshi = findViewByID_My(R.id.rl_chengshi);
-
         editText1 = findViewByID_My(R.id.editText1);
-        editText1.setText("+"+localUserInfo.getMobile_State_Code()+"  "+localUserInfo.getPhonenumber());
+
+        tv_lianxidianhua.setText("" + localUserInfo.getMobile_State_Code() + "" + localUserInfo.getPhonenumber());
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
         textView1 = findViewByID_My(R.id.textView1);
         textView1.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +117,10 @@ public class AddStaffActivity_BD extends BaseActivity {
                             "&mobile_state_code=" + localUserInfo.getMobile_State_Code();*/
                     AddStaffActivity_BD.this.showProgress(true, getString(R.string.app_sendcode_hint1));
                     textView1.setClickable(false);
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("mobile", localUserInfo.getPhonenumber());
-                    params.put("type", "31");
+
+                    params.clear();
+//                    params.put("mobile", localUserInfo.getPhonenumber());
+//                    params.put("type", "31");
 //                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                     RequestCode(params);//获取验证码
                 }
@@ -129,7 +130,7 @@ public class AddStaffActivity_BD extends BaseActivity {
 
     @Override
     protected void initData() {
-        storeId =  getIntent().getStringExtra("storeId");
+        storeId = getIntent().getStringExtra("storeId");
         list_sex.add("男");
         list_sex.add("女");
 
@@ -165,33 +166,44 @@ public class AddStaffActivity_BD extends BaseActivity {
                 //确认添加
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    new UpFileToQiNiuUtil(AddStaffActivity_BD.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                    Map<String, File> fileMap = new HashMap<>();
+                    fileMap.put("file", imgfile);
+                    params.clear();
+                    OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                         @Override
-                        public void complete(boolean isok, String result, String url) {
-                            if (isok) {
-                                MyLogger.i(">>>>上传文件路径：" + url);
-                                head = url;
-
-                                params.clear();
-                                params.put("name", name);
-                                params.put("storeId", storeId);
-                                params.put("account", account);
-                                params.put("department", type);
-                                params.put("code", postionIds);
-                                params.put("head", head);
-                                requestUpData(params);
-                            } else {
-                                myToast(result);
-                            }
+                        public String onParseResponse(Call call, Response response) {
+                            return null;
                         }
-                    };
+
+                        @Override
+                        public void onFailure(Call call, Exception e, String err) {
+                            hideProgress();
+                            myToast("图片上传失败" + err);
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            head = response;
+
+                            params.clear();
+                            params.put("userName", name);
+                            params.put("storeId", storeId);
+                            params.put("phone", account);
+                            params.put("deptId", department);
+                            params.put("verificationCode", code);
+                            params.put("userImg", head);
+                            params.put("flag", "false");
+                            requestUpData(params);
+                        }
+                    });
                 }
                 break;
 
         }
     }
+
     private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_Staff, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -248,6 +260,7 @@ public class AddStaffActivity_BD extends BaseActivity {
         titleView.setTitle("添加新员工");
 
     }
+
     //获取验证码倒计时
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {
@@ -266,6 +279,7 @@ public class AddStaffActivity_BD extends BaseActivity {
             textView1.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
     }
+
     /**
      * *****************************************选择图片********************************************
      */
@@ -326,7 +340,7 @@ public class AddStaffActivity_BD extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AddStaff_BD, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AddStaff_BD, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

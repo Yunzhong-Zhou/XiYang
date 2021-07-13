@@ -154,7 +154,6 @@ public class AddStaffActivity extends BaseActivity {
                     };
                 }
                 break;
-
         }
     }
     private boolean match() {

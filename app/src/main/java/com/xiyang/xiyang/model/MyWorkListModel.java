@@ -7,32 +7,39 @@ import java.util.List;
  * Created by Mr.Z on 2021/4/16.
  */
 public class MyWorkListModel implements Serializable {
-    private List<ListBean> list;
+    private List<RecordsBean> records;
 
-    public List<ListBean> getList() {
-        return list;
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public static class ListBean {
+    public static class RecordsBean {
         /**
-         * id : 21
-         * type : 设备工单
-         * addres : 重庆市沙坪坝区
-         * status : 0
-         * statusTitle : 进行中
-         * createdAt : 2021-04-16 16:44:32
+         * id : 1414776532601278464
+         * type : 1
+         * storeId : 1411188080041320450
+         * storeName : 门店12345
+         * createTime : 2021-07-13 10:39:45
          */
 
         private String id;
-        private String type;
-        private String addres;
-        private String status;
-        private String statusTitle;
-        private String createdAt;
+        private int type;
+        private int status;
+        private String storeId;
+        private String storeName;
+        private String createTime;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
 
         public String getId() {
             return id;
@@ -42,44 +49,36 @@ public class MyWorkListModel implements Serializable {
             this.id = id;
         }
 
-        public String getType() {
+        public int getType() {
             return type;
         }
 
-        public void setType(String type) {
+        public void setType(int type) {
             this.type = type;
         }
 
-        public String getAddres() {
-            return addres;
+        public String getStoreId() {
+            return storeId;
         }
 
-        public void setAddres(String addres) {
-            this.addres = addres;
+        public void setStoreId(String storeId) {
+            this.storeId = storeId;
         }
 
-        public String getStatus() {
-            return status;
+        public String getStoreName() {
+            return storeName;
         }
 
-        public void setStatus(String status) {
-            this.status = status;
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
         }
 
-        public String getStatusTitle() {
-            return statusTitle;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setStatusTitle(String statusTitle) {
-            this.statusTitle = statusTitle;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
     }
 }

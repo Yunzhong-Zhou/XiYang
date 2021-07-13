@@ -123,7 +123,7 @@ public class AffairDetailActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 params.clear();
-                params.put("id", id);
+//                params.put("id", id);
                 request(params);
             }
 
@@ -368,12 +368,12 @@ public class AffairDetailActivity extends BaseActivity {
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("id", id);
+//        params.put("id", id);
         request(params);
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.AffairDetail, params, headerMap, new CallBackUtil<AffairDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.AffairDetail+id, params, headerMap, new CallBackUtil<AffairDetailModel>() {
             @Override
             public AffairDetailModel onParseResponse(Call call, Response response) {
                 return null;

@@ -64,8 +64,11 @@ public class HelpCenterActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.tv_shangbao:
+                bundle.putInt("type", 0);
+                CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
                 //拨打电话
                 /*showToast("确认拨打 " + model.getLandline_number() + " 吗？", "确认", "取消",
                         new View.OnClickListener() {
@@ -88,10 +91,27 @@ public class HelpCenterActivity extends BaseActivity {
                                 dialog.dismiss();
                             }
                         });*/
+
+
                 break;
             case R.id.tv_kefu:
                 //联系客服
                 CommonUtil.gotoActivity(this, OnlineServiceActivity.class, false);
+                break;
+            case R.id.linearLayout1:
+                //无法启动
+                bundle.putInt("type", 2);
+                CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
+                break;
+            case R.id.linearLayout2:
+                //无法关闭
+                bundle.putInt("type", 2);
+                CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
+                break;
+            case R.id.linearLayout3:
+                //设备断网
+                bundle.putInt("type", 2);
+                CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
                 break;
         }
     }

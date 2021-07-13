@@ -7,32 +7,48 @@ import java.util.List;
  * Created by Mr.Z on 2021/4/29.
  */
 public class AffairListModel implements Serializable {
-    private List<ListBean> list;
+    /**
+     * records : [{"id":"1413042378897494016","name":" 黄仕明测试门店","type":1,"typeTitle":"新增设备","image":"17100000001.png","status":1,"statusTitle":"待处理","deviceNum":10},{"id":"1414776614721556480","name":"门店名称1","type":1,"typeTitle":"新增设备","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/09/16257990118051625798824232.png","status":1,"statusTitle":"待处理","deviceNum":10}]
+     * total : 2
+     * size : 10
+     * current : 1
+     * orders : []
+     * optimizeCountSql : true
+     * hitCount : false
+     * searchCount : true
+     * pages : 1
+     */
 
-    public List<ListBean> getList() {
-        return list;
+    private List<RecordsBean> records;
+
+    public List<RecordsBean> getRecords() {
+        return records;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
     }
 
-    public static class ListBean {
+    public static class RecordsBean {
         /**
-         * id : 18
-         * name : 新增设备
-         * storeName : 门店名称周
-         * image : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F161e4bda16efdf907846347ebf3605dc.png?e=1619495042&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:s45gMniysuMy-thQHy25XsVmreQ=
+         * id : 1413042378897494016
+         * name :  黄仕明测试门店
+         * type : 1
+         * typeTitle : 新增设备
+         * image : 17100000001.png
+         * status : 1
+         * statusTitle : 待处理
          * deviceNum : 10
-         * statusTitle : 处理中
          */
 
         private String id;
         private String name;
-        private String storeName;
+        private int type;
+        private String typeTitle;
         private String image;
-        private String deviceNum;
+        private int status;
         private String statusTitle;
+        private int deviceNum;
 
         public String getId() {
             return id;
@@ -50,12 +66,20 @@ public class AffairListModel implements Serializable {
             this.name = name;
         }
 
-        public String getStoreName() {
-            return storeName;
+        public int getType() {
+            return type;
         }
 
-        public void setStoreName(String storeName) {
-            this.storeName = storeName;
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public String getTypeTitle() {
+            return typeTitle;
+        }
+
+        public void setTypeTitle(String typeTitle) {
+            this.typeTitle = typeTitle;
         }
 
         public String getImage() {
@@ -66,12 +90,12 @@ public class AffairListModel implements Serializable {
             this.image = image;
         }
 
-        public String getDeviceNum() {
-            return deviceNum;
+        public int getStatus() {
+            return status;
         }
 
-        public void setDeviceNum(String deviceNum) {
-            this.deviceNum = deviceNum;
+        public void setStatus(int status) {
+            this.status = status;
         }
 
         public String getStatusTitle() {
@@ -80,6 +104,14 @@ public class AffairListModel implements Serializable {
 
         public void setStatusTitle(String statusTitle) {
             this.statusTitle = statusTitle;
+        }
+
+        public int getDeviceNum() {
+            return deviceNum;
+        }
+
+        public void setDeviceNum(int deviceNum) {
+            this.deviceNum = deviceNum;
         }
     }
 }

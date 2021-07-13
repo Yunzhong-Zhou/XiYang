@@ -7,79 +7,69 @@ import java.util.List;
  * Created by Mr.Z on 2021/4/28.
  */
 public class StaffManagementModel implements Serializable {
-    private List<ListBean> list;
+    private List<UserListVOListBean> userListVOList;
 
-    public List<ListBean> getList() {
-        return list;
+    public List<UserListVOListBean> getUserListVOList() {
+        return userListVOList;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setUserListVOList(List<UserListVOListBean> userListVOList) {
+        this.userListVOList = userListVOList;
     }
 
-    public static class ListBean {
+    public static class UserListVOListBean {
         /**
-         * id : 100058
-         * account : 15754854547
-         * name : 姓名
-         * head : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F1f31682973210ee1bb3b0094de5c9c55.png?e=1619596109&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:Vb_7pBAPKU0CwC4cxmVSbx_F0tc=
-         * department : 1
-         * money : 0.00
+         * userId : 1414852679646187521
+         * userImg : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/13/16261621397061626161946847.png
+         * userName : 信达
+         * phone : 187558888888
+         * totalMoney : 0
          */
 
-        private String id;
-        private String account;
-        private String name;
-        private String head;
-        private String department;
-        private String money;
+        private String userId;
+        private String userImg;
+        private String userName;
+        private String phone;
+        private String totalMoney;
 
-        public String getId() {
-            return id;
+        public String getUserId() {
+            return userId;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setUserId(String userId) {
+            this.userId = userId;
         }
 
-        public String getAccount() {
-            return account;
+        public String getUserImg() {
+            return userImg;
         }
 
-        public void setAccount(String account) {
-            this.account = account;
+        public void setUserImg(String userImg) {
+            this.userImg = userImg;
         }
 
-        public String getName() {
-            return name;
+        public String getUserName() {
+            return userName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
 
-        public String getHead() {
-            return head;
+        public String getPhone() {
+            return phone;
         }
 
-        public void setHead(String head) {
-            this.head = head;
+        public void setPhone(String phone) {
+            this.phone = phone;
         }
 
-        public String getDepartment() {
-            return department;
+        public String getTotalMoney() {
+            return totalMoney;
         }
 
-        public void setDepartment(String department) {
-            this.department = department;
-        }
-
-        public String getMoney() {
-            return money;
-        }
-
-        public void setMoney(String money) {
-            this.money = money;
+        public void setTotalMoney(String totalMoney) {
+            this.totalMoney = totalMoney;
         }
     }
 }

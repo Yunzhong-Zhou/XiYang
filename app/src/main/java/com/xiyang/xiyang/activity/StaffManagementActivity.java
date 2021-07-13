@@ -46,8 +46,8 @@ import okhttp3.Response;
 public class StaffManagementActivity extends BaseActivity {
     String storeId = "";
     private RecyclerView recyclerView;
-    List<StaffManagementModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<StaffManagementModel.ListBean> mAdapter;
+    List<StaffManagementModel.UserListVOListBean> list = new ArrayList<>();
+    CommonAdapter<StaffManagementModel.UserListVOListBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
@@ -138,27 +138,27 @@ public class StaffManagementActivity extends BaseActivity {
             public void onResponse(StaffManagementModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getUserListVOList();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<StaffManagementModel.ListBean>
+                    mAdapter = new CommonAdapter<StaffManagementModel.UserListVOListBean>
                             (StaffManagementActivity.this, R.layout.item_staffmanagement, list) {
                         @Override
-                        protected void convert(ViewHolder holder, StaffManagementModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, StaffManagementModel.UserListVOListBean model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(StaffManagementActivity.this)
-                                    .load(model.getHead())
+                                    .load(model.getUserImg())
 //                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(StaffManagementActivity.this, 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
-                            holder.setText(R.id.tv_name,model.getName());
-                            holder.setText(R.id.tv_phone, model.getAccount());
-                            holder.setText(R.id.tv_suoshu, model.getDepartment());
-                            holder.setText(R.id.tv_money, model.getMoney());
+                            holder.setText(R.id.tv_name,model.getUserName());
+                            holder.setText(R.id.tv_phone, model.getPhone());
+//                            holder.setText(R.id.tv_suoshu, model.get);
+                            holder.setText(R.id.tv_money, model.getTotalMoney());
                             //删除
                             holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -169,7 +169,7 @@ public class StaffManagementActivity extends BaseActivity {
                                             dialog.dismiss();
                                             showProgress(false, getString(R.string.app_loading1));
                                             params.clear();
-                                            params.put("workerId", list.get(position).getId());
+                                            params.put("workerId", list.get(position).getUserId());
                                             params.put("storeId", storeId);
                                             requestDelete(params);//删除
                                         }
@@ -211,8 +211,8 @@ public class StaffManagementActivity extends BaseActivity {
             public void onResponse(StaffManagementModel response) {
 //                showContentPage();
                 hideProgress();
-                List<StaffManagementModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<StaffManagementModel.UserListVOListBean> list1 = new ArrayList<>();
+                list1 = response.getUserListVOList();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;

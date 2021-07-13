@@ -45,15 +45,15 @@ import okhttp3.Response;
  */
 public class AffairListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<AffairListModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<AffairListModel.ListBean> mAdapter;
+    List<AffairListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<AffairListModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
     private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "", cityId = "", instudyId = "";
+    String sort = "desc", status = "", cityId = "", instudyId = "",type = "1";
     int i1 = 0;
     int i2 = 0;
 
@@ -80,9 +80,10 @@ public class AffairListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                params.put("page", page + "");
+                params.put("current", page + "");
                 params.put("pageSize", "10");
                 params.put("status", status);
+                params.put("type", type);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
                 params.put("instudyId", instudyId);
@@ -93,9 +94,10 @@ public class AffairListActivity extends BaseActivity {
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("page", page + "");
+                params.put("current", page + "");
                 params.put("pageSize", "10");
                 params.put("status", status);
+                params.put("type", type);
                 params.put("sort", sort);
                 params.put("cityId", cityId);
                 params.put("instudyId", instudyId);
@@ -136,16 +138,16 @@ public class AffairListActivity extends BaseActivity {
             public void onResponse(AffairListModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<AffairListModel.ListBean>
+                    mAdapter = new CommonAdapter<AffairListModel.RecordsBean>
                             (AffairListActivity.this, R.layout.item_affairlist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, AffairListModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, AffairListModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, model.getStoreName());
+                            holder.setText(R.id.tv_shop, model.getTypeTitle());
                             holder.setText(R.id.tv_num, model.getStatusTitle());//money
                             holder.setText(R.id.tv_addr, model.getDeviceNum()+"台");
 
@@ -212,8 +214,8 @@ public class AffairListActivity extends BaseActivity {
             public void onResponse(AffairListModel response) {
                 showContentPage();
                 onHttpResult();
-                List<AffairListModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<AffairListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;
@@ -264,9 +266,10 @@ public class AffairListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        params.put("page", page + "");
+        params.put("current", page + "");
         params.put("pageSize", "10");
         params.put("status", status);
+        params.put("type", type);
         params.put("sort", sort);
         params.put("cityId", cityId);
         params.put("instudyId", instudyId);

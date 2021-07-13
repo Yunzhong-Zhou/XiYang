@@ -353,7 +353,7 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout10:
                 //设备报失-工单
-                bundle.putInt("type", 1);
+                bundle.putInt("type", 2);
                 CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);
                 break;
             case R.id.linearLayout11:

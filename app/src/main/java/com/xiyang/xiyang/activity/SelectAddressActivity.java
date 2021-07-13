@@ -376,7 +376,7 @@ public class SelectAddressActivity extends BaseActivity {
                     bundle.putString("longitude",lng);
                     bundle.putString("latitude",lat);
                     bundle.putString("addr",addr);
-                    CommonUtil.gotoActivityWithData(SelectAddressActivity.this,AddStoreActivity.class,bundle,false);
+                    CommonUtil.gotoActivityWithData(SelectAddressActivity.this,AddStoreActivity.class,bundle,true);
                 }else {
                     myToast("请选择地址");
                 }

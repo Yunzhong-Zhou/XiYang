@@ -18,7 +18,6 @@ import com.xiyang.xiyang.model.WorkListDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.popupwindow.PhotoShowDialog;
 import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -51,7 +50,6 @@ public class WorkListDetailActivity extends BaseActivity {
     ImageView imageView1, imageView2;
     TextView textView1, textView2, textView3, textView4;
 
-
     /**
      * 商户信息
      */
@@ -66,8 +64,8 @@ public class WorkListDetailActivity extends BaseActivity {
      */
     LinearLayout ll_shenhe;
     RecyclerView rv_shenhe;
-    List<WorkListDetailModel.DealListBean> list_shenhe = new ArrayList<>();
-    CommonAdapter<WorkListDetailModel.DealListBean> mAdapter_shenhe;
+//    List<WorkListDetailModel.DealListBean> list_shenhe = new ArrayList<>();
+//    CommonAdapter<WorkListDetailModel.DealListBean> mAdapter_shenhe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +86,8 @@ public class WorkListDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-                params.put("id", id);
+                params.clear();
+//                params.put("id", id);
                 request(params);
             }
 
@@ -141,7 +140,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_jieshou:
                 //接手
-                if (tv_jieshou.getText().toString().trim().equals("接手")){
+                if (tv_jieshou.getText().toString().trim().equals("接手")) {
                     showToast("确认接手该工单吗？", "确定", "取消",
                             new View.OnClickListener() {
                                 @Override
@@ -149,8 +148,8 @@ public class WorkListDetailActivity extends BaseActivity {
                                     dialog.dismiss();
                                     showProgress(true, getString(R.string.app_loading1));
                                     params.clear();
-                                    params.put("id", id);
-                                    requestJieShou(params);
+//                                    params.put("id", id);
+                                    requestJieShou(params,id);
                                 }
                             }, new View.OnClickListener() {
                                 @Override
@@ -158,10 +157,10 @@ public class WorkListDetailActivity extends BaseActivity {
                                     dialog.dismiss();
                                 }
                             });
-                }else {
+                } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString("id",id);
-                    CommonUtil.gotoActivityWithData(WorkListDetailActivity.this,ChangeWorkListActivity.class,bundle,false);
+                    bundle.putString("id", id);
+                    CommonUtil.gotoActivityWithData(WorkListDetailActivity.this, ChangeWorkListActivity.class, bundle, false);
                 }
 
                 break;
@@ -188,12 +187,13 @@ public class WorkListDetailActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
-        params.put("id", id);
+        params.clear();
+//        params.put("id", id);
         request(params);
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.WorkListDetail, params, headerMap, new CallBackUtil<WorkListDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.WorkListDetail + id, params, headerMap, new CallBackUtil<WorkListDetailModel>() {
             @Override
             public WorkListDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -213,44 +213,84 @@ public class WorkListDetailActivity extends BaseActivity {
                 /**
                  * 基本信息
                  */
-                if (response.getBaseInfo().getFetch().equals("1")){//未接工单
+                if (response.getTakeOverFlag() == 0) {//未接工单
                     sl_tab.setVisibility(View.GONE);
                     tv_jieshou.setText("接手");
                     tv_jieshou.setVisibility(View.VISIBLE);
-                } else{
+                } else {
                     sl_tab.setVisibility(View.VISIBLE);
-                    if (!response.getBaseInfo().getStatus().equals("2")){
+                    if (response.getStatus() != 3) {
                         tv_jieshou.setText("处理工单");
                         tv_jieshou.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         tv_jieshou.setVisibility(View.GONE);
                     }
-
                 }
 
                 Glide.with(WorkListDetailActivity.this)
-                        .load(response.getBaseInfo().getStoreCover())
+                        .load(response.getImages())
                         .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-                textView1.setText(response.getBaseInfo().getStoreName());
-                textView2.setText(response.getBaseInfo().getStoreAddres());
-                textView3.setText(response.getBaseInfo().getCreatedAt());
-                textView4.setText(response.getBaseInfo().getStatusTitle());
+                switch (model.getType()){
+                    case 1:
+                        //设备故障
+                        textView1.setText("设备故障");
+                        break;
+                    case 2:
+                        //订单故障
+                        textView1.setText("订单故障");
+                        break;
+                    case 3:
+                        //其他故障
+                        textView1.setText("其他故障");
+                        break;
+                }
+
+                textView2.setText(response.getStoreName());
+                textView3.setText(response.getCreateTime());
+                switch (model.getStatus()){
+                    case 1:
+                        //待处理
+                        textView4.setText("待处理");
+                        break;
+                    case 2:
+                        //处理中
+                        textView4.setText("处理中");
+                        break;
+                    case 3:
+                        //完成
+                        textView4.setText("完成");
+                        break;
+                }
 
                 list_info.clear();
-                list_info.add(new KeyValueModel("工单ID", response.getBaseInfo().getId()));
-                list_info.add(new KeyValueModel("门店名称", response.getBaseInfo().getStoreName()));
-                list_info.add(new KeyValueModel("工单类型", response.getBaseInfo().getType()));
-                list_info.add(new KeyValueModel("反馈渠道", response.getBaseInfo().getChannel()));
-                list_info.add(new KeyValueModel("工单创建人", response.getBaseInfo().getCreatedUser()));
-                list_info.add(new KeyValueModel("创建人类型", response.getBaseInfo().getCreatedUserRole()));
-                list_info.add(new KeyValueModel("所属城市", response.getBaseInfo().getCreatedUserCity()));
-                list_info.add(new KeyValueModel("创建时间", response.getBaseInfo().getCreatedAt()));
-                list_info.add(new KeyValueModel("工单内容", response.getBaseInfo().getReamrk()));
+                list_info.add(new KeyValueModel("工单ID", response.getId()));
+                list_info.add(new KeyValueModel("门店名称", response.getStoreName()));
+                switch (model.getType()){
+                    case 1:
+                        //设备故障
+                        list_info.add(new KeyValueModel("工单类型", "设备故障"));
+                        break;
+                    case 2:
+                        //订单故障
+                        list_info.add(new KeyValueModel("工单类型", "订单故障"));
+                        break;
+                    case 3:
+                        //其他故障
+                        list_info.add(new KeyValueModel("工单类型", "其他故障"));
+                        break;
+                }
+
+//                list_info.add(new KeyValueModel("反馈渠道", response.getChannel()));
+//                list_info.add(new KeyValueModel("工单创建人", response.getCreatedUser()));
+                list_info.add(new KeyValueModel("创建人类型", response.getUserTypeName()));
+//                list_info.add(new KeyValueModel("所属城市", response.getCreatedUserCity()));
+                list_info.add(new KeyValueModel("创建时间", response.getCreateTime()));
+                list_info.add(new KeyValueModel("工单内容", response.getFailureReason()));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (WorkListDetailActivity.this, R.layout.item_keyvalue, list_info) {
                     @Override
@@ -261,7 +301,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 };
                 rv_info.setAdapter(mAdapter_info);
                 Glide.with(WorkListDetailActivity.this)
-                        .load(response.getBaseInfo().getStoreCover())
+                        .load(response.getImages())
                         .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 10))))
@@ -272,8 +312,9 @@ public class WorkListDetailActivity extends BaseActivity {
                 /**
                  * 处理记录
                  */
-                list_shenhe = response.getDealList();
-                if (list_shenhe.size()>0){
+
+                /*list_shenhe = response.getDealList();
+                if (list_shenhe.size() > 0) {
                     showContentPage();
                     mAdapter_shenhe = new CommonAdapter<WorkListDetailModel.DealListBean>
                             (WorkListDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
@@ -343,7 +384,7 @@ public class WorkListDetailActivity extends BaseActivity {
                             });
                             rv.setAdapter(ca);
 
-                        /*ImageView iv_head = holder.getView(R.id.iv_head);
+                        *//*ImageView iv_head = holder.getView(R.id.iv_head);
                         Glide.with(WorkListDetailActivity.this)
                                 .load(model.get)
                                 .fitCenter()
@@ -352,7 +393,7 @@ public class WorkListDetailActivity extends BaseActivity {
                                 .placeholder(R.mipmap.loading)//加载站位图
                                 .error(R.mipmap.headimg)//加载失败
                                 .into(iv_head);//加载图片
-                        holder.setText(R.id.tv_name, model.get);*/
+                        holder.setText(R.id.tv_name, model.get);*//*
                             holder.setText(R.id.tv_time, model.getCreatedAt());
                             holder.setText(R.id.tv_type, model.getStatusTitle());
                             holder.setText(R.id.tv_content, model.getReamrk());
@@ -361,16 +402,16 @@ public class WorkListDetailActivity extends BaseActivity {
                         }
                     };
                     rv_shenhe.setAdapter(mAdapter_shenhe);
-                }else {
+                } else {
                     showEmptyPage();
-                }
+                }*/
 
             }
         });
     }
 
-    private void requestJieShou(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.WorkList_JieShou, params, headerMap, new CallBackUtil<String>() {
+    private void requestJieShou(Map<String, String> params,String id) {
+        OkhttpUtil.okHttpGet(URLs.WorkList_JieShou+id, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

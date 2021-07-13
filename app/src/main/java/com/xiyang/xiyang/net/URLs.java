@@ -38,6 +38,8 @@ public class URLs {
     public static final String Code_yinhangka = HOST + "/user/bank/verificationCode/issue";
     //发送验证码-提现
     public static final String Code_tixian = HOST + "/sms/manage/verificationCode/issue";
+    //发送验证码-添加员工
+    public static final String Code_Staff = HOST + "/applet/user/sendCode";
     //验证码登录
     public static final String Login1 = HOST + "/user/login";
     //登录
@@ -53,7 +55,7 @@ public class URLs {
     //省市区列表（3级）
     public static final String Region = HOST + "/baseinfo/china/region/dropDown";
     //公共参数获取
-    public static final String Common = HOST + API + "common";
+    public static final String Common = HOST + "/baseinfo/tags/getByCategory/";
     //公共-仓库
     public static final String Warehouse = HOST + API + "warehouse";
     //评价列表
@@ -93,7 +95,7 @@ public class URLs {
     //合同详情
     public static final String ContractDetail = HOST + "/bd/bdservice/getContractsDetailInfo/";
     //划转商户
-    public static final String TransferShop = HOST + API + "merchant/transfer";
+    public static final String TransferShop = HOST + "/bd/merchant/transfer/add";
     /**
      * ********************************管理*****************************************
      */
@@ -161,11 +163,11 @@ public class URLs {
     //删除房号
     public static final String DeleteRoom = HOST + "/bd/storeRoom/appDeleteRoom";
     //员工管理
-    public static final String StaffManagement = HOST + "/applet/user/queryUserList";
+    public static final String StaffManagement = HOST + "/user/appQueryUserList";
     //添加员工
-    public static final String AddStaff_BD = HOST + API + "store/worker/add";
+    public static final String AddStaff_BD = HOST  + "/user/appSaveFontUser";
     //删除员工
-    public static final String DeleteStaff = HOST + API + "store/worker/delete";
+    public static final String DeleteStaff = HOST + "/user/appDeleteUser";
     //关闭门店
     public static final String CloseStore = HOST + API + "store/close";
     //划转门店
@@ -191,25 +193,31 @@ public class URLs {
      */
     public static final String Fragment3 = HOST + API + "device";
     //工单列表
-    public static final String WorkList = HOST + API + "work/orders/record";
+    public static final String WorkList = HOST + "/bd/work/orders/page";
+    //工单列表-待接工单
+    public static final String WorkList_DaiJie = HOST + "/bd/work/orders/missed/page";
+    //根据设备序列号获取设备信息
+    public static final String DeviceInfo = HOST + "/device/getByHostName/";
+    //添加工单-故障列表
+    public static final String AddWorkList_GuZhang = HOST + "/bd/work/orders/failureReasonList/";
     //添加设备工单
-    public static final String AddDeviceWorkList = HOST + API + "work/orders/device/fault";
+    public static final String AddDeviceWorkList = HOST  + "/bd/work/orders/reportDeviceFailure";
     //添加订单工单
-    public static final String AddOrderList = HOST + API + "work/orders/order";
+    public static final String AddOrderList = HOST + API + "/bd/work/orders/reportOrderFailure";
     //添加其他工单
-    public static final String AddOtherList = HOST + API + "work/orders/other";
+    public static final String AddOtherList = HOST + API + "/bd/work/orders/reportOtherFailure";
     //接手工单
-    public static final String WorkList_JieShou = HOST + API + "work/orders/fetch";
+    public static final String WorkList_JieShou = HOST + "/bd/work/orders/takeOver/";
     //工单详情
-    public static final String WorkListDetail = HOST + API + "work/orders/detail";
+    public static final String WorkListDetail = HOST + "/bd/work/orders/get/detail/";
     //处理工单
-    public static final String ChangeWorkList = HOST + API + "work/orders/deal";
+    public static final String ChangeWorkList = HOST + "/bd/work/orders/deal";
     //添加拜访
     public static final String AddVisit = HOST + "/bd/store/visit/addStoreVisitLog";
     //事务列表
     public static final String AffairList = HOST + "/bd/transaction/listTransaction";
     //事务详情
-    public static final String AffairDetail = HOST + API + "transactions/detail";
+    public static final String AffairDetail = HOST + "/bd/transaction/getTransactionsDetails/";
     //事务详情-申领-邮寄方式
     public static final String AffairDetail_ShenLing = HOST + API + "device/apply/update";
     //设备详情
@@ -245,7 +253,7 @@ public class URLs {
     /**
      * ********************************我的*****************************************
      */
-    public static final String Fragment5 = HOST + "/user/center";
+    public static final String Fragment5 = HOST + "/user/getMemberInfo";
     //银行卡设置
     public static final String BankCard = HOST + "/finace/user/bank/get";
     //银行列表

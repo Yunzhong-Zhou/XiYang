@@ -7,96 +7,128 @@ import java.io.Serializable;
  */
 public class Fragment5Model implements Serializable {
     /**
-     * id : 71
-     * roleType : bdm
-     * nickname : bdm周
-     * mobile : 18306043083
-     * head : http://localhost:8000/head/head.png
-     * amount : 0.00
-     * merchantsNum : 0
-     * storesNum : 0
-     * deviceNum : 0
+     * userinfo : {"deviceNum":"0","merchantNum":"0","jobTitle":"BD","id":"1410143973189623809","avatar":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/05/16254487151381625448531949.png","storeNum":"0","totalRevenueMoney":"0"}
      */
 
-    private String id;
-    private String roleType;
-    private String nickname;
-    private String mobile;
-    private String head;
-    private String amount;
-    private String merchantsNum;
-    private String storesNum;
-    private String deviceNum;
+    private UserinfoBean userinfo;
 
-    public String getId() {
-        return id;
+    public UserinfoBean getUserinfo() {
+        return userinfo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserinfo(UserinfoBean userinfo) {
+        this.userinfo = userinfo;
     }
 
-    public String getRoleType() {
-        return roleType;
-    }
+    public static class UserinfoBean {
+        /**
+         * deviceNum : 0
+         * merchantNum : 0
+         * jobTitle : BD
+         * id : 1410143973189623809
+         * avatar : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/05/16254487151381625448531949.png
+         * storeNum : 0
+         * totalRevenueMoney : 0
+         */
 
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
-    }
+        private String deviceNum;
+        private String merchantNum;
+        private String jobTitle;
+        private String id;
+        private String avatar;
+        private String storeNum;
+        private String totalRevenueMoney;
+        private String name;
+        private String availableMoney;
+        private String totalMoney;
+        private String monthRevenueMoney;
 
-    public String getNickname() {
-        return nickname;
-    }
+        public String getAvailableMoney() {
+            return availableMoney;
+        }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+        public void setAvailableMoney(String availableMoney) {
+            this.availableMoney = availableMoney;
+        }
 
-    public String getMobile() {
-        return mobile;
-    }
+        public String getTotalMoney() {
+            return totalMoney;
+        }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
+        public void setTotalMoney(String totalMoney) {
+            this.totalMoney = totalMoney;
+        }
 
-    public String getHead() {
-        return head;
-    }
+        public String getMonthRevenueMoney() {
+            return monthRevenueMoney;
+        }
 
-    public void setHead(String head) {
-        this.head = head;
-    }
+        public void setMonthRevenueMoney(String monthRevenueMoney) {
+            this.monthRevenueMoney = monthRevenueMoney;
+        }
 
-    public String getAmount() {
-        return amount;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public String getMerchantsNum() {
-        return merchantsNum;
-    }
+        public String getDeviceNum() {
+            return deviceNum;
+        }
 
-    public void setMerchantsNum(String merchantsNum) {
-        this.merchantsNum = merchantsNum;
-    }
+        public void setDeviceNum(String deviceNum) {
+            this.deviceNum = deviceNum;
+        }
 
-    public String getStoresNum() {
-        return storesNum;
-    }
+        public String getMerchantNum() {
+            return merchantNum;
+        }
 
-    public void setStoresNum(String storesNum) {
-        this.storesNum = storesNum;
-    }
+        public void setMerchantNum(String merchantNum) {
+            this.merchantNum = merchantNum;
+        }
 
-    public String getDeviceNum() {
-        return deviceNum;
-    }
+        public String getJobTitle() {
+            return jobTitle;
+        }
 
-    public void setDeviceNum(String deviceNum) {
-        this.deviceNum = deviceNum;
+        public void setJobTitle(String jobTitle) {
+            this.jobTitle = jobTitle;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        public String getStoreNum() {
+            return storeNum;
+        }
+
+        public void setStoreNum(String storeNum) {
+            this.storeNum = storeNum;
+        }
+
+        public String getTotalRevenueMoney() {
+            return totalRevenueMoney;
+        }
+
+        public void setTotalRevenueMoney(String totalRevenueMoney) {
+            this.totalRevenueMoney = totalRevenueMoney;
+        }
     }
 }

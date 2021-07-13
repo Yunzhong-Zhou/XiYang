@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -25,6 +26,7 @@ import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.CommonModel;
+import com.xiyang.xiyang.model.DeviceInfoModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -33,7 +35,6 @@ import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -43,6 +44,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +63,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddWorkListActivity extends BaseActivity {
     List<String> list_work = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_guzhang = new ArrayList<>();
+    List<CommonModel.ListBean> list_guzhang = new ArrayList<>();
     int type = 0, i_guzhang = -1;
     RelativeLayout rl_gongdanleixing, rl_xuanzedingdan, rl_shebeiguzhang, rl_xuanzemendian, rl_dingdanwenti,
             rl_guzhangleixing, rl_qitashuoming;
@@ -69,7 +71,7 @@ public class AddWorkListActivity extends BaseActivity {
             tv_guzhangleixing, tv_qitashuoming;
     ImageView imageView1;
 
-    String workOrderType = "", deviceName = "", storeId = "", orderId = "", remark = "", images = "";
+    String workOrderType = "", deviceName = "", storeId = "", orderId = "", remark = "", images = "", deviceId = "";
 
     File pdffile = null;
     File imgfile = null;
@@ -133,11 +135,12 @@ public class AddWorkListActivity extends BaseActivity {
                 hideProgress();
                 i_guzhang = -1;
                 workOrderType = "";
-                list_guzhang = response.getWorkOrderType();
+                list_guzhang = response.getList();
             }
         });
 
     }
+
 
     @Override
     protected void updateView() {
@@ -159,11 +162,13 @@ public class AddWorkListActivity extends BaseActivity {
                 break;
             case R.id.tv_xuanzemendian:
                 //选择门店
-                Intent intent1 = new Intent(AddWorkListActivity.this, MyStoreListActivity.class);
-                Bundle bundle1 = new Bundle();
-                bundle1.putInt("requestCode", Constant.SELECT_STORE);
-                intent1.putExtras(bundle1);
-                startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
+                if (type != 0) {
+                    Intent intent1 = new Intent(AddWorkListActivity.this, MyStoreListActivity.class);
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putInt("requestCode", Constant.SELECT_STORE);
+                    intent1.putExtras(bundle1);
+                    startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
+                }
                 break;
             case R.id.tv_xuanzedingdan:
                 //选择订单
@@ -193,42 +198,62 @@ public class AddWorkListActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    new UpFileToQiNiuUtil(AddWorkListActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                    Map<String, File> fileMap = new HashMap<>();
+                    fileMap.put("file", imgfile);
+                    params.clear();
+                    OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
+                        @Override
+                        public String onParseResponse(Call call, Response response) {
+                            return null;
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Exception e, String err) {
+                            hideProgress();
+                            myToast("图片上传失败" + err);
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            MyLogger.i(">>>>上传文件路径：" + response);
+                            images = response;
+                            params.clear();
+                            params.put("remark", remark);
+                            params.put("images", images);
+                            switch (type) {
+                                case 0:
+                                    //设备工单
+                                    params.put("deviceId", deviceId);
+                                    params.put("failureReasonId", workOrderType);
+                                    requestUpData(params, URLs.AddDeviceWorkList);
+                                    break;
+                                case 1:
+                                    //订单工单
+                                    params.put("orderId", orderId);
+                                    params.put("workOrderType", workOrderType);
+                                    requestUpData(params, URLs.AddOrderList);
+                                    break;
+                                case 2:
+                                    //其他工单
+                                    params.put("storeId", storeId);
+                                    requestUpData(params, URLs.AddOtherList);
+                                    break;
+                            }
+                        }
+                    });
+                    /*new UpFileToQiNiuUtil(AddWorkListActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
                         @Override
                         public void complete(boolean isok, String result, String url) {
                             if (isok) {
                                 MyLogger.i(">>>>上传文件路径：" + url);
-                                images = url;
 
-                                params.clear();
-                                params.put("remark", remark);
-                                params.put("images", images);
-                                switch (type) {
-                                    case 0:
-                                        //设备工单
-                                        params.put("deviceName", deviceName);
-                                        params.put("workOrderType", workOrderType);
-                                        requestUpData(params, URLs.AddDeviceWorkList);
-                                        break;
-                                    case 1:
-                                        //订单工单
-                                        params.put("orderId", orderId);
-                                        params.put("workOrderType", workOrderType);
-                                        requestUpData(params, URLs.AddOrderList);
-                                        break;
-                                    case 2:
-                                        //其他工单
-                                        params.put("storeId", storeId);
-                                        requestUpData(params, URLs.AddOtherList);
-                                        break;
-                                }
 
                             } else {
                                 hideProgress();
                                 myToast("图片上传失败");
                             }
                         }
-                    };
+                    };*/
 
                 }
                 break;
@@ -306,6 +331,9 @@ public class AddWorkListActivity extends BaseActivity {
                             e.printStackTrace();
                             myToast("解析出错");
                         }
+                        params.clear();
+//                        params.put("deviceName",deviceName);
+                        requestDeviceInfo(params);
                     }
                     break;
                 case Constant.SELECT_STORE:
@@ -313,7 +341,7 @@ public class AddWorkListActivity extends BaseActivity {
                     if (data != null) {
                         Bundle bundle = data.getExtras();
                         storeId = bundle.getString("storeId");
-                        tv_xuanzemendian.setText(storeId);
+                        tv_xuanzemendian.setText(bundle.getString("storeName"));
                     }
                     break;
                 case Constant.SELECT_CONTRACT:
@@ -377,8 +405,41 @@ public class AddWorkListActivity extends BaseActivity {
 
     }
 
+    /**
+     * 获取设备信息(根据设备序列号获取设备信息)
+     *
+     * @param params
+     */
+    private void requestDeviceInfo(HashMap<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.DeviceInfo + deviceName, params, headerMap, new CallBackUtil<DeviceInfoModel>() {
+            @Override
+            public DeviceInfoModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(DeviceInfoModel response) {
+                hideProgress();
+                deviceId = response.getId();
+                tv_xuanzemendian.setText(response.getStoreName());
+            }
+        });
+    }
+
+    /**
+     * 提交数据
+     *
+     * @param params
+     * @param url
+     */
     private void requestUpData(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpPost(url, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -419,17 +480,17 @@ public class AddWorkListActivity extends BaseActivity {
                 //设备工单
                 rl_shebeiguzhang.setVisibility(View.VISIBLE);
                 rl_guzhangleixing.setVisibility(View.VISIBLE);
-                request(params, URLs.AddDeviceWorkList);
+                request(params, URLs.AddWorkList_GuZhang + 1);//工单类型 1-设备工单,2-订单工单
                 break;
             case 1:
                 //订单工单
                 rl_xuanzedingdan.setVisibility(View.VISIBLE);
                 rl_dingdanwenti.setVisibility(View.VISIBLE);
-                request(params, URLs.AddOrderList);
+                request(params, URLs.AddWorkList_GuZhang + 2);
                 break;
             case 2:
                 //其他工单
-                request(params, URLs.AddOtherList);
+//                request(params, URLs.AddOtherList);
                 break;
         }
     }
@@ -494,12 +555,12 @@ public class AddWorkListActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
                 (AddWorkListActivity.this, R.layout.item_help, list_guzhang) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getName());
                 if (i_guzhang == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -510,8 +571,8 @@ public class AddWorkListActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 i_guzhang = position;
-                textView.setText(list_guzhang.get(position).getVal());
-                workOrderType = list_guzhang.get(position).getKey();
+                textView.setText(list_guzhang.get(position).getName());
+                workOrderType = list_guzhang.get(position).getId();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
 

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
@@ -40,15 +41,15 @@ import okhttp3.Response;
  */
 public class MyWorkListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyWorkListModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<MyWorkListModel.ListBean> mAdapter;
+    List<MyWorkListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<MyWorkListModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
     private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
-    String type = "",sort="desc",fetch="1",startTime="",endTime="";
+    String type = "", sort = "desc", fetch = "1", startTime = "", endTime = "", url = "";
     int i1 = 0;
     int i2 = 0;
 
@@ -76,7 +77,7 @@ public class MyWorkListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("size", "10");
                 params.put("type", type);
                 params.put("sort", sort);
                 params.put("startTime", startTime);
@@ -90,7 +91,7 @@ public class MyWorkListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("size", "10");
                 params.put("type", type);
                 params.put("sort", sort);
                 params.put("startTime", startTime);
@@ -116,7 +117,14 @@ public class MyWorkListActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.WorkList, params, headerMap, new CallBackUtil<MyWorkListModel>() {
+        if (fetch.equals("1")) {
+            //待接工单
+            url = URLs.WorkList_DaiJie;
+        } else {
+            //我的工单
+            url = URLs.WorkList;
+        }
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyWorkListModel>() {
             @Override
             public MyWorkListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -133,27 +141,56 @@ public class MyWorkListActivity extends BaseActivity {
             public void onResponse(MyWorkListModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<MyWorkListModel.ListBean>
+                    mAdapter = new CommonAdapter<MyWorkListModel.RecordsBean>
                             (MyWorkListActivity.this, R.layout.item_myworklist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, MyWorkListModel.ListBean model, int position) {
-                            holder.setText(R.id.tv_title,model.getType());//标题
-                            holder.setText(R.id.tv_addr, model.getAddres());
-                            holder.setText(R.id.tv_time, model.getCreatedAt());
-                            holder.setText(R.id.tv_type, model.getStatusTitle());
+                        protected void convert(ViewHolder holder, MyWorkListModel.RecordsBean model, int position) {
+//                            holder.setText(R.id.tv_title, model.getStoreName());//标题
+                            switch (model.getType()){
+                                case 1:
+                                    //设备故障
+                                    holder.setText(R.id.tv_title, "设备故障");//标题
+                                    break;
+                                case 2:
+                                    //订单故障
+                                    holder.setText(R.id.tv_title, "订单故障");//标题
+                                    break;
+                                case 3:
+                                    //其他故障
+                                    holder.setText(R.id.tv_title, "其他故障");//标题
+                                    break;
+                            }
+                            holder.setText(R.id.tv_addr, model.getStoreName());
+                            holder.setText(R.id.tv_time, model.getCreateTime());
+//                            holder.setText(R.id.tv_type, model.getStatusTitle());
+                            switch (model.getStatus()){
+                                case 1:
+                                    //待处理
+                                    holder.setText(R.id.tv_type, "待处理");
+                                    break;
+                                case 2:
+                                    //处理中
+                                    holder.setText(R.id.tv_type, "处理中");
+                                    break;
+                                case 3:
+                                    //完成
+                                    holder.setText(R.id.tv_type, "完成");
+                                    break;
+                            }
+
                             TextView tv_jieshou = holder.getView(R.id.tv_jieshou);
                             LinearLayout ll = holder.getView(R.id.ll);
                             TextView tv_time2 = holder.getView(R.id.tv_time2);
-                            tv_time2.setText(model.getCreatedAt());
-                            if (model.getStatus().equals("0")){
+                            tv_time2.setText(model.getCreateTime());
+                            if (fetch.equals("1")) {
                                 ll.setVisibility(View.GONE);
                                 tv_jieshou.setVisibility(View.VISIBLE);
                                 tv_time2.setVisibility(View.VISIBLE);
-                            }else {
+                            } else {
                                 ll.setVisibility(View.VISIBLE);
                                 tv_jieshou.setVisibility(View.GONE);
                                 tv_time2.setVisibility(View.GONE);
@@ -170,8 +207,8 @@ public class MyWorkListActivity extends BaseActivity {
                                                     dialog.dismiss();
                                                     showProgress(true, getString(R.string.app_loading1));
                                                     params.clear();
-                                                    params.put("id",model.getId());
-                                                    requestJieShou(params);
+//                                                    params.put("id", model.getId());
+                                                    requestJieShou(params,model.getId());
                                                 }
                                             }, new View.OnClickListener() {
                                                 @Override
@@ -187,8 +224,8 @@ public class MyWorkListActivity extends BaseActivity {
                                 public void onClick(View v) {
                                     //详情
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("id",model.getId());
-                                    CommonUtil.gotoActivityWithData(MyWorkListActivity.this,WorkListDetailActivity.class,bundle,false);
+                                    bundle.putString("id", model.getId());
+                                    CommonUtil.gotoActivityWithData(MyWorkListActivity.this, WorkListDetailActivity.class, bundle, false);
                                 }
                             });
                         }
@@ -201,7 +238,14 @@ public class MyWorkListActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.WorkList, params, headerMap, new CallBackUtil<MyWorkListModel>() {
+        if (fetch.equals("1")) {
+            //待接工单
+            url = URLs.WorkList_DaiJie;
+        } else {
+            //我的工单
+            url = URLs.WorkList;
+        }
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyWorkListModel>() {
             @Override
             public MyWorkListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -219,8 +263,8 @@ public class MyWorkListActivity extends BaseActivity {
             public void onResponse(MyWorkListModel response) {
 //                showContentPage();
                 onHttpResult();
-                List<MyWorkListModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<MyWorkListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;
@@ -233,8 +277,9 @@ public class MyWorkListActivity extends BaseActivity {
         });
 
     }
-    private void requestJieShou(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.WorkList_JieShou, params, headerMap, new CallBackUtil<String>() {
+
+    private void requestJieShou(Map<String, String> params,String id) {
+        OkhttpUtil.okHttpPost(URLs.WorkList_JieShou+id, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -256,6 +301,7 @@ public class MyWorkListActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public void onClick(View v) {
         Drawable drawable1 = getResources().getDrawable(R.mipmap.down_green);//选中-蓝色
@@ -286,9 +332,9 @@ public class MyWorkListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        if (fetch.equals("1")){
+        if (fetch.equals("1")) {
             titleView.setTitle("待接工单");
-        }else {
+        } else {
             titleView.setTitle("我的工单");
         }
 
@@ -300,13 +346,14 @@ public class MyWorkListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("count", "10");
+        params.put("size", "10");
         params.put("type", type);
         params.put("sort", sort);
         params.put("startTime", startTime);
         params.put("endTime", endTime);
         params.put("fetch", fetch);
         requestList(params);
+
     }
 
     public void onHttpResult() {

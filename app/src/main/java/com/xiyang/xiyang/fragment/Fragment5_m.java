@@ -190,7 +190,7 @@ public class Fragment5_m extends BaseFragment {
     }
 
     private void requestCenter(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Fragment5, params, headerMap, new CallBackUtil<Fragment5Model>() {
+        OkhttpUtil.okHttpGet(URLs.Fragment5, params, headerMap, new CallBackUtil<Fragment5Model>() {
             @Override
             public Fragment5Model onParseResponse(Call call, Response response) {
                 return null;
@@ -208,21 +208,21 @@ public class Fragment5_m extends BaseFragment {
                 hideProgress();
                 model = response;
 
-                textView3.setText(response.getMerchantsNum());
-                textView4.setText(response.getStoresNum());
-                textView5.setText(response.getDeviceNum());
-                textView6.setText(response.getAmount());
+                textView3.setText(response.getUserinfo().getAvailableMoney());
+                textView4.setText(response.getUserinfo().getTotalMoney());
+                textView5.setText(response.getUserinfo().getMonthRevenueMoney());
+                textView6.setText(response.getUserinfo().getTotalRevenueMoney());
 
                 //保存头像
-                localUserInfo.setUserImage(response.getHead());
+                localUserInfo.setUserImage(response.getUserinfo().getAvatar());
                 //保存昵称
-                localUserInfo.setNickname(response.getNickname());
+                localUserInfo.setNickname(response.getUserinfo().getName());
                 //保存电话号码
-                localUserInfo.setPhoneNumber(response.getMobile());
+//                localUserInfo.setPhoneNumber(response.getUserinfo().);
                 //保存职位
-                localUserInfo.setUserJob(response.getRoleType());//为1、有分配权限
+                localUserInfo.setUserJob(response.getUserinfo().getJobTitle());//为1、有分配权限
                 //保存userid
-                localUserInfo.setUserId(response.getId());
+                localUserInfo.setUserId(response.getUserinfo().getId());
 
                 textView1.setText(localUserInfo.getNickname());
                 textView2.setText(localUserInfo.getUserJob());
