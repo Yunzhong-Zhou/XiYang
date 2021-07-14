@@ -18,8 +18,9 @@ public class Fragment3Model implements Serializable {
      */
 
     private String totalNum;
-    private String onlineTotalNum;
-    private String offlineNum;
+    private String upLineNum;
+    private String onLineNum;
+    private String offLineNum;
     private List<WaitInstallBean> waitInstall;
     private List<WaitRecoveryBean> waitRecovery;
     private List<WaitSwapBean> waitSwap;
@@ -33,20 +34,28 @@ public class Fragment3Model implements Serializable {
         this.totalNum = totalNum;
     }
 
-    public String getOnlineTotalNum() {
-        return onlineTotalNum;
+    public String getUpLineNum() {
+        return upLineNum;
     }
 
-    public void setOnlineTotalNum(String onlineTotalNum) {
-        this.onlineTotalNum = onlineTotalNum;
+    public void setUpLineNum(String upLineNum) {
+        this.upLineNum = upLineNum;
     }
 
-    public String getOfflineNum() {
-        return offlineNum;
+    public String getOnLineNum() {
+        return onLineNum;
     }
 
-    public void setOfflineNum(String offlineNum) {
-        this.offlineNum = offlineNum;
+    public void setOnLineNum(String onLineNum) {
+        this.onLineNum = onLineNum;
+    }
+
+    public String getOffLineNum() {
+        return offLineNum;
+    }
+
+    public void setOffLineNum(String offLineNum) {
+        this.offLineNum = offLineNum;
     }
 
     public List<WaitInstallBean> getWaitInstall() {

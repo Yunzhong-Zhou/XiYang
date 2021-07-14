@@ -69,7 +69,7 @@ public class URLs {
     //添加商户
     public static final String AddShop = HOST + "/bd/merchants/Merchants";
     //添加商户-检测账号
-    public static final String AddShop_Detect = HOST + "/bdservice/v2/Merchants";
+    public static final String AddShop_Detect = HOST + "/user/verifyPhone";
     //商户列表
     public static final String ShopList = HOST + "/bd/merchants/app/merchant/record";
     //商户详情
@@ -101,17 +101,13 @@ public class URLs {
      */
     public static final String Fragment1_m = HOST + API + "manage";
     //选择权限城市
-    public static final String MyCity = HOST + API + "user/position/record";
+    public static final String MyCity = HOST + "/service-ucenter/organ/region/getLoginOrganUserCityStatistic";
     //添加员工
     public static final String AddStaff = HOST + API + "user/add";
     //我的下级员工
     public static final String Subordinate = HOST + API + "manage/subordinate";
     //员工详情
     public static final String StaffDetail = HOST + API + "manage/subordinate/detail";
-    //我的城市
-    public static final String MyCity_RM = HOST + API + "rm/city";
-    //我的市区
-    public static final String MyCity_CM = HOST + API + "cm/area";
     //调整上级
     public static final String AdjustSuperior = HOST + API + "manage/change/role";
     //调整岗位
@@ -191,7 +187,7 @@ public class URLs {
     /**
      * ********************************设备*****************************************
      */
-    public static final String Fragment3 = HOST + API + "device";
+    public static final String Fragment3 = HOST + "/device/bd/homePageData";
     //工单列表
     public static final String WorkList = HOST + "/bd/work/orders/page";
     //工单列表-待接工单

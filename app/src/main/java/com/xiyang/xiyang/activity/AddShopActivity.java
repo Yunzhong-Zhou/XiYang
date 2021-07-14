@@ -97,10 +97,30 @@ public class AddShopActivity extends BaseActivity {
                 if (!s.toString().trim().equals("") && s.length() == 11) {
                     params.clear();
                     params.put("phone", s.toString().trim());
-                    requestDetect(params);
+                    requestDetect(params,textView1);
                 }
             }
         });
+        /*textView3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (!s.toString().trim().equals("") && s.length() == 11) {
+                    params.clear();
+                    params.put("phone", s.toString().trim());
+                    requestDetect(params,textView3);
+                }
+            }
+        });*/
     }
 
 
@@ -336,8 +356,8 @@ public class AddShopActivity extends BaseActivity {
      *
      * @param params
      */
-    private void requestDetect(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.AddShop_Detect, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+    private void requestDetect(HashMap<String, String> params,TextView textView) {
+        OkhttpUtil.okHttpGet(URLs.AddShop_Detect,params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -355,7 +375,7 @@ public class AddShopActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
-                            textView1.setText("");
+                            textView.setText("");
                         }
                     });
                 } else

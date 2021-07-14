@@ -234,9 +234,9 @@ public class Fragment3 extends BaseFragment {
                 showContentPage();
                 model = response;
                 textView1.setText(response.getTotalNum());
-                textView2.setText(response.getTotalNum());
-                textView3.setText(response.getOfflineNum());
-                textView4.setText(response.getOfflineNum());
+                textView2.setText(response.getUpLineNum());
+                textView3.setText(response.getOnLineNum());
+                textView4.setText(response.getOffLineNum());
 
                 mAdapter1 = new CommonAdapter<MyFragment1Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
@@ -394,9 +394,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment3Model.WaitInstallBean bean:model.getWaitInstall()){
+                /*for (Fragment3Model.WaitInstallBean bean:model.getWaitInstall()){
                     list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
-                }
+                }*/
                 break;
             case 2:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -405,9 +405,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment3Model.WaitRecoveryBean bean:model.getWaitRecovery()){
+                /*for (Fragment3Model.WaitRecoveryBean bean:model.getWaitRecovery()){
                     list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
-                }
+                }*/
                 break;
             case 3:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -416,9 +416,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
-                for (Fragment3Model.WaitSwapBean bean:model.getWaitSwap()){
+                /*for (Fragment3Model.WaitSwapBean bean:model.getWaitSwap()){
                     list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
-                }
+                }*/
                 break;
 
         }

@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.cy.dialog.BaseDialog;
 import com.luck.picture.lib.PictureSelector;
@@ -28,7 +29,6 @@ import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.CommonModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -47,6 +47,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  * 处理工单
  */
 public class ChangeWorkListActivity extends BaseActivity {
-    List<CommonModel.StatusBean> list_jieguo = new ArrayList<>();
+    List<String> list_jieguo = new ArrayList<>();
     int i_jieguo = -1;
     RelativeLayout rl_jieguo, rl_shuoming;
     EditText tv_jieguo, tv_shuoming;
@@ -82,6 +83,7 @@ public class ChangeWorkListActivity extends BaseActivity {
     ArrayList<File> listFiles = new ArrayList<>();
     int num = 0;
 
+    Map<String, File> fileMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,10 +123,12 @@ public class ChangeWorkListActivity extends BaseActivity {
     protected void initData() {
         id = getIntent().getStringExtra("id");
 
-        request(params);
+        list_jieguo.add("上报");
+        list_jieguo.add("已处理");
+//        request(params);
     }
 
-    private void request(Map<String, String> params) {
+    /*private void request(Map<String, String> params) {
         OkhttpUtil.okHttpGet(URLs.ChangeWorkList, params, headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {
@@ -146,7 +150,7 @@ public class ChangeWorkListActivity extends BaseActivity {
             }
         });
 
-    }
+    }*/
 
     @Override
     protected void updateView() {
@@ -166,34 +170,41 @@ public class ChangeWorkListActivity extends BaseActivity {
                 if (match()) {
                     images = "";
                     showProgress(true, getString(R.string.app_loading1));
+
                     for (int i = 0; i < listFiles.size(); i++) {
-                        new UpFileToQiNiuUtil(ChangeWorkListActivity.this, listFiles.get(i), FileUtils.getFileExtension(listFiles.get(i))) {
+                        params.clear();
+                        fileMap.clear();
+                        fileMap.put("file", listFiles.get(i));
+                        OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                             @Override
-                            public void complete(boolean isok, String result, String url) {
-                                if (isok) {
-                                    MyLogger.i(">>>>上传文件路径：" + url);
-                                    images = images + url + ",";
+                            public String onParseResponse(Call call, Response response) {
+                                return null;
+                            }
 
-                                    num--;
-                                    MyLogger.i(">>>>>>" + num);
-                                    if (num == 0) {
-                                        if (!images.equals("")) {
-                                            images = images.substring(0, images.length() - 1);
-                                        }
+                            @Override
+                            public void onFailure(Call call, Exception e, String err) {
+                                hideProgress();
+                                myToast("图片上传失败" + err);
+                            }
 
-                                        params.clear();
-                                        params.put("remark", remark);
-                                        params.put("images", images);
-                                        params.put("id", id);
-                                        params.put("status", status);
-                                        requestUpData(params);
+                            @Override
+                            public void onResponse(String response) {
+                                images = images + response + ",";
+                                num--;
+                                MyLogger.i(">>>>>>" + num);
+                                if (num == 0) {
+                                    if (!images.equals("")) {
+                                        images = images.substring(0, images.length() - 1);
                                     }
-                                } else {
-                                    myToast(result);
+                                    params.clear();
+                                    params.put("remark", remark);
+                                    params.put("images", images);
+                                    params.put("id", id);
+                                    params.put("status", status);
+                                    requestUpData(params);
                                 }
                             }
-                        };
-
+                        });
                     }
 
                 }
@@ -210,6 +221,13 @@ public class ChangeWorkListActivity extends BaseActivity {
         if (TextUtils.isEmpty(remark)) {
             myToast("请输入处理说明");
             return false;
+        }
+        listFiles.clear();
+        for (LocalMedia media : mAdapter.getData()) {
+            MyLogger.i(">>>>>>压缩地址：" + media.getCompressPath());
+            File file = new File(media.getCompressPath());
+            listFiles.add(file);
+            // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
         }
         num = listFiles.size();
         if (num == 0) {
@@ -282,7 +300,7 @@ public class ChangeWorkListActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.ChangeWorkList, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.ChangeWorkList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -317,12 +335,12 @@ public class ChangeWorkListActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.StatusBean> adapter = new CommonAdapter<CommonModel.StatusBean>
+        CommonAdapter<String> adapter = new CommonAdapter<String>
                 (ChangeWorkListActivity.this, R.layout.item_help, list_jieguo) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.StatusBean model, int position) {
+            protected void convert(ViewHolder holder, String model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model);
                 if (i_jieguo == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -333,8 +351,8 @@ public class ChangeWorkListActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 i_jieguo = position;
-                textView.setText(list_jieguo.get(position).getVal());
-                status = list_jieguo.get(position).getKey();
+                textView.setText(list_jieguo.get(position));
+                status = position + 1 + "";
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
 
@@ -436,13 +454,13 @@ public class ChangeWorkListActivity extends BaseActivity {
 
         @Override
         public void onResult(List<LocalMedia> result) {
-            listFiles.clear();
+            /*listFiles.clear();
             for (LocalMedia media : result) {
                 MyLogger.i(">>>>>>压缩地址：" + media.getCompressPath());
                 File file = new File(media.getCompressPath());
                 listFiles.add(file);
                 // TODO 可以通过PictureSelectorExternalUtils.getExifInterface();方法获取一些额外的资源信息，如旋转角度、经纬度等信息
-            }
+            }*/
             if (mAdapterWeakReference.get() != null) {
                 mAdapterWeakReference.get().setList(result);
                 mAdapterWeakReference.get().notifyDataSetChanged();

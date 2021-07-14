@@ -76,17 +76,17 @@ public class MyCityActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                switch (localUserInfo.getUserJob()) {
+               /* switch (localUserInfo.getUserJob()) {
                     case "RM":
-                        requestCityMore(params, URLs.MyCity_RM);
+                        requestCityMore(params);
                         break;
                     case "CM":
-                        requestCityMore(params, URLs.MyCity_RM);
+                        requestCityMore(params);
                         break;
                     case "BDM":
-                        requestCityMore(params, URLs.MyCity_RM);
+                        requestCityMore(params);
                         break;
-                }
+                }*/
             }
 
             @Override
@@ -110,10 +110,9 @@ public class MyCityActivity extends BaseActivity {
      * 第一级数据
      *
      * @param params
-     * @param url
      */
-    private void requestCity1(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<MyCityModel>() {
+    private void requestCity1(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<MyCityModel>() {
             @Override
             public MyCityModel onParseResponse(Call call, Response response) {
                 return null;
@@ -165,11 +164,11 @@ public class MyCityActivity extends BaseActivity {
                     if (localUserInfo.getUserJob().equals("RM")) {
                         rv.setVisibility(View.VISIBLE);
                         iv.setImageResource(R.mipmap.ic_jiantou_down);
-                        requestCity2(params, URLs.MyCity_RM, rv);
+                        requestCity2(params, rv);
                     } else {
                         rv.setVisibility(View.GONE);
                         iv.setImageResource(R.mipmap.ic_xuanzhong);
-                        requestCity3(params, URLs.MyCity_RM);
+                        requestCity3(params);
                     }
 
 
@@ -205,10 +204,9 @@ public class MyCityActivity extends BaseActivity {
      * 第二级数据
      *
      * @param params
-     * @param url
      */
-    private void requestCity2(Map<String, String> params, String url, RecyclerView rv) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<MyCityModel>() {
+    private void requestCity2(Map<String, String> params, RecyclerView rv) {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<MyCityModel>() {
             @Override
             public MyCityModel onParseResponse(Call call, Response response) {
                 return null;
@@ -250,7 +248,7 @@ public class MyCityActivity extends BaseActivity {
 
                     //获取下一级
                     showLoadingPage();
-                    requestCity3(params, URLs.MyCity_RM);
+                    requestCity3(params);
 
                 } else {
                     tv.setTextColor(getResources().getColor(R.color.black2));
@@ -274,10 +272,9 @@ public class MyCityActivity extends BaseActivity {
      * 第三级数据
      *
      * @param params
-     * @param url
      */
-    private void requestCity3(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<MyCityModel>() {
+    private void requestCity3(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<MyCityModel>() {
             @Override
             public MyCityModel onParseResponse(Call call, Response response) {
                 return null;
@@ -338,8 +335,8 @@ public class MyCityActivity extends BaseActivity {
 
 
 
-    private void requestCityMore(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<String>() {
+    private void requestCityMore(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -407,15 +404,17 @@ public class MyCityActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
+        params.clear();
         switch (localUserInfo.getUserJob()) {
             case "RM":
-                requestCity1(params, URLs.MyCity_RM);
+
+                requestCity1(params);
                 break;
             case "CM":
-                requestCity1(params, URLs.MyCity_RM);
+                requestCity1(params);
                 break;
             case "BDM":
-                requestCity1(params, URLs.MyCity_RM);
+                requestCity1(params);
                 break;
         }
 

@@ -78,6 +78,8 @@ public abstract class CallBackUtil<T> {
                     //保存后台返回的最新时间戳
 //                LocalUserInfo.getInstance(MyApplication.getContext()).setTime(mJsonObject.getString("serverTime"));
                     switch (result_code) {
+                        case 300:
+                            //检测用户账号是否存在-该手机号码在系统中不存在，属于新用户
                         case 0:
                             //数据请求成功-解析数据
                             if (string.indexOf("data") != -1) {
