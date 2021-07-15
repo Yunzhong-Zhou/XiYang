@@ -159,9 +159,11 @@ public class ApproveDetailActivity extends BaseActivity {
                 //立即审批
                 bundle.putString("id", id);
 //                if (localUserInfo.getUserJob().equals("CM") && model.getWorkFlowApplyLogVo().getType().equals("device_add"))
-                if (model.getWorkFlowApplyLogVo().getType().equals("device_add"))
+                if (model.getWorkFlowApplyLogVo().getType().equals("device_add")){
                     bundle.putString("type", "device_add");
-
+                    bundle.putString("type_shenhe", "1");//合同审核
+                    bundle.putString("num", "");
+                }
                 CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ApproveContractActivity.class, bundle);
                 break;
             case R.id.ll_tab1:

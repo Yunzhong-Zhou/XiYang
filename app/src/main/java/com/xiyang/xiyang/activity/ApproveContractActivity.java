@@ -59,7 +59,7 @@ public class ApproveContractActivity extends BaseActivity {
     EditText tv_jieguo, tv_shuoming, tv_shuliang;
     ImageView imageView1;
 
-    String id = "", status = "", remark = "", images = "", type = "",deviceNum = "";
+    String id = "", status = "", remark = "", images = "", type = "", deviceNum = "", type_shenhe = "1";
 
     /**
      * 选择图片
@@ -136,42 +136,23 @@ public class ApproveContractActivity extends BaseActivity {
     protected void initData() {
         id = getIntent().getStringExtra("id");
         type = getIntent().getStringExtra("type");
-        if (type != null && type.equals("device_add"))
+        titleView.setTitle("审批合同");
+        if (type != null && type.equals("device_add")) {
             rl_shuliang.setVisibility(View.VISIBLE);
+            tv_shuliang.setText(getIntent().getStringExtra("num"));
+            type_shenhe = getIntent().getStringExtra("type_shenhe");
+            if (type_shenhe!=null&&type_shenhe.equals("2")){
+                titleView.setTitle("审批采购申请");
+            }
+        }
 
         list_jieguo.add("通过");
         list_jieguo.add("不通过");
-
-//        request(params);
     }
-
-    /*private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.ApproveContract, params, headerMap, new CallBackUtil<CommonModel>() {
-            @Override
-            public CommonModel onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-                hideProgress();
-                myToast(err);
-            }
-
-            @Override
-            public void onResponse(CommonModel response) {
-                hideProgress();
-                i_jieguo = -1;
-                status = "";
-//                list_jieguo = response.getStatus();
-            }
-        });
-
-    }*/
 
     @Override
     protected void updateView() {
-        titleView.setTitle("审批合同");
+
     }
 
     @Override
@@ -213,12 +194,25 @@ public class ApproveContractActivity extends BaseActivity {
                                         images = images.substring(0, images.length() - 1);
                                     }
                                     params.clear();
-                                    params.put("reason", remark);
-                                    params.put("images", images);
-                                    params.put("id", id);
-                                    params.put("status", status);
-                                    params.put("num", deviceNum);
-                                    requestUpData(params);
+                                    if (type != null && type.equals("device_add") && type_shenhe != null && type_shenhe.equals("2")) {
+                                        //采购审批
+                                        params.put("remark", remark);
+                                        params.put("images", images);
+                                        params.put("purchaseApplyLogId", id);
+                                        params.put("handleResult", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
+                                        params.put("approvedQuantity", deviceNum);
+                                        requestUpData(params, URLs.ApproveContract_CaiGou);
+                                    } else {
+                                        //合同审批
+                                        params.put("reason", remark);
+                                        params.put("images", images);
+                                        params.put("id", id);
+                                        params.put("status", status);
+                                        params.put("num", deviceNum);
+                                        requestUpData(params, URLs.ApproveContract);
+                                    }
+
+
                                 }
                             }
                         });
@@ -239,7 +233,7 @@ public class ApproveContractActivity extends BaseActivity {
             myToast("请输入处理说明");
             return false;
         }
-        if (type != null && type.equals("device_add")){
+        if (type != null && type.equals("device_add")) {
             deviceNum = tv_shuliang.getText().toString().trim();
             if (TextUtils.isEmpty(deviceNum)) {
                 myToast("请输入审批数量");
@@ -265,8 +259,8 @@ public class ApproveContractActivity extends BaseActivity {
     /**
      * 提交数据
      */
-    private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.ApproveContract, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+    private void requestUpData(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

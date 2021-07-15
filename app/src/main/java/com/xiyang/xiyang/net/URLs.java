@@ -140,6 +140,8 @@ public class URLs {
     public static final String ApproveDetail = HOST + "/bd/bdservice/app/bdm/verfiy/detail/";
     //审核合同
     public static final String ApproveContract = HOST + "/bd/bdservice/app/approval/deal";
+    //审核采购申请
+    public static final String ApproveContract_CaiGou = HOST + "/purchase/purchase/apply/handle";
 
     /**
      * ********************************门店*****************************************

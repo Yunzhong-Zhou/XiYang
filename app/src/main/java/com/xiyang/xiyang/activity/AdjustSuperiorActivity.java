@@ -63,16 +63,41 @@ public class AdjustSuperiorActivity extends BaseActivity {
     protected void initData() {
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
         job = getIntent().getStringExtra("job");
-
+        editText3.setClickable(true);
+        iv_kuaqu.setClickable(true);
         switch (job) {
             case "CM":
                 job_shangji = "RM";
+                if (localUserInfo.getUserJob().equals("RM")){
+                    //操作者是RM，不可点击新的RM-并强制跨区
+                    editText3.setClickable(false);
+                    iv_kuaqu.setClickable(false);
+                    crossLevel = "1";
+                    iv_kuaqu.setImageResource(R.mipmap.ic_xuanzhong);
+                    relativeLayout.setVisibility(View.GONE);
+                }
                 break;
             case "BDM":
                 job_shangji = "CM";
+                if (localUserInfo.getUserJob().equals("CM")){
+                    //操作者是CM，不可点击新的CM-并强制跨区
+                    editText3.setClickable(false);
+                    iv_kuaqu.setClickable(false);
+                    crossLevel = "1";
+                    iv_kuaqu.setImageResource(R.mipmap.ic_xuanzhong);
+                    relativeLayout.setVisibility(View.GONE);
+                }
                 break;
             case "BD":
                 job_shangji = "BDM";
+                if (localUserInfo.getUserJob().equals("BDM")){
+                    //操作者是BDM，不可点击新的BDM-并强制跨区
+                    editText3.setClickable(false);
+                    iv_kuaqu.setClickable(false);
+                    crossLevel = "1";
+                    iv_kuaqu.setImageResource(R.mipmap.ic_xuanzhong);
+                    relativeLayout.setVisibility(View.GONE);
+                }
                 break;
         }
         titleView.setTitle("调整" + job.toUpperCase() + "上级");

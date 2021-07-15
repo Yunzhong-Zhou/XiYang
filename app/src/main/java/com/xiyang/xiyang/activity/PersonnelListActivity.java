@@ -147,7 +147,7 @@ public class PersonnelListActivity extends BaseActivity {
                             (PersonnelListActivity.this, R.layout.item_personnellist, list) {
                         @Override
                         protected void convert(ViewHolder holder, PersonnelListModel.RecordsBean model, int position) {
-                            holder.setText(R.id.tv_id, model.getId());
+                            holder.setText(R.id.tv_id, model.getSn());
                             TextView tv_type = holder.getView(R.id.tv_type);
                             switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
                                 case 1:

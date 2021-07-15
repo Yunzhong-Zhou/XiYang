@@ -127,7 +127,11 @@ public class PersonnelDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_shenpi:
                 //立即审批
-//                CommonUtil.gotoActivityWithData(PersonnelDetailActivity.this, ApproveContractActivity.class, bundle);
+                bundle.putString("id", model.getPurchaseApplyLogId());
+                bundle.putString("type", "device_add");
+                bundle.putString("type_shenhe", "2");//采购审核
+                bundle.putString("num", model.getPurchaseQuantity());
+                CommonUtil.gotoActivityWithData(PersonnelDetailActivity.this, ApproveContractActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
                 //基本信息
@@ -214,10 +218,12 @@ public class PersonnelDetailActivity extends BaseActivity {
 
                 tv_name.setText(response.getPurchaseApplicantName());
                 tv_shop.setText(response.getPurchaseApplicantPhoneNumber());
+                tv_shenpi.setVisibility(View.GONE);
                 switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
                     case 1:
                         tv_num.setText("处理中");
                         tv_num.setTextColor(getResources().getColor(R.color.black3));
+                        tv_shenpi.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         tv_num.setText("驳回");
@@ -241,12 +247,6 @@ public class PersonnelDetailActivity extends BaseActivity {
                         .into(imageView1);//加载图片
 
 
-//                tv_shenpi.setVisibility(View.VISIBLE);
-                /*if (response.getContractsVo().getStatus().equals("1")) {//需要审核
-                    tv_shenpi.setVisibility(View.VISIBLE);
-                } else {
-                    tv_shenpi.setVisibility(View.GONE);
-                }*/
                 /**
                  * 基本信息
                  */
@@ -307,9 +307,13 @@ public class PersonnelDetailActivity extends BaseActivity {
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            /*for (String s : model.getImage()) {
-                                list_img.add(s);
-                            }*/
+                            if (model.getApprovalImages()!=null){
+                                String[] strArr = model.getApprovalImages().split(",");//拆分
+                                for (String s : strArr) {
+                                    list_img.add(s);
+                                }
+                            }
+
                             RecyclerView rv = holder.getView(R.id.rv);
                             LinearLayoutManager llm1 = new LinearLayoutManager(PersonnelDetailActivity.this);
                             llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局

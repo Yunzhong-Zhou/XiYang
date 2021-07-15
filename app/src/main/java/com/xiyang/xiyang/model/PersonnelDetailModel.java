@@ -20,6 +20,7 @@ public class PersonnelDetailModel implements Serializable {
      * createTime : 2021-07-15 12:51:52
      */
 
+    private String purchaseApplyLogId;
     private String purchaseApplicantAvatar;
     private String purchaseApplicantName;
     private String purchaseApplicantPhoneNumber;
@@ -32,6 +33,13 @@ public class PersonnelDetailModel implements Serializable {
     private String createTime;
     private List<ListBean> list;
 
+    public String getPurchaseApplyLogId() {
+        return purchaseApplyLogId;
+    }
+
+    public void setPurchaseApplyLogId(String purchaseApplyLogId) {
+        this.purchaseApplyLogId = purchaseApplyLogId;
+    }
 
     public String getPurchaseApplicantAvatar() {
         return purchaseApplicantAvatar;
