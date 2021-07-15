@@ -76,7 +76,6 @@ public class Fragment3 extends BaseFragment {
     View view1, view2, view3;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment3, container, false);
@@ -251,7 +250,7 @@ public class Fragment3 extends BaseFragment {
                 changeUI();
 
                 list2 = response.getDevices();
-                if (list2.size() > 0) {
+                if (list2 != null && list2.size() > 0) {
                     mAdapter2 = new CommonAdapter<Fragment3Model.DevicesBean>
                             (getActivity(), R.layout.item_fragment2_2, list2) {
                         @Override
@@ -449,8 +448,8 @@ public class Fragment3 extends BaseFragment {
                     try {
                         JSONObject mJsonObject = new JSONObject(result);
                         String deviceName = mJsonObject.getString("deviceName");
-                        bundle.putString("deviceName",deviceName);
-                        CommonUtil.gotoActivityWithData(getActivity(), DebugDeviceActivity.class,bundle,false);
+                        bundle.putString("deviceName", deviceName);
+                        CommonUtil.gotoActivityWithData(getActivity(), DebugDeviceActivity.class, bundle, false);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         myToast("解析出错");

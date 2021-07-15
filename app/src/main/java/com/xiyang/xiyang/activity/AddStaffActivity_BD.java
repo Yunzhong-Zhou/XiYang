@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +104,7 @@ public class AddStaffActivity_BD extends BaseActivity {
         rl_chengshi = findViewByID_My(R.id.rl_chengshi);
         editText1 = findViewByID_My(R.id.editText1);
 
-        tv_lianxidianhua.setText("" + localUserInfo.getMobile_State_Code() + "" + localUserInfo.getPhonenumber());
+//        tv_lianxidianhua.setText("" + localUserInfo.getMobile_State_Code() + "" + localUserInfo.getPhonenumber());
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
         textView1 = findViewByID_My(R.id.textView1);
         textView1.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +125,27 @@ public class AddStaffActivity_BD extends BaseActivity {
 //                    params.put("type", "31");
 //                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                     RequestCode(params);//获取验证码
+                }
+            }
+        });
+
+        tv_lianxidianhua.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (!s.toString().trim().equals("") && s.length() == 11) {
+                    params.clear();
+                    params.put("phone", s.toString().trim());
+                    requestDetect(params,tv_lianxidianhua);
                 }
             }
         });
@@ -357,6 +380,43 @@ public class AddStaffActivity_BD extends BaseActivity {
                 myToast("添加成功");
                 hideProgress();
                 finish();
+            }
+        });
+    }
+
+    /**
+     * 检测账号是否存在
+     *
+     * @param params
+     */
+    private void requestDetect(HashMap<String, String> params,TextView textView) {
+        OkhttpUtil.okHttpGet(URLs.AddShop_Detect,params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                if (err.contains("存在")) {
+                    showToast("该账号已存在是否同意\n切换为商户账号？", "同意", "取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            textView.setText("");
+                        }
+                    });
+                } else
+                    myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
             }
         });
     }

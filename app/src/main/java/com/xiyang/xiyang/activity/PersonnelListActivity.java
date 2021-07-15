@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
@@ -20,6 +21,7 @@ import com.xiyang.xiyang.model.PersonnelListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -40,17 +42,23 @@ import okhttp3.Response;
 public class PersonnelListActivity extends BaseActivity {
     int type = 1;//1、调整上级 2、调整市场 3、升职降职 4、采购申请
     private RecyclerView recyclerView;
-    List<PersonnelListModel> list = new ArrayList<>();
-    CommonAdapter<PersonnelListModel> mAdapter;
+    List<PersonnelListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<PersonnelListModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2;
     private TextView textView1, textView2;
     private View view1, view2;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "";
+    String sort = "desc", status = "", keyWord = "";
     int i1 = 0;
     int i2 = 0;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();//获取数据
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,23 +76,14 @@ public class PersonnelListActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-                page = 1;
-                params.put("page", page + "");
-                params.put("count", "10");
-                params.put("sort", sort);
-                params.put("type", type + "");
-                requestList(params);
+
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("page", page + "");
-                params.put("count", "10");
-                params.put("sort", sort);
-                params.put("type", type + "");
-                requestListMore(params);
+
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -119,11 +118,11 @@ public class PersonnelListActivity extends BaseActivity {
                 titleView.setTitle("采购审批列表");
                 break;
         }
-        requestServer();//获取数据
+
     }
 
-    private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.PersonnelList, params, headerMap, new CallBackUtil<PersonnelListModel>() {
+    private void requestList(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<PersonnelListModel>() {
             @Override
             public PersonnelListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -140,16 +139,30 @@ public class PersonnelListActivity extends BaseActivity {
             public void onResponse(PersonnelListModel response) {
                 showContentPage();
                 hideProgress();
-//                    list = response.;
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<PersonnelListModel>
+                    mAdapter = new CommonAdapter<PersonnelListModel.RecordsBean>
                             (PersonnelListActivity.this, R.layout.item_personnellist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, PersonnelListModel model, int position) {
-//                            holder.setText(R.id.tv_id, model.get);
+                        protected void convert(ViewHolder holder, PersonnelListModel.RecordsBean model, int position) {
+                            holder.setText(R.id.tv_id, model.getId());
                             TextView tv_type = holder.getView(R.id.tv_type);
+                            switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
+                                case 1:
+                                    tv_type.setText("处理中");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    break;
+                                case 2:
+                                    tv_type.setText("驳回");
+                                    tv_type.setTextColor(getResources().getColor(R.color.red));
+                                    break;
+                                case 3:
+                                    tv_type.setText("已完成");
+                                    tv_type.setTextColor(getResources().getColor(R.color.green));
+                                    break;
+                            }
                             TextView tv_key1 = holder.getView(R.id.tv_key1);
                             TextView tv_key2 = holder.getView(R.id.tv_key2);
                             TextView tv_key3 = holder.getView(R.id.tv_key3);
@@ -177,8 +190,22 @@ public class PersonnelListActivity extends BaseActivity {
                                     tv_key1.setText("申请人");
                                     tv_key2.setText("申请数量");
                                     tv_key3.setText("提货时间");
+                                    holder.setText(R.id.tv_value1, model.getName());
+                                    holder.setText(R.id.tv_value2, model.getNum() + "台");
+                                    holder.setText(R.id.tv_value3, model.getFetchAt());
                                     break;
                             }
+
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("id",model.getId());
+                                    bundle.putInt("PersonnelType",type);
+                                    CommonUtil.gotoActivityWithData(PersonnelListActivity.this,PersonnelDetailActivity.class,bundle,false);
+                                }
+                            });
+
                         }
                     };
                     recyclerView.setAdapter(mAdapter);
@@ -189,10 +216,10 @@ public class PersonnelListActivity extends BaseActivity {
 
     }
 
-    private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.PersonnelList, params, headerMap, new CallBackUtil<String>() {
+    private void requestListMore(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<PersonnelListModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public PersonnelListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -205,27 +232,20 @@ public class PersonnelListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(PersonnelListModel response) {
 //                showContentPage();
                 hideProgress();
-                /*JSONObject jObj;
-                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list1.size() == 0) {
-                        myToast(getString(R.string.app_nomore));
-                        page--;
-                    } else {
-                        list.addAll(list1);
-                        mAdapter.notifyDataSetChanged();
-                    }
+                List<PersonnelListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    page--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
 
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+
             }
         });
 
@@ -269,6 +289,9 @@ public class PersonnelListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.clear();
+        params.put("page", page + "");
+        params.put("size", "10");
+        params.put("keyWord", keyWord);
         switch (type) {
             case 1:
                 //调整上级
@@ -285,13 +308,10 @@ public class PersonnelListActivity extends BaseActivity {
             case 4:
                 //采购审批
                 titleView.setTitle("采购审批列表");
+                requestList(params, URLs.CaiGouList);
                 break;
         }
-        params.put("page", page + "");
-        params.put("count", "10");
-        params.put("sort", sort);
-        params.put("type", type + "");
-        requestList(params);
+
     }
 
     private void showPopupWindow1(View v) {

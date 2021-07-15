@@ -38,15 +38,15 @@ public class SelectLevelActivity extends BaseActivity {
         switch (v.getId()){
             case R.id.linearLayout1:
                 //CM
-                bundle.putString("job","cm");
+                bundle.putString("job","CM");
                 break;
             case R.id.linearLayout2:
                 //BDM
-                bundle.putString("job","bdm");
+                bundle.putString("job","BDM");
                 break;
             case R.id.linearLayout3:
                 //BD
-                bundle.putString("job","bd");
+                bundle.putString("job","BD");
                 break;
         }
         switch (type){

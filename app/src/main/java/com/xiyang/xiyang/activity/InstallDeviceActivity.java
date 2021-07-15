@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.cretin.tools.scancode.CaptureActivity;
 import com.cretin.tools.scancode.config.ScanConfig;
 import com.xiyang.xiyang.R;
@@ -202,8 +203,8 @@ public class InstallDeviceActivity extends BaseActivity {
                         //获取门店详情
                         showProgress(true, getString(R.string.app_loading2));
                         params.clear();
-                        params.put("id", storeId);
-                        requestStoreDetail(params);
+//                        params.put("id", storeId);
+                        requestStoreDetail(params,storeId);
                     }
                     break;
                 case Constant.SELECT_SHOP:
@@ -258,8 +259,8 @@ public class InstallDeviceActivity extends BaseActivity {
      *
      * @param params
      */
-    private void requestStoreDetail(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.StoreDetail, params, headerMap, new CallBackUtil<StoreDetailModel>() {
+    private void requestStoreDetail(HashMap<String, String> params,String storeId) {
+        OkhttpUtil.okHttpGet(URLs.StoreDetail+storeId, params, headerMap, new CallBackUtil<StoreDetailModel>() {
             @Override
             public StoreDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -280,7 +281,7 @@ public class InstallDeviceActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.InstallDevice, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.InstallDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

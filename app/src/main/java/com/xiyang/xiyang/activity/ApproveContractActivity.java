@@ -217,7 +217,7 @@ public class ApproveContractActivity extends BaseActivity {
                                     params.put("images", images);
                                     params.put("id", id);
                                     params.put("status", status);
-                                    params.put("deviceNum", deviceNum);
+                                    params.put("num", deviceNum);
                                     requestUpData(params);
                                 }
                             }

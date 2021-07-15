@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
@@ -18,6 +22,7 @@ import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.MyVisitListActivity;
 import com.xiyang.xiyang.activity.SelectAddressActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
+import com.xiyang.xiyang.activity.StoreDetailActivity;
 import com.xiyang.xiyang.activity.TransferStoreActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment2Model;
@@ -28,6 +33,7 @@ import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -223,9 +229,9 @@ public class Fragment2 extends BaseFragment {
                 textView1.setText(response.getStoreNumber());
                 textView2.setText(response.getNotVisitNumber());
                 textView3.setText(response.getNotInstallNumber());
-                textView4.setText(response.getMoney());
+                textView4.setText(response.getRevenue());
 
-                /*mAdapter1 = new CommonAdapter<MyFragment1Model>
+                mAdapter1 = new CommonAdapter<MyFragment1Model>
                         (getActivity(), R.layout.item_fragment1_1, list1) {
                     @Override
                     protected void convert(ViewHolder holder, MyFragment1Model model, int position) {
@@ -243,8 +249,8 @@ public class Fragment2 extends BaseFragment {
                             (getActivity(), R.layout.item_fragment2_2, list2) {
                         @Override
                         protected void convert(ViewHolder holder, Fragment2Model.StoresBean model, int position) {
-                            holder.setText(R.id.tv_name, model.getTitle());//标题
-                            holder.setText(R.id.tv_shop, model.getDeviceNum());
+                            holder.setText(R.id.tv_name, model.getName());//标题
+//                            holder.setText(R.id.tv_shop, model.get);
 //                            holder.setText(R.id.tv_num, model.get);//money
                             holder.setText(R.id.tv_addr, model.getAddress());
 
@@ -258,12 +264,12 @@ public class Fragment2 extends BaseFragment {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            *//*if (model.getVisitStatus() != null && model.getVisitStatus().equals("2")) {
+                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("3")) {
                                 imageView2.setImageResource(R.mipmap.bg_yibaifang);
                             } else {
                                 //待拜访
                                 imageView2.setImageResource(R.mipmap.bg_daibaifang);
-                            }*//*
+                            }
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -278,7 +284,7 @@ public class Fragment2 extends BaseFragment {
                     recyclerView2.setAdapter(mAdapter2);
                 } else {
                     showEmptyPage();
-                }*/
+                }
 
                 MainActivity.isOver = true;
 
@@ -378,8 +384,8 @@ public class Fragment2 extends BaseFragment {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment2Model.WaitVisitedBean bean:model.getWaitVisited()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                for (Fragment2Model.WaitVisitStoresBean bean:model.getWaitVisitStores()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
                 }
                 break;
             case 2:
@@ -389,8 +395,8 @@ public class Fragment2 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment2Model.WaitTransferredBean bean:model.getWaitTransferred()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                for (Fragment2Model.WaitTransferStoresBean bean:model.getWaitTransferStores()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
                 }
                 break;
             case 3:
@@ -400,8 +406,8 @@ public class Fragment2 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
-                for (Fragment2Model.WaitShowBean bean:model.getWaitShow()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
+                for (Fragment2Model.WaitContractStoresBean bean:model.getWaitContractStores()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
                 }
                 break;
         }

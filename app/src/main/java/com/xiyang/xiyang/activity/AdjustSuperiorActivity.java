@@ -3,6 +3,7 @@ package com.xiyang.xiyang.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,6 +37,8 @@ public class AdjustSuperiorActivity extends BaseActivity {
     private TimeCount time;
     RelativeLayout relativeLayout;
 
+    String crossLevel = "0", userId = "", oldParentId = "", newParentId = "", code = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,23 +65,23 @@ public class AdjustSuperiorActivity extends BaseActivity {
         job = getIntent().getStringExtra("job");
 
         switch (job) {
-            case "cm":
+            case "CM":
                 job_shangji = "RM";
                 break;
-            case "bdm":
+            case "BDM":
                 job_shangji = "CM";
                 break;
-            case "bd":
+            case "BD":
                 job_shangji = "BDM";
                 break;
         }
-        titleView.setTitle("调整"+ job.toUpperCase()+"上级");
+        titleView.setTitle("调整" + job.toUpperCase() + "上级");
         textView1.setText("选择" + job.toUpperCase());
         editText1.setHint("请选择" + job.toUpperCase());
-        textView2.setText("当前所属"+job_shangji);
-        editText2.setHint("当前所属"+job_shangji);
-        textView3.setText("选择新"+job_shangji);
-        editText3.setHint("请选择新"+job_shangji);
+        textView2.setText("当前所属" + job_shangji);
+        editText2.setHint("获取当前所属" + job_shangji);
+        textView3.setText("选择新" + job_shangji);
+        editText3.setHint("请选择新" + job_shangji);
     }
 
     @Override
@@ -88,9 +91,11 @@ public class AdjustSuperiorActivity extends BaseActivity {
             case R.id.iv_kuaqu:
                 isKuaQu = !isKuaQu;
                 if (isKuaQu) {
+                    crossLevel = "1";
                     iv_kuaqu.setImageResource(R.mipmap.ic_xuanzhong);
                     relativeLayout.setVisibility(View.GONE);
                 } else {
+                    crossLevel = "0";
                     iv_kuaqu.setImageResource(R.mipmap.ic_weixuanzhong);
                     relativeLayout.setVisibility(View.VISIBLE);
                 }
@@ -101,6 +106,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_STAFF);
                 bundle2.putString("role", job);
+                bundle2.putString("userId", "");
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_STAFF, bundle2);
                 break;
@@ -110,6 +116,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 Bundle bundle3 = new Bundle();
                 bundle3.putInt("requestCode", Constant.SELECT_STAFF);
                 bundle3.putString("role", job_shangji.toLowerCase());
+                bundle3.putString("userId", "");
                 intent3.putExtras(bundle3);
                 startActivityForResult(intent3, Constant.SELECT_STAFF, bundle3);
                 break;
@@ -137,21 +144,24 @@ public class AdjustSuperiorActivity extends BaseActivity {
     }
 
     private boolean match() {
-       /* if (TextUtils.isEmpty(adminId)) {
+        if (TextUtils.isEmpty(userId)) {
             myToast(editText1.getHint().toString());
             return false;
         }
-        role = editText3.getText().toString().trim();
-        if (TextUtils.isEmpty(role)) {
-            myToast("请选择新角色");
+        if (TextUtils.isEmpty(oldParentId)) {
+            myToast(editText2.getHint().toString());
+            return false;
+        }
+        if (TextUtils.isEmpty(newParentId)) {
+            myToast(editText2.getHint().toString());
             return false;
         }
 
-        code = editText3.getText().toString().trim();
+        code = et_code.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
-            myToast("请输入验证码");
+            myToast(et_code.getHint().toString());
             return false;
-        }*/
+        }
         return true;
     }
 
@@ -221,7 +231,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case Constant.SELECT_STAFF:
-                    //选择城市
+                    //选择员工
                     if (data != null) {
                         Bundle bundle = data.getExtras();
 //                        adminId = bundle.getString("staffId");

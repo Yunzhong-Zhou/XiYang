@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
@@ -32,7 +33,7 @@ import okhttp3.Response;
  * 选择员工
  */
 public class SelectStaffActivity extends BaseActivity {
-    String role = "";
+    String role = "", userId = "";
     int requestCode = 0, item = -1;
     private RecyclerView recyclerView;
     List<SubordinateModel.ListBean> list = new ArrayList<>();
@@ -72,7 +73,7 @@ public class SelectStaffActivity extends BaseActivity {
                     resultIntent.putExtras(bundle);
                     SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
-                }else myToast("请选择员工");
+                } else myToast("请选择员工");
 
             }
         });
@@ -82,11 +83,13 @@ public class SelectStaffActivity extends BaseActivity {
     protected void initData() {
         role = getIntent().getStringExtra("role");
         requestCode = getIntent().getIntExtra("requestCode", 0);
+        userId = getIntent().getStringExtra("userId");
+        if (userId == null) userId = "";
         requestServer();//获取数据
     }
 
     private void requestStaff(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Subordinate, params, headerMap, new CallBackUtil<SubordinateModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.Subordinate, GsonUtils.toJson(params), headerMap, new CallBackUtil<SubordinateModel>() {
             @Override
             public SubordinateModel onParseResponse(Call call, Response response) {
                 return null;
@@ -200,7 +203,7 @@ public class SelectStaffActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("选择"+role.toUpperCase());
+        titleView.setTitle("选择" + role.toUpperCase());
         titleView.showRightTxtBtn("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,7 +216,7 @@ public class SelectStaffActivity extends BaseActivity {
                     resultIntent.putExtras(bundle);
                     SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
-                }else myToast("请选择"+role.toUpperCase());
+                } else myToast("请选择" + role.toUpperCase());
             }
         });
     }
@@ -222,7 +225,9 @@ public class SelectStaffActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-        params.put("role", role);
+        params.clear();
+        params.put("userId", userId);
+        params.put("code", role);
         requestStaff(params);
     }
 

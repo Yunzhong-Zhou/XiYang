@@ -41,6 +41,33 @@ public class MyStoreListModel implements Serializable {
         private String name;
         private String address;
         private String visitStatus;
+        private String totalRevenue;
+        private String deviceNumber;
+        private String image;
+
+        public String getTotalRevenue() {
+            return totalRevenue;
+        }
+
+        public void setTotalRevenue(String totalRevenue) {
+            this.totalRevenue = totalRevenue;
+        }
+
+        public String getDeviceNumber() {
+            return deviceNumber;
+        }
+
+        public void setDeviceNumber(String deviceNumber) {
+            this.deviceNumber = deviceNumber;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
 
         public String getId() {
             return id;

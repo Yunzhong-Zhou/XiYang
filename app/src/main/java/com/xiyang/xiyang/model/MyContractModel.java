@@ -30,18 +30,23 @@ public class MyContractModel implements Serializable {
     }
 
     public static class RecordsBean {
+
         /**
-         * id : 1411986770802905088
-         * name : 商户名称
-         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/03/16253009550771625300772843.png
+         * id : 1415557230765412352
+         * name : 测试商户1
+         * image :
+         * contractType : device_add
+         * typeTitle : 设备添加
          * status : 1
-         * statusTitle : 默认状态
-         * createdAt : 2021-07-05 17:54:14
+         * statusTitle : 待处理
+         * createdAt : 2021-07-15 14:21:58
          */
 
         private String id;
         private String name;
         private String image;
+        private String contractType;
+        private String typeTitle;
         private int status;
         private String statusTitle;
         private String createdAt;
@@ -68,6 +73,22 @@ public class MyContractModel implements Serializable {
 
         public void setImage(String image) {
             this.image = image;
+        }
+
+        public String getContractType() {
+            return contractType;
+        }
+
+        public void setContractType(String contractType) {
+            this.contractType = contractType;
+        }
+
+        public String getTypeTitle() {
+            return typeTitle;
+        }
+
+        public void setTypeTitle(String typeTitle) {
+            this.typeTitle = typeTitle;
         }
 
         public int getStatus() {

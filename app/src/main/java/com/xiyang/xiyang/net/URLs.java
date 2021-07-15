@@ -58,8 +58,8 @@ public class URLs {
     public static final String Common = HOST + "/baseinfo/tags/getByCategory/";
     //公共-仓库
     public static final String Warehouse = HOST + API + "warehouse";
-    //评价列表
-    public static final String PingJiaList = HOST + API + "/api/v1/public/get_goods_eval_list";
+    //枚举列表
+    public static final String MeiJuList = HOST + "/enum/list/all";
     //服务分类列表
     public static final String ServiceList_all = HOST + API + "/api/v1/public/service_list_all";
     /**
@@ -67,11 +67,11 @@ public class URLs {
      */
     public static final String Fragment1 = HOST + "/bd/merchants/app/merchant";
     //添加商户
-    public static final String AddShop = HOST + "/bd/merchants/Merchants";
+    public static final String AddShop = HOST + "/bd/merchants/add";
     //添加商户-检测账号
     public static final String AddShop_Detect = HOST + "/user/verifyPhone";
     //商户列表
-    public static final String ShopList = HOST + "/bd/merchants/app/merchant/record";
+    public static final String ShopList = HOST + "/bd/merchants/list";
     //商户详情
     public static final String ShopDetail = HOST + "/bd/merchants/app/merchant/detail/";
     //添加合同-签约
@@ -105,7 +105,7 @@ public class URLs {
     //添加员工
     public static final String AddStaff = HOST + API + "user/add";
     //我的下级员工
-    public static final String Subordinate = HOST + API + "manage/subordinate";
+    public static final String Subordinate = HOST + "/organ/getOrganUserLevelHrStatistic";
     //员工详情
     public static final String StaffDetail = HOST + API + "manage/subordinate/detail";
     //调整上级
@@ -114,12 +114,16 @@ public class URLs {
     public static final String AdjustJob = HOST + API + "manage/change/role";
     //选择员工
     public static final String SelectStaff = HOST + API + "manage/subordinate";
+    //采购审批列表
+    public static final String CaiGouList = HOST + "/purchase/purchase/apply/page";
+    //采购审批详情
+    public static final String CaiGouDetail = HOST + "/purchase/purchase/apply/detail/";
     //人事记录
-    public static final String PersonnelList = HOST + "manage/subordinate";
+    public static final String PersonnelList = HOST + "/manage/subordinate";
     //厂库信息
-    public static final String CangKu = HOST  + "/purchase/CmWarehouse/get";
+    public static final String CangKu = HOST  + "/purchase/purchase/CmWarehouse/get";
     //采购申请
-    public static final String AddBuy = HOST  + "/purchase/Apply/add";
+    public static final String AddBuy = HOST  + "/purchase/purchase/apply/add";
     /**
      * ********************************分派*****************************************
      */
@@ -136,6 +140,7 @@ public class URLs {
     public static final String ApproveDetail = HOST + "/bd/bdservice/app/bdm/verfiy/detail/";
     //审核合同
     public static final String ApproveContract = HOST + "/bd/bdservice/app/approval/deal";
+
     /**
      * ********************************门店*****************************************
      */
@@ -219,7 +224,7 @@ public class URLs {
     //设备详情
     public static final String DeviceDetail = HOST + API + "device/detail";
     //安装设备
-    public static final String InstallDevice = HOST + API + "device/install/add";
+    public static final String InstallDevice = HOST + "/device/install/install";
     //开启设备
     public static final String Device = HOST + "/device/aliyuniot/controlDevice";
     //调试设备

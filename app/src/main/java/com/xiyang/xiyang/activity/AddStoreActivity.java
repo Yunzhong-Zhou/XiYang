@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,10 +61,10 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddStoreActivity extends BaseActivity {
     EditText textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8,
-            textView9, textView10, textView11, textView12, textView13, textView14;
+            textView9, textView10, textView11, textView12, textView13, textView14,textView15;
     ImageView imageView1;
     String merchantId = "", name = "", childName = "", account = "", contactName = "", contactPhone = "", industryId = "",
-            address = "", businessHours = "", isTrsanfter = "1", storeScale = "", workerScale = "", deviceScale = "",
+            address = "", businessHours = "", isTrsanfter = "1",merchantShareRate="", storeScale = "", workerScale = "", deviceScale = "",
             image = "", latitude = "", longitude = "",provinceId="",cityId="",areaId="";
     List<String> list_truefalse = new ArrayList<>();
     int itme_truefalse = 1;
@@ -95,8 +97,30 @@ public class AddStoreActivity extends BaseActivity {
         textView12 = findViewByID_My(R.id.textView12);
         textView13 = findViewByID_My(R.id.textView13);
         textView14 = findViewByID_My(R.id.textView14);
+        textView15 = findViewByID_My(R.id.textView15);
 
         imageView1 = findViewByID_My(R.id.imageView1);
+
+        textView4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (!s.toString().trim().equals("") && s.length() == 11) {
+                    params.clear();
+                    params.put("phone", s.toString().trim());
+                    requestDetect(params,textView4);
+                }
+            }
+        });
     }
 
     @Override
@@ -176,7 +200,7 @@ public class AddStoreActivity extends BaseActivity {
                 Intent intent2 = new Intent(AddStoreActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
-                bundle2.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                bundle2.putString("status", "4");
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
@@ -241,6 +265,7 @@ public class AddStoreActivity extends BaseActivity {
                             params.put("address", address);//详细地址
                             params.put("businessHours", businessHours);//营业时间
                             params.put("isTrsanfter", isTrsanfter);//是否划转
+                            params.put("merchantShareRate", merchantShareRate);//商户分成
                             params.put("storeShareRate", storeScale);//门店分成
                             params.put("workerShareRate", workerScale);//员工分成
                             params.put("deviceShareRate", deviceScale);//设备分成
@@ -329,6 +354,12 @@ public class AddStoreActivity extends BaseActivity {
             myToast("请选择是否划转");
             return false;
         }*/
+        merchantShareRate = textView15.getText().toString().trim();
+        if (TextUtils.isEmpty(merchantShareRate)) {
+            myToast("请输入商户分成");
+            return false;
+        }
+
         storeScale = textView12.getText().toString().trim();
         if (TextUtils.isEmpty(storeScale)) {
             myToast("请输入门店分成");
@@ -421,7 +452,42 @@ public class AddStoreActivity extends BaseActivity {
         }
 
     }
+    /**
+     * 检测账号是否存在
+     *
+     * @param params
+     */
+    private void requestDetect(HashMap<String, String> params,TextView textView) {
+        OkhttpUtil.okHttpGet(URLs.AddShop_Detect,params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
 
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                if (err.contains("存在")) {
+                    showToast("该账号已存在是否同意\n切换为商户账号？", "同意", "取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            textView.setText("");
+                        }
+                    });
+                } else
+                    myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+            }
+        });
+    }
     /**
      * 提交数据
      * @param params

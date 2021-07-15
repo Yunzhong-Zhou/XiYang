@@ -407,7 +407,6 @@ public class MyCityActivity extends BaseActivity {
         params.clear();
         switch (localUserInfo.getUserJob()) {
             case "RM":
-
                 requestCity1(params);
                 break;
             case "CM":

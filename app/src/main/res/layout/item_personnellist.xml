@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <com.lihang.ShadowLayout
         android:layout_width="match_parent"
@@ -10,6 +12,60 @@
         android:layout_marginLeft="14dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="14dp"
+        app:clickable="false"
+        app:hl_cornerRadius="8dp"
+        app:hl_shadowColor="@color/bg_gray"
+        app:hl_shadowHiddenBottom="true"
+        app:hl_shadowHiddenTop="true"
+        app:hl_shadowLimit="2dp"
+        app:hl_shadowOffsetX="0dp"
+        app:hl_shadowOffsetY="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ID："
+                android:textColor="@color/black3"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TYPE"
+                android:textColor="@color/green"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.lihang.ShadowLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:adjustViewBounds="true"
+        android:paddingRight="18dp"
+        android:src="@mipmap/bg_xuxian" />
+
+    <com.lihang.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        app:clickable="false"
         app:hl_cornerRadius="8dp"
         app:hl_shadowColor="@color/bg_gray"
         app:hl_shadowHiddenTop="true"
@@ -18,56 +74,19 @@
         app:hl_shadowOffsetY="2dp">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp">
-
-                <TextView
-                    android:id="@+id/tv_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ID："
-                    android:textColor="@color/black3"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TYPE"
-                    android:textColor="@color/green"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/bg_xuxian" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:orientation="horizontal">
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tv_key1"
@@ -93,10 +112,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingBottom="10dp"
+                android:orientation="horizontal"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:orientation="horizontal">
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tv_key2"
@@ -117,14 +136,15 @@
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingBottom="10dp"
+                android:orientation="horizontal"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:orientation="horizontal">
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/tv_key3"
@@ -145,8 +165,8 @@
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
         </LinearLayout>
-
     </com.lihang.ShadowLayout>
-</RelativeLayout>
+
+
+</LinearLayout>

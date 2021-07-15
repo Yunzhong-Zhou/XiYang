@@ -8,23 +8,23 @@ import java.util.List;
  */
 public class Fragment2Model implements Serializable {
     /**
-     * storeNum : 10
-     * waitVisitedNum : 10
-     * waitInstallNum : 10
-     * money : 10000
-     * waitVisited : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:16:59"}]
-     * waitTransferred : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:16:59"}]
-     * waitShow : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:16:59"}]
-     * stores : [{"id":"1","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"2","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"3","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"4","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"5","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"6","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"7","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"8","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"9","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"10","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"11","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"12","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"13","image":"md.png","title":"第一家","deviceNum":"0","address":"重庆市沙坪坝区"},{"id":"14","image":"a.png","title":"乐高早教","deviceNum":"0","address":null},{"id":"15","image":"a.png","title":"乐高早教","deviceNum":"0","address":null},{"id":"16","image":"a.png","title":"宇通酒店","deviceNum":"0","address":"重庆市江北区信达国际"},{"id":"17","image":"http://qqxfw8hz4.hn-bkt.clouddn.com/store%2Fd5b55904ea197961c5b321782ed98323.png?e=1619089273&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:xvukO0NU2PCO5JbzXxDtaBXnR8Q=","title":"阿斯顿马丁","deviceNum":"0","address":"阿斯顿1"},{"id":"18","image":"store/4422ec739b6b634540a9eef1277f25f8.png","title":"糖小糖","deviceNum":"0","address":"你就"},{"id":"19","image":"http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F161e4bda16efdf907846347ebf3605dc.png?e=1619495042&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:s45gMniysuMy-thQHy25XsVmreQ=","title":"门店名称周","deviceNum":"0","address":"阿斯顿马丁路德金"}]
+     * storeNumber : 1
+     * notVisitNumber : 0
+     * notInstallNumber : 0
+     * revenue : 0
+     * waitVisitStores : [{"id":"1415158482327441408","name":"测试商户2"}]
+     * waitTransferStores : [{"id":"1415158482327441408","name":"测试商户2"}]
+     * waitContractStores : [{"id":"1415158482327441408","name":"测试商户2"}]
+     * stores : [{"id":"1415195140754116608","storeSn":"080865599b3d49d8bd84aa5747a47e3c","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/14/16262437889431626243582286.png","name":"信达门店2","address":"黄山大道重庆高科总部广场西南侧约220米","userTypeId":"1415195140788797442","visitStatus":1,"contractStatus":1,"transferStatus":1}]
      */
 
     private String storeNumber;
     private String notVisitNumber;
     private String notInstallNumber;
-    private String money;
-    private List<WaitVisitedBean> waitVisited;
-    private List<WaitTransferredBean> waitTransferred;
-    private List<WaitShowBean> waitShow;
+    private String revenue;
+    private List<WaitVisitStoresBean> waitVisitStores;
+    private List<WaitTransferStoresBean> waitTransferStores;
+    private List<WaitContractStoresBean> waitContractStores;
     private List<StoresBean> stores;
 
     public String getStoreNumber() {
@@ -51,36 +51,36 @@ public class Fragment2Model implements Serializable {
         this.notInstallNumber = notInstallNumber;
     }
 
-    public String getMoney() {
-        return money;
+    public String getRevenue() {
+        return revenue;
     }
 
-    public void setMoney(String money) {
-        this.money = money;
+    public void setRevenue(String revenue) {
+        this.revenue = revenue;
     }
 
-    public List<WaitVisitedBean> getWaitVisited() {
-        return waitVisited;
+    public List<WaitVisitStoresBean> getWaitVisitStores() {
+        return waitVisitStores;
     }
 
-    public void setWaitVisited(List<WaitVisitedBean> waitVisited) {
-        this.waitVisited = waitVisited;
+    public void setWaitVisitStores(List<WaitVisitStoresBean> waitVisitStores) {
+        this.waitVisitStores = waitVisitStores;
     }
 
-    public List<WaitTransferredBean> getWaitTransferred() {
-        return waitTransferred;
+    public List<WaitTransferStoresBean> getWaitTransferStores() {
+        return waitTransferStores;
     }
 
-    public void setWaitTransferred(List<WaitTransferredBean> waitTransferred) {
-        this.waitTransferred = waitTransferred;
+    public void setWaitTransferStores(List<WaitTransferStoresBean> waitTransferStores) {
+        this.waitTransferStores = waitTransferStores;
     }
 
-    public List<WaitShowBean> getWaitShow() {
-        return waitShow;
+    public List<WaitContractStoresBean> getWaitContractStores() {
+        return waitContractStores;
     }
 
-    public void setWaitShow(List<WaitShowBean> waitShow) {
-        this.waitShow = waitShow;
+    public void setWaitContractStores(List<WaitContractStoresBean> waitContractStores) {
+        this.waitContractStores = waitContractStores;
     }
 
     public List<StoresBean> getStores() {
@@ -91,16 +91,15 @@ public class Fragment2Model implements Serializable {
         this.stores = stores;
     }
 
-    public static class WaitVisitedBean {
+    public static class WaitVisitStoresBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:16:59
+         * id : 1415158482327441408
+         * name : 测试商户2
          */
 
         private String id;
         private String name;
-        private String createdAt;
+        private String createTime;
 
         public String getId() {
             return id;
@@ -118,25 +117,24 @@ public class Fragment2Model implements Serializable {
             this.name = name;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
     }
 
-    public static class WaitTransferredBean {
+    public static class WaitTransferStoresBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:16:59
+         * id : 1415158482327441408
+         * name : 测试商户2
          */
 
         private String id;
         private String name;
-        private String createdAt;
+        private String createTime;
 
         public String getId() {
             return id;
@@ -154,25 +152,24 @@ public class Fragment2Model implements Serializable {
             this.name = name;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
     }
 
-    public static class WaitShowBean {
+    public static class WaitContractStoresBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:16:59
+         * id : 1415158482327441408
+         * name : 测试商户2
          */
 
         private String id;
         private String name;
-        private String createdAt;
+        private String createTime;
 
         public String getId() {
             return id;
@@ -190,29 +187,37 @@ public class Fragment2Model implements Serializable {
             this.name = name;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
     }
 
     public static class StoresBean {
         /**
-         * id : 1
-         * image : md.png
-         * title : 第一家
-         * deviceNum : 0
-         * address : 重庆市沙坪坝区
+         * id : 1415195140754116608
+         * storeSn : 080865599b3d49d8bd84aa5747a47e3c
+         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/14/16262437889431626243582286.png
+         * name : 信达门店2
+         * address : 黄山大道重庆高科总部广场西南侧约220米
+         * userTypeId : 1415195140788797442
+         * visitStatus : 1
+         * contractStatus : 1
+         * transferStatus : 1
          */
 
         private String id;
+        private String storeSn;
         private String image;
-        private String title;
-        private String deviceNum;
+        private String name;
         private String address;
+        private String userTypeId;
+        private String visitStatus;
+        private String contractStatus;
+        private String transferStatus;
 
         public String getId() {
             return id;
@@ -220,6 +225,14 @@ public class Fragment2Model implements Serializable {
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public String getStoreSn() {
+            return storeSn;
+        }
+
+        public void setStoreSn(String storeSn) {
+            this.storeSn = storeSn;
         }
 
         public String getImage() {
@@ -230,20 +243,12 @@ public class Fragment2Model implements Serializable {
             this.image = image;
         }
 
-        public String getTitle() {
-            return title;
+        public String getName() {
+            return name;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getDeviceNum() {
-            return deviceNum;
-        }
-
-        public void setDeviceNum(String deviceNum) {
-            this.deviceNum = deviceNum;
+        public void setName(String name) {
+            this.name = name;
         }
 
         public String getAddress() {
@@ -252,6 +257,38 @@ public class Fragment2Model implements Serializable {
 
         public void setAddress(String address) {
             this.address = address;
+        }
+
+        public String getUserTypeId() {
+            return userTypeId;
+        }
+
+        public void setUserTypeId(String userTypeId) {
+            this.userTypeId = userTypeId;
+        }
+
+        public String getVisitStatus() {
+            return visitStatus;
+        }
+
+        public void setVisitStatus(String visitStatus) {
+            this.visitStatus = visitStatus;
+        }
+
+        public String getContractStatus() {
+            return contractStatus;
+        }
+
+        public void setContractStatus(String contractStatus) {
+            this.contractStatus = contractStatus;
+        }
+
+        public String getTransferStatus() {
+            return transferStatus;
+        }
+
+        public void setTransferStatus(String transferStatus) {
+            this.transferStatus = transferStatus;
         }
     }
 }

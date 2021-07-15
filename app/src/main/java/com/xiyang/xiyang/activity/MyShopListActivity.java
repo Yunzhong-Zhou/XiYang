@@ -82,7 +82,7 @@ public class MyShopListActivity extends BaseActivity {
                 page = 1;
                 params.put("page", page + "");
                 params.put("count", "10");
-                params.put("status", status);//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                params.put("status", status);
                 params.put("title", title);
                 params.put("instudyId", instudyId);
                 params.put("provinceId", provinceId);
@@ -97,7 +97,7 @@ public class MyShopListActivity extends BaseActivity {
                 //加载更多
                 params.put("page", page + "");
                 params.put("count", "10");
-                params.put("status", status);//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                params.put("status", status);
                 params.put("title", title);
                 params.put("instudyId", instudyId);
                 params.put("provinceId", provinceId);
@@ -120,7 +120,7 @@ public class MyShopListActivity extends BaseActivity {
     @Override
     protected void initData() {
         requestCode = getIntent().getIntExtra("requestCode", 0);
-        status = getIntent().getStringExtra("status");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+        status = getIntent().getStringExtra("status");
         if (status == null) status = "";
         requestServer();//获取数据
 
@@ -168,13 +168,13 @@ public class MyShopListActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, MyShopListModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, model.getDeviceNum());
-                            holder.setText(R.id.tv_num, model.getMoney());//money
+                            holder.setText(R.id.tv_shop, model.getStoreNumber());
+                            holder.setText(R.id.tv_num, model.getTotalRevenue());//money
                             holder.setText(R.id.tv_addr, model.getAddress());
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(MyShopListActivity.this)
-                                    .load(model.getImage())
+                                    .load(model.getLogoUrl())
 //                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(MyShopListActivity.this, 10))))
@@ -182,11 +182,10 @@ public class MyShopListActivity extends BaseActivity {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() != null && model.getStatus().equals("2")) {
+                            if (model.getSignStatus() != null && model.getSignStatus().equals("4")) {
                                 //已签约
                                 imageView2.setImageResource(R.mipmap.bg_yiqianyue);
                             } else {
-
                                 imageView2.setImageResource(R.mipmap.bg_daiqianyue);
                             }
 
@@ -320,7 +319,7 @@ public class MyShopListActivity extends BaseActivity {
         page = 1;
         params.put("page", page + "");
         params.put("count", "10");
-        params.put("status", status);//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+        params.put("status", status);
         params.put("title", title);
         params.put("instudyId", instudyId);
         params.put("provinceId", provinceId);

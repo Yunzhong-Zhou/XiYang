@@ -27,7 +27,7 @@ public class AddBuyActivity extends BaseActivity {
     //    List<String> list_cangku = new ArrayList<>();
 //    int i_cangku = -1;
     EditText editText1, editText2, editText3;
-    String num = "", time = "", cangku = "";
+    String num = "", time = "", cangku = "",warehouseId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,7 @@ public class AddBuyActivity extends BaseActivity {
                 hideProgress();
 //                i_cangku = -1;
                 editText3.setText(response.getWarehouse().getName());
+                warehouseId = response.getWarehouse().getWarehouseId();
             }
         });
 
@@ -91,9 +92,9 @@ public class AddBuyActivity extends BaseActivity {
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
                     params.clear();
-                    params.put("num", num);
-                    params.put("fetchAt", time);
-//                    params.put("cangku", cangku);
+                    params.put("purchaseQuantity", num);
+                    params.put("deliveryTime", time);
+                    params.put("warehouseId", warehouseId);
                     requestUpData(params);
                 }
                 break;

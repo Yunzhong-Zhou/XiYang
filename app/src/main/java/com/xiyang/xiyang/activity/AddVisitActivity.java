@@ -146,7 +146,7 @@ public class AddVisitActivity extends BaseActivity {
     }
 
     private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.AddVisit, params, headerMap, new CallBackUtil<CommonModel>() {
+        OkhttpUtil.okHttpGet(URLs.MeiJuList, params, headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {
                 return null;

@@ -501,7 +501,7 @@ public class AddShopActivity extends BaseActivity {
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                 CommonUtil.dip2px(AddShopActivity.this, 400)))
                         .animType(BaseDialog.AnimInType.BOTTOM)
-                        .canceledOnTouchOutside(true)
+                        .canceledOnTouchOutside(false)
                         .gravity(Gravity.CENTER)
                         .dimAmount(0.5f)
                         .show();

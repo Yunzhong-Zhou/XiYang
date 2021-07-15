@@ -7,6 +7,18 @@ import java.util.List;
  * Created by Mr.Z on 2021/4/22.
  */
 public class MyShopListModel implements Serializable {
+    /**
+     * records : [{"id":"1415133648994308096","name":"测试商户1","account":"19000000006","address":"阿斯顿马丁路德金","userTypeId":"1415138602664464384","totalRevenue":0,"storeNumber":0}]
+     * total : 1
+     * size : 10
+     * current : 1
+     * orders : []
+     * optimizeCountSql : true
+     * hitCount : false
+     * searchCount : true
+     * pages : 1
+     */
+
     private List<RecordsBean> records;
 
     public List<RecordsBean> getRecords() {
@@ -19,26 +31,40 @@ public class MyShopListModel implements Serializable {
 
     public static class RecordsBean {
         /**
-         * id : 1411214888369524736
-         * name : 11111111
-         * image : null
-         * deviceNum : null
-         * address : 重庆市
-         * status : null
-         * statusTitle : null
-         * money : null
-         * bddescription : null
+         * id : 1415133648994308096
+         * name : 测试商户1
+         * account : 19000000006
+         * address : 阿斯顿马丁路德金
+         * userTypeId : 1415138602664464384
+         * totalRevenue : 0
+         * storeNumber : 0
          */
 
         private String id;
         private String name;
-        private String image;
-        private String deviceNum;
+        private String account;
         private String address;
-        private String status;
-        private String statusTitle;
-        private String money;
-        private String bddescription;
+        private String userTypeId;
+        private String totalRevenue;
+        private String storeNumber;
+        private String logoUrl;
+        private String signStatus;
+
+        public String getLogoUrl() {
+            return logoUrl;
+        }
+
+        public void setLogoUrl(String logoUrl) {
+            this.logoUrl = logoUrl;
+        }
+
+        public String getSignStatus() {
+            return signStatus;
+        }
+
+        public void setSignStatus(String signStatus) {
+            this.signStatus = signStatus;
+        }
 
         public String getId() {
             return id;
@@ -56,20 +82,12 @@ public class MyShopListModel implements Serializable {
             this.name = name;
         }
 
-        public String getImage() {
-            return image;
+        public String getAccount() {
+            return account;
         }
 
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public String getDeviceNum() {
-            return deviceNum;
-        }
-
-        public void setDeviceNum(String deviceNum) {
-            this.deviceNum = deviceNum;
+        public void setAccount(String account) {
+            this.account = account;
         }
 
         public String getAddress() {
@@ -80,36 +98,28 @@ public class MyShopListModel implements Serializable {
             this.address = address;
         }
 
-        public String getStatus() {
-            return status;
+        public String getUserTypeId() {
+            return userTypeId;
         }
 
-        public void setStatus(String status) {
-            this.status = status;
+        public void setUserTypeId(String userTypeId) {
+            this.userTypeId = userTypeId;
         }
 
-        public String getStatusTitle() {
-            return statusTitle;
+        public String getTotalRevenue() {
+            return totalRevenue;
         }
 
-        public void setStatusTitle(String statusTitle) {
-            this.statusTitle = statusTitle;
+        public void setTotalRevenue(String totalRevenue) {
+            this.totalRevenue = totalRevenue;
         }
 
-        public String getMoney() {
-            return money;
+        public String getStoreNumber() {
+            return storeNumber;
         }
 
-        public void setMoney(String money) {
-            this.money = money;
-        }
-
-        public String getBddescription() {
-            return bddescription;
-        }
-
-        public void setBddescription(String bddescription) {
-            this.bddescription = bddescription;
+        public void setStoreNumber(String storeNumber) {
+            this.storeNumber = storeNumber;
         }
     }
 }

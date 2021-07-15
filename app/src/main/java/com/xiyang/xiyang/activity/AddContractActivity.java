@@ -245,7 +245,7 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent1 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("requestCode", Constant.SELECT_STORE);
-                bundle1.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                bundle1.putString("status", "");
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
                 break;
@@ -254,7 +254,7 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent2 = new Intent(AddContractActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
-                bundle2.putString("status", "2");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                bundle2.putString("status", "");
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;

@@ -435,7 +435,7 @@ public class Fragment1_m extends BaseFragment {
             case R.id.linearLayout5:
                 //调整上级
                 if (localUserInfo.getUserJob().equals("BDM")) {
-                    bundle.putString("job", "bd");
+                    bundle.putString("job", "BD");
                     CommonUtil.gotoActivityWithData(getActivity(), AdjustSuperiorActivity.class, bundle);
                 } else {
                     bundle.putInt("type", 1);
@@ -446,7 +446,7 @@ public class Fragment1_m extends BaseFragment {
             case R.id.linearLayout6:
                 //调整市场
                 if (localUserInfo.getUserJob().equals("BDM")) {
-                    bundle.putString("job", "bd");
+                    bundle.putString("job", "BD");
                     CommonUtil.gotoActivityWithData(getActivity(), AdjustSuperiorActivity.class, bundle);
                 } else {
                     bundle.putInt("type", 2);

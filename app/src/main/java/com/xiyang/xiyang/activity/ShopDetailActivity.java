@@ -188,7 +188,7 @@ public class ShopDetailActivity extends BaseActivity {
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("shopId", model.getId());
                 bundle2.putString("shopName", model.getName());
-                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AddStoreActivity.class,bundle2);
+                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AddStoreActivity.class, bundle2);
                 break;
             case R.id.tv_morestore:
                 //门店-查看更多
@@ -218,7 +218,7 @@ public class ShopDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.ShopDetail+id, params, headerMap, new CallBackUtil<ShopDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.ShopDetail + id, params, headerMap, new CallBackUtil<ShopDetailModel>() {
             @Override
             public ShopDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -246,11 +246,11 @@ public class ShopDetailActivity extends BaseActivity {
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-                if (model.getStatus().equals("1")) {
+                if (model.getStatus() != null && model.getStatus().equals("4")) {
+                    imageView2.setImageResource(R.mipmap.bg_yiqianyue);
+                } else {
                     //待签约
                     imageView2.setImageResource(R.mipmap.bg_daiqianyue);
-                } else {
-                    imageView2.setImageResource(R.mipmap.bg_yiqianyue);
                 }
                 /**
                  * 商户信息
