@@ -132,8 +132,12 @@ public class URLs {
      * ********************************分派*****************************************
      */
     public static final String Fragment2_m = HOST + API + "point";
-    public static final String DispatchShop = HOST + API + "point";
-
+    //商户分派列表
+    public static final String DispatchShopList = HOST + "/bd/merchant/transfer/manageUser/page";
+    //门店分派列表
+    public static final String DispatchStoreList = HOST + "/bd/store/transfer/manageUser/page";
+    //工单分派列表
+    public static final String DispatchWorkList = HOST + "/bd/work/orders/manageUser/page";
     /**
      * ********************************审批*****************************************
      */

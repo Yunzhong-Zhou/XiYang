@@ -2,13 +2,18 @@ package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.Fragment2Model;
+import com.xiyang.xiyang.model.DispatchListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -17,7 +22,6 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +35,10 @@ import okhttp3.Response;
  * 分派列表
  */
 public class DispatchListActivity extends BaseActivity {
-    int type = 1,type_m = 1;//1、商户分派 2、门店分派 3、工单分派
+    int page = 1, type = 1, type_m = 1;//1、商户分派 2、门店分派 3、工单分派
     private RecyclerView recyclerView;
-    List<Fragment2Model> list = new ArrayList<>();
-    CommonAdapter<Fragment2Model> mAdapter;
+    List<DispatchListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<DispatchListModel.RecordsBean> mAdapter;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
@@ -53,13 +57,49 @@ public class DispatchListActivity extends BaseActivity {
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
-                Map<String, String> params = new HashMap<>();
-                request(params);
+                page = 1;
+                params.clear();
+                params.put("page", page + "");
+                params.put("size", "10");
+                params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
+
+                switch (type_m) {
+                    case 1:
+                        //商户
+                        requestList(params, URLs.DispatchShopList);
+                        break;
+                    case 2:
+                        //门店
+                        requestList(params, URLs.DispatchStoreList);
+                        break;
+                    case 3:
+                        //工单
+                        requestList(params, URLs.DispatchWorkList);
+                        break;
+                }
             }
 
             @Override
             public void onLoadmore() {
-
+                page = page + 1;
+                params.clear();
+                params.put("page", page + "");
+                params.put("size", "10");
+                params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
+                switch (type_m) {
+                    case 1:
+                        //商户
+                        requestListMore(params, URLs.DispatchShopList);
+                        break;
+                    case 2:
+                        //门店
+                        requestListMore(params, URLs.DispatchStoreList);
+                        break;
+                    case 3:
+                        //工单
+                        requestListMore(params, URLs.DispatchWorkList);
+                        break;
+                }
             }
         });
 
@@ -83,7 +123,7 @@ public class DispatchListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        type_m = getIntent().getIntExtra("type_m",1);
+        type_m = getIntent().getIntExtra("type_m", 1);
         requestServer();
     }
 
@@ -91,14 +131,33 @@ public class DispatchListActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
-        Map<String, String> params = new HashMap<>();
-        request(params);
+        page = 1;
+        params.clear();
+        params.put("page", page + "");
+        params.put("size", "10");
+        params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
+
+        switch (type_m) {
+            case 1:
+                //商户
+                requestList(params, URLs.DispatchShopList);
+                break;
+            case 2:
+                //门店
+                requestList(params, URLs.DispatchStoreList);
+                break;
+            case 3:
+                //工单
+                requestList(params, URLs.DispatchWorkList);
+                break;
+        }
+
     }
 
-    private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Fragment2_m, params, headerMap, new CallBackUtil<Fragment2Model>() {
+    private void requestList(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<DispatchListModel>() {
             @Override
-            public Fragment2Model onParseResponse(Call call, Response response) {
+            public DispatchListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -110,55 +169,41 @@ public class DispatchListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Fragment2Model response) {
+            public void onResponse(DispatchListModel response) {
                 hideProgress();
-//                list2 = response.getCooperation_shop_list();
+                showContentPage();
+                list = response.getRecords();
                 if (list.size() > 0) {
-                    mAdapter = new CommonAdapter<Fragment2Model>
+                    mAdapter = new CommonAdapter<DispatchListModel.RecordsBean>
                             (DispatchListActivity.this, R.layout.item_dispatchlist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment2Model model, int position) {
-                            /*ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(DispatchShopActivity.this)
-                                    .load(URLs.IMGHOST + model.getCover())
+                        protected void convert(ViewHolder holder, DispatchListModel.RecordsBean model, int position) {
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(DispatchListActivity.this)
+                                    .load(model.getMerchantLogoUrl())
                                     .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(DispatchShopActivity.this, 10))))
+                                            RoundedCorners(CommonUtil.dip2px(DispatchListActivity.this, 10))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() == 1) {
-                                //待安装
-                                imageView2.setImageResource(R.mipmap.bg_anzhuangzhong);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yianzhuang);
+                            holder.setText(R.id.tv_num, model.getCreateTime());
+                            switch (type_m) {
+                                case 1:
+                                    //商户
+                                    holder.setText(R.id.tv_name, model.getMerchantName());
+                                    holder.setText(R.id.tv_shop, model.getMerchantTotalStoresNumber() + "");
+                                    holder.setText(R.id.tv_addr, model.getMerchantAddress());
+                                    break;
+                                case 2:
+                                    //门店
+                                    holder.setText(R.id.tv_name, model.getStoreName());
+                                    break;
+                                case 3:
+                                    //工单
+
+                                    break;
                             }
-
-                            holder.setText(R.id.tv_name, model.getTitle());
-                            holder.setText(R.id.tv_content, model.getProvince() + model.getCity() + model.getDistrict());
-                            holder.setText(R.id.tv_addr, model.getAddress());
-                            holder.setText(R.id.tv_num, model.getNum() + "");*/
-                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                                    CommonUtil.gotoActivityWithData(DispatchListActivity.this, ShopDetailActivity.class, bundle, false);
-
-                                    switch (type) {
-                                        case 1:
-                                            break;
-                                        case 2:
-                                            CommonUtil.gotoActivityWithData(DispatchListActivity.this, StoreDetailActivity.class, bundle, false);
-                                            break;
-                                        case 3:
-                                            CommonUtil.gotoActivityWithData(DispatchListActivity.this, WorkListDetailActivity.class, bundle, false);
-                                            break;
-                                    }
-
-                                }
-                            });
                         }
                     };
                     recyclerView.setAdapter(mAdapter);
@@ -167,6 +212,39 @@ public class DispatchListActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void requestListMore(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<DispatchListModel>() {
+            @Override
+            public DispatchListModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+//                showErrorPage();
+                hideProgress();
+                myToast(err);
+                page--;
+            }
+
+            @Override
+            public void onResponse(DispatchListModel response) {
+//                showContentPage();
+                hideProgress();
+                List<DispatchListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    page--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -184,12 +262,12 @@ public class DispatchListActivity extends BaseActivity {
                 break;
             case R.id.ll_tab2:
                 //上报中
-                type = 2;
+                type = 3;
                 changeUI();
                 break;
             case R.id.ll_tab3:
                 //已完成
-                type = 3;
+                type = 2;
                 changeUI();
                 break;
 
