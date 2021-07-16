@@ -59,7 +59,7 @@ public class URLs {
     //公共-仓库
     public static final String Warehouse = HOST + API + "warehouse";
     //枚举列表
-    public static final String MeiJuList = HOST + "/enum/list/all";
+    public static final String MeiJuList = HOST + "/service-ucenter/enum/list/all";
     //服务分类列表
     public static final String ServiceList_all = HOST + API + "/api/v1/public/service_list_all";
     /**
@@ -99,17 +99,17 @@ public class URLs {
     /**
      * ********************************管理*****************************************
      */
-    public static final String Fragment1_m = HOST + API + "manage";
+    public static final String Fragment1_m = HOST + "/service-ucenter/organ/home";
     //选择权限城市
     public static final String MyCity = HOST + "/service-ucenter/organ/region/getLoginOrganUserCityStatistic";
     //添加员工
     public static final String AddStaff = HOST + API + "user/add";
     //我的下级员工
-    public static final String Subordinate = HOST + "/organ/getOrganUserLevelHrStatistic";
+    public static final String Subordinate = HOST + "/service-ucenter/organ/statisticOrganUserLevelHr";
     //员工详情
     public static final String StaffDetail = HOST + API + "manage/subordinate/detail";
     //调整上级
-    public static final String AdjustSuperior = HOST + API + "manage/change/role";
+    public static final String AdjustSuperior = HOST + "/service-ucenter/organ/change/apply/upper";
     //调整岗位
     public static final String AdjustJob = HOST + API + "manage/change/role";
     //选择员工
@@ -119,7 +119,7 @@ public class URLs {
     //采购审批详情
     public static final String CaiGouDetail = HOST + "/purchase/purchase/apply/detail/";
     //人事记录
-    public static final String PersonnelList = HOST + "/manage/subordinate";
+    public static final String PersonnelList = HOST + "/service-ucenter/organ/change/apply/list";
     //厂库信息
     public static final String CangKu = HOST  + "/purchase/purchase/CmWarehouse/get";
     //采购申请

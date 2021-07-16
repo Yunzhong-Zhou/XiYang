@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
 import com.liaoinstan.springview.widget.SpringView;
 import com.lihang.ShadowLayout;
@@ -52,14 +53,14 @@ import okhttp3.Response;
  */
 
 public class Fragment1_m extends BaseFragment {
-    int type = 1;
+    String type = "CM";
     private RecyclerView rv_tongji;
     List<KeyValueModel_m> list_tongji = new ArrayList<>();
     CommonAdapter<KeyValueModel_m> mAdapter_tongji;
 
     private RecyclerView recyclerView;
-    List<SubordinateModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<SubordinateModel.ListBean> mAdapter;
+    List<SubordinateModel> list = new ArrayList<>();
+    CommonAdapter<SubordinateModel> mAdapter;
 
     TextView textView1, textView8;
     ImageView imageView8;
@@ -133,6 +134,8 @@ public class Fragment1_m extends BaseFragment {
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
                 request(params);
+                params.put("userId","");
+                params.put("code",type);
                 requestList(params);//获取下级员工
             }
 
@@ -192,7 +195,7 @@ public class Fragment1_m extends BaseFragment {
                 ll_tab1.setVisibility(View.VISIBLE);
                 ll_tab2.setVisibility(View.VISIBLE);
                 ll_tab3.setVisibility(View.VISIBLE);
-                type = 1;
+                type = "CM";
 
                 break;
             case "CM":
@@ -206,20 +209,19 @@ public class Fragment1_m extends BaseFragment {
                 ll_tab2.setVisibility(View.VISIBLE);
                 ll_tab3.setVisibility(View.VISIBLE);
 
-                type = 2;
+                type = "BDM";
                 break;
             case "BDM":
-                textView1.setText("我的市区");
+                textView1.setText("我的区域");
 
                 textView8.setText("人事记录");
                 imageView8.setImageResource(R.mipmap.ic_fragment1_tab8_m);
 
                 sl_tab.setVisibility(View.GONE);
-                type = 3;
+                type = "BD";
 
                 break;
         }
-        changeUI();
 
     }
 
@@ -235,7 +237,7 @@ public class Fragment1_m extends BaseFragment {
         this.showLoadingPage();
         Map<String, String> params = new HashMap<>();
         request(params);
-        requestList(params);//获取下级员工
+        changeUI();
     }
 
     private void request(Map<String, String> params) {
@@ -263,37 +265,37 @@ public class Fragment1_m extends BaseFragment {
                 list_tongji.clear();
                 switch (localUserInfo.getUserJob()) {
                     case "RM":
-                        list_tongji.add(new KeyValueModel_m("总CM", response.getBase().getCmNum(), "人"));
-                        list_tongji.add(new KeyValueModel_m("总BDM", response.getBase().getBdmNum(), "人"));
-                        list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
-                        list_tongji.add(new KeyValueModel_m("总省份", response.getBase().getBdNum(), ""));
+                        list_tongji.add(new KeyValueModel_m("总CM", response.getCmNumber(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总BDM", response.getBdmNumber(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总BD", response.getBdmNumber(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总省份", response.getAreaNumber(), ""));
 
-                        list_tongji.add(new KeyValueModel_m("总商户", response.getBase().getStoreNum(), "个"));
-                        list_tongji.add(new KeyValueModel_m("总门店", response.getBase().getStoreNum(), "个"));
-                        list_tongji.add(new KeyValueModel_m("总设备", response.getBase().getDeviceNum(), "台"));
-                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
+                        list_tongji.add(new KeyValueModel_m("总商户", response.getMerchantNumber(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总门店", response.getStoreNumber(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总设备", response.getDeviceNumber(), "台"));
+                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getMoney(), ""));
 
                         break;
                     case "CM":
-                        list_tongji.add(new KeyValueModel_m("总BDM", response.getBase().getBdmNum(), "人"));
-                        list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
-                        list_tongji.add(new KeyValueModel_m("可用指标", response.getBase().getBdNum(), ""));
-                        list_tongji.add(new KeyValueModel_m("总城市", response.getBase().getBdNum(), ""));
+                        list_tongji.add(new KeyValueModel_m("总BDM", response.getBdmNumber(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总BD", response.getBdNumber(), "人"));
+                        list_tongji.add(new KeyValueModel_m("可用指标", response.getOrganName(), ""));
+                        list_tongji.add(new KeyValueModel_m("总城市", response.getAreaNumber(), ""));
 
-                        list_tongji.add(new KeyValueModel_m("总商户", response.getBase().getStoreNum(), "个"));
-                        list_tongji.add(new KeyValueModel_m("总门店", response.getBase().getStoreNum(), "个"));
-                        list_tongji.add(new KeyValueModel_m("总设备", response.getBase().getDeviceNum(), "台"));
-                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
+                        list_tongji.add(new KeyValueModel_m("总商户", response.getMerchantNumber(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总门店", response.getStoreNumber(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总设备", response.getDeviceNumber(), "台"));
+                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getMoney(), ""));
 
                         break;
                     case "BDM":
-                        list_tongji.add(new KeyValueModel_m("总商户", response.getBase().getStoreNum(), "个"));
-                        list_tongji.add(new KeyValueModel_m("总门店", response.getBase().getStoreNum(), "个"));
-                        list_tongji.add(new KeyValueModel_m("总设备", response.getBase().getDeviceNum(), "台"));
-                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getBase().getMoney(), ""));
+                        list_tongji.add(new KeyValueModel_m("总商户", response.getMerchantNumber(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总门店", response.getStoreNumber(), "个"));
+                        list_tongji.add(new KeyValueModel_m("总设备", response.getDeviceNumber(), "台"));
+                        list_tongji.add(new KeyValueModel_m("总营收", "￥" + response.getMoney(), ""));
 
-                        list_tongji.add(new KeyValueModel_m("总BD", response.getBase().getBdNum(), "人"));
-                        list_tongji.add(new KeyValueModel_m("总区域", response.getBase().getBdNum(), ""));
+                        list_tongji.add(new KeyValueModel_m("总BD", response.getBdNumber(), "人"));
+                        list_tongji.add(new KeyValueModel_m("总区域", response.getAreaNumber(), ""));
                         break;
                 }
 
@@ -319,9 +321,9 @@ public class Fragment1_m extends BaseFragment {
      * @param params
      */
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.Subordinate, params, headerMap, new CallBackUtil<SubordinateModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.Subordinate, GsonUtils.toJson(params), headerMap, new CallBackUtil<List<SubordinateModel>>() {
             @Override
-            public SubordinateModel onParseResponse(Call call, Response response) {
+            public List<SubordinateModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -334,18 +336,18 @@ public class Fragment1_m extends BaseFragment {
             }
 
             @Override
-            public void onResponse(SubordinateModel response) {
+            public void onResponse(List<SubordinateModel> response) {
                 hideProgress();
                 showContentPage();
-                list = response.getList();
+                list = response;
                 if (list.size() > 0) {
-                    mAdapter = new CommonAdapter<SubordinateModel.ListBean>
+                    mAdapter = new CommonAdapter<SubordinateModel>
                             (getActivity(), R.layout.item_fragment1_m, list) {
                         @Override
-                        protected void convert(ViewHolder holder, SubordinateModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, SubordinateModel model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
-                                    .load(model.getHead())
+                                    .load(model.getAvatar())
                                     .fitCenter()
 //                                    .apply(RequestOptions.bitmapTransform(new
 //                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
@@ -354,10 +356,10 @@ public class Fragment1_m extends BaseFragment {
                                     .into(imageView1);//加载图片
                             holder.setText(R.id.tv_name, model.getName());
 
-                            holder.setText(R.id.tv1, model.getStoreNum());
-                            holder.setText(R.id.tv2, model.getStoreNum());
-                            holder.setText(R.id.tv3, model.getDeviceNum());
-                            holder.setText(R.id.tv4, "￥" + model.getMoney());
+                            holder.setText(R.id.tv1, model.getStatisticInfo().getMerchantNumber());
+                            holder.setText(R.id.tv2, model.getStatisticInfo().getStoreNumber());
+                            holder.setText(R.id.tv3, model.getStatisticInfo().getDeviceNumber());
+                            holder.setText(R.id.tv4, "￥" + model.getStatisticInfo().getMoney());
 
                             TextView tv_bdm = holder.getView(R.id.tv_bdm);
                             TextView tv_bd = holder.getView(R.id.tv_bd);
@@ -373,15 +375,15 @@ public class Fragment1_m extends BaseFragment {
 
                             switch (localUserInfo.getUserJob()) {
                                 case "CM":
-                                    tv_bdm.setText("BDM:" + model.getBdmNum());
-                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_bdm.setText("BDM:" + model.getStatisticInfo().getBdmNumber());
+                                    tv_bd.setText("BD:" + model.getStatisticInfo().getBdNumber());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
                                 case "BDM":
                                     tv_bdm.setVisibility(View.GONE);
 
-                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_bd.setText("BD:" + model.getStatisticInfo().getBdmNumber());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
@@ -397,7 +399,7 @@ public class Fragment1_m extends BaseFragment {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("id", model.getId());
+                                    bundle.putString("id", model.getUserId());
                                     CommonUtil.gotoActivityWithData(getActivity(), StaffDetailActivity.class, bundle, false);
                                 }
                             });
@@ -474,17 +476,17 @@ public class Fragment1_m extends BaseFragment {
 
             case R.id.ll_tab1:
                 //CM
-                type = 1;
+                type = "CM";
                 changeUI();
                 break;
             case R.id.ll_tab2:
                 //BDM
-                type = 2;
+                type = "BDM";
                 changeUI();
                 break;
             case R.id.ll_tab3:
                 //BD
-                type = 3;
+                type = "BD";
                 changeUI();
                 break;
 
@@ -493,7 +495,7 @@ public class Fragment1_m extends BaseFragment {
 
     private void changeUI() {
         switch (type) {
-            case 1:
+            case "CM":
                 tv_tab1.setTextColor(getResources().getColor(R.color.green));
                 tv_tab2.setTextColor(getResources().getColor(R.color.black3));
                 tv_tab3.setTextColor(getResources().getColor(R.color.black3));
@@ -502,7 +504,7 @@ public class Fragment1_m extends BaseFragment {
                 view3.setVisibility(View.INVISIBLE);
 
                 break;
-            case 2:
+            case "BDM":
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
                 tv_tab2.setTextColor(getResources().getColor(R.color.green));
                 tv_tab3.setTextColor(getResources().getColor(R.color.black3));
@@ -511,7 +513,7 @@ public class Fragment1_m extends BaseFragment {
                 view3.setVisibility(View.INVISIBLE);
 
                 break;
-            case 3:
+            case "BD":
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
                 tv_tab2.setTextColor(getResources().getColor(R.color.black3));
                 tv_tab3.setTextColor(getResources().getColor(R.color.green));
@@ -521,6 +523,10 @@ public class Fragment1_m extends BaseFragment {
 
                 break;
         }
+        Map<String, String> params = new HashMap<>();
+        params.put("userId","");
+        params.put("code",type);
+        requestList(params);//获取下级员工
     }
 
     @Override

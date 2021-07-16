@@ -31,15 +31,16 @@ import okhttp3.Response;
  */
 public class MyCityActivity extends BaseActivity {
     TextView tv_quanbu;
+    LinearLayout linearLayout;
     private RecyclerView rv1, rv3;
-    List<MyCityModel.ListBean> list1 = new ArrayList<>();
-    CommonAdapter<MyCityModel.ListBean> mAdapter1;
+    List<MyCityModel> list1 = new ArrayList<>();
+    CommonAdapter<MyCityModel> mAdapter1;
     int page = 1, item1 = -1, item2 = -1;
-    List<MyCityModel.ListBean> list2 = new ArrayList<>();
-    CommonAdapter<MyCityModel.ListBean> mAdapter2;
+    List<MyCityModel> list2 = new ArrayList<>();
+    CommonAdapter<MyCityModel> mAdapter2;
 
-    List<MyCityModel.ListBean> list3 = new ArrayList<>();
-    CommonAdapter<MyCityModel.ListBean> mAdapter3;
+    List<MyCityModel> list3 = new ArrayList<>();
+    CommonAdapter<MyCityModel> mAdapter3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +51,13 @@ public class MyCityActivity extends BaseActivity {
     @Override
     protected void initView() {
         tv_quanbu = findViewByID_My(R.id.tv_quanbu);
-
+        linearLayout = findViewByID_My(R.id.linearLayout);
         rv1 = findViewByID_My(R.id.rv1);
         rv1.setLayoutManager(new LinearLayoutManager(this));
         rv3 = findViewByID_My(R.id.rv3);
         rv3.setLayoutManager(new LinearLayoutManager(this));
 
-        rv1.setVisibility(View.VISIBLE);
+        linearLayout.setVisibility(View.VISIBLE);
         switch (localUserInfo.getUserJob()) {
             case "RM":
                 titleView.setTitle("我的城市");
@@ -66,7 +67,7 @@ public class MyCityActivity extends BaseActivity {
                 break;
             case "BDM":
                 titleView.setTitle("我的区域");
-                rv1.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.GONE);
                 break;
         }
 
@@ -101,8 +102,6 @@ public class MyCityActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        showMyCity3();
-
         requestServer();//获取数据
     }
 
@@ -112,9 +111,9 @@ public class MyCityActivity extends BaseActivity {
      * @param params
      */
     private void requestCity1(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<MyCityModel>() {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<List<MyCityModel>>() {
             @Override
-            public MyCityModel onParseResponse(Call call, Response response) {
+            public List<MyCityModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -126,9 +125,9 @@ public class MyCityActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyCityModel response) {
+            public void onResponse(List<MyCityModel> response) {
                 hideProgress();
-                list1 = response.getList();
+                list1 = response;
                 showMyCity1();
                 //显示第三级数据
                 if (item1 == -1) {
@@ -142,12 +141,12 @@ public class MyCityActivity extends BaseActivity {
 
     //显示第1级数据
     private void showMyCity1() {
-        mAdapter1 = new CommonAdapter<MyCityModel.ListBean>
+        mAdapter1 = new CommonAdapter<MyCityModel>
                 (MyCityActivity.this, R.layout.item_mycity1, list1) {
             @Override
-            protected void convert(ViewHolder holder, MyCityModel.ListBean model, int position) {
+            protected void convert(ViewHolder holder, MyCityModel model, int position) {
                 TextView tv = holder.getView(R.id.tv);
-                tv.setText(model.getName());
+                tv.setText(model.getRegionName());
                 LinearLayout ll = holder.getView(R.id.ll);
                 ImageView iv = holder.getView(R.id.iv);
                 RecyclerView rv = holder.getView(R.id.rv);
@@ -161,6 +160,8 @@ public class MyCityActivity extends BaseActivity {
 
                     //获取下一级
                     showLoadingPage();
+                    params.clear();
+                    params.put("regionId",model.getRegionId());
                     if (localUserInfo.getUserJob().equals("RM")) {
                         rv.setVisibility(View.VISIBLE);
                         iv.setImageResource(R.mipmap.ic_jiantou_down);
@@ -206,9 +207,9 @@ public class MyCityActivity extends BaseActivity {
      * @param params
      */
     private void requestCity2(Map<String, String> params, RecyclerView rv) {
-        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<MyCityModel>() {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<List<MyCityModel>>() {
             @Override
-            public MyCityModel onParseResponse(Call call, Response response) {
+            public List<MyCityModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -220,9 +221,9 @@ public class MyCityActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyCityModel response) {
+            public void onResponse(List<MyCityModel> response) {
                 hideProgress();
-                list2 = response.getList();
+                list2 = response;
                 showMyCity2(rv);
                 //显示第三级数据
                 list3 = list2;
@@ -234,12 +235,12 @@ public class MyCityActivity extends BaseActivity {
 
     //显示第2级数据
     private void showMyCity2(RecyclerView rv) {
-        mAdapter2 = new CommonAdapter<MyCityModel.ListBean>
+        mAdapter2 = new CommonAdapter<MyCityModel>
                 (MyCityActivity.this, R.layout.item_mycity2, list2) {
             @Override
-            protected void convert(ViewHolder holder, MyCityModel.ListBean model, int position) {
+            protected void convert(ViewHolder holder, MyCityModel model, int position) {
                 TextView tv = holder.getView(R.id.tv);
-                tv.setText(model.getName());
+                tv.setText(model.getRegionName());
                 LinearLayout ll = holder.getView(R.id.ll);
                 ImageView iv = holder.getView(R.id.iv);
                 if (item2 == position) {
@@ -248,6 +249,8 @@ public class MyCityActivity extends BaseActivity {
 
                     //获取下一级
                     showLoadingPage();
+                    params.clear();
+                    params.put("regionId",model.getRegionId());
                     requestCity3(params);
 
                 } else {
@@ -274,9 +277,9 @@ public class MyCityActivity extends BaseActivity {
      * @param params
      */
     private void requestCity3(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<MyCityModel>() {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<List<MyCityModel>>() {
             @Override
-            public MyCityModel onParseResponse(Call call, Response response) {
+            public List<MyCityModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -288,9 +291,9 @@ public class MyCityActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(MyCityModel response) {
+            public void onResponse(List<MyCityModel> response) {
                 hideProgress();
-                list3 = response.getList();
+                list3 = response;
                 //显示第三级数据
                 showMyCity3();
             }
@@ -304,27 +307,31 @@ public class MyCityActivity extends BaseActivity {
             showEmptyPage();//空数据
         } else {
             showContentPage();
-            mAdapter3 = new CommonAdapter<MyCityModel.ListBean>
+            mAdapter3 = new CommonAdapter<MyCityModel>
                     (MyCityActivity.this, R.layout.item_mycity3, list3) {
                 @Override
-                protected void convert(ViewHolder holder, MyCityModel.ListBean model, int position) {
-                    if (model.getId() != null && !model.getId().equals("")) {
-                        holder.setText(R.id.tv_city, model.getName());
+                protected void convert(ViewHolder holder, MyCityModel model, int position) {
+                    if (model.getRegionId() != null && !model.getRegionId().equals("")) {
+                        holder.setText(R.id.tv_city, model.getRegionName());
                         TextView tv_name = holder.getView(R.id.tv_name);
-                        switch (localUserInfo.getUserJob()) {
+                        tv_name.setText("总营收:"+model.getRevenue());
+                       /* switch (localUserInfo.getUserJob()) {
                             case "RM":
-                                tv_name.setText("CM:" + model.getCmName());
+                                tv_name.setText("CM:" + model.getc);
                                 break;
                             case "CM":
                                 tv_name.setText("BDM:" + model.getCmName());
                                 break;
-                        }
+                        }*/
                         TextView tv_daizhipai = holder.getView(R.id.tv_daizhipai);//是否指派
                         tv_daizhipai.setVisibility(View.GONE);
 
-                        holder.setText(R.id.tv_shop, model.getMerchantNum());
-                        holder.setText(R.id.tv_store, model.getStoreNum());
-                        holder.setText(R.id.tv_device, model.getDeviceNum());
+                        holder.setText(R.id.tv_cm, model.getCmNumber());
+                        holder.setText(R.id.tv_bdm, model.getBdmNumber());
+                        holder.setText(R.id.tv_bd, model.getBdmNumber());
+                        holder.setText(R.id.tv_shop, model.getMerchantNumber());
+                        holder.setText(R.id.tv_store, model.getStoreNumber());
+                        holder.setText(R.id.tv_device, model.getDeviceNumber());
                     }
                 }
             };
@@ -336,9 +343,9 @@ public class MyCityActivity extends BaseActivity {
 
 
     private void requestCityMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<List<MyCityModel>>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public List<MyCityModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -351,7 +358,7 @@ public class MyCityActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(List<MyCityModel> response) {
 //                showContentPage();
                 onHttpResult();
                 /*JSONObject jObj;
@@ -405,15 +412,18 @@ public class MyCityActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.clear();
+//        requestCity1(params);
         switch (localUserInfo.getUserJob()) {
             case "RM":
+                showMyCity3();
                 requestCity1(params);
                 break;
             case "CM":
-                requestCity1(params);
+                showMyCity3();
+                requestCity2(params,rv1);
                 break;
             case "BDM":
-                requestCity1(params);
+                requestCity3(params);
                 break;
         }
 

@@ -296,6 +296,7 @@ public class PersonnelListActivity extends BaseActivity {
             case 1:
                 //调整上级
                 titleView.setTitle("调整上级列表");
+                requestList(params, URLs.PersonnelList);
                 break;
             case 2:
                 //调整市场

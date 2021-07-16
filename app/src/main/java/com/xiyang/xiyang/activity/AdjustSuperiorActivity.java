@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.net.URLs;
@@ -17,6 +18,7 @@ import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.Constant;
+import com.xiyang.xiyang.utils.MyLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +39,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
     private TimeCount time;
     RelativeLayout relativeLayout;
 
+    int old_type = 1;
     String crossLevel = "0", userId = "", oldParentId = "", newParentId = "", code = "";
 
     @Override
@@ -68,7 +71,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
         switch (job) {
             case "CM":
                 job_shangji = "RM";
-                if (localUserInfo.getUserJob().equals("RM")){
+                if (localUserInfo.getUserJob().equals("RM")) {
                     //操作者是RM，不可点击新的RM-并强制跨区
                     editText3.setClickable(false);
                     iv_kuaqu.setClickable(false);
@@ -79,7 +82,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 break;
             case "BDM":
                 job_shangji = "CM";
-                if (localUserInfo.getUserJob().equals("CM")){
+                if (localUserInfo.getUserJob().equals("CM")) {
                     //操作者是CM，不可点击新的CM-并强制跨区
                     editText3.setClickable(false);
                     iv_kuaqu.setClickable(false);
@@ -90,7 +93,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 break;
             case "BD":
                 job_shangji = "BDM";
-                if (localUserInfo.getUserJob().equals("BDM")){
+                if (localUserInfo.getUserJob().equals("BDM")) {
                     //操作者是BDM，不可点击新的BDM-并强制跨区
                     editText3.setClickable(false);
                     iv_kuaqu.setClickable(false);
@@ -127,6 +130,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 break;
             case R.id.editText1:
                 //选择用户
+                old_type = 1;
                 Intent intent2 = new Intent(AdjustSuperiorActivity.this, SelectStaffActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_STAFF);
@@ -137,10 +141,11 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 break;
             case R.id.editText3:
                 //选择用户
+                old_type = 2;
                 Intent intent3 = new Intent(AdjustSuperiorActivity.this, SelectStaffActivity.class);
                 Bundle bundle3 = new Bundle();
                 bundle3.putInt("requestCode", Constant.SELECT_STAFF);
-                bundle3.putString("role", job_shangji.toLowerCase());
+                bundle3.putString("role", job_shangji.toUpperCase());
                 bundle3.putString("userId", "");
                 intent3.putExtras(bundle3);
                 startActivityForResult(intent3, Constant.SELECT_STAFF, bundle3);
@@ -149,19 +154,22 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 //获取验证码
                 showProgress(false, getString(R.string.app_sendcode_hint1));
                 tv_code.setClickable(false);
-                HashMap<String, String> params1 = new HashMap<>();
-                params1.put("mobile", localUserInfo.getPhonenumber());
-                params1.put("type", "37");
-                RequestCode(params1);//获取验证码
+                params.clear();
+                /*params1.put("mobile", localUserInfo.getPhonenumber());
+                params1.put("type", "37");*/
+                RequestCode(params);//获取验证码
                 break;
             case R.id.tv_confirm:
                 //提交
                 if (match()) {
                     showProgress(false, getString(R.string.app_loading1));
-                    HashMap<String, String> params = new HashMap<>();
-                   /* params.put("role", role.toLowerCase());//大写转小写
-                    params.put("adminId", adminId);
-                    params.put("code", code);//手机验证码*/
+                    params.clear();
+                    params.put("crossLevel", crossLevel);//是否跨区
+                    params.put("userId", userId);
+                    params.put("oldParentId", oldParentId);
+                    params.put("newParentId", newParentId);
+                    params.put("extra", "");
+                    params.put("code", code);//手机验证码
                     requestUpData(params);
                 }
                 break;
@@ -177,10 +185,13 @@ public class AdjustSuperiorActivity extends BaseActivity {
             myToast(editText2.getHint().toString());
             return false;
         }
-        if (TextUtils.isEmpty(newParentId)) {
-            myToast(editText2.getHint().toString());
-            return false;
+        if (crossLevel.equals("0")){
+            if (TextUtils.isEmpty(newParentId)) {
+                myToast(editText3.getHint().toString());
+                return false;
+            }
         }
+
 
         code = et_code.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
@@ -201,7 +212,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
      * @param params
      */
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AdjustSuperior, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AdjustSuperior, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -217,7 +228,10 @@ public class AdjustSuperiorActivity extends BaseActivity {
             public void onResponse(String response) {
                 myToast("提交成功");
                 hideProgress();
-                CommonUtil.gotoActivity(AdjustSuperiorActivity.this, AdjustSuperiorListActivity.class);
+//                CommonUtil.gotoActivity(AdjustSuperiorActivity.this, AdjustSuperiorListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", 1);////1、调整上级 2、调整市场 3、升职降职 4、采购申请
+                CommonUtil.gotoActivityWithData(AdjustSuperiorActivity.this, PersonnelListActivity.class, bundle, false);
             }
         });
     }
@@ -259,8 +273,16 @@ public class AdjustSuperiorActivity extends BaseActivity {
                     //选择员工
                     if (data != null) {
                         Bundle bundle = data.getExtras();
-//                        adminId = bundle.getString("staffId");
-                        editText1.setText(bundle.getString("staffName"));
+                        if (old_type == 1) {
+                            userId = bundle.getString("staffId");
+                            editText1.setText(bundle.getString("staffName"));
+                            oldParentId = bundle.getString("ShangJiId");
+                            editText2.setText(bundle.getString("ShangJiName"));
+                            MyLogger.i(">>>>>"+bundle.getString("ShangJiName"));
+                        } else {
+                            newParentId = bundle.getString("staffId");
+                            editText3.setText(bundle.getString("staffName"));
+                        }
                     }
                     break;
             }

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -84,6 +85,7 @@ public abstract class CallBackUtil<T> {
                             //数据请求成功-解析数据
                             if (string.indexOf("data") != -1) {
                                 // TODO 有data数据 -解析data
+
                                 String result = mJsonObject.getString("data");
                                 if (mType == String.class) {//模型为string直接返回data数据
                                     mMainHandler.post(new Runnable() {
@@ -93,7 +95,16 @@ public abstract class CallBackUtil<T> {
                                             onResponse((T) result);
                                         }
                                     });
-                                } else {
+                                }else if (mType == List.class){
+                                    mMainHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            List o = mGson.fromJson(result, mType);
+                                            onResponse((T) o);
+                                        }
+                                    });
+
+                                }else {
                                     mMainHandler.post(new Runnable() {
                                         @Override
                                         public void run() {

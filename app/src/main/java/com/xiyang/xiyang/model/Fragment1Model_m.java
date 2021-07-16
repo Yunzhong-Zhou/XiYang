@@ -7,92 +7,106 @@ import java.io.Serializable;
  */
 public class Fragment1Model_m implements Serializable {
     /**
-     * base : {"id":"71","bdNum":"2","bdmNum":"0","cmNum":"0","deviceNum":"30","storeNum":"30","money":"0.00"}
+     * organId : 1414885152384065537
+     * organName : null
+     * areaNumber : 2
+     * cmNumber : 1
+     * bdmNumber : 1
+     * bdNumber : 1
+     * merchantNumber : 2
+     * storeNumber : 1
+     * deviceNumber : 0
+     * money : 0
      */
 
-    private BaseBean base;
+    private String organId;
+    private String organName;
+    private String areaNumber;
+    private String cmNumber;
+    private String bdmNumber;
+    private String bdNumber;
+    private String merchantNumber;
+    private String storeNumber;
+    private String deviceNumber;
+    private String money;
 
-    public BaseBean getBase() {
-        return base;
+    public String getOrganId() {
+        return organId;
     }
 
-    public void setBase(BaseBean base) {
-        this.base = base;
+    public void setOrganId(String organId) {
+        this.organId = organId;
     }
 
-    public static class BaseBean {
-        /**
-         * id : 71
-         * bdNum : 2
-         * bdmNum : 0
-         * cmNum : 0
-         * deviceNum : 30
-         * storeNum : 30
-         * money : 0.00
-         */
+    public String getOrganName() {
+        return organName;
+    }
 
-        private String id;
-        private String bdNum;
-        private String bdmNum;
-        private String cmNum;
-        private String deviceNum;
-        private String storeNum;
-        private String money;
+    public void setOrganName(String organName) {
+        this.organName = organName;
+    }
 
-        public String getId() {
-            return id;
-        }
+    public String getAreaNumber() {
+        return areaNumber;
+    }
 
-        public void setId(String id) {
-            this.id = id;
-        }
+    public void setAreaNumber(String areaNumber) {
+        this.areaNumber = areaNumber;
+    }
 
-        public String getBdNum() {
-            return bdNum;
-        }
+    public String getCmNumber() {
+        return cmNumber;
+    }
 
-        public void setBdNum(String bdNum) {
-            this.bdNum = bdNum;
-        }
+    public void setCmNumber(String cmNumber) {
+        this.cmNumber = cmNumber;
+    }
 
-        public String getBdmNum() {
-            return bdmNum;
-        }
+    public String getBdmNumber() {
+        return bdmNumber;
+    }
 
-        public void setBdmNum(String bdmNum) {
-            this.bdmNum = bdmNum;
-        }
+    public void setBdmNumber(String bdmNumber) {
+        this.bdmNumber = bdmNumber;
+    }
 
-        public String getCmNum() {
-            return cmNum;
-        }
+    public String getBdNumber() {
+        return bdNumber;
+    }
 
-        public void setCmNum(String cmNum) {
-            this.cmNum = cmNum;
-        }
+    public void setBdNumber(String bdNumber) {
+        this.bdNumber = bdNumber;
+    }
 
-        public String getDeviceNum() {
-            return deviceNum;
-        }
+    public String getMerchantNumber() {
+        return merchantNumber;
+    }
 
-        public void setDeviceNum(String deviceNum) {
-            this.deviceNum = deviceNum;
-        }
+    public void setMerchantNumber(String merchantNumber) {
+        this.merchantNumber = merchantNumber;
+    }
 
-        public String getStoreNum() {
-            return storeNum;
-        }
+    public String getStoreNumber() {
+        return storeNumber;
+    }
 
-        public void setStoreNum(String storeNum) {
-            this.storeNum = storeNum;
-        }
+    public void setStoreNumber(String storeNumber) {
+        this.storeNumber = storeNumber;
+    }
 
-        public String getMoney() {
-            return money;
-        }
+    public String getDeviceNumber() {
+        return deviceNumber;
+    }
 
-        public void setMoney(String money) {
-            this.money = money;
-        }
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
+    }
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
     }
 }

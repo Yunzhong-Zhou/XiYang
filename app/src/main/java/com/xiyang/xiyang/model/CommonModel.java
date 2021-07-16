@@ -237,5 +237,4 @@ public class CommonModel implements Serializable {
     public void setReason(List<WorkOrderTypeBean> reason) {
         this.reason = reason;
     }
-
 }

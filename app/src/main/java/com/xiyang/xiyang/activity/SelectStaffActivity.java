@@ -16,6 +16,7 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.Constant;
+import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -36,8 +37,8 @@ public class SelectStaffActivity extends BaseActivity {
     String role = "", userId = "";
     int requestCode = 0, item = -1;
     private RecyclerView recyclerView;
-    List<SubordinateModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<SubordinateModel.ListBean> mAdapter;
+    List<SubordinateModel> list = new ArrayList<>();
+    CommonAdapter<SubordinateModel> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +68,11 @@ public class SelectStaffActivity extends BaseActivity {
                 if (requestCode == Constant.SELECT_STAFF && item >= 0) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    bundle.putString("staffId", list.get(item).getId());
+                    bundle.putString("staffId", list.get(item).getUserId());
                     bundle.putString("staffName", list.get(item).getName());
 //                    bundle.putStringArrayList("imgList", (ArrayList<String>) response.getList());
+                    bundle.putString("ShangJiId", list.get(item).getParentUserId());
+                    bundle.putString("ShangJiName", list.get(item).getParentUserName());
                     resultIntent.putExtras(bundle);
                     SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
@@ -89,9 +92,9 @@ public class SelectStaffActivity extends BaseActivity {
     }
 
     private void requestStaff(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.Subordinate, GsonUtils.toJson(params), headerMap, new CallBackUtil<SubordinateModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.Subordinate, GsonUtils.toJson(params), headerMap, new CallBackUtil<List<SubordinateModel>>() {
             @Override
-            public SubordinateModel onParseResponse(Call call, Response response) {
+            public List<SubordinateModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -103,20 +106,20 @@ public class SelectStaffActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(SubordinateModel response) {
+            public void onResponse(List<SubordinateModel> response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response;
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<SubordinateModel.ListBean>
+                    mAdapter = new CommonAdapter<SubordinateModel>
                             (SelectStaffActivity.this, R.layout.item_fragment1_m, list) {
                         @Override
-                        protected void convert(ViewHolder holder, SubordinateModel.ListBean model, int position) {
+                        protected void convert(ViewHolder holder, SubordinateModel model, int position) {
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(SelectStaffActivity.this)
-                                    .load(model.getHead())
+                                    .load(model.getAvatar())
                                     .fitCenter()
 //                                    .apply(RequestOptions.bitmapTransform(new
 //                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
@@ -125,10 +128,10 @@ public class SelectStaffActivity extends BaseActivity {
                                     .into(imageView1);//加载图片
                             holder.setText(R.id.tv_name, model.getName());
 
-                            holder.setText(R.id.tv1, model.getStoreNum());
-                            holder.setText(R.id.tv2, model.getStoreNum());
-                            holder.setText(R.id.tv3, model.getDeviceNum());
-                            holder.setText(R.id.tv4, "￥" + model.getMoney());
+                            holder.setText(R.id.tv1, model.getStatisticInfo().getMerchantNumber());
+                            holder.setText(R.id.tv2, model.getStatisticInfo().getStoreNumber());
+                            holder.setText(R.id.tv3, model.getStatisticInfo().getDeviceNumber());
+                            holder.setText(R.id.tv4, "￥" + model.getStatisticInfo().getMoney());
 
                             TextView tv_bdm = holder.getView(R.id.tv_bdm);
                             TextView tv_bd = holder.getView(R.id.tv_bd);
@@ -144,15 +147,15 @@ public class SelectStaffActivity extends BaseActivity {
 
                             switch (localUserInfo.getUserJob()) {
                                 case "CM":
-                                    tv_bdm.setText("BDM:" + model.getBdmNum());
-                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_bdm.setText("BDM:" + model.getStatisticInfo().getBdmNumber());
+                                    tv_bd.setText("BD:" + model.getStatisticInfo().getBdNumber());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
                                 case "BDM":
                                     tv_bdm.setVisibility(View.GONE);
 
-                                    tv_bd.setText("BD:" + model.getBdNum());
+                                    tv_bd.setText("BD:" + model.getStatisticInfo().getBdNumber());
                                     tv_city1.setText(model.getAddress());
                                     tv_city2.setText(model.getAddress());
                                     break;
@@ -210,9 +213,11 @@ public class SelectStaffActivity extends BaseActivity {
                 if (requestCode == Constant.SELECT_STAFF && item >= 0) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    bundle.putString("staffId", list.get(item).getId());
+                    bundle.putString("staffId", list.get(item).getUserId());
                     bundle.putString("staffName", list.get(item).getName());
 //                    bundle.putStringArrayList("imgList", (ArrayList<String>) response.getList());
+                    bundle.putString("ShangJiId", list.get(item).getParentUserId());
+                    bundle.putString("ShangJiName", list.get(item).getParentUserName());
                     resultIntent.putExtras(bundle);
                     SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();

@@ -146,7 +146,7 @@ public class AddBuyActivity extends BaseActivity {
                 hideProgress();
 //                finish();
                 Bundle bundle = new Bundle();
-                bundle.putInt("type", 4);
+                bundle.putInt("type", 4);//1、调整上级 2、调整市场 3、升职降职 4、采购申请
                 CommonUtil.gotoActivityWithData(AddBuyActivity.this, PersonnelListActivity.class, bundle, false);
             }
         });

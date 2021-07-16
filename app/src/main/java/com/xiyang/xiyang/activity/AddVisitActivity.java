@@ -23,7 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.CommonModel;
+import com.xiyang.xiyang.model.CommonModel1;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -57,12 +57,12 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class AddVisitActivity extends BaseActivity {
     List<String> list_visit = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_fangshi = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_yingye = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_fengxian = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_fankui = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_jingdui = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_yuanyin = new ArrayList<>();
+    List<CommonModel1.ListBean> list_fangshi = new ArrayList<>();
+    List<CommonModel1.ListBean> list_yingye = new ArrayList<>();
+    List<CommonModel1.ListBean> list_fengxian = new ArrayList<>();
+    List<CommonModel1.ListBean> list_fankui = new ArrayList<>();
+    List<CommonModel1.ListBean> list_jingdui = new ArrayList<>();
+    List<CommonModel1.ListBean> list_yuanyin = new ArrayList<>();
 
     int type = 1;//  1-远程拜访，2-上门拜访,3-陌生拜访
     int item_fangshi = -1, item_yingye = -1, item_fengxian = -1, item_fankui = -1, item_jingdui = -1, item_yuanyin = -1, itme_truefalse = 1;
@@ -77,8 +77,9 @@ public class AddVisitActivity extends BaseActivity {
     ImageView imageView1;
 
     String storeId = "", isBusiness = "", reportStatus = "", visitChannel = "", contactName = "", reason = "",
-            feedback = "", isAdver = "", remark = "", images = "", intention = "1";
+            feedback = "", isAdver = "", remark = "", images = "", intention = "1", visitTime = "";
     File imgfile = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,9 +147,9 @@ public class AddVisitActivity extends BaseActivity {
     }
 
     private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MeiJuList, params, headerMap, new CallBackUtil<CommonModel>() {
+        OkhttpUtil.okHttpGet(URLs.MeiJuList, params, headerMap, new CallBackUtil<CommonModel1>() {
             @Override
-            public CommonModel onParseResponse(Call call, Response response) {
+            public CommonModel1 onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -159,14 +160,15 @@ public class AddVisitActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CommonModel response) {
+            public void onResponse(CommonModel1 response) {
                 hideProgress();
-                list_fangshi = response.getVisitChannel();//拜访方式
-                list_yingye = response.getIsBusiness();//营业情况
-                list_fengxian = response.getReportStatus();//合作风险
-                list_fankui = response.getFeedback();//拜访反馈
-                list_jingdui = response.getIsAdver();//商户竞对
-                list_yuanyin = response.getReason();//拜访原因
+                list_fangshi = response.getVisitTypeEnum().getList();//拜访方式
+                list_yingye = response.getBusinessSituationEnum().getList();//营业情况
+                list_fengxian = response.getCooperationRiskEnum().getList();//合作风险
+                list_fankui = response.getVisitFeedbackEnum().getList();//拜访反馈
+                list_jingdui = response.getCooperationRiskEnum().getList();//商户竞对
+                list_yuanyin = response.getVisitReasonEnum().getList();//拜访原因
+
 
             }
         });
@@ -226,7 +228,7 @@ public class AddVisitActivity extends BaseActivity {
             case R.id.tv_baifangjilu:
                 //拜访记录
                 Bundle bundle = new Bundle();
-                bundle.putString("type",type+"");
+                bundle.putString("type", type + "");
                 /*switch (type){
                     case 1:
                         bundle.putString("type","2");
@@ -238,7 +240,7 @@ public class AddVisitActivity extends BaseActivity {
                         bundle.putString("type","1");
                         break;
                 }*/
-                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class,bundle,true);
+                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class, bundle, true);
                 break;
             case R.id.imageView1:
                 //上传图片
@@ -268,11 +270,11 @@ public class AddVisitActivity extends BaseActivity {
                             MyLogger.i(">>>>上传文件路径：" + response);
                             images = response;//文件地址
                             switch (type) {
-                                case 1:
+                                case 0:
                                     //远程拜访
-                                case 2:
+                                case 1:
                                     //上门拜访
-                                    params.put("type", type+"");//拜访方式 1-远程拜访，2-上门拜访,3-陌生拜访
+                                    params.put("type", Integer.valueOf(type) + 1 + "");//拜访方式 1-远程拜访，2-上门拜访,3-陌生拜访
                                     params.put("storeId", storeId);//门店id 陌生拜访为0
                                     params.put("isBusiness", isBusiness);//当前营业状况 1-是，2-否
                                     params.put("reportStatus", reportStatus);//合作风险上报
@@ -285,12 +287,12 @@ public class AddVisitActivity extends BaseActivity {
                                     params.put("images", images);
                                     requestUpData(params);
                                     break;
-                                case 3:
+                                case 2:
                                     //陌生拜访
-                                    params.put("type", type+"");
+                                    params.put("type", Integer.valueOf(type) + 1  + "");
                                     params.put("storeId", "0");
                                     params.put("way", visitChannel);//拜访方式
-                                    params.put("intention", intention);
+                                    params.put("isIntention", intention);//是否意向0默认1是2否
                                     params.put("remark", remark);
                                     params.put("images", images);
                                     requestUpData(params);
@@ -306,11 +308,12 @@ public class AddVisitActivity extends BaseActivity {
 
         }
     }
+
     private boolean match() {
         switch (type) {
-            case 1:
+            case 0:
                 //远程拜访
-            case 2:
+            case 1:
                 //上门拜访
                 if (TextUtils.isEmpty(storeId)) {
                     myToast("请选择门店");
@@ -356,7 +359,7 @@ public class AddVisitActivity extends BaseActivity {
                 }
 
                 break;
-            case 3:
+            case 2:
                 //陌生拜访
                 if (TextUtils.isEmpty(visitChannel)) {
                     myToast("请选择拜访方式");
@@ -452,7 +455,7 @@ public class AddVisitActivity extends BaseActivity {
                 myToast("提交成功");
                 hideProgress();
                 Bundle bundle = new Bundle();
-                bundle.putString("type",type+"");
+                bundle.putString("type", type + "");
                 /*switch (type){
                     case 0:
                         bundle.putString("type","2");
@@ -464,7 +467,7 @@ public class AddVisitActivity extends BaseActivity {
                         bundle.putString("type","1");
                         break;
                 }*/
-                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class,bundle,true);
+                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class, bundle, true);
             }
         });
     }
@@ -488,9 +491,9 @@ public class AddVisitActivity extends BaseActivity {
         rl_shanghujingdui.setVisibility(View.GONE);
         rl_buchongshuoming.setVisibility(View.VISIBLE);
         switch (type) {
-            case 1:
+            case 0:
                 //远程拜访
-            case 2:
+            case 1:
                 //上门拜访
                 rl_xuanzemendian.setVisibility(View.VISIBLE);
                 rl_baifangjilu.setVisibility(View.VISIBLE);
@@ -503,7 +506,7 @@ public class AddVisitActivity extends BaseActivity {
                 rl_baifangfankui.setVisibility(View.VISIBLE);
                 rl_shanghujingdui.setVisibility(View.VISIBLE);
                 break;
-            case 3:
+            case 2:
                 //陌生拜访
                 rl_baifangmendian.setVisibility(View.VISIBLE);
                 rl_baifangrenyuan.setVisibility(View.VISIBLE);
@@ -576,13 +579,13 @@ public class AddVisitActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel1.ListBean> adapter = new CommonAdapter<CommonModel1.ListBean>
                 (AddVisitActivity.this, R.layout.item_help, list_fangshi) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
-                if (item_fangshi-1 == position)
+                tv.setText(model.getDescription());
+                if (item_fangshi - 1 == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
                     tv.setTextColor(getResources().getColor(R.color.black1));
@@ -591,10 +594,10 @@ public class AddVisitActivity extends BaseActivity {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                item_fangshi = position+1;
-                tv_baifangfangshi.setText(list_fangshi.get(position).getVal());
+                item_fangshi = position + 1;
+                tv_baifangfangshi.setText(list_fangshi.get(position).getDescription());
 
-                visitChannel = list_fangshi.get(position).getKey();
+                visitChannel = list_fangshi.get(position).getCode();
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -622,12 +625,12 @@ public class AddVisitActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel1.ListBean> adapter = new CommonAdapter<CommonModel1.ListBean>
                 (AddVisitActivity.this, R.layout.item_help, list_yingye) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getDescription());
                 if (item_yingye == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -638,9 +641,9 @@ public class AddVisitActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_yingye = position;
-                tv_yingyeqingkuang.setText(list_yingye.get(position).getVal());
+                tv_yingyeqingkuang.setText(list_yingye.get(position).getDescription());
 
-                isBusiness = list_yingye.get(position).getKey();
+                isBusiness = list_yingye.get(position).getCode();
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -668,12 +671,12 @@ public class AddVisitActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel1.ListBean> adapter = new CommonAdapter<CommonModel1.ListBean>
                 (AddVisitActivity.this, R.layout.item_help, list_fengxian) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getDescription());
                 if (item_fengxian == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -684,9 +687,9 @@ public class AddVisitActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_fengxian = position;
-                tv_hezuofengxian.setText(list_fengxian.get(position).getVal());
+                tv_hezuofengxian.setText(list_fengxian.get(position).getDescription());
 
-                reportStatus = list_fengxian.get(position).getKey();
+                reportStatus = list_fengxian.get(position).getCode();
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -714,12 +717,12 @@ public class AddVisitActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel1.ListBean> adapter = new CommonAdapter<CommonModel1.ListBean>
                 (AddVisitActivity.this, R.layout.item_help, list_yuanyin) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getDescription());
                 if (item_yuanyin == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -730,9 +733,9 @@ public class AddVisitActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_yuanyin = position;
-                tv_baifangyuanyin.setText(list_yuanyin.get(position).getVal());
+                tv_baifangyuanyin.setText(list_yuanyin.get(position).getDescription());
 
-                reason = list_yuanyin.get(position).getKey();
+                reason = list_yuanyin.get(position).getCode();
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -760,12 +763,12 @@ public class AddVisitActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel1.ListBean> adapter = new CommonAdapter<CommonModel1.ListBean>
                 (AddVisitActivity.this, R.layout.item_help, list_fankui) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getDescription());
                 if (item_fankui == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -776,9 +779,9 @@ public class AddVisitActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_fankui = position;
-                tv_baifangfankui.setText(list_fankui.get(position).getVal());
+                tv_baifangfankui.setText(list_fankui.get(position).getDescription());
 
-                feedback = list_fankui.get(position).getKey();
+                feedback = list_fankui.get(position).getCode();
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -806,12 +809,12 @@ public class AddVisitActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel1.ListBean> adapter = new CommonAdapter<CommonModel1.ListBean>
                 (AddVisitActivity.this, R.layout.item_help, list_jingdui) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getDescription());
                 if (item_jingdui == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -822,9 +825,9 @@ public class AddVisitActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_jingdui = position;
-                tv_shanghujingdui.setText(list_jingdui.get(position).getVal());
+                tv_shanghujingdui.setText(list_jingdui.get(position).getDescription());
 
-                isAdver = list_jingdui.get(position).getKey();
+                isAdver = list_jingdui.get(position).getCode();
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
