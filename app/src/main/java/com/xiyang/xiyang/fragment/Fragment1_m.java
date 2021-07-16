@@ -14,6 +14,7 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddBuyActivity;
+import com.xiyang.xiyang.activity.AdjustMarketActivity;
 import com.xiyang.xiyang.activity.AdjustSuperiorActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyCityActivity;
@@ -449,7 +450,7 @@ public class Fragment1_m extends BaseFragment {
                 //调整市场
                 if (localUserInfo.getUserJob().equals("BDM")) {
                     bundle.putString("job", "BD");
-                    CommonUtil.gotoActivityWithData(getActivity(), AdjustSuperiorActivity.class, bundle);
+                    CommonUtil.gotoActivityWithData(getActivity(), AdjustMarketActivity.class, bundle);
                 } else {
                     bundle.putInt("type", 2);
                     CommonUtil.gotoActivityWithData(getActivity(), SelectLevelActivity.class, bundle);

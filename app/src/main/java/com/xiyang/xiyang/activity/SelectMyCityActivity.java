@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.SelectMyCityModel;
+import com.xiyang.xiyang.model.MyCityModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -31,9 +31,10 @@ import okhttp3.Response;
  */
 public class SelectMyCityActivity extends BaseActivity {
     int requestCode = 0;
+    String type = "";
     private RecyclerView recyclerView;
-    List<SelectMyCityModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<SelectMyCityModel.ListBean> mAdapter;
+    List<MyCityModel> list = new ArrayList<>();
+    CommonAdapter<MyCityModel> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +49,28 @@ public class SelectMyCityActivity extends BaseActivity {
         findViewByID_My(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*String[] postionIds = new String[list.get(item).getRegions().size()];
+                String[] postionCitys = new String[list.get(item).getRegions().size()];
+                for (int i = 0; i < list.get(item).getRegions().size(); i++) {
+                    postionIds[i]= list.get(item).getRegions().get(i).getId();
+                    postionCitys[i]= list.get(item).getRegions().get(i).getNameX();
+                }
+                bundle.putStringArray("postionIds", postionIds);
+                bundle.putStringArray("postionCitys", postionCitys);*/
+
                 String postionIds = "";
                 String postionCitys = "";
-                for (SelectMyCityModel.ListBean bean : list) {
+                for (MyCityModel bean : list) {
                     if (bean.isIsxuanzhong()) {
-                        postionIds += bean.getId() + ",";
-                        postionCitys += bean.getName() + ",";
+                        postionIds += bean.getRegionId() + ",";
+                        postionCitys += bean.getRegionName() + ",";
                     }
                 }
                 if (!postionIds.equals("")) {
                     postionIds = postionIds.substring(0, postionIds.length() - 1);
                     postionCitys = postionCitys.substring(0, postionCitys.length() - 1);
                 }
+
                 if (requestCode == Constant.SELECT_MYCITY && !postionIds.equals("")) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
@@ -68,7 +79,7 @@ public class SelectMyCityActivity extends BaseActivity {
                     resultIntent.putExtras(bundle);
                     SelectMyCityActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
-                }else myToast("请选择城市");
+                } else myToast("请选择城市");
 
             }
         });
@@ -81,9 +92,9 @@ public class SelectMyCityActivity extends BaseActivity {
     }
 
     private void requestCity(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<SelectMyCityModel>() {
+        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<List<MyCityModel>>() {
             @Override
-            public SelectMyCityModel onParseResponse(Call call, Response response) {
+            public List<MyCityModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -95,18 +106,18 @@ public class SelectMyCityActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(SelectMyCityModel response) {
+            public void onResponse(List<MyCityModel> response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response;
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<SelectMyCityModel.ListBean>
+                    mAdapter = new CommonAdapter<MyCityModel>
                             (SelectMyCityActivity.this, R.layout.item_selectmycity, list) {
                         @Override
-                        protected void convert(ViewHolder holder, SelectMyCityModel.ListBean model, int position) {
-                            holder.setText(R.id.textView, model.getName());//标题
+                        protected void convert(ViewHolder holder, MyCityModel model, int position) {
+                            holder.setText(R.id.textView, model.getRegionName());//标题
                             ImageView iv = holder.getView(R.id.imageView);
                             if (model.isIsxuanzhong()) {
                                 iv.setImageResource(R.mipmap.ic_xuanzhong);
@@ -152,10 +163,10 @@ public class SelectMyCityActivity extends BaseActivity {
             public void onClick(View v) {
                 String postionIds = "";
                 String postionCitys = "";
-                for (SelectMyCityModel.ListBean bean : list) {
+                for (MyCityModel bean : list) {
                     if (bean.isIsxuanzhong()) {
-                        postionIds += bean.getId() + ",";
-                        postionCitys += bean.getName() + ",";
+                        postionIds += bean.getRegionId() + ",";
+                        postionCitys += bean.getRegionName() + ",";
                     }
                 }
                 if (!postionIds.equals("")) {
@@ -170,7 +181,7 @@ public class SelectMyCityActivity extends BaseActivity {
                     resultIntent.putExtras(bundle);
                     SelectMyCityActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();
-                }else myToast("请选择城市");
+                } else myToast("请选择城市");
             }
         });
     }

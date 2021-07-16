@@ -3,12 +3,14 @@ package com.xiyang.xiyang.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.cy.cyflowlayoutlibrary.FlowLayout;
 import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.xiyang.xiyang.R;
@@ -19,6 +21,7 @@ import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.Constant;
+import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -48,12 +51,16 @@ public class AdjustMarketActivity extends BaseActivity {
     View view1;
 
     List<String> stringList = new ArrayList<>();
+    List<String> stringList_ID = new ArrayList<>();
     FlowLayout flowLayout;
 
     RecyclerView recyclerView;
     List<String> idlist = new ArrayList<>();
     List<String> citylist = new ArrayList<>();
     CommonAdapter<String> mAdapter;
+    FlowLayoutAdapter<String> flowLayoutAdapter;
+
+    String crossLevel = "0", userId = "", oldAreaIds = "", newAreaIds = "", code = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,38 +94,26 @@ public class AdjustMarketActivity extends BaseActivity {
         textView1.setText("选择" + job.toUpperCase());
         editText1.setHint("请选择" + job.toUpperCase());
 
-        stringList.add("重庆");
-        stringList.add("齐齐哈尔");
-        stringList.add("齐齐哈尔");
-        stringList.add("贵阳");
-        stringList.add("齐齐哈尔");
-        stringList.add("乌鲁木齐");
-        stringList.add("杭州");
-        stringList.add("齐齐哈尔");
+        flowLayoutAdapter = new FlowLayoutAdapter<String>(stringList) {
+            @Override
+            public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position, String bean) {
+                holder.setText(R.id.tv, bean);
+            }
 
-        FlowLayoutAdapter<String> flowLayoutAdapter =
-                new FlowLayoutAdapter<String>
-                        (stringList) {
-                    @Override
-                    public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position,
-                                               String bean) {
-                        holder.setText(R.id.tv, bean);
-                    }
+            @Override
+            public void onItemClick(int position, String bean) {
 
-                    @Override
-                    public void onItemClick(int position, String bean) {
+            }
 
-                    }
-
-                    @Override
-                    public int getItemLayoutID(int position, String bean) {
-                        return R.layout.item_flowlayout_yuanjiaobiankuang;
-                    }
-                };
+            @Override
+            public int getItemLayoutID(int position, String bean) {
+                return R.layout.item_flowlayout_yuanjiaobiankuang;
+            }
+        };
 
         flowLayout.setAdapter(flowLayoutAdapter);
 
-        showSelectCity(idlist,citylist);
+        showSelectCity(idlist, citylist);
 
         requestServer();
     }
@@ -161,10 +156,12 @@ public class AdjustMarketActivity extends BaseActivity {
             case R.id.iv_kuaqu:
                 isKuaQu = !isKuaQu;
                 if (isKuaQu) {
+                    crossLevel = "1";
                     iv_kuaqu.setImageResource(R.mipmap.ic_xuanzhong);
                     linearLayout.setVisibility(View.GONE);
                     view1.setVisibility(View.GONE);
                 } else {
+                    crossLevel = "0";
                     iv_kuaqu.setImageResource(R.mipmap.ic_weixuanzhong);
                     linearLayout.setVisibility(View.VISIBLE);
                     view1.setVisibility(View.VISIBLE);
@@ -192,10 +189,12 @@ public class AdjustMarketActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(false, getString(R.string.app_loading1));
-                    HashMap<String, String> params = new HashMap<>();
-                   /* params.put("role", role.toLowerCase());//大写转小写
-                    params.put("adminId", adminId);
-                    params.put("code", code);//手机验证码*/
+                    params.put("crossLevel", crossLevel);//跨区
+                    params.put("userId", userId);
+                    params.put("oldAreaIds", oldAreaIds);
+                    params.put("newAreaIds", newAreaIds);
+                    params.put("extra", "");
+                    params.put("code", code);//手机验证码
                     requestUpData(params);
                 }
                 break;
@@ -203,21 +202,37 @@ public class AdjustMarketActivity extends BaseActivity {
     }
 
     private boolean match() {
-       /* if (TextUtils.isEmpty(adminId)) {
+        if (TextUtils.isEmpty(userId)) {
             myToast(editText1.getHint().toString());
             return false;
         }
-        role = editText3.getText().toString().trim();
-        if (TextUtils.isEmpty(role)) {
-            myToast("请选择新角色");
-            return false;
+        //当前负责城市
+        oldAreaIds = "";
+        for (String s : stringList_ID) {
+            oldAreaIds += s + ",";
         }
-
-        code = editText3.getText().toString().trim();
+        if (!oldAreaIds.equals("")) {
+            oldAreaIds = oldAreaIds.substring(0, oldAreaIds.length() - 1);
+        }
+        //现在负责城市
+        newAreaIds = "";
+        idlist.remove("");
+        MyLogger.i(">>>>"+idlist.size());
+        if (crossLevel.equals("0")) {
+            for (String s : idlist) {
+                newAreaIds += s + ",";
+            }
+            if (!newAreaIds.equals("")) {
+                newAreaIds = newAreaIds.substring(0, newAreaIds.length() - 1);
+            } else {
+                myToast("请选择新的负责城市");
+            }
+        }
+        code = et_code.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
             myToast("请输入验证码");
             return false;
-        }*/
+        }
         return true;
     }
 
@@ -228,7 +243,7 @@ public class AdjustMarketActivity extends BaseActivity {
     /**
      * 展示选择的城市
      */
-    private void showSelectCity(List<String> idlist,List<String> citylist){
+    private void showSelectCity(List<String> idlist, List<String> citylist) {
         idlist.add("");
         citylist.add("");
         mAdapter = new CommonAdapter<String>
@@ -281,7 +296,7 @@ public class AdjustMarketActivity extends BaseActivity {
      * @param params
      */
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AdjustSuperior, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AdjustMarket, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -297,7 +312,10 @@ public class AdjustMarketActivity extends BaseActivity {
             public void onResponse(String response) {
                 myToast("提交成功");
                 hideProgress();
-                CommonUtil.gotoActivity(AdjustMarketActivity.this, AdjustMarketListActivity.class);
+//                CommonUtil.gotoActivity(AdjustMarketActivity.this, AdjustMarketListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", 2);////1、调整上级 2、调整市场 3、升职降职 4、采购申请
+                CommonUtil.gotoActivityWithData(AdjustMarketActivity.this, PersonnelListActivity.class, bundle, false);
             }
         });
     }
@@ -339,8 +357,21 @@ public class AdjustMarketActivity extends BaseActivity {
                     //选择员工
                     if (data != null) {
                         Bundle bundle = data.getExtras();
-//                        adminId = bundle.getString("staffId");
+                        userId = bundle.getString("staffId");
                         editText1.setText(bundle.getString("staffName"));
+
+                        //管理的城市
+                        String[] cityIds = bundle.getStringArray("cityIds");
+                        String[] citys = bundle.getStringArray("citys");
+                        stringList_ID.clear();
+                        stringList.clear();
+                        for (String s : cityIds) {
+                            stringList_ID.add(s);
+                        }
+                        for (String s : citys) {
+                            stringList.add(s);
+                        }
+                        flowLayoutAdapter.notifyDataSetChanged();
                     }
                     break;
                 case Constant.SELECT_MYCITY:
@@ -355,13 +386,13 @@ public class AdjustMarketActivity extends BaseActivity {
 
                         idlist.clear();
                         citylist.clear();
-                        for (String s:idArr){
+                        for (String s : idArr) {
                             idlist.add(s);
                         }
-                        for (String s:cityArr){
+                        for (String s : cityArr) {
                             citylist.add(s);
                         }
-                        showSelectCity(idlist,citylist);
+                        showSelectCity(idlist, citylist);
                     }
                     break;
             }
@@ -387,5 +418,4 @@ public class AdjustMarketActivity extends BaseActivity {
             tv_code.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
     }
-
 }

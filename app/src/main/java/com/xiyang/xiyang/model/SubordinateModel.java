@@ -1,6 +1,9 @@
 package com.xiyang.xiyang.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Mr.Z on 2021/5/8.
@@ -59,6 +62,8 @@ public class SubordinateModel implements Serializable {
     private String fireTime;
     private String areaIds;
     private StatisticInfoBean statisticInfo;
+    private List<RegionsBean> regions;
+
 
     public String getUserId() {
         return userId;
@@ -260,7 +265,15 @@ public class SubordinateModel implements Serializable {
         this.statisticInfo = statisticInfo;
     }
 
-    public static class StatisticInfoBean {
+    public List<RegionsBean> getRegions() {
+        return regions;
+    }
+
+    public void setRegions(List<RegionsBean> regions) {
+        this.regions = regions;
+    }
+
+    public static class StatisticInfoBean implements Serializable{
         /**
          * organId : 1415121040921829377
          * organName : null
@@ -363,6 +376,43 @@ public class SubordinateModel implements Serializable {
 
         public void setMoney(String money) {
             this.money = money;
+        }
+    }
+
+    public static class RegionsBean implements Serializable{
+        /**
+         * id : 130000
+         * name : 河北省
+         * level : 1
+         */
+
+        private String id;
+        @SerializedName("name")
+        private String nameX;
+        private String level;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getNameX() {
+            return nameX;
+        }
+
+        public void setNameX(String nameX) {
+            this.nameX = nameX;
+        }
+
+        public String getLevel() {
+            return level;
+        }
+
+        public void setLevel(String level) {
+            this.level = level;
         }
     }
 }

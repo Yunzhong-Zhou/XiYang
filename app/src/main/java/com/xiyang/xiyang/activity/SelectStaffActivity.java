@@ -16,7 +16,6 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.Constant;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -213,11 +212,39 @@ public class SelectStaffActivity extends BaseActivity {
                 if (requestCode == Constant.SELECT_STAFF && item >= 0) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
+                    //选择的用户
                     bundle.putString("staffId", list.get(item).getUserId());
                     bundle.putString("staffName", list.get(item).getName());
 //                    bundle.putStringArrayList("imgList", (ArrayList<String>) response.getList());
+                    //所属上级
                     bundle.putString("ShangJiId", list.get(item).getParentUserId());
                     bundle.putString("ShangJiName", list.get(item).getParentUserName());
+
+                    //管理城市
+                   /* String cityIds = "";
+                    String Citys = "";
+                    for (SubordinateModel.RegionsBean bean : list.get(item).getRegions()) {
+                        cityIds += bean.getId() + ",";
+                        Citys += bean.getNameX() + ",";
+                    }
+                    if (!cityIds.equals("")) {
+                        cityIds = cityIds.substring(0, cityIds.length() - 1);
+                        Citys = Citys.substring(0, Citys.length() - 1);
+                    }
+                    bundle.putString("cityIds", cityIds);
+                    bundle.putString("citys", Citys);*/
+
+                    String[] cityIds = new String[list.get(item).getRegions().size()];
+                    String[] Citys = new String[list.get(item).getRegions().size()];
+                    for (int i = 0; i < list.get(item).getRegions().size(); i++) {
+                        cityIds[i]= list.get(item).getRegions().get(i).getId();
+                        Citys[i]= list.get(item).getRegions().get(i).getNameX();
+                    }
+                    bundle.putStringArray("cityIds", cityIds);
+                    bundle.putStringArray("citys", Citys);
+
+//                    bundle.putParcelableArrayList("Citys", (ArrayList<? extends Parcelable>) list.get(item).getRegions());
+
                     resultIntent.putExtras(bundle);
                     SelectStaffActivity.this.setResult(RESULT_OK, resultIntent);
                     finish();

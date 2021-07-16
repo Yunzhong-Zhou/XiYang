@@ -167,7 +167,11 @@ public class AdjustSuperiorActivity extends BaseActivity {
                     params.put("crossLevel", crossLevel);//是否跨区
                     params.put("userId", userId);
                     params.put("oldParentId", oldParentId);
-                    params.put("newParentId", newParentId);
+                    if (crossLevel.equals("0")) {
+                        params.put("newParentId", newParentId);
+                    } else {
+                        params.put("newParentId", "");
+                    }
                     params.put("extra", "");
                     params.put("code", code);//手机验证码
                     requestUpData(params);
@@ -185,14 +189,12 @@ public class AdjustSuperiorActivity extends BaseActivity {
             myToast(editText2.getHint().toString());
             return false;
         }
-        if (crossLevel.equals("0")){
+        if (crossLevel.equals("0")) {
             if (TextUtils.isEmpty(newParentId)) {
                 myToast(editText3.getHint().toString());
                 return false;
             }
         }
-
-
         code = et_code.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
             myToast(et_code.getHint().toString());
@@ -278,7 +280,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                             editText1.setText(bundle.getString("staffName"));
                             oldParentId = bundle.getString("ShangJiId");
                             editText2.setText(bundle.getString("ShangJiName"));
-                            MyLogger.i(">>>>>"+bundle.getString("ShangJiName"));
+                            MyLogger.i(">>>>>" + bundle.getString("ShangJiName"));
                         } else {
                             newParentId = bundle.getString("staffId");
                             editText3.setText(bundle.getString("staffName"));

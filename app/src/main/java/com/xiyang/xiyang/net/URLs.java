@@ -100,7 +100,9 @@ public class URLs {
      * ********************************管理*****************************************
      */
     public static final String Fragment1_m = HOST + "/service-ucenter/organ/home";
-    //选择权限城市
+    //员工负责城市-无统计数据
+    public static final String StaffCity = HOST + "/organ/region/listLoginOrganUserCity";
+    //选择权限城市-有统计数据
     public static final String MyCity = HOST + "/service-ucenter/organ/region/getLoginOrganUserCityStatistic";
     //添加员工
     public static final String AddStaff = HOST + API + "user/add";
@@ -110,8 +112,10 @@ public class URLs {
     public static final String StaffDetail = HOST + API + "manage/subordinate/detail";
     //调整上级
     public static final String AdjustSuperior = HOST + "/service-ucenter/organ/change/apply/upper";
+    //调整市场
+    public static final String AdjustMarket = HOST + "/service-ucenter/organ/change/apply/market";
     //调整岗位
-    public static final String AdjustJob = HOST + API + "manage/change/role";
+    public static final String AdjustJob = HOST + "/service-ucenter/organ/change/apply/upOrDown";
     //选择员工
     public static final String SelectStaff = HOST + API + "manage/subordinate";
     //采购审批列表

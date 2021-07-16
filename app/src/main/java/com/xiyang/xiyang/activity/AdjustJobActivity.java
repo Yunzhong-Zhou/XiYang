@@ -12,12 +12,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.MyLogger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -54,13 +56,13 @@ public class AdjustJobActivity extends BaseActivity {
     List<String> list_juese = new ArrayList<>();
 
     int itme_juese = 0;
-    String adminId = "", role = "", code = "";
 
     RecyclerView recyclerView;
     List<String> idlist = new ArrayList<>();
     List<String> citylist = new ArrayList<>();
     CommonAdapter<String> mAdapter;
 
+    String crossLevel="0",adminId = "", role = "", code = "",newAreaIds="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,10 +116,12 @@ public class AdjustJobActivity extends BaseActivity {
             case R.id.iv_kuaqu:
                 isKuaQu = !isKuaQu;
                 if (isKuaQu) {
+                    crossLevel = "1";
                     iv_kuaqu.setImageResource(R.mipmap.ic_xuanzhong);
                     linearLayout.setVisibility(View.GONE);
                     view1.setVisibility(View.GONE);
                 } else {
+                    crossLevel = "0";
                     iv_kuaqu.setImageResource(R.mipmap.ic_weixuanzhong);
                     linearLayout.setVisibility(View.VISIBLE);
                     view1.setVisibility(View.VISIBLE);
@@ -149,9 +153,12 @@ public class AdjustJobActivity extends BaseActivity {
                 //提交
                 if (match()) {
                     showProgress(false, getString(R.string.app_loading1));
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("role", role.toLowerCase());//大写转小写
-                    params.put("adminId", adminId);
+                    params.clear();
+                    params.put("crossLevel", crossLevel);//跨区
+                    params.put("userId", adminId);
+                    params.put("newCode", role.toUpperCase());
+                    params.put("newAreaIds", newAreaIds);
+                    params.put("extra", "");
                     params.put("code", code);//手机验证码
                     requestUpData(params);
                 }
@@ -168,6 +175,21 @@ public class AdjustJobActivity extends BaseActivity {
         if (TextUtils.isEmpty(role)) {
             myToast("请选择新角色");
             return false;
+        }
+
+        //现在负责城市
+        newAreaIds = "";
+        idlist.remove("");
+        MyLogger.i(">>>>"+idlist.size());
+        if (crossLevel.equals("0")) {
+            for (String s : idlist) {
+                newAreaIds += s + ",";
+            }
+            if (!newAreaIds.equals("")) {
+                newAreaIds = newAreaIds.substring(0, newAreaIds.length() - 1);
+            } else {
+                myToast("请选择新的负责城市");
+            }
         }
 
         code = et_code.getText().toString().trim();
@@ -258,7 +280,7 @@ public class AdjustJobActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AdjustJob, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AdjustJob, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -274,7 +296,10 @@ public class AdjustJobActivity extends BaseActivity {
             public void onResponse(String response) {
                 myToast("调整成功");
                 hideProgress();
-                finish();
+//                finish();
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", 2);////1、调整上级 2、调整市场 3、升职降职 4、采购申请
+                CommonUtil.gotoActivityWithData(AdjustJobActivity.this, PersonnelListActivity.class, bundle, false);
             }
         });
     }

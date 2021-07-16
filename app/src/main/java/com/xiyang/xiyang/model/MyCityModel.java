@@ -20,6 +20,15 @@ public class MyCityModel implements Serializable {
      * deviceNumber : 0
      * revenue : 0
      */
+    private boolean isxuanzhong = false;
+
+    public boolean isIsxuanzhong() {
+        return isxuanzhong;
+    }
+
+    public void setIsxuanzhong(boolean isxuanzhong) {
+        this.isxuanzhong = isxuanzhong;
+    }
 
     private String organId;
     private String organName;
