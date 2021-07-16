@@ -56,13 +56,13 @@ public class TransferShopActivity extends BaseActivity {
     @Override
     protected void initData() {
         params.clear();
-        request(params, URLs.Common + "MERCHANT_TRSANFTER_REASON");
+        request(params, URLs.Common + "MERCHANT_TRANSFER_REASON");
     }
 
     private void request(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<CommonModel>() {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<List<CommonModel.ListBean>>() {
             @Override
-            public CommonModel onParseResponse(Call call, Response response) {
+            public List<CommonModel.ListBean> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -73,11 +73,11 @@ public class TransferShopActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CommonModel response) {
+            public void onResponse(List<CommonModel.ListBean> response) {
                 hideProgress();
                 i_liyou = -1;
                 reason = "";
-                list_liyou = response.getList();
+                list_liyou = response;
             }
         });
 
@@ -142,7 +142,7 @@ public class TransferShopActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPutJson(URLs.TransferShop, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.TransferShop, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

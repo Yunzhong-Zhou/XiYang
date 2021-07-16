@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
@@ -40,15 +41,15 @@ import okhttp3.Response;
  */
 public class MyVisitListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyVisitListModel.ListBean> list = new ArrayList<>();
-    CommonAdapter<MyVisitListModel.ListBean> mAdapter;
+    List<MyVisitListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<MyVisitListModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2, linearLayout3;
     private TextView textView1, textView2, textView3;
     private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "", type = "", startTime = "", endTIme = "";
+    String sort = "desc", status = "", type = "", createTime = "";
     int i1 = 0;
     int i2 = 0;
 
@@ -74,13 +75,10 @@ public class MyVisitListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                params.put("page", page + "");
-                params.put("count", "10");
-//                params.put("status", status);
-//                params.put("sort", sort);
+                params.put("current", page + "");
+                params.put("pageSize", "10");
                 params.put("type", type);
-                params.put("startTime", startTime);
-                params.put("endTIme", endTIme);
+                params.put("createTime", createTime);
                 requestList(params);
             }
 
@@ -88,13 +86,10 @@ public class MyVisitListActivity extends BaseActivity {
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("page", page + "");
-                params.put("count", "10");
-//                params.put("status", status);
-//                params.put("sort", sort);
+                params.put("current", page + "");
+                params.put("pageSize", "10");
                 params.put("type", type);
-                params.put("startTime", startTime);
-                params.put("endTIme", endTIme);
+                params.put("createTime", createTime);
                 requestListMore(params);
             }
         });
@@ -116,7 +111,7 @@ public class MyVisitListActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyVisitList, params, headerMap, new CallBackUtil<MyVisitListModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.MyVisitList, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyVisitListModel>() {
             @Override
             public MyVisitListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -133,18 +128,18 @@ public class MyVisitListActivity extends BaseActivity {
             public void onResponse(MyVisitListModel response) {
                 showContentPage();
                 hideProgress();
-                list = response.getList();
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<MyVisitListModel.ListBean>
+                    mAdapter = new CommonAdapter<MyVisitListModel.RecordsBean>
                             (MyVisitListActivity.this, R.layout.item_myvisitlist, list) {
                         @Override
-                        protected void convert(ViewHolder holder, MyVisitListModel.ListBean model, int position) {
-                            holder.setText(R.id.tv_name,model.getName());//标题
+                        protected void convert(ViewHolder holder, MyVisitListModel.RecordsBean model, int position) {
+                           /* holder.setText(R.id.tv_name,model.getName());//标题
 //                            holder.setText(R.id.tv_yixiang, model.get);//意向
                             holder.setText(R.id.tv_type, model.getTypeTitle());
-                            holder.setText(R.id.tv_time, model.getVisitedAt());
+                            holder.setText(R.id.tv_time, model.getVisitedAt());*/
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -183,8 +178,8 @@ public class MyVisitListActivity extends BaseActivity {
             public void onResponse(MyVisitListModel response) {
 //                showContentPage();
                 hideProgress();
-                List<MyVisitListModel.ListBean> list1 = new ArrayList<>();
-                list1 = response.getList();
+                List<MyVisitListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;
@@ -235,13 +230,10 @@ public class MyVisitListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        params.put("page", page + "");
-        params.put("count", "10");
-//        params.put("status", status);
-//        params.put("sort", sort);
+        params.put("current", page + "");
+        params.put("pageSize", "10");
         params.put("type", type);
-        params.put("startTime", startTime);
-        params.put("endTIme", endTIme);
+        params.put("createTime", createTime);
         requestList(params);
     }
 

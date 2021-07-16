@@ -51,7 +51,8 @@ public class VisitDetailActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-                params.put("id", id);
+//                params.put("id", id);
+                params.clear();
                 request(params);
             }
 
@@ -83,12 +84,13 @@ public class VisitDetailActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
-        params.put("id", id);
+//        params.put("id", id);
+        params.clear();
         request(params);
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.VisitDetail, params, headerMap, new CallBackUtil<VisitDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.VisitDetail+id, params, headerMap, new CallBackUtil<VisitDetailModel>() {
             @Override
             public VisitDetailModel onParseResponse(Call call, Response response) {
                 return null;

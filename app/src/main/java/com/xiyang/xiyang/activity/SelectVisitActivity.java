@@ -35,15 +35,15 @@ public class SelectVisitActivity extends BaseActivity {
         switch (v.getId()){
             case R.id.textView1:
                 //远程拜访
-                bundle.putInt("type", 1);
+                bundle.putInt("type", 0);
                 break;
             case R.id.textView2:
                 //上门拜访
-                bundle.putInt("type", 2);
+                bundle.putInt("type", 1);
                 break;
             case R.id.textView3:
                 //陌生拜访
-                bundle.putInt("type", 3);
+                bundle.putInt("type", 2);
                 break;
         }
         CommonUtil.gotoActivityWithData(SelectVisitActivity.this, AddVisitActivity.class, bundle);

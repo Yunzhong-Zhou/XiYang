@@ -61,11 +61,11 @@ public class AddVisitActivity extends BaseActivity {
     List<CommonModel1.ListBean> list_yingye = new ArrayList<>();
     List<CommonModel1.ListBean> list_fengxian = new ArrayList<>();
     List<CommonModel1.ListBean> list_fankui = new ArrayList<>();
-    List<CommonModel1.ListBean> list_jingdui = new ArrayList<>();
+    List<String> list_jingdui = new ArrayList<>();
     List<CommonModel1.ListBean> list_yuanyin = new ArrayList<>();
 
-    int type = 1;//  1-远程拜访，2-上门拜访,3-陌生拜访
-    int item_fangshi = -1, item_yingye = -1, item_fengxian = -1, item_fankui = -1, item_jingdui = -1, item_yuanyin = -1, itme_truefalse = 1;
+    int type = 0;//  0-远程拜访，1-上门拜访,2-陌生拜访
+    int item_fangshi = -1, item_yingye = -1, item_fengxian = -1, item_fankui = -1, item_jingdui = 0, item_yuanyin = -1, itme_truefalse = 0;
     RelativeLayout rl_xuanzefangshi, rl_xuanzemendian, rl_baifangjilu, rl_yingyeqingkuang, rl_hezuofengxian,
             rl_baifangmendian, rl_baifangrenyuan, rl_lianxidianhua, rl_baifangshijian, rl_mendiandizhi,
             rl_baifangfangshi, rl_shifouyixiang, rl_baifanglianxiren, rl_baifangyuanyin, rl_baifangfankui,
@@ -77,7 +77,8 @@ public class AddVisitActivity extends BaseActivity {
     ImageView imageView1;
 
     String storeId = "", isBusiness = "", reportStatus = "", visitChannel = "", contactName = "", reason = "",
-            feedback = "", isAdver = "", remark = "", images = "", intention = "1", visitTime = "";
+            feedback = "", remark = "", images = "", intention = "1", visitTime = "", storeName = "",
+            contractMobile = "", address = "";
     File imgfile = null;
 
     @Override
@@ -134,10 +135,15 @@ public class AddVisitActivity extends BaseActivity {
         list_visit.add("上门拜访");
         list_visit.add("陌生拜访");
 
-        list_truefalse.add("否");
-        list_truefalse.add("是");
 
-        type = getIntent().getIntExtra("type", 1);
+        list_truefalse.add("是");
+        list_truefalse.add("否");
+
+        list_jingdui.add("否");
+        list_jingdui.add("是");
+
+
+        type = getIntent().getIntExtra("type", 0);
         tv_xuanzefangshi.setText(list_visit.get(type));
         titleView.setTitle(list_visit.get(type));
 
@@ -166,10 +172,7 @@ public class AddVisitActivity extends BaseActivity {
                 list_yingye = response.getBusinessSituationEnum().getList();//营业情况
                 list_fengxian = response.getCooperationRiskEnum().getList();//合作风险
                 list_fankui = response.getVisitFeedbackEnum().getList();//拜访反馈
-                list_jingdui = response.getCooperationRiskEnum().getList();//商户竞对
                 list_yuanyin = response.getVisitReasonEnum().getList();//拜访原因
-
-
             }
         });
 
@@ -216,6 +219,11 @@ public class AddVisitActivity extends BaseActivity {
                 //是否独家
                 dialogList_TrueFalse();
                 break;
+            case R.id.tv_baifangshijian:
+                //拜访时间
+                CommonUtil.selectDate2YMD(AddVisitActivity.this,
+                        "请选择拜访时间", tv_baifangshijian, tv_baifangshijian.getText().toString().trim());
+                break;
             case R.id.tv_xuanzemendian:
                 //选择门店
                 Intent intent1 = new Intent(AddVisitActivity.this, MyStoreListActivity.class);
@@ -228,7 +236,7 @@ public class AddVisitActivity extends BaseActivity {
             case R.id.tv_baifangjilu:
                 //拜访记录
                 Bundle bundle = new Bundle();
-                bundle.putString("type", type + "");
+                bundle.putString("type", type+1 + "");
                 /*switch (type){
                     case 1:
                         bundle.putString("type","2");
@@ -272,30 +280,51 @@ public class AddVisitActivity extends BaseActivity {
                             switch (type) {
                                 case 0:
                                     //远程拜访
-                                case 1:
-                                    //上门拜访
-                                    params.put("type", Integer.valueOf(type) + 1 + "");//拜访方式 1-远程拜访，2-上门拜访,3-陌生拜访
+//                                    params.put("type", Integer.valueOf(type) + 1 + "");//拜访方式 1-远程拜访，2-上门拜访,3-陌生拜访
                                     params.put("storeId", storeId);//门店id 陌生拜访为0
+                                    params.put("storeName", tv_xuanzemendian.getText().toString());//门店名称
                                     params.put("isBusiness", isBusiness);//当前营业状况 1-是，2-否
                                     params.put("reportStatus", reportStatus);//合作风险上报
                                     params.put("way", visitChannel);//拜访方式
-                                    params.put("contactName", contactName);
+                                    params.put("contractMobile", contactName);//联系人
                                     params.put("reason", reason);//拜访原因
                                     params.put("feedback", feedback);//拜访反馈
-                                    params.put("isAdver", isAdver);//商户存在竟对
+                                    params.put("isAdver", item_jingdui+"");//商户存在竟对 0否1是
                                     params.put("remark", remark);//补充说明
                                     params.put("images", images);
-                                    requestUpData(params);
+                                    requestUpData(params, URLs.AddVisit_YuanCheng);
+                                    break;
+                                case 1:
+                                    //上门拜访
+//                                    params.put("type", Integer.valueOf(type) + 1 + "");//拜访方式 1-远程拜访，2-上门拜访,3-陌生拜访
+                                    params.put("storeId", storeId);//门店id 陌生拜访为0
+                                    params.put("storeName", tv_xuanzemendian.getText().toString());//门店名称
+                                    params.put("isBusiness", isBusiness);//当前营业状况 1-是，2-否
+                                    params.put("reportStatus", reportStatus);//合作风险上报
+                                    params.put("way", visitChannel);//拜访方式
+                                    params.put("contractMobile", contactName);//联系人
+                                    params.put("reason", reason);//拜访原因
+                                    params.put("feedback", feedback);//拜访反馈
+                                    params.put("isAdver", item_jingdui+"");//商户存在竟对 0否1是
+                                    params.put("remark", remark);//补充说明
+                                    params.put("images", images);
+                                    requestUpData(params, URLs.AddVisit_ShangMen);
+
                                     break;
                                 case 2:
                                     //陌生拜访
-                                    params.put("type", Integer.valueOf(type) + 1  + "");
-                                    params.put("storeId", "0");
+//                                    params.put("type", Integer.valueOf(type) + 1  + "");
+//                                    params.put("storeId", "0");
+                                    params.put("storeName", storeName);//门店名称
+                                    params.put("contractName", contactName);//联系人
+                                    params.put("contractMobile", contractMobile);//联系人电话
+                                    params.put("visitTime", visitTime);//拜访时间
+                                    params.put("address", address);//拜访地址
                                     params.put("way", visitChannel);//拜访方式
-                                    params.put("isIntention", intention);//是否意向0默认1是2否
+                                    params.put("isIntention", itme_truefalse+"");//是否意向0默认1是2否
                                     params.put("remark", remark);
                                     params.put("images", images);
-                                    requestUpData(params);
+                                    requestUpData(params, URLs.AddVisit_MoSheng);
 
                                     break;
                             }
@@ -344,10 +373,10 @@ public class AddVisitActivity extends BaseActivity {
                     myToast("请选择拜访反馈");
                     return false;
                 }
-                if (TextUtils.isEmpty(isAdver)) {
+                /*if (TextUtils.isEmpty(isAdver)) {
                     myToast("请选择是否存在竞对");
                     return false;
-                }
+                }*/
                 remark = tv_buchongshuoming.getText().toString().trim();
                 if (TextUtils.isEmpty(remark)) {
                     myToast("请输入补充说明");
@@ -361,10 +390,37 @@ public class AddVisitActivity extends BaseActivity {
                 break;
             case 2:
                 //陌生拜访
+                storeName = tv_baifangmendian.getText().toString().trim();
+                if (TextUtils.isEmpty(storeName)) {
+                    myToast("请输入拜访门店");
+                    return false;
+                }
+                contactName = tv_baifangrenyuan.getText().toString().trim();
+                if (TextUtils.isEmpty(contactName)) {
+                    myToast("请输入拜访人员姓名");
+                    return false;
+                }
+                contractMobile = tv_lianxidianhua.getText().toString().trim();
+                if (TextUtils.isEmpty(contractMobile)) {
+                    myToast("请输入联系电话");
+                    return false;
+                }
+                visitTime = tv_baifangshijian.getText().toString().trim();
+                if (TextUtils.isEmpty(visitTime)) {
+                    myToast("请选择拜访时间");
+                    return false;
+                }
+                address = tv_mendiandizhi.getText().toString().trim();
+                if (TextUtils.isEmpty(address)) {
+                    myToast("请输入门店地址");
+                    return false;
+                }
+
                 if (TextUtils.isEmpty(visitChannel)) {
                     myToast("请选择拜访方式");
                     return false;
                 }
+
                 remark = tv_buchongshuoming.getText().toString().trim();
                 if (TextUtils.isEmpty(remark)) {
                     myToast("请输入补充说明");
@@ -437,8 +493,8 @@ public class AddVisitActivity extends BaseActivity {
 
     }
 
-    private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.AddVisit, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+    private void requestUpData(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -455,7 +511,7 @@ public class AddVisitActivity extends BaseActivity {
                 myToast("提交成功");
                 hideProgress();
                 Bundle bundle = new Bundle();
-                bundle.putString("type", type + "");
+                bundle.putString("type", type+1 + "");
                 /*switch (type){
                     case 0:
                         bundle.putString("type","2");
@@ -585,7 +641,7 @@ public class AddVisitActivity extends BaseActivity {
             protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
                 tv.setText(model.getDescription());
-                if (item_fangshi - 1 == position)
+                if (item_fangshi == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
                     tv.setTextColor(getResources().getColor(R.color.black1));
@@ -594,9 +650,8 @@ public class AddVisitActivity extends BaseActivity {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                item_fangshi = position + 1;
+                item_fangshi = position;
                 tv_baifangfangshi.setText(list_fangshi.get(position).getDescription());
-
                 visitChannel = list_fangshi.get(position).getCode();
 
                 adapter.notifyDataSetChanged();
@@ -809,12 +864,12 @@ public class AddVisitActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel1.ListBean> adapter = new CommonAdapter<CommonModel1.ListBean>
+        CommonAdapter<String> adapter = new CommonAdapter<String>
                 (AddVisitActivity.this, R.layout.item_help, list_jingdui) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel1.ListBean model, int position) {
+            protected void convert(ViewHolder holder, String model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getDescription());
+                tv.setText(model);
                 if (item_jingdui == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -825,9 +880,7 @@ public class AddVisitActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_jingdui = position;
-                tv_shanghujingdui.setText(list_jingdui.get(position).getDescription());
-
-                isAdver = list_jingdui.get(position).getCode();
+                tv_shanghujingdui.setText(list_jingdui.get(position));
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -870,7 +923,7 @@ public class AddVisitActivity extends BaseActivity {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                itme_truefalse = position;
+                itme_truefalse = position + 1;
                 tv_shifouyixiang.setText(list_truefalse.get(position));
                 intention = position + "";
 

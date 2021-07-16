@@ -95,7 +95,7 @@ public class URLs {
     //合同详情
     public static final String ContractDetail = HOST + "/bd/bdservice/getContractsDetailInfo/";
     //划转商户
-    public static final String TransferShop = HOST + "/bd/merchant/transfer/add";
+    public static final String TransferShop = HOST + "/bd/merchant/transfer/add/apply";
     /**
      * ********************************管理*****************************************
      */
@@ -125,9 +125,9 @@ public class URLs {
     //人事记录
     public static final String PersonnelList = HOST + "/service-ucenter/organ/change/apply/list";
     //厂库信息
-    public static final String CangKu = HOST  + "/purchase/purchase/CmWarehouse/get";
+    public static final String CangKu = HOST + "/purchase/purchase/CmWarehouse/get";
     //采购申请
-    public static final String AddBuy = HOST  + "/purchase/purchase/apply/add";
+    public static final String AddBuy = HOST + "/purchase/purchase/apply/add";
     /**
      * ********************************分派*****************************************
      */
@@ -152,9 +152,9 @@ public class URLs {
      */
     public static final String Fragment2 = HOST + "/bd/store/home";
     //拜访列表
-    public static final String MyVisitList = HOST + API + "store/visit/record";
+    public static final String MyVisitList = HOST + "/bd/store/visit/list";
     //拜访详情
-    public static final String VisitDetail = HOST + API + "store/visit/detail";
+    public static final String VisitDetail = HOST + "/bd/store/visit/getById/{id}";
     //门店列表
     public static final String MyStoreList = HOST + "/bd/store/listStore";
     //添加门店
@@ -172,13 +172,13 @@ public class URLs {
     //员工管理
     public static final String StaffManagement = HOST + "/user/appQueryUserList";
     //添加员工
-    public static final String AddStaff_BD = HOST  + "/user/appSaveFontUser";
+    public static final String AddStaff_BD = HOST + "/user/appSaveFontUser";
     //删除员工
     public static final String DeleteStaff = HOST + "/user/appDeleteUser";
     //关闭门店
-    public static final String CloseStore = HOST + API + "store/close";
+    public static final String CloseStore = HOST + "/bd/store/close";
     //划转门店
-    public static final String TransferStore = HOST + API + "store/transfer";
+    public static final String TransferStore = HOST + "/bd/store/transfer/add";
     //修改账户信息
     public static final String ChangeStoreAccount = HOST + API + "store/account";
     //统计数据
@@ -208,7 +208,7 @@ public class URLs {
     //添加工单-故障列表
     public static final String AddWorkList_GuZhang = HOST + "/bd/work/orders/failureReasonList/";
     //添加设备工单
-    public static final String AddDeviceWorkList = HOST  + "/bd/work/orders/reportDeviceFailure";
+    public static final String AddDeviceWorkList = HOST + "/bd/work/orders/reportDeviceFailure";
     //添加订单工单
     public static final String AddOrderList = HOST + API + "/bd/work/orders/reportOrderFailure";
     //添加其他工单
@@ -219,8 +219,12 @@ public class URLs {
     public static final String WorkListDetail = HOST + "/bd/work/orders/get/detail/";
     //处理工单
     public static final String ChangeWorkList = HOST + "/bd/work/orders/deal";
-    //添加拜访
-    public static final String AddVisit = HOST + "/bd/store/visit/addStoreVisitLog";
+    //添加拜访-远程
+    public static final String AddVisit_YuanCheng = HOST + "/bd/store/visit/addRemotely";
+    //添加拜访-上门
+    public static final String AddVisit_ShangMen = HOST + "/bd/store/visit/addOnSite";
+    //添加拜访-陌生
+    public static final String AddVisit_MoSheng = HOST + "/bd/store/visit/addStrange";
     //事务列表
     public static final String AffairList = HOST + "/bd/transaction/listTransaction";
     //事务详情
@@ -288,11 +292,11 @@ public class URLs {
     //提现详情
     public static final String TakeCashDetail = HOST + "/finace/user/withdrawalApply/withdrawalRecord/detail/";
     //帮助列表
-    public static final String Help = HOST  + "/applet/help/queryProblemList";
+    public static final String Help = HOST + "/applet/help/queryProblemList";
     //在线客服
     public static final String OnlineService = HOST + "/baseinfo/onlineConsult/page";
     //创建留言
-    public static final String AddMessage = HOST+ "/baseinfo/onlineConsult/create";
+    public static final String AddMessage = HOST + "/baseinfo/onlineConsult/create";
     //关于我们
     public static final String About = HOST + API + "about";
     //分润记录

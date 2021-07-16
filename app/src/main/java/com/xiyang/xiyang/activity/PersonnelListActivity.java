@@ -37,7 +37,7 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 调整岗位
+ * 人事记录列表
  */
 public class PersonnelListActivity extends BaseActivity {
     int type = 1;//1、调整上级 2、调整市场 3、升职降职 4、采购申请
@@ -76,14 +76,93 @@ public class PersonnelListActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 //刷新
-
+                page = 1;
+                params.clear();
+                switch (type) {
+                    case 1:
+                        //调整上级
+                        params.put("type", "6");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("current", page + "");
+                        params.put("pageSize", "10");
+                        params.put("keyWord", keyWord);
+                        params.put("above", "");//是否越级
+                        params.put("crossRegional", "");//是否跨区
+                        requestList(params, URLs.PersonnelList);
+                        break;
+                    case 2:
+                        //调整市场
+                        params.put("type", "7");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("current", page + "");
+                        params.put("pageSize", "10");
+                        params.put("keyWord", keyWord);
+                        params.put("above", "");//是否越级
+                        params.put("crossRegional", "");//是否跨区
+                        requestList(params, URLs.PersonnelList);
+                        break;
+                    case 3:
+                        //升职降职
+                        params.put("type", "8");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("current", page + "");
+                        params.put("pageSize", "10");
+                        params.put("keyWord", keyWord);
+                        params.put("above", "");//是否越级
+                        params.put("crossRegional", "");//是否跨区
+                        requestList(params, URLs.PersonnelList);
+                        break;
+                    case 4:
+                        //采购审批
+                        params.put("page", page + "");
+                        params.put("size", "10");
+                        params.put("keyWord", keyWord);
+                        requestList(params, URLs.CaiGouList);
+                        break;
+                }
             }
 
             @Override
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-
+                params.clear();
+                switch (type) {
+                    case 1:
+                        //调整上级
+                        params.put("type", "6");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("current", page + "");
+                        params.put("pageSize", "10");
+                        params.put("keyWord", keyWord);
+                        params.put("above", "");//是否越级
+                        params.put("crossRegional", "");//是否跨区
+                        requestListMore(params, URLs.PersonnelList);
+                        break;
+                    case 2:
+                        //调整市场
+                        params.put("type", "7");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("current", page + "");
+                        params.put("pageSize", "10");
+                        params.put("keyWord", keyWord);
+                        params.put("above", "");//是否越级
+                        params.put("crossRegional", "");//是否跨区
+                        requestListMore(params, URLs.PersonnelList);
+                        break;
+                    case 3:
+                        //升职降职
+                        params.put("type", "8");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("current", page + "");
+                        params.put("pageSize", "10");
+                        params.put("keyWord", keyWord);
+                        params.put("above", "");//是否越级
+                        params.put("crossRegional", "");//是否跨区
+                        requestListMore(params, URLs.PersonnelList);
+                        break;
+                    case 4:
+                        //采购审批
+                        params.put("page", page + "");
+                        params.put("size", "10");
+                        params.put("keyWord", keyWord);
+                        requestListMore(params, URLs.CaiGouList);
+                        break;
+                }
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
@@ -172,6 +251,9 @@ public class PersonnelListActivity extends BaseActivity {
                                     tv_key1.setText("调整人");
                                     tv_key2.setText("调整前上级");
                                     tv_key3.setText("调整后上级");
+                                    holder.setText(R.id.tv_value1, model.getName());
+                                    holder.setText(R.id.tv_value2, model.getNum() + "台");
+                                    holder.setText(R.id.tv_value3, model.getFetchAt());
                                     break;
                                 case 2:
                                     //调整市场
@@ -200,9 +282,9 @@ public class PersonnelListActivity extends BaseActivity {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("id",model.getId());
-                                    bundle.putInt("PersonnelType",type);
-                                    CommonUtil.gotoActivityWithData(PersonnelListActivity.this,PersonnelDetailActivity.class,bundle,false);
+                                    bundle.putString("id", model.getId());
+                                    bundle.putInt("PersonnelType", type);
+                                    CommonUtil.gotoActivityWithData(PersonnelListActivity.this, PersonnelDetailActivity.class, bundle, false);
                                 }
                             });
 
@@ -289,26 +371,42 @@ public class PersonnelListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.clear();
-        params.put("page", page + "");
-        params.put("size", "10");
-        params.put("keyWord", keyWord);
         switch (type) {
             case 1:
                 //调整上级
-                titleView.setTitle("调整上级列表");
+                params.put("type", "6");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                params.put("current", page + "");
+                params.put("pageSize", "10");
+                params.put("keyWord", keyWord);
+                params.put("above", "");//是否越级
+                params.put("crossRegional", "");//是否跨区
                 requestList(params, URLs.PersonnelList);
                 break;
             case 2:
                 //调整市场
-                titleView.setTitle("调整市场列表");
+                params.put("type", "7");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                params.put("current", page + "");
+                params.put("pageSize", "10");
+                params.put("keyWord", keyWord);
+                params.put("above", "");//是否越级
+                params.put("crossRegional", "");//是否跨区
+                requestList(params, URLs.PersonnelList);
                 break;
             case 3:
                 //升职降职
-                titleView.setTitle("升职降职列表");
+                params.put("type", "8");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                params.put("current", page + "");
+                params.put("pageSize", "10");
+                params.put("keyWord", keyWord);
+                params.put("above", "");//是否越级
+                params.put("crossRegional", "");//是否跨区
+                requestList(params, URLs.PersonnelList);
                 break;
             case 4:
                 //采购审批
-                titleView.setTitle("采购审批列表");
+                params.put("page", page + "");
+                params.put("size", "10");
+                params.put("keyWord", keyWord);
                 requestList(params, URLs.CaiGouList);
                 break;
         }
