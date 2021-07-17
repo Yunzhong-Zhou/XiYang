@@ -150,7 +150,7 @@ public class MyWorkListActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, MyWorkListModel.RecordsBean model, int position) {
 //                            holder.setText(R.id.tv_title, model.getStoreName());//标题
-                            switch (model.getType()){
+                            switch (model.getType()) {
                                 case 1:
                                     //设备故障
                                     holder.setText(R.id.tv_title, "设备故障");//标题
@@ -167,7 +167,7 @@ public class MyWorkListActivity extends BaseActivity {
                             holder.setText(R.id.tv_addr, model.getStoreName());
                             holder.setText(R.id.tv_time, model.getCreateTime());
 //                            holder.setText(R.id.tv_type, model.getStatusTitle());
-                            switch (model.getStatus()){
+                            switch (model.getStatus()) {
                                 case 1:
                                     //待处理
                                     holder.setText(R.id.tv_type, "待处理");
@@ -208,7 +208,7 @@ public class MyWorkListActivity extends BaseActivity {
                                                     showProgress(true, getString(R.string.app_loading1));
                                                     params.clear();
 //                                                    params.put("id", model.getId());
-                                                    requestJieShou(params,model.getId());
+                                                    requestJieShou(params, model.getId());
                                                 }
                                             }, new View.OnClickListener() {
                                                 @Override
@@ -225,6 +225,7 @@ public class MyWorkListActivity extends BaseActivity {
                                     //详情
                                     Bundle bundle = new Bundle();
                                     bundle.putString("id", model.getId());
+                                    bundle.putInt("type_m", 3);
                                     CommonUtil.gotoActivityWithData(MyWorkListActivity.this, WorkListDetailActivity.class, bundle, false);
                                 }
                             });
@@ -278,8 +279,8 @@ public class MyWorkListActivity extends BaseActivity {
 
     }
 
-    private void requestJieShou(Map<String, String> params,String id) {
-        OkhttpUtil.okHttpPost(URLs.WorkList_JieShou+id, params, headerMap, new CallBackUtil<String>() {
+    private void requestJieShou(Map<String, String> params, String id) {
+        OkhttpUtil.okHttpPost(URLs.WorkList_JieShou + id, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

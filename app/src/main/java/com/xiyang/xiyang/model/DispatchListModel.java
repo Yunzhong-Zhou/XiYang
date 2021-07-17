@@ -27,11 +27,12 @@ public class DispatchListModel implements Serializable {
          * type : 0
          */
 
+
         private String createTime;
         private String id;
-        private int status;
+        private String status;
         private String storeName;
-        private int type;
+        private String type;
         /**
          * merchantId : 1415158482327441408
          * merchantName : 测试商户2
@@ -42,6 +43,7 @@ public class DispatchListModel implements Serializable {
          * merchantTotalStoresNumber : null
          */
 
+
         private String merchantId;
         private String merchantName;
         private String merchantLogoUrl;
@@ -49,8 +51,37 @@ public class DispatchListModel implements Serializable {
         private String merchantUserId;
         private String merchantTotalRevenue;
         private String merchantTotalStoresNumber;
+        /**
+         * storeId : 1411188080041320450
+         * createTime : 1626156631000
+         */
 
+        private String storeId;
+        private String storeAddress;
+        /**
+         * storeImage : string
+         * storeTotalDeviceNumber : 0
+         * storeTotalRevenue : 0
+         */
 
+        private String storeImage;
+        private String storeTotalDeviceNumber;
+        private String storeTotalRevenue;
+        /**
+         * currentOrganCode : BDM
+         * currentName : 黄BDM
+         */
+
+        private String currentOrganCode;
+        private String currentName;
+
+        public String getStoreAddress() {
+            return storeAddress;
+        }
+
+        public void setStoreAddress(String storeAddress) {
+            this.storeAddress = storeAddress;
+        }
 
         public String getCreateTime() {
             return createTime;
@@ -68,11 +99,11 @@ public class DispatchListModel implements Serializable {
             this.id = id;
         }
 
-        public int getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 
@@ -84,11 +115,11 @@ public class DispatchListModel implements Serializable {
             this.storeName = storeName;
         }
 
-        public int getType() {
+        public String getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(String type) {
             this.type = type;
         }
 
@@ -146,6 +177,54 @@ public class DispatchListModel implements Serializable {
 
         public void setMerchantTotalStoresNumber(String merchantTotalStoresNumber) {
             this.merchantTotalStoresNumber = merchantTotalStoresNumber;
+        }
+
+        public String getStoreId() {
+            return storeId;
+        }
+
+        public void setStoreId(String storeId) {
+            this.storeId = storeId;
+        }
+
+        public String getStoreImage() {
+            return storeImage;
+        }
+
+        public void setStoreImage(String storeImage) {
+            this.storeImage = storeImage;
+        }
+
+        public String getStoreTotalDeviceNumber() {
+            return storeTotalDeviceNumber;
+        }
+
+        public void setStoreTotalDeviceNumber(String storeTotalDeviceNumber) {
+            this.storeTotalDeviceNumber = storeTotalDeviceNumber;
+        }
+
+        public String getStoreTotalRevenue() {
+            return storeTotalRevenue;
+        }
+
+        public void setStoreTotalRevenue(String storeTotalRevenue) {
+            this.storeTotalRevenue = storeTotalRevenue;
+        }
+
+        public String getCurrentOrganCode() {
+            return currentOrganCode;
+        }
+
+        public void setCurrentOrganCode(String currentOrganCode) {
+            this.currentOrganCode = currentOrganCode;
+        }
+
+        public String getCurrentName() {
+            return currentName;
+        }
+
+        public void setCurrentName(String currentName) {
+            this.currentName = currentName;
         }
     }
 }

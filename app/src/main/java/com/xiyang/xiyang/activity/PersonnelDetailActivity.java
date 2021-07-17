@@ -291,20 +291,6 @@ public class PersonnelDetailActivity extends BaseActivity {
                             } else {
                                 view_bottom.setVisibility(View.VISIBLE);
                             }
-                            //状态图片
-                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
-                            switch (model.getApprovalStatus()) {//1待处理2已处理3驳回
-                                case 1:
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                    break;
-                                case 2:
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
-                                    break;
-                                case 3:
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
-                                    break;
-                            }
-
                             //横向图片
                             List<String> list_img = new ArrayList<>();
                             if (model.getApprovalImages()!=null){
@@ -357,22 +343,27 @@ public class PersonnelDetailActivity extends BaseActivity {
                                     .into(iv_head);//加载图片
                             holder.setText(R.id.tv_name, model.getApprovalName());
                             holder.setText(R.id.tv_time, model.getApprovalTime());
+                            holder.setText(R.id.tv_content, model.getApprovalRemark());
+                            //状态图片
+                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
                             TextView tv_type = holder.getView(R.id.tv_type);
                             switch (model.getApprovalStatus()) {//1待处理2已处理3驳回
                                 case 1:
                                     tv_type.setText("待审核");
                                     tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
                                     break;
                                 case 2:
-                                    tv_type.setText("驳回");
-                                    tv_type.setTextColor(getResources().getColor(R.color.red));
-                                    break;
-                                case 3:
                                     tv_type.setText("已完成");
                                     tv_type.setTextColor(getResources().getColor(R.color.green));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
+                                    break;
+                                case 3:
+                                    tv_type.setText("驳回");
+                                    tv_type.setTextColor(getResources().getColor(R.color.red));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
                                     break;
                             }
-                            holder.setText(R.id.tv_content, model.getApprovalRemark());
                         }
                     };
                     rv_shenhe.setAdapter(mAdapter_shenhe);

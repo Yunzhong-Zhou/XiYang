@@ -18,6 +18,7 @@ import com.xiyang.xiyang.model.WorkListDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.popupwindow.PhotoShowDialog;
 import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -38,11 +39,11 @@ import okhttp3.Response;
  * 工单详情
  */
 public class WorkListDetailActivity extends BaseActivity {
-    String id = "";
+    String id = "", url = "";
     WorkListDetailModel model;
 
     ShadowLayout sl_tab;
-    int type = 1;
+    int type = 1, type_m = 3;//1、商户分派 2、门店分派 3、工单分派
     TextView tv_tab1, tv_tab2;
     LinearLayout ll_tab1, ll_tab2;
     View view1, view2;
@@ -64,8 +65,8 @@ public class WorkListDetailActivity extends BaseActivity {
      */
     LinearLayout ll_shenhe;
     RecyclerView rv_shenhe;
-//    List<WorkListDetailModel.DealListBean> list_shenhe = new ArrayList<>();
-//    CommonAdapter<WorkListDetailModel.DealListBean> mAdapter_shenhe;
+    List<WorkListDetailModel.DealListBean> list_shenhe = new ArrayList<>();
+    CommonAdapter<WorkListDetailModel.DealListBean> mAdapter_shenhe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +150,7 @@ public class WorkListDetailActivity extends BaseActivity {
                                     showProgress(true, getString(R.string.app_loading1));
                                     params.clear();
 //                                    params.put("id", id);
-                                    requestJieShou(params,id);
+                                    requestJieShou(params, id);
                                 }
                             }, new View.OnClickListener() {
                                 @Override
@@ -180,6 +181,21 @@ public class WorkListDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         id = getIntent().getStringExtra("id");
+        type_m = getIntent().getIntExtra("type_m", 3);
+        switch (type_m) {
+            case 1:
+                //商户
+
+                break;
+            case 2:
+                //门店
+
+                break;
+            case 3:
+                //工单
+                url = URLs.WorkListDetail;
+                break;
+        }
     }
 
     @Override
@@ -193,7 +209,7 @@ public class WorkListDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.WorkListDetail + id, params, headerMap, new CallBackUtil<WorkListDetailModel>() {
+        OkhttpUtil.okHttpGet(url + id, params, headerMap, new CallBackUtil<WorkListDetailModel>() {
             @Override
             public WorkListDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -204,6 +220,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 hideProgress();
                 showErrorPage();
                 myToast(err);
+
             }
 
             @Override
@@ -219,7 +236,7 @@ public class WorkListDetailActivity extends BaseActivity {
                     tv_jieshou.setVisibility(View.VISIBLE);
                 } else {
                     sl_tab.setVisibility(View.VISIBLE);
-                    if (response.getStatus() != 3) {
+                    if (response.getStatus() == 1 && localUserInfo.getUserJob().equals("BD")) {
                         tv_jieshou.setText("处理工单");
                         tv_jieshou.setVisibility(View.VISIBLE);
                     } else {
@@ -235,7 +252,7 @@ public class WorkListDetailActivity extends BaseActivity {
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-                switch (model.getType()){
+                switch (model.getType()) {
                     case 1:
                         //设备故障
                         textView1.setText("设备故障");
@@ -252,10 +269,21 @@ public class WorkListDetailActivity extends BaseActivity {
 
                 textView2.setText(response.getStoreName());
                 textView3.setText(response.getCreateTime());
-                switch (model.getStatus()){
+                switch (model.getStatus()) {
                     case 1:
                         //待处理
                         textView4.setText("待处理");
+                        if (!localUserInfo.getUserJob().equals("BD")) {
+                            titleView.showRightTxtBtn("立即指派", v -> {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("id", model.getId());
+                                bundle.putInt("type_m", type_m);
+                                bundle.putString("name", textView1.getText().toString() + "-" + model.getStoreName());
+                                bundle.putString("userName", "");
+                                CommonUtil.gotoActivityWithData(WorkListDetailActivity.this, AssignActivity.class, bundle, false);
+
+                            });
+                        }
                         break;
                     case 2:
                         //处理中
@@ -270,7 +298,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 list_info.clear();
                 list_info.add(new KeyValueModel("工单ID", response.getId()));
                 list_info.add(new KeyValueModel("门店名称", response.getStoreName()));
-                switch (model.getType()){
+                switch (model.getType()) {
                     case 1:
                         //设备故障
                         list_info.add(new KeyValueModel("工单类型", "设备故障"));
@@ -312,8 +340,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 /**
                  * 处理记录
                  */
-
-                /*list_shenhe = response.getDealList();
+                list_shenhe = response.getDealList();
                 if (list_shenhe.size() > 0) {
                     showContentPage();
                     mAdapter_shenhe = new CommonAdapter<WorkListDetailModel.DealListBean>
@@ -333,25 +360,18 @@ public class WorkListDetailActivity extends BaseActivity {
                             } else {
                                 view_bottom.setVisibility(View.VISIBLE);
                             }
-                            //状态图片
-                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
-                            switch (model.getStatus()) {
-                                case "1":
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
-                                    break;
-                                case "2":
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                    break;
-                                case "3":
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
-                                    break;
-                            }
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            for (String s : model.getImages()) {
-                                list_img.add(s);
+                            if (model.getImages()!=null){
+                                String[] strArr = model.getImages().split(",");//拆分
+                                for (String s : strArr) {
+                                    list_img.add(s);
+                                }
                             }
+                            /*for (String s : model.getImage()) {
+                                list_img.add(s);
+                            }*/
                             RecyclerView rv = holder.getView(R.id.rv);
                             LinearLayoutManager llm1 = new LinearLayoutManager(WorkListDetailActivity.this);
                             llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
@@ -384,34 +404,53 @@ public class WorkListDetailActivity extends BaseActivity {
                             });
                             rv.setAdapter(ca);
 
-                        *//*ImageView iv_head = holder.getView(R.id.iv_head);
-                        Glide.with(WorkListDetailActivity.this)
-                                .load(model.get)
-                                .fitCenter()
-                                .apply(RequestOptions.bitmapTransform(new
-                                        RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 3))))
-                                .placeholder(R.mipmap.loading)//加载站位图
-                                .error(R.mipmap.headimg)//加载失败
-                                .into(iv_head);//加载图片
-                        holder.setText(R.id.tv_name, model.get);*//*
-                            holder.setText(R.id.tv_time, model.getCreatedAt());
-                            holder.setText(R.id.tv_type, model.getStatusTitle());
-                            holder.setText(R.id.tv_content, model.getReamrk());
+                            ImageView iv_head = holder.getView(R.id.iv_head);
+                            Glide.with(WorkListDetailActivity.this)
+                                    .load(model.getAvatar())
+                                    .fitCenter()
+                                    .apply(RequestOptions.bitmapTransform(new
+                                            RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 3))))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.headimg)//加载失败
+                                    .into(iv_head);//加载图片
+                            holder.setText(R.id.tv_name, model.getName());
+                            holder.setText(R.id.tv_time, model.getCreateTime());
 
+                            holder.setText(R.id.tv_content, model.getRemark());
+                            //状态图片
+                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
+                            TextView tv_type = holder.getView(R.id.tv_type);
+                            switch (model.getStatus()) {
+                                case "1":
+                                    tv_type.setText("已完成");
+                                    tv_type.setTextColor(getResources().getColor(R.color.green));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
+                                    break;
+                                case "2":
+                                    tv_type.setText("处理中");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                    break;
+                                case "3":
+                                    tv_type.setText("驳回");
+                                    tv_type.setTextColor(getResources().getColor(R.color.red));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
+                                    break;
+                            }
 
                         }
                     };
                     rv_shenhe.setAdapter(mAdapter_shenhe);
                 } else {
                     showEmptyPage();
-                }*/
+                }
 
             }
         });
     }
 
-    private void requestJieShou(Map<String, String> params,String id) {
-        OkhttpUtil.okHttpGet(URLs.WorkList_JieShou+id, params, headerMap, new CallBackUtil<String>() {
+    private void requestJieShou(Map<String, String> params, String id) {
+        OkhttpUtil.okHttpGet(URLs.WorkList_JieShou + id, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

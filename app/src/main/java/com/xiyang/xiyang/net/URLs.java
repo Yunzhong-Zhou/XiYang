@@ -136,14 +136,21 @@ public class URLs {
     public static final String DispatchShopList = HOST + "/bd/merchant/transfer/manageUser/page";
     //商户上报
     public static final String DispatchShop_ShangBao = HOST + "/bd/merchant/transfer/report/";
+    //商户指派
+    public static final String DispatchShop = HOST + "/bd/merchant/transfer/assignMerchant";
     //门店分派列表
     public static final String DispatchStoreList = HOST + "/bd/store/transfer/manageUser/page";
     //门店上报
     public static final String DispatchStore_ShangBao = HOST + "/bd/store/transfer/report/";
+    //门店指派
+    public static final String DispatchStore = HOST + "/bd/store/transfer/assignMerchant";
     //工单分派列表
     public static final String DispatchWorkList = HOST + "/bd/work/orders/manageUser/page";
     //工单上报
     public static final String DispatchWork_ShangBao = HOST + "/bd/work/orders/report/";
+    //工单指派
+    public static final String DispatchWork = HOST + "/bd/work/orders/assignWorkOrder";
+
     /**
      * ********************************审批*****************************************
      */

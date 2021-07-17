@@ -50,6 +50,12 @@ public class DispatchListActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
+    }
+
+    @Override
     protected void initView() {
         findViewByID_My(R.id.headView).setPadding(0, (int) CommonUtil.getStatusBarHeight(this), 0, 0);
         //刷新
@@ -124,7 +130,6 @@ public class DispatchListActivity extends BaseActivity {
     @Override
     protected void initData() {
         type_m = getIntent().getIntExtra("type_m", 1);
-        requestServer();
     }
 
     @Override
@@ -182,11 +187,13 @@ public class DispatchListActivity extends BaseActivity {
                             ImageView iv_img1 = holder.getView(R.id.iv_img1);
                             ImageView iv_img2 = holder.getView(R.id.iv_img2);
                             TextView tv_num = holder.getView(R.id.tv_num);
+                            TextView tv_name = holder.getView(R.id.tv_name);
                             imageView1.setVisibility(View.VISIBLE);
                             iv_img1.setVisibility(View.VISIBLE);
                             iv_img2.setVisibility(View.VISIBLE);
                             tv_num.setVisibility(View.VISIBLE);
 
+                            //显示数据
                             switch (type_m) {
                                 case 1:
                                     //商户
@@ -199,7 +206,7 @@ public class DispatchListActivity extends BaseActivity {
                                             .placeholder(R.mipmap.loading)//加载站位图
                                             .error(R.mipmap.zanwutupian)//加载失败
                                             .into(imageView1);//加载图片
-                                    holder.setText(R.id.tv_name, model.getMerchantName());
+                                    tv_name.setText(model.getMerchantName());
                                     holder.setText(R.id.tv_shop, model.getMerchantTotalStoresNumber() + "");
                                     holder.setText(R.id.tv_addr, model.getMerchantAddress());
                                     tv_num.setText(model.getMerchantTotalRevenue());
@@ -208,17 +215,17 @@ public class DispatchListActivity extends BaseActivity {
                                     //门店
                                     iv_img1.setImageResource(R.mipmap.ic_store_gray);
                                     Glide.with(DispatchListActivity.this)
-                                            .load(model.getMerchantLogoUrl())
+                                            .load(model.getStoreImage())
                                             .fitCenter()
                                             .apply(RequestOptions.bitmapTransform(new
                                                     RoundedCorners(CommonUtil.dip2px(DispatchListActivity.this, 10))))
                                             .placeholder(R.mipmap.loading)//加载站位图
                                             .error(R.mipmap.zanwutupian)//加载失败
                                             .into(imageView1);//加载图片
-                                    holder.setText(R.id.tv_name, model.getStoreName());
-                                    holder.setText(R.id.tv_shop, model.getMerchantTotalStoresNumber() + "");
-                                    holder.setText(R.id.tv_addr, model.getMerchantAddress());
-                                    tv_num.setText(model.getMerchantTotalRevenue());
+                                    tv_name.setText(model.getStoreName());
+                                    holder.setText(R.id.tv_shop, model.getStoreTotalDeviceNumber() + "台");
+                                    holder.setText(R.id.tv_addr, model.getStoreAddress());
+                                    tv_num.setText(model.getStoreTotalRevenue());
                                     break;
                                 case 3:
                                     //工单
@@ -226,11 +233,24 @@ public class DispatchListActivity extends BaseActivity {
                                     iv_img1.setVisibility(View.GONE);
                                     iv_img2.setVisibility(View.GONE);
                                     tv_num.setVisibility(View.GONE);
+                                    switch (model.getType()) {// 1-设备故障，2-订单故障，4-其他故障
+                                        case "1":
+                                            tv_name.setText("设备故障");
+                                            break;
+                                        case "2":
+                                            tv_name.setText("订单故障");
+                                            break;
+                                        case "3":
+                                            tv_name.setText("其他故障");
+                                            break;
+                                    }
 
-
+                                    holder.setText(R.id.tv_shop, model.getStoreName());
+                                    holder.setText(R.id.tv_addr, model.getCreateTime());
                                     break;
                             }
 
+                            //显示布局
                             TextView tv_shangbao = holder.getView(R.id.tv_shangbao);
                             TextView tv_zhipai = holder.getView(R.id.tv_zhipai);
                             TextView tv_bdname = holder.getView(R.id.tv_bdname);
@@ -248,7 +268,7 @@ public class DispatchListActivity extends BaseActivity {
                                     tv_shangbao.setVisibility(View.GONE);
                                     tv_zhipai.setVisibility(View.GONE);
                                     tv_bdname.setVisibility(View.VISIBLE);
-//                                    tv_bdname.setText(model.getMerchantName());
+                                    tv_bdname.setText(model.getCurrentName());
                                     tv_type.setVisibility(View.VISIBLE);
                                     tv_type.setTextColor(getResources().getColor(R.color.gray));
                                     tv_type.setText("已完成");
@@ -298,6 +318,44 @@ public class DispatchListActivity extends BaseActivity {
                                 }
                             });
 
+                            //指派
+                            tv_zhipai.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("id", model.getId());
+                                    bundle.putInt("type_m", type_m);
+                                    switch (type_m) {
+                                        case 1:
+                                            //商户
+                                            bundle.putString("name", model.getMerchantName());
+                                            bundle.putString("userName", model.getMerchantName());
+                                            break;
+                                        case 2:
+                                            //门店
+                                            bundle.putString("name", model.getStoreName());
+                                            bundle.putString("userName", model.getMerchantName());
+                                            break;
+                                        case 3:
+                                            //工单
+                                            bundle.putString("name", tv_name.getText().toString() + "-" + model.getStoreName());
+                                            bundle.putString("userName", model.getMerchantName());
+                                            break;
+                                    }
+                                    CommonUtil.gotoActivityWithData(DispatchListActivity.this, AssignActivity.class, bundle, false);
+                                }
+                            });
+
+                            holder.getView(R.id.linearLayout).setOnClickListener(v -> {
+                                if (type_m == 3) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("id", model.getId());
+                                    bundle.putInt("type_m", type_m);
+                                    CommonUtil.gotoActivityWithData(DispatchListActivity.this, WorkListDetailActivity.class, bundle, false);
+                                }
+
+                            });
+
                         }
                     };
                     recyclerView.setAdapter(mAdapter);
@@ -343,6 +401,7 @@ public class DispatchListActivity extends BaseActivity {
 
     /**
      * 上报
+     *
      * @param id
      * @param url
      */

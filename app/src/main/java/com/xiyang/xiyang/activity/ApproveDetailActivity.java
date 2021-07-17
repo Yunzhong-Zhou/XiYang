@@ -297,22 +297,15 @@ public class ApproveDetailActivity extends BaseActivity {
                             } else {
                                 view_bottom.setVisibility(View.VISIBLE);
                             }
-                            //状态图片
-                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
-                            switch (model.getAuditStat()) {
-                                case "1":
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
-                                    break;
-                                case "2":
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                    break;
-                                case "3":
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
-                                    break;
-                            }
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
+                            /*if (model.getImages()!=null){
+                                String[] strArr = model.getImages().split(",");//拆分
+                                for (String s : strArr) {
+                                    list_img.add(s);
+                                }
+                            }*/
                             /*for (String s : model.getImage()) {
                                 list_img.add(s);
                             }*/
@@ -359,8 +352,27 @@ public class ApproveDetailActivity extends BaseActivity {
                                     .into(iv_head);//加载图片*/
                             holder.setText(R.id.tv_name, model.getUserName());
                             holder.setText(R.id.tv_time, model.getAuditTime());
-                            holder.setText(R.id.tv_type, model.getAuditStat());
                             holder.setText(R.id.tv_content, model.getReason());
+                            //状态图片
+                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
+                            TextView tv_type = holder.getView(R.id.tv_type);
+                            switch (model.getAuditStat()) {
+                                case "1":
+                                    tv_type.setText("已完成");
+                                    tv_type.setTextColor(getResources().getColor(R.color.green));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
+                                    break;
+                                case "2":
+                                    tv_type.setText("处理中");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                    break;
+                                case "3":
+                                    tv_type.setText("驳回");
+                                    tv_type.setTextColor(getResources().getColor(R.color.red));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
+                                    break;
+                            }
                         }
                     };
                     rv_shenhe.setAdapter(mAdapter_shenhe);
