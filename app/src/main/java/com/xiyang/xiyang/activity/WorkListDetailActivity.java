@@ -420,24 +420,25 @@ public class WorkListDetailActivity extends BaseActivity {
                             //状态图片
                             ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
                             TextView tv_type = holder.getView(R.id.tv_type);
-                            switch (model.getStatus()) {
-                                case "1":
-                                    tv_type.setText("已完成");
-                                    tv_type.setTextColor(getResources().getColor(R.color.green));
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
-                                    break;
-                                case "2":
-                                    tv_type.setText("处理中");
-                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                    break;
-                                case "3":
-                                    tv_type.setText("驳回");
-                                    tv_type.setTextColor(getResources().getColor(R.color.red));
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
-                                    break;
+                            if (model.getStatus()!=null){
+                                switch (model.getStatus()) {
+                                    case "1":
+                                        tv_type.setText("已完成");
+                                        tv_type.setTextColor(getResources().getColor(R.color.green));
+                                        iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
+                                        break;
+                                    case "2":
+                                        tv_type.setText("处理中");
+                                        tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                        iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                        break;
+                                    case "3":
+                                        tv_type.setText("驳回");
+                                        tv_type.setTextColor(getResources().getColor(R.color.red));
+                                        iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
+                                        break;
+                                }
                             }
-
                         }
                     };
                     rv_shenhe.setAdapter(mAdapter_shenhe);

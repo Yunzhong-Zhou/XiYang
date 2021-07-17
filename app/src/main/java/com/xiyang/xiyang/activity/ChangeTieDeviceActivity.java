@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.cretin.tools.scancode.CaptureActivity;
 import com.cretin.tools.scancode.config.ScanConfig;
 import com.xiyang.xiyang.R;
@@ -35,7 +36,7 @@ import okhttp3.Response;
  */
 public class ChangeTieDeviceActivity extends BaseActivity {
     StoreDetailModel model;
-    String deviceName = "", storeId = "", shopId = "", roomId = "",transactionId="";
+    String deviceName = "", storeId = "", shopId = "", roomId = "";
     LinearLayout ll_scan;
     TextView iv_scan;
     TextView tv_scan;
@@ -91,14 +92,13 @@ public class ChangeTieDeviceActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_confirm:
-                //确认安装
+                //确认换绑
                 if (match()){
                     this.showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("id", transactionId);
-                    params.put("deviceName", deviceName);
+                    params.put("hostname", deviceName);
                     params.put("storeId", storeId);
-                    params.put("shopId", shopId);
+//                    params.put("shopId", shopId);
                     params.put("roomId", roomId);
                     requestUpData(params);
                 }
@@ -189,7 +189,7 @@ public class ChangeTieDeviceActivity extends BaseActivity {
             @Override
             public void onResponse(DeviceDetailModel response) {
 //                hideProgress();
-                tv_anzhuangshanghu.setText(response.getMerchantName());
+//                tv_anzhuangshanghu.setText(response.get);
                 tv_anzhuangmendian.setText(response.getStoreName());
 
                 params.clear();
@@ -224,7 +224,7 @@ public class ChangeTieDeviceActivity extends BaseActivity {
         });
     }
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.ChangeTieDevice, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.ChangeTieDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

@@ -101,7 +101,7 @@ public class PersonnelListActivity extends BaseActivity {
                         break;
                     case 3:
                         //升职降职
-                        params.put("type", "8");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("type", "4");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
                         params.put("current", page + "");
                         params.put("pageSize", "10");
                         params.put("keyWord", keyWord);

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
@@ -48,7 +49,7 @@ public class ShareProfitListActivity extends BaseActivity {
     private View view1, view2,view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "",startTime="",endTime="",sortField="";
+    String sort = "desc", status = "",startTime="",endTime="",sortField="",keyWord="";
     int i1 = 0;
     int i2 = 0;
     @Override
@@ -69,11 +70,12 @@ public class ShareProfitListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page",page+"");
-                params.put("count","10");
+                params.put("pageSize","10");
+                params.put("keyWord",keyWord);
                 params.put("status",status);
                 params.put("sortField",sortField);
-                params.put("sort",sort);
-                params.put("startTime",startTime);
+                params.put("moneySort",sort);
+                params.put("timeSort",startTime);
                 params.put("endTime",endTime);
                 requestList(params);
             }
@@ -83,11 +85,12 @@ public class ShareProfitListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page",page+"");
-                params.put("count","10");
+                params.put("pageSize","10");
+                params.put("keyWord",keyWord);
                 params.put("status",status);
                 params.put("sortField",sortField);
-                params.put("sort",sort);
-                params.put("startTime",startTime);
+                params.put("moneySort",sort);
+                params.put("timeSort",startTime);
                 params.put("endTime",endTime);
                 requestListMore(params);
             }
@@ -109,7 +112,7 @@ public class ShareProfitListActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.ShareProfitList, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.ShareProfitList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -170,7 +173,7 @@ public class ShareProfitListActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.ShareProfitList, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.ShareProfitList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -250,11 +253,12 @@ public class ShareProfitListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page",page+"");
-        params.put("count","10");
+        params.put("pageSize","10");
+        params.put("keyWord",keyWord);
         params.put("status",status);
         params.put("sortField",sortField);
-        params.put("sort",sort);
-        params.put("startTime",startTime);
+        params.put("moneySort",sort);
+        params.put("timeSort",startTime);
         params.put("endTime",endTime);
         requestList(params);
     }

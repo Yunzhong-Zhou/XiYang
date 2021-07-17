@@ -236,7 +236,7 @@ public class URLs {
     //事务详情-申领-邮寄方式
     public static final String AffairDetail_ShenLing = HOST + API + "device/apply/update";
     //设备详情
-    public static final String DeviceDetail = HOST + API + "device/detail";
+    public static final String DeviceDetail = HOST + "/service-device/device/sysUser/detail/";
     //安装设备
     public static final String InstallDevice = HOST + "/service-device/install/install";
     //开启设备
@@ -246,7 +246,7 @@ public class URLs {
     //控制设备
     public static final String DeviceSetUp = HOST + API + "/service-device/operate";
     //换绑设备
-    public static final String ChangeTieDevice = HOST + "/service-device/exchange/add";
+    public static final String ChangeTieDevice = HOST + "/device/deviceChangeBind";
 
     /**
      * ********************************数据*****************************************
@@ -291,9 +291,9 @@ public class URLs {
     //关于我们
     public static final String About = HOST + API + "about";
     //分润记录
-    public static final String ShareProfitList = HOST + API + "order/profit";
+    public static final String ShareProfitList = HOST + "/order/consumerOrder/appOpenQueryOderSharePage";
     //我的设备列表
-    public static final String MyDevice = HOST + API + "device/record";
+    public static final String MyDevice = HOST + "/service-device/device/sysUser/page";
     //系统公告
     public static final String Information = HOST + "/applet/notice/openPage";
 

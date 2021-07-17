@@ -8,10 +8,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
@@ -20,6 +25,7 @@ import com.xiyang.xiyang.model.MyDeviceListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -39,8 +45,8 @@ import okhttp3.Response;
  */
 public class MyDeviceListActivity extends BaseActivity {
     private RecyclerView recyclerView;
-    List<MyDeviceListModel> list = new ArrayList<>();
-    CommonAdapter<MyDeviceListModel> mAdapter;
+    List<MyDeviceListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<MyDeviceListModel.RecordsBean> mAdapter;
     //筛选
     private LinearLayout linearLayout1, linearLayout2,linearLayout3;
     private TextView textView1, textView2,textView3;
@@ -74,12 +80,12 @@ public class MyDeviceListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("size", "10");
                 params.put("status", status);
-                params.put("postionId", postionId);
-                params.put("sort", sort);
+                params.put("regionId", postionId);
+                params.put("keyword", sort);
                 params.put("storeId", storeId);
-                params.put("instudy", instudy);
+                params.put("industryId", instudy);
                 requestList(params);
             }
 
@@ -88,12 +94,12 @@ public class MyDeviceListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("size", "10");
                 params.put("status", status);
-                params.put("postionId", postionId);
-                params.put("sort", sort);
+                params.put("regionId", postionId);
+                params.put("keyword", sort);
                 params.put("storeId", storeId);
-                params.put("instudy", instudy);
+                params.put("industryId", instudy);
                 requestListMore(params);
             }
         });
@@ -114,7 +120,7 @@ public class MyDeviceListActivity extends BaseActivity {
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyDevice, params, headerMap, new CallBackUtil<MyDeviceListModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.MyDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyDeviceListModel>() {
             @Override
             public MyDeviceListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -131,18 +137,44 @@ public class MyDeviceListActivity extends BaseActivity {
             public void onResponse(MyDeviceListModel response) {
                 showContentPage();
                 hideProgress();
-//                list = response.get;
+                list = response.getRecords();
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<MyDeviceListModel>
+                    mAdapter = new CommonAdapter<MyDeviceListModel.RecordsBean>
                             (MyDeviceListActivity.this, R.layout.item_fragment2_2, list) {
                         @Override
-                        protected void convert(ViewHolder holder, MyDeviceListModel model, int position) {
-                            /*holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                            holder.setText(R.id.textView2, model.getCreated_at());//时间
-                            holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                            holder.setText(R.id.textView4, model.getStatus_title());//状态*/
+                        protected void convert(ViewHolder holder, MyDeviceListModel.RecordsBean model, int position) {
+                            holder.setText(R.id.tv_name, model.getStoreName());//标题
+                            holder.setText(R.id.tv_shop, model.getHostName());
+                            holder.setText(R.id.tv_num, model.getTotalRevenue());//money
+                            holder.setText(R.id.tv_addr, model.getStoreAddress());
+
+                            ImageView imageView1 = holder.getView(R.id.imageView1);
+                            Glide.with(MyDeviceListActivity.this)
+                                    .load(model.getStoreImage())
+//                                .fitCenter()
+                                    .apply(RequestOptions.bitmapTransform(new
+                                            RoundedCorners(CommonUtil.dip2px(MyDeviceListActivity.this, 10))))
+                                    .placeholder(R.mipmap.loading)//加载站位图
+                                    .error(R.mipmap.zanwutupian)//加载失败
+                                    .into(imageView1);//加载图片
+                            ImageView imageView2 = holder.getView(R.id.imageView2);
+                            if (model.getAliyunStatus() != null && model.getAliyunStatus().equals("1")) {
+                                //离线
+                                imageView2.setImageResource(R.mipmap.bg_lixian);
+                            } else {
+                                imageView2.setImageResource(R.mipmap.bg_zaixian);
+                            }
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("deviceName", model.getId());
+                                    CommonUtil.gotoActivityWithData(MyDeviceListActivity.this, DeviceDetailActivity.class, bundle, false);
+
+                                }
+                            });
                         }
                     };
                     recyclerView.setAdapter(mAdapter);
@@ -153,7 +185,7 @@ public class MyDeviceListActivity extends BaseActivity {
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyDevice, params, headerMap, new CallBackUtil<MyDeviceListModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.MyDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<MyDeviceListModel>() {
             @Override
             public MyDeviceListModel onParseResponse(Call call, Response response) {
                 return null;
@@ -172,8 +204,8 @@ public class MyDeviceListActivity extends BaseActivity {
 //                showContentPage();
                 hideProgress();
 
-                List<MyDeviceListModel> list1 = new ArrayList<MyDeviceListModel>();
-//                list1 = response.get;
+                List<MyDeviceListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
                 if (list1.size() == 0) {
                     myToast(getString(R.string.app_nomore));
                     page--;
@@ -231,12 +263,12 @@ public class MyDeviceListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("count", "10");
+        params.put("size", "10");
         params.put("status", status);
-        params.put("postionId", postionId);
-        params.put("sort", sort);
+        params.put("regionId", postionId);
+        params.put("keyword", sort);
         params.put("storeId", storeId);
-        params.put("instudy", instudy);
+        params.put("industryId", instudy);
         requestList(params);
     }
 

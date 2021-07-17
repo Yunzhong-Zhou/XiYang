@@ -48,6 +48,7 @@ public class DeviceDetailActivity extends BaseActivity {
     private RecyclerView rv_yingshou;
     List<KeyValueModel> list_yingshou = new ArrayList<>();
     CommonAdapter<KeyValueModel> mAdapter_yingshou;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,7 @@ public class DeviceDetailActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 params.clear();
-                params.put("deviceName", deviceName);
+//                params.put("deviceName", deviceName);
                 requestDeviceDetail(params);
             }
 
@@ -98,11 +99,11 @@ public class DeviceDetailActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         Bundle bundle = new Bundle();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_tiaoshi:
                 //调试设备
-                bundle.putString("deviceName",deviceName);
-                CommonUtil.gotoActivityWithData(DeviceDetailActivity.this, DebugDeviceActivity.class,bundle,false);
+                bundle.putString("deviceName", deviceName);
+                CommonUtil.gotoActivityWithData(DeviceDetailActivity.this, DebugDeviceActivity.class, bundle, false);
                 break;
             case R.id.tv_shangbao:
                 //上报故障
@@ -111,7 +112,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_weixiu:
                 //维修记录
-                CommonUtil.gotoActivity(DeviceDetailActivity.this,AffairListActivity.class);
+                CommonUtil.gotoActivity(DeviceDetailActivity.this, AffairListActivity.class);
                 break;
         }
     }
@@ -120,17 +121,19 @@ public class DeviceDetailActivity extends BaseActivity {
     protected void initData() {
         deviceName = getIntent().getStringExtra("deviceName");
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("deviceName", deviceName);
+//        params.put("deviceName", deviceName);
         requestDeviceDetail(params);
     }
+
     private void requestDeviceDetail(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.DeviceDetail, params, headerMap, new CallBackUtil<DeviceDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.DeviceDetail + deviceName, params, headerMap, new CallBackUtil<DeviceDetailModel>() {
             @Override
             public DeviceDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -151,13 +154,13 @@ public class DeviceDetailActivity extends BaseActivity {
                  * 基本信息
                  */
                 list_jiben.clear();
-                list_jiben.add(new KeyValueModel("SN号", response.getDeviceName()));
-//                list_jiben.add(new KeyValueModel("位置", response.get));
-//                list_jiben.add(new KeyValueModel("安装时间", response.get));
-//                list_jiben.add(new KeyValueModel("网络类型", response.get));
-//                list_jiben.add(new KeyValueModel("区域", response.get));
-//                list_jiben.add(new KeyValueModel("详细", response.get));
-//                list_jiben.add(new KeyValueModel("行业", response.get));
+                list_jiben.add(new KeyValueModel("SN号", response.getHostName()));
+                list_jiben.add(new KeyValueModel("位置", response.getStoreName()));
+                list_jiben.add(new KeyValueModel("安装时间", response.getInstallTime()));
+                list_jiben.add(new KeyValueModel("网络类型", response.getNetwork()));
+                list_jiben.add(new KeyValueModel("区域", response.getStoreRegion()));
+                list_jiben.add(new KeyValueModel("详细地址", response.getStoreAddress()));
+                list_jiben.add(new KeyValueModel("行业", response.getStoreIndustry()));
 
                 mAdapter_jiben = new CommonAdapter<KeyValueModel>
                         (DeviceDetailActivity.this, R.layout.item_keyvalue, list_jiben) {
@@ -172,12 +175,12 @@ public class DeviceDetailActivity extends BaseActivity {
                  * 运维数据
                  */
                 list_yunwei.clear();
-//                list_yunwei.add(new KeyValueModel("运维类型", response.get));
-//                list_yunwei.add(new KeyValueModel("运维人", response.get));
-//                list_yunwei.add(new KeyValueModel("最后心跳时间", response.get));
-//                list_yunwei.add(new KeyValueModel("连续在线天数", response.get));
-//                list_yunwei.add(new KeyValueModel("连续不在线天数", response.get));
-//                list_yunwei.add(new KeyValueModel("连续无动销天数", response.get));
+                list_yunwei.add(new KeyValueModel("运维类型", response.getClassic()));
+                list_yunwei.add(new KeyValueModel("运维人", response.getMaintainer()));
+                list_yunwei.add(new KeyValueModel("最后心跳时间", response.getLastOfflineTime()));
+                list_yunwei.add(new KeyValueModel("连续在线天数", response.getContinueOnlineDays()));
+                list_yunwei.add(new KeyValueModel("连续不在线天数", response.getContinueOfflineDays()));
+                list_yunwei.add(new KeyValueModel("连续无动销天数", response.getContinueNotMovingSalesDays()));
 
                 mAdapter_yunwei = new CommonAdapter<KeyValueModel>
                         (DeviceDetailActivity.this, R.layout.item_keyvalue, list_yunwei) {
@@ -192,11 +195,11 @@ public class DeviceDetailActivity extends BaseActivity {
                  * 营收信息
                  */
                 list_yingshou.clear();
-//                list_yingshou.add(new KeyValueModel("订单总数", response.get));
-//                list_yingshou.add(new KeyValueModel("当日订单数", response.get));
-//                list_yingshou.add(new KeyValueModel("总营收", response.get));
-//                list_yingshou.add(new KeyValueModel("当日营收", response.get));
-//                list_yingshou.add(new KeyValueModel("门店标识", response.get));
+                list_yingshou.add(new KeyValueModel("订单总数", response.getTotalOrders()));
+                list_yingshou.add(new KeyValueModel("当日订单数", response.getCurrentDyOrders()));
+                list_yingshou.add(new KeyValueModel("总营收", response.getTotalRevenue()));
+                list_yingshou.add(new KeyValueModel("当日营收", response.getCurrentDyRevenue()));
+                list_yingshou.add(new KeyValueModel("门店标识", response.getStoreLevel()));
 
                 mAdapter_yingshou = new CommonAdapter<KeyValueModel>
                         (DeviceDetailActivity.this, R.layout.item_keyvalue, list_yingshou) {

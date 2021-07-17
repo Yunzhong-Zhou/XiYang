@@ -74,16 +74,16 @@ public class ShopDetailActivity extends BaseActivity {
      */
     LinearLayout ll_contract;
     RecyclerView rv_contract;
-    List<ShopDetailModel.ContractBean> list_contract = new ArrayList<>();
-    CommonAdapter<ShopDetailModel.ContractBean> mAdapter_contract;
+    List<ShopDetailModel.CountDataBean> list_contract = new ArrayList<>();
+    CommonAdapter<ShopDetailModel.CountDataBean> mAdapter_contract;
 
     /**
      * 门店信息
      */
     LinearLayout ll_store;
     RecyclerView rv_store;
-    List<ShopDetailModel.StoreBean> list_store = new ArrayList<>();
-    CommonAdapter<ShopDetailModel.StoreBean> mAdapter_store;
+    List<ShopDetailModel.CountDataBean> list_store = new ArrayList<>();
+    CommonAdapter<ShopDetailModel.CountDataBean> mAdapter_store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,8 +186,8 @@ public class ShopDetailActivity extends BaseActivity {
             case R.id.tv_addstore:
                 //添加门店
                 Bundle bundle2 = new Bundle();
-                bundle2.putString("shopId", model.getId());
-                bundle2.putString("shopName", model.getName());
+                bundle2.putString("shopId", model.getBase().getId());
+                bundle2.putString("shopName", model.getBase().getName());
                 CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AddStoreActivity.class, bundle2);
                 break;
             case R.id.tv_morestore:
@@ -234,42 +234,42 @@ public class ShopDetailActivity extends BaseActivity {
             public void onResponse(ShopDetailModel response) {
                 hideProgress();
                 model = response;
-                tv_name.setText(response.getName());
-                tv_shop.setText(response.getDeviceNum());
-                tv_num.setText(response.getMoney());
-                tv_addr.setText(response.getAddress());
+                tv_name.setText(response.getBase().getName());
+//                tv_shop.setText(response.getBase().get);
+//                tv_num.setText(response.getBase().get);
+                tv_addr.setText(response.getBase().getAddress());
                 Glide.with(ShopDetailActivity.this)
-                        .load(model.getImage())
+                        .load(model.getBase().getCertificateUrl())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(ShopDetailActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-                if (model.getStatus() != null && model.getStatus().equals("4")) {
+                /*if (model.getStatus() != null && model.getStatus().equals("4")) {
                     imageView2.setImageResource(R.mipmap.bg_yiqianyue);
                 } else {
                     //待签约
                     imageView2.setImageResource(R.mipmap.bg_daiqianyue);
-                }
+                }*/
                 /**
                  * 商户信息
                  */
                 //基本信息 - 已审核
                 list_info.clear();
-                list_info.add(new KeyValueModel("商户ID", response.getId()));
-                list_info.add(new KeyValueModel("商户名称", response.getName()));
+                list_info.add(new KeyValueModel("商户ID", response.getBase().getId()));
+                list_info.add(new KeyValueModel("商户名称", response.getBase().getName()));
                 list_info.add(new KeyValueModel("商户账号", response.getBase().getAccount()));
                 list_info.add(new KeyValueModel("商户联系人", response.getBase().getContactName()));
                 list_info.add(new KeyValueModel("商户公司名", response.getBase().getCompanyName()));
                 list_info.add(new KeyValueModel("营业执照号", response.getBase().getLicenseNo()));
                 list_info.add(new KeyValueModel("所在城市", response.getBase().getCity()));
                 list_info.add(new KeyValueModel("所在行业", response.getBase().getInsduty()));
-                list_info.add(new KeyValueModel("商户等级", response.getBase().getLevel()));
-                list_info.add(new KeyValueModel("商户标识", response.getBase().getSlag()));
-                list_info.add(new KeyValueModel("商户来源", response.getBase().getSource()));
-                list_info.add(new KeyValueModel("是否对公", response.getBase().getToPublic()));
-                list_info.add(new KeyValueModel("是否绑卡", response.getBase().getIsCard()));
+//                list_info.add(new KeyValueModel("商户等级", response.getBase().getLevel()));
+//                list_info.add(new KeyValueModel("商户标识", response.getBase().getSlag()));
+//                list_info.add(new KeyValueModel("商户来源", response.getBase().getSource()));
+//                list_info.add(new KeyValueModel("是否对公", response.getBase().getToPublic()));
+//                list_info.add(new KeyValueModel("是否绑卡", response.getBase().getIsCard()));
                 list_info.add(new KeyValueModel("执照图片", ""));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_info) {
@@ -290,10 +290,10 @@ public class ShopDetailActivity extends BaseActivity {
                         .into(iv_info);//加载图片
                 //统计数据
                 list_tongji.clear();
-                list_tongji.add(new KeyValueModel("门店数", response.getBase().getCountData().getStoreNum()));
-                list_tongji.add(new KeyValueModel("设备数", response.getBase().getCountData().getDeviceNum()));
-                list_tongji.add(new KeyValueModel("总营收", response.getBase().getCountData().getMoney()));
-                list_tongji.add(new KeyValueModel("总收益", response.getBase().getCountData().getProfit()));
+                list_tongji.add(new KeyValueModel("门店数", response.getCountData().getStoreNum()));
+                list_tongji.add(new KeyValueModel("设备数", response.getCountData().getDeviceNum()));
+                list_tongji.add(new KeyValueModel("总营收", response.getCountData().getMoney()));
+                list_tongji.add(new KeyValueModel("总收益", response.getCountData().getProfit()));
                 mAdapter_tongji = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_tongji) {
                     @Override
@@ -306,9 +306,9 @@ public class ShopDetailActivity extends BaseActivity {
 
                 //申请信息
                 list_shenqing.clear();
-                list_shenqing.add(new KeyValueModel("推荐码", response.getBase().getApplyData().getInviteCode()));
-                list_shenqing.add(new KeyValueModel("推荐类型", response.getBase().getApplyData().getInviteType()));
-                list_shenqing.add(new KeyValueModel("申请时间", response.getBase().getApplyData().getApplyAt()));
+                list_shenqing.add(new KeyValueModel("推荐码", response.getApplyData().getInviteCode()));
+                list_shenqing.add(new KeyValueModel("推荐类型", response.getApplyData().getInviteType()));
+                list_shenqing.add(new KeyValueModel("申请时间", response.getApplyData().getApplyAt()));
                 mAdapter_shenqing = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_shenqing) {
                     @Override
@@ -321,13 +321,13 @@ public class ShopDetailActivity extends BaseActivity {
 
                 //签约信息
                 list_qianyue.clear();
-                list_qianyue.add(new KeyValueModel("签约合同", response.getBase().getSignData().getContract()));
-                list_qianyue.add(new KeyValueModel("是否独家", response.getBase().getSignData().getSole()));
-                list_qianyue.add(new KeyValueModel("签约时间", response.getBase().getSignData().getRenewalTime()));
-                list_qianyue.add(new KeyValueModel("签约年限", response.getBase().getSignData().getRenewalPeriod()));
-                list_qianyue.add(new KeyValueModel("签约人", response.getBase().getSignData().getUserName()));
-                list_qianyue.add(new KeyValueModel("签约类型", response.getBase().getSignData().getSignType()));
-                list_qianyue.add(new KeyValueModel("审核时间", response.getBase().getSignData().getVerifyedAt()));
+                list_qianyue.add(new KeyValueModel("签约合同", response.getSignData().getContract()));
+                list_qianyue.add(new KeyValueModel("是否独家", response.getSignData().getSole()));
+                list_qianyue.add(new KeyValueModel("签约时间", response.getSignData().getRenewalTime()));
+                list_qianyue.add(new KeyValueModel("签约年限", response.getSignData().getRenewalPeriod()));
+                list_qianyue.add(new KeyValueModel("签约人", response.getSignData().getUserName()));
+                list_qianyue.add(new KeyValueModel("签约类型", response.getSignData().getSignType()));
+                list_qianyue.add(new KeyValueModel("审核时间", response.getSignData().getVerifyedAt()));
                 mAdapter_qianyue = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_qianyue) {
                     @Override
@@ -340,8 +340,8 @@ public class ShopDetailActivity extends BaseActivity {
 
                 //申请信息
                 list_yunwei.clear();
-                list_yunwei.add(new KeyValueModel("运维BD", response.getBase().getBdData().getName()));
-                list_yunwei.add(new KeyValueModel("运维类型", response.getBase().getBdData().getType()));
+                list_yunwei.add(new KeyValueModel("运维BD", response.getBdData().getName()));
+                list_yunwei.add(new KeyValueModel("运维类型", response.getBdData().getType()));
                 mAdapter_yunwei = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_yunwei) {
                     @Override
@@ -355,7 +355,7 @@ public class ShopDetailActivity extends BaseActivity {
                 /**
                  * 合同信息
                  */
-                list_contract = response.getContract();
+                /*list_contract = response.getContract();
                 mAdapter_contract = new CommonAdapter<ShopDetailModel.ContractBean>
                         (ShopDetailActivity.this, R.layout.item_shopdetail_contract, list_contract) {
                     @Override
@@ -387,12 +387,12 @@ public class ShopDetailActivity extends BaseActivity {
 
                     }
                 };
-                rv_contract.setAdapter(mAdapter_contract);
+                rv_contract.setAdapter(mAdapter_contract);*/
 
                 /**
                  * 门店信息
                  */
-                mAdapter_store = new CommonAdapter<ShopDetailModel.StoreBean>
+                /*mAdapter_store = new CommonAdapter<ShopDetailModel.StoreBean>
                         (ShopDetailActivity.this, R.layout.item_fragment2_2, list_store) {
                     @Override
                     protected void convert(ViewHolder holder, ShopDetailModel.StoreBean model, int position) {
@@ -411,13 +411,13 @@ public class ShopDetailActivity extends BaseActivity {
                                 .error(R.mipmap.zanwutupian)//加载失败
                                 .into(imageView1);//加载图片
 
-                        /*ImageView imageView2 = holder.getView(R.id.imageView2);
+                        *//*ImageView imageView2 = holder.getView(R.id.imageView2);
                         if (model.getStatus().equals("1")) {
                             //待签约
                             imageView2.setImageResource(R.mipmap.bg_daiqianyue);
                         } else {
                             imageView2.setImageResource(R.mipmap.bg_yiqianyue);
-                        }*/
+                        }*//*
 
                         holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -430,7 +430,7 @@ public class ShopDetailActivity extends BaseActivity {
 
                     }
                 };
-                rv_store.setAdapter(mAdapter_store);
+                rv_store.setAdapter(mAdapter_store);*/
             }
         });
     }

@@ -265,12 +265,12 @@ public class Fragment3 extends BaseFragment {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            *//*if (model.getStatus() != null && model.getStatus().equals("1")) {
+                            if (model.getStatus() != null && model.getStatus().equals("1")) {
                                 //离线
                                 imageView2.setImageResource(R.mipmap.bg_lixian);
                             } else {
                                 imageView2.setImageResource(R.mipmap.bg_zaixian);
-                            }*//*
+                            }
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
