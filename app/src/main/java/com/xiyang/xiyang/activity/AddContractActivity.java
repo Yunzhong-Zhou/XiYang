@@ -62,9 +62,9 @@ public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
     List<String> list_qixian = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_jianshaoyuanyin = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_quxiaoyuanyin = new ArrayList<>();
-    List<CommonModel.WorkOrderTypeBean> list_jifeidanyuan = new ArrayList<>();
+    List<CommonModel.ListBean> list_jianshaoyuanyin = new ArrayList<>();
+    List<CommonModel.ListBean> list_quxiaoyuanyin = new ArrayList<>();
+    List<CommonModel.ListBean> list_jifeidanyuan = new ArrayList<>();
 
     List<WarehouseModel.ListBean> list_cangku = new ArrayList<>();
     List<String> list_huishou = new ArrayList<>();
@@ -1028,7 +1028,7 @@ public class AddContractActivity extends BaseActivity {
                 iv_add.setVisibility(View.VISIBLE);
 
 //                params.put("type", "renewalPeriod");
-                request(URLs.AddContract_qianyue, params);
+                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//期限
                 break;
             case 1:
                 //新增合同
@@ -1050,8 +1050,8 @@ public class AddContractActivity extends BaseActivity {
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
 
                 requestChangKu(params);
-                params.put("type", "merchantRecoverReason");
-                request(URLs.AddContract_huishou, params);
+//                params.put("type", "merchantRecoverReason");
+                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//减少原因
 
                 break;
             case 3:
@@ -1079,8 +1079,8 @@ public class AddContractActivity extends BaseActivity {
                 tv_img.setText("执照上传");
                 iv_add.setVisibility(View.VISIBLE);
 
-                params.put("type", "renewalPeriod");
-                request(URLs.AddContract_xiugai, params);
+//                params.put("type", "renewalPeriod");
+//                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//
 
                 break;
             case 5:
@@ -1097,8 +1097,8 @@ public class AddContractActivity extends BaseActivity {
                 rl_xuanzeshanghu.setVisibility(View.VISIBLE);
                 rl_xuanzeyuanyin.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
-                params.put("type", "merchantCancelReason");
-                request(URLs.AddContract_quxiao, params);
+//                params.put("type", "merchantCancelReason");
+                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//取消原因
                 break;
             case 7:
                 //调价合同
@@ -1112,8 +1112,8 @@ public class AddContractActivity extends BaseActivity {
                 rl_mendianfengding.setVisibility(View.VISIBLE);
                 rl_tiaojialiyou.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
-                params.put("type", "storeUnit");
-                request(URLs.AddContract_tiaojia, params);
+//                params.put("type", "storeUnit");
+                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//计费单元
                 break;
         }
     }
@@ -1124,9 +1124,9 @@ public class AddContractActivity extends BaseActivity {
      * @param params
      */
     private void request(String url, Map<String, String> params) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<CommonModel>() {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<List<CommonModel.ListBean>>() {
             @Override
-            public CommonModel onParseResponse(Call call, Response response) {
+            public List<CommonModel.ListBean> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -1137,15 +1137,15 @@ public class AddContractActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CommonModel response) {
+            public void onResponse(List<CommonModel.ListBean> response) {
                 hideProgress();
                 //期限
                 item_qixian = -1;
                 item_jianshaoyuanyin = -1;
                 renewalPeriod = "";
 //                list_qixian = response.getRenewalPeriod();
-                list_jianshaoyuanyin = response.getMerchantRecoverReason();
-                list_quxiaoyuanyin = response.getMerchantCancelReason();
+                list_jianshaoyuanyin = response;
+                list_quxiaoyuanyin = response;
 //                list_jifeidanyuan = response.get;
             }
         });
@@ -1402,12 +1402,12 @@ public class AddContractActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
                 (AddContractActivity.this, R.layout.item_help, list_jianshaoyuanyin) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getName());
                 if (item_jianshaoyuanyin == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -1418,8 +1418,8 @@ public class AddContractActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_jianshaoyuanyin = position;
-                textView.setText(list_jianshaoyuanyin.get(position).getVal());
-                reasonId = list_jianshaoyuanyin.get(position).getKey();
+                textView.setText(list_jianshaoyuanyin.get(position).getName());
+                reasonId = list_jianshaoyuanyin.get(position).getId();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
 
@@ -1447,12 +1447,12 @@ public class AddContractActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<CommonModel.WorkOrderTypeBean> adapter = new CommonAdapter<CommonModel.WorkOrderTypeBean>
+        CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
                 (AddContractActivity.this, R.layout.item_help, list_quxiaoyuanyin) {
             @Override
-            protected void convert(ViewHolder holder, CommonModel.WorkOrderTypeBean model, int position) {
+            protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model.getVal());
+                tv.setText(model.getName());
                 if (item_quxiaoyuanyin == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -1463,8 +1463,8 @@ public class AddContractActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_quxiaoyuanyin = position;
-                textView.setText(list_quxiaoyuanyin.get(position).getVal());
-                reasonId = list_quxiaoyuanyin.get(position).getKey();
+                textView.setText(list_quxiaoyuanyin.get(position).getName());
+                reasonId = list_quxiaoyuanyin.get(position).getId();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
 

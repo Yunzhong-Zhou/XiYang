@@ -1,37 +1,62 @@
 package com.xiyang.xiyang.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Mr.Z on 2021/5/7.
  */
 public class VisitDetailModel implements Serializable {
     /**
-     * id : 5
-     * type : 上门拜访
-     * storeName : 门店名称周
-     * storeCover : http://qqxfw8hz4.hn-bkt.clouddn.com/store%2F161e4bda16efdf907846347ebf3605dc.png?e=1619495042&token=rgQDQF0oBAnkAgYtqdqY8iyjc3cjnnQEifQJULC1:s45gMniysuMy-thQHy25XsVmreQ=
-     * storeAddres : 阿斯顿马丁路德金
-     * createdUser : 张三
-     * contractName : 李四
-     * contractMobile : 1544xxxx
-     * createdAt : 2021-05-07 10:57:56
-     * extra : null
-     * images : ["a.png","b.png"]
+     * id : string
+     * type : 0
+     * storeId : string
+     * isBusiness : string
+     * reportStatus : 0
+     * way : 0
+     * contractName : string
+     * contractMobile : string
+     * reason : 0
+     * bdAdminScopeOrganId : string
+     * bdAdminId : string
+     * bdAdminName : string
+     * feedback : string
+     * isAdver : 0
+     * remark : string
+     * images : string
+     * extra : string
+     * storeName : string
+     * address : string
+     * isIntention : true
+     * visitTime : 2021-07-17T03:55:43.739Z
+     * createTime : 2021-07-17T03:55:43.739Z
+     * updateTime : 2021-07-17T03:55:43.739Z
+     * delFlag : 0
      */
 
     private String id;
     private String type;
-    private String storeName;
-    private String storeCover;
-    private String storeAddres;
-    private String createdUser;
+    private String storeId;
+    private String isBusiness;
+    private String reportStatus;
+    private String way;
     private String contractName;
     private String contractMobile;
-    private String createdAt;
+    private String reason;
+    private String bdAdminScopeOrganId;
+    private String bdAdminId;
+    private String bdAdminName;
+    private String feedback;
+    private String isAdver;
+    private String remark;
+    private String images;
     private String extra;
-    private List<String> images;
+    private String storeName;
+    private String address;
+    private String isIntention;
+    private String visitTime;
+    private String createTime;
+    private String updateTime;
+    private String delFlag;
 
     public String getId() {
         return id;
@@ -49,36 +74,36 @@ public class VisitDetailModel implements Serializable {
         this.type = type;
     }
 
-    public String getStoreName() {
-        return storeName;
+    public String getStoreId() {
+        return storeId;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
-    public String getStoreCover() {
-        return storeCover;
+    public String getIsBusiness() {
+        return isBusiness;
     }
 
-    public void setStoreCover(String storeCover) {
-        this.storeCover = storeCover;
+    public void setIsBusiness(String isBusiness) {
+        this.isBusiness = isBusiness;
     }
 
-    public String getStoreAddres() {
-        return storeAddres;
+    public String getReportStatus() {
+        return reportStatus;
     }
 
-    public void setStoreAddres(String storeAddres) {
-        this.storeAddres = storeAddres;
+    public void setReportStatus(String reportStatus) {
+        this.reportStatus = reportStatus;
     }
 
-    public String getCreatedUser() {
-        return createdUser;
+    public String getWay() {
+        return way;
     }
 
-    public void setCreatedUser(String createdUser) {
-        this.createdUser = createdUser;
+    public void setWay(String way) {
+        this.way = way;
     }
 
     public String getContractName() {
@@ -97,12 +122,68 @@ public class VisitDetailModel implements Serializable {
         this.contractMobile = contractMobile;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getReason() {
+        return reason;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getBdAdminScopeOrganId() {
+        return bdAdminScopeOrganId;
+    }
+
+    public void setBdAdminScopeOrganId(String bdAdminScopeOrganId) {
+        this.bdAdminScopeOrganId = bdAdminScopeOrganId;
+    }
+
+    public String getBdAdminId() {
+        return bdAdminId;
+    }
+
+    public void setBdAdminId(String bdAdminId) {
+        this.bdAdminId = bdAdminId;
+    }
+
+    public String getBdAdminName() {
+        return bdAdminName;
+    }
+
+    public void setBdAdminName(String bdAdminName) {
+        this.bdAdminName = bdAdminName;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getIsAdver() {
+        return isAdver;
+    }
+
+    public void setIsAdver(String isAdver) {
+        this.isAdver = isAdver;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
     }
 
     public String getExtra() {
@@ -113,11 +194,59 @@ public class VisitDetailModel implements Serializable {
         this.extra = extra;
     }
 
-    public List<String> getImages() {
-        return images;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String isIsIntention() {
+        return isIntention;
+    }
+
+    public void setIsIntention(String isIntention) {
+        this.isIntention = isIntention;
+    }
+
+    public String getVisitTime() {
+        return visitTime;
+    }
+
+    public void setVisitTime(String visitTime) {
+        this.visitTime = visitTime;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
     }
 }

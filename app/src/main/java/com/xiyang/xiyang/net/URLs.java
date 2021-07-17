@@ -124,7 +124,7 @@ public class URLs {
     public static final String CaiGouDetail = HOST + "/purchase/purchase/apply/detail/";
     //人事记录
     public static final String PersonnelList = HOST + "/service-ucenter/organ/change/apply/list";
-    //厂库信息
+    //仓库信息
     public static final String CangKu = HOST + "/purchase/purchase/CmWarehouse/get";
     //采购申请
     public static final String AddBuy = HOST + "/purchase/purchase/apply/add";
@@ -134,10 +134,16 @@ public class URLs {
     public static final String Fragment2_m = HOST + API + "point";
     //商户分派列表
     public static final String DispatchShopList = HOST + "/bd/merchant/transfer/manageUser/page";
+    //商户上报
+    public static final String DispatchShop_ShangBao = HOST + "/bd/merchant/transfer/report/";
     //门店分派列表
     public static final String DispatchStoreList = HOST + "/bd/store/transfer/manageUser/page";
+    //门店上报
+    public static final String DispatchStore_ShangBao = HOST + "/bd/store/transfer/report/";
     //工单分派列表
     public static final String DispatchWorkList = HOST + "/bd/work/orders/manageUser/page";
+    //工单上报
+    public static final String DispatchWork_ShangBao = HOST + "/bd/work/orders/report/";
     /**
      * ********************************审批*****************************************
      */
@@ -158,7 +164,7 @@ public class URLs {
     //拜访列表
     public static final String MyVisitList = HOST + "/bd/store/visit/list";
     //拜访详情
-    public static final String VisitDetail = HOST + "/bd/store/visit/getById/{id}";
+    public static final String VisitDetail = HOST + "/bd/store/visit/getById/";
     //门店列表
     public static final String MyStoreList = HOST + "/bd/store/listStore";
     //添加门店
@@ -185,20 +191,7 @@ public class URLs {
     public static final String TransferStore = HOST + "/bd/store/transfer/add";
     //修改账户信息
     public static final String ChangeStoreAccount = HOST + API + "store/account";
-    //统计数据
-    public static final String Fragment2_TongJi = HOST + API + "/api/v1/techn/console_statistics";
-    //签到-提交
-    public static final String SignIn_Up = HOST + API + "/api/v1/techn/techn_signin";
-    //签到-当天签到情况
-    public static final String SignIn_Today = HOST + API + "/api/v1/techn/techn_signin_day";
-    //签到-记录
-    public static final String SignIn_List = HOST + API + "/api/v1/techn/techn_signin_list_page";
-    //预计完成时间
-    public static final String YuJiTime = HOST + API + "/api/v1/techn/save_estimate_time";
-    //预计保养时间
-    public static final String BaoYangTime = HOST + API + "/api/v1/techn/set_maintain_time";
-    //修改服务内容
-    public static final String ChangeService = HOST + API + "/api/v1/techn/techn_sedan_order_service_modify_str";
+
     /**
      * ********************************设备*****************************************
      */
@@ -238,29 +231,16 @@ public class URLs {
     //设备详情
     public static final String DeviceDetail = HOST + API + "device/detail";
     //安装设备
-    public static final String InstallDevice = HOST + "/device/install/install";
+    public static final String InstallDevice = HOST + "/service-device/install/install";
     //开启设备
     public static final String Device = HOST + "/device/aliyuniot/controlDevice";
     //调试设备
-    public static final String DebugDevice = HOST + API + "device/properties";
+    public static final String DebugDevice = HOST + API + "/service-device/properties";
     //控制设备
-    public static final String DeviceSetUp = HOST + API + "device/operate";
+    public static final String DeviceSetUp = HOST + API + "/service-device/operate";
     //换绑设备
-    public static final String ChangeTieDevice = HOST + API + "device/exchange/add";
-    //发布维修案例
-    public static final String AddWeiXiuAnLi = HOST + API + "/api/v1/techn/techn_forum_case_increase";
-    //发布机友求助
-    public static final String AddJiYouQiuZhu = HOST + API + "/api/v1/techn/techn_help_increase";
-    //机友求助-回复
-    public static final String JiYouQiuZhu_HuiFu = HOST + API + "/api/v1/techn/techn_forum_reply_increase";
-    //发布工具租赁
-    public static final String AddGongJuZuLin = HOST + API + "/api/v1/techn/techn_tool_increase";
-    //发布店铺出租
-    public static final String AddDianPuChuZu = HOST + API + "/api/v1/techn/techn_shop_lease_increase";
-    //发布库存配件
-    public static final String AddKuCunPeiJian = HOST + API + "/api/v1/techn/techn_parts_increase";
-    //喜欢
-    public static final String Like = HOST + API + "/api/v1/techn/techn_activity_fabulous";
+    public static final String ChangeTieDevice = HOST + "/service-device/exchange/add";
+
     /**
      * ********************************数据*****************************************
      */
@@ -309,56 +289,6 @@ public class URLs {
     public static final String MyDevice = HOST + API + "device/record";
     //系统公告
     public static final String Information = HOST + "/applet/notice/openPage";
-    //门店服务分类列表
-    public static final String ServiceList_Store = HOST + API + "/api/v1/public/get_store_service_content";
-    //回复问答
-    public static final String HuiDa = HOST + API + "/api/v1/public/user_store_ques_ans_add";
-    //删除足迹
-    public static final String DeleteFootprint = HOST + API + "/api/v1/user/user_footprint_del";
-    //删除收藏
-    public static final String DeleteCollect = HOST + API + "/api/v1/user/user_collection_del";
-    //我的报价
-    public static final String MyBaoJia = HOST + API + "/api/v1/techn/techn_inquiry_list";
-    //我的发布
-    public static final String MyPublish = HOST + API + "/api/v1/techn/techn_wo_release_list";
-    //删除报价
-    public static final String DeleteBaoJia = HOST + API + "/api/v1/techn/techn_inquiry_list";
-    //提交报价
-    public static final String UpBaoJia = HOST + API + "/api/v1/user/inquiry_demand_project_offer";
-    //订单详情
-    public static final String OrderDetail = HOST + API + "/api/v1/techn/techn_sedan_details";
-    //添加服务
-    public static final String ADDService = HOST + API + "/api/v1/techn/add_order_server";
-    //店铺商品列表-选择商品
-    public static final String SelectGoods = HOST + API + "/api/v1/public/get_store_goods";
-    //添加商品
-    public static final String ADDGoods = HOST + API + "/api/v1/techn/add_order_server_goods";
-    //添加商品-自助添加
-    public static final String ADDGoods_zizhu = HOST + API + "/api/v1/techn/add_goods";
-    //删除服务
-    public static final String DeleteService = HOST + API + "/api/v1/techn/techn_sedan_order_service_del";
-    //删除商品
-    public static final String DeleteGoods = HOST + API + "/api/v1/techn/techn_sedan_goods_del";
-    //删除项目
-    public static final String DeleteProject = HOST + API + "/api/v1/techn/testing_details_del";
-    //店铺所属技师
-    public static final String JiShiList = HOST + API + "/api/v1/techn/techn_store_list";
-    //分配技师
-    public static final String FenPeiJiShi = HOST + API + "/api/v1/techn/techn_sedan_distribute";
-    //我的评价
-    public static final String MyComment = HOST + API + "/api/v1/techn/techn_eval_list";
-    //投诉记录
-    public static final String ComplaintList = HOST + API + "/api/v1/techn/techn_complaint_list";
-    //客服列表
-    public static final String ServiceCenter = HOST + API + "/api/v1/user/get_kf_list";
-    //申述
-    public static final String Appeal = HOST + API + "/api/v1/techn/techn_complaint_increase";
-    //回复
-    public static final String Reply = HOST + API + "/api/v1/techn/techn_eval_add_reply";
-    //优惠券
-    public static final String Coupon = HOST + API + "/api/v1/user/user_coupon_list";
-    //使用优惠券
-    public static final String USE_Coupon = HOST + API + "/api/v1/techn/use_coupon";
 
     /**
      * 拼接请求路径

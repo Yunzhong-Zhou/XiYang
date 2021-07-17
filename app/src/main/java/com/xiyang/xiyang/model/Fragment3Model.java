@@ -8,23 +8,22 @@ import java.util.List;
  */
 public class Fragment3Model implements Serializable {
     /**
-     * totalNum : 10
-     * onlineTotalNum : 10
-     * offlineNum : 10
-     * waitInstall : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:23:25"}]
-     * waitRecovery : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:23:25"}]
-     * waitSwap : [{"id":"id","name":"喜来登酒店","createdAt":"2021-04-28 16:23:25"}]
-     * devices : [{"id":"1","name":"万豪酒店","image":"a.png","deviceSn":"30","address":"重庆市沙坪坝","money":"30000"}]
+     * totalNum : 0
+     * upLineNum : 0
+     * onLineNum : 0
+     * offLineNum : 0
+     * waitingInstallList : [{"id":"1415583044974284800","storeName":null,"createTime":1626336273000,"status":1}]
+     * waitingRecycleList : [{"id":"1415583044974284800","storeName":null,"createTime":1626336273000,"status":1}]
+     * waitingSwapList : [{"id":"1415583044974284800","storeName":null,"createTime":1626336273000,"status":1}]
      */
 
     private String totalNum;
     private String upLineNum;
     private String onLineNum;
     private String offLineNum;
-    private List<WaitInstallBean> waitInstall;
-    private List<WaitRecoveryBean> waitRecovery;
-    private List<WaitSwapBean> waitSwap;
-    private List<DevicesBean> devices;
+    private List<WaitingInstallListBean> waitingInstallList;
+    private List<WaitingRecycleListBean> waitingRecycleList;
+    private List<WaitingSwapListBean> waitingSwapList;
 
     public String getTotalNum() {
         return totalNum;
@@ -58,48 +57,42 @@ public class Fragment3Model implements Serializable {
         this.offLineNum = offLineNum;
     }
 
-    public List<WaitInstallBean> getWaitInstall() {
-        return waitInstall;
+    public List<WaitingInstallListBean> getWaitingInstallList() {
+        return waitingInstallList;
     }
 
-    public void setWaitInstall(List<WaitInstallBean> waitInstall) {
-        this.waitInstall = waitInstall;
+    public void setWaitingInstallList(List<WaitingInstallListBean> waitingInstallList) {
+        this.waitingInstallList = waitingInstallList;
     }
 
-    public List<WaitRecoveryBean> getWaitRecovery() {
-        return waitRecovery;
+    public List<WaitingRecycleListBean> getWaitingRecycleList() {
+        return waitingRecycleList;
     }
 
-    public void setWaitRecovery(List<WaitRecoveryBean> waitRecovery) {
-        this.waitRecovery = waitRecovery;
+    public void setWaitingRecycleList(List<WaitingRecycleListBean> waitingRecycleList) {
+        this.waitingRecycleList = waitingRecycleList;
     }
 
-    public List<WaitSwapBean> getWaitSwap() {
-        return waitSwap;
+    public List<WaitingSwapListBean> getWaitingSwapList() {
+        return waitingSwapList;
     }
 
-    public void setWaitSwap(List<WaitSwapBean> waitSwap) {
-        this.waitSwap = waitSwap;
+    public void setWaitingSwapList(List<WaitingSwapListBean> waitingSwapList) {
+        this.waitingSwapList = waitingSwapList;
     }
 
-    public List<DevicesBean> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(List<DevicesBean> devices) {
-        this.devices = devices;
-    }
-
-    public static class WaitInstallBean {
+    public static class WaitingInstallListBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:23:25
+         * id : 1415583044974284800
+         * storeName : null
+         * createTime : 1626336273000
+         * status : 1
          */
 
         private String id;
-        private String name;
-        private String createdAt;
+        private String storeName;
+        private String createTime;
+        private String status;
 
         public String getId() {
             return id;
@@ -109,33 +102,43 @@ public class Fragment3Model implements Serializable {
             this.id = id;
         }
 
-        public String getName() {
-            return name;
+        public String getStoreName() {
+            return storeName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 
-    public static class WaitRecoveryBean {
+    public static class WaitingRecycleListBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:23:25
+         * id : 1415583044974284800
+         * storeName : null
+         * createTime : 1626336273000
+         * status : 1
          */
 
         private String id;
-        private String name;
-        private String createdAt;
+        private String storeName;
+        private String createTime;
+        private String status;
 
         public String getId() {
             return id;
@@ -145,33 +148,43 @@ public class Fragment3Model implements Serializable {
             this.id = id;
         }
 
-        public String getName() {
-            return name;
+        public String getStoreName() {
+            return storeName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 
-    public static class WaitSwapBean {
+    public static class WaitingSwapListBean {
         /**
-         * id : id
-         * name : 喜来登酒店
-         * createdAt : 2021-04-28 16:23:25
+         * id : 1415583044974284800
+         * storeName : null
+         * createTime : 1626336273000
+         * status : 1
          */
 
         private String id;
-        private String name;
-        private String createdAt;
+        private String storeName;
+        private String createTime;
+        private String status;
 
         public String getId() {
             return id;
@@ -181,86 +194,28 @@ public class Fragment3Model implements Serializable {
             this.id = id;
         }
 
-        public String getName() {
-            return name;
+        public String getStoreName() {
+            return storeName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
         }
 
-        public String getCreatedAt() {
-            return createdAt;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
-    }
-
-    public static class DevicesBean {
-        /**
-         * id : 1
-         * name : 万豪酒店
-         * image : a.png
-         * deviceSn : 30
-         * address : 重庆市沙坪坝
-         * money : 30000
-         */
-
-        private String id;
-        private String name;
-        private String image;
-        private String deviceSn;
-        private String address;
-        private String money;
-
-        public String getId() {
-            return id;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public String getStatus() {
+            return status;
         }
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public String getDeviceSn() {
-            return deviceSn;
-        }
-
-        public void setDeviceSn(String deviceSn) {
-            this.deviceSn = deviceSn;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getMoney() {
-            return money;
-        }
-
-        public void setMoney(String money) {
-            this.money = money;
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 }

@@ -38,6 +38,7 @@ public class VisitDetailActivity extends BaseActivity {
     List<KeyValueModel> list_info = new ArrayList<>();
     CommonAdapter<KeyValueModel> mAdapter_info;
     ImageView iv_info;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +70,7 @@ public class VisitDetailActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
 
         }
     }
@@ -79,6 +80,7 @@ public class VisitDetailActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
         requestServer();
     }
+
     @Override
     public void requestServer() {
         super.requestServer();
@@ -90,7 +92,7 @@ public class VisitDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.VisitDetail+id, params, headerMap, new CallBackUtil<VisitDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.VisitDetail + id, params, headerMap, new CallBackUtil<VisitDetailModel>() {
             @Override
             public VisitDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -107,15 +109,32 @@ public class VisitDetailActivity extends BaseActivity {
                 hideProgress();
 //                model = response;
                 list_info.clear();
-                list_info.add(new KeyValueModel("拜访门店", response.getStoreName()));
-                list_info.add(new KeyValueModel("拜访人员", response.getCreatedUser()));
-                list_info.add(new KeyValueModel("联系电话", response.getContractMobile()));
-                list_info.add(new KeyValueModel("拜访时间", response.getCreatedAt()));
-                list_info.add(new KeyValueModel("门店地址", response.getStoreAddres()));
-                list_info.add(new KeyValueModel("拜访方式", response.getType()));
-                list_info.add(new KeyValueModel("是否意向", response.getContractName()));
-                list_info.add(new KeyValueModel("补充说明", response.getExtra()));
-                list_info.add(new KeyValueModel("执照图片", ""));
+                if (response.getType().equals("3")) {
+                    //陌生拜访
+                    list_info.add(new KeyValueModel("拜访门店", response.getStoreName()));
+                    list_info.add(new KeyValueModel("拜访人员", response.getContractName()));
+                    list_info.add(new KeyValueModel("联系电话", response.getContractMobile()));
+                    list_info.add(new KeyValueModel("拜访时间", response.getVisitTime()));
+                    list_info.add(new KeyValueModel("门店地址", response.getAddress()));
+                    list_info.add(new KeyValueModel("拜访方式", response.getWay()));
+                    list_info.add(new KeyValueModel("是否意向", response.isIsIntention()));
+                    list_info.add(new KeyValueModel("补充说明", response.getRemark()));
+                } else {
+                    list_info.add(new KeyValueModel("记录ID", response.getId()));
+                    list_info.add(new KeyValueModel("拜访门店", response.getStoreName()));
+                    list_info.add(new KeyValueModel("拜访方式", response.getWay()));
+                    list_info.add(new KeyValueModel("营业情况", response.getIsBusiness()));
+                    list_info.add(new KeyValueModel("拜访联系人", response.getContractMobile()));
+                    list_info.add(new KeyValueModel("是否竞对", response.getIsAdver()));
+                    list_info.add(new KeyValueModel("拜访时间", response.getCreateTime()));
+                    list_info.add(new KeyValueModel("拜访人", response.getBdAdminName()));
+                    list_info.add(new KeyValueModel("合作风险上报", response.getReportStatus()));
+                    list_info.add(new KeyValueModel("拜访原因", response.getReason()));
+                    list_info.add(new KeyValueModel("拜访反馈", response.getFeedback()));
+                    list_info.add(new KeyValueModel("补充说明", response.getRemark()));
+                }
+
+                list_info.add(new KeyValueModel("拜访照片", ""));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (VisitDetailActivity.this, R.layout.item_keyvalue, list_info) {
                     @Override
@@ -126,7 +145,7 @@ public class VisitDetailActivity extends BaseActivity {
                 };
                 rv_info.setAdapter(mAdapter_info);
                 Glide.with(VisitDetailActivity.this)
-                        .load(response.getStoreCover())
+                        .load(response.getImages())
                         .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(VisitDetailActivity.this, 10))))

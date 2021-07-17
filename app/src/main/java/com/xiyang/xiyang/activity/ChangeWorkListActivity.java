@@ -199,7 +199,7 @@ public class ChangeWorkListActivity extends BaseActivity {
                                     params.clear();
                                     params.put("remark", remark);
                                     params.put("images", images);
-                                    params.put("id", id);
+                                    params.put("workOrderId", id);
                                     params.put("status", status);
                                     requestUpData(params);
                                 }

@@ -5,13 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.cretin.tools.scancode.CaptureActivity;
 import com.cretin.tools.scancode.config.ScanConfig;
 import com.liaoinstan.springview.widget.SpringView;
@@ -21,7 +17,6 @@ import com.xiyang.xiyang.activity.AddWorkListActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.DebugDeviceActivity;
 import com.xiyang.xiyang.activity.DeviceAddressActivity;
-import com.xiyang.xiyang.activity.DeviceDetailActivity;
 import com.xiyang.xiyang.activity.InstallDeviceActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
@@ -63,8 +58,8 @@ public class Fragment3 extends BaseFragment {
     private RecyclerView recyclerView1, recyclerView2;
     List<MyFragment1Model> list1 = new ArrayList<>();
     CommonAdapter<MyFragment1Model> mAdapter1;
-    List<Fragment3Model.DevicesBean> list2 = new ArrayList<>();
-    CommonAdapter<Fragment3Model.DevicesBean> mAdapter2;
+//    List<Fragment3Model.DevicesBean> list2 = new ArrayList<>();
+//    CommonAdapter<Fragment3Model.DevicesBean> mAdapter2;
     TextView tv_mymore;
 
     TextView textView1, textView2, textView3, textView4;
@@ -249,7 +244,7 @@ public class Fragment3 extends BaseFragment {
 
                 changeUI();
 
-                list2 = response.getDevices();
+                /*list2 = response.getDevices();
                 if (list2 != null && list2.size() > 0) {
                     mAdapter2 = new CommonAdapter<Fragment3Model.DevicesBean>
                             (getActivity(), R.layout.item_fragment2_2, list2) {
@@ -270,12 +265,12 @@ public class Fragment3 extends BaseFragment {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            /*if (model.getStatus() != null && model.getStatus().equals("1")) {
+                            *//*if (model.getStatus() != null && model.getStatus().equals("1")) {
                                 //离线
                                 imageView2.setImageResource(R.mipmap.bg_lixian);
                             } else {
                                 imageView2.setImageResource(R.mipmap.bg_zaixian);
-                            }*/
+                            }*//*
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -291,7 +286,7 @@ public class Fragment3 extends BaseFragment {
                     recyclerView2.setAdapter(mAdapter2);
                 } else {
                     showEmptyPage();
-                }
+                }*/
 
                 MainActivity.isOver = true;
 
@@ -393,9 +388,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                /*for (Fragment3Model.WaitInstallBean bean:model.getWaitInstall()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
-                }*/
+                for (Fragment3Model.WaitingInstallListBean bean:model.getWaitingInstallList()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getStoreName(),bean.getCreateTime()));
+                }
                 break;
             case 2:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -404,9 +399,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                /*for (Fragment3Model.WaitRecoveryBean bean:model.getWaitRecovery()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
-                }*/
+                for (Fragment3Model.WaitingRecycleListBean bean:model.getWaitingRecycleList()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getStoreName(),bean.getCreateTime()));
+                }
                 break;
             case 3:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));
@@ -415,9 +410,9 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
-                /*for (Fragment3Model.WaitSwapBean bean:model.getWaitSwap()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreatedAt()));
-                }*/
+                for (Fragment3Model.WaitingSwapListBean bean:model.getWaitingSwapList()){
+                    list1.add(new MyFragment1Model(bean.getId(),bean.getStoreName(),bean.getCreateTime()));
+                }
                 break;
 
         }

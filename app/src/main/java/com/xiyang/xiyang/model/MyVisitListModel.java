@@ -60,7 +60,7 @@ public class MyVisitListModel implements Serializable {
          */
 
         private String id;
-        private int type;
+        private String type;
         private String storeId;
         private String isBusiness;
         private String reportStatus;
@@ -80,7 +80,7 @@ public class MyVisitListModel implements Serializable {
         private String address;
         private String isIntention;
         private String visitTime;
-        private long createTime;
+        private String createTime;
         private String updateTime;
         private String delFlag;
 
@@ -92,11 +92,11 @@ public class MyVisitListModel implements Serializable {
             this.id = id;
         }
 
-        public int getType() {
+        public String getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(String type) {
             this.type = type;
         }
 
@@ -252,11 +252,11 @@ public class MyVisitListModel implements Serializable {
             this.visitTime = visitTime;
         }
 
-        public long getCreateTime() {
+        public String getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(long createTime) {
+        public void setCreateTime(String createTime) {
             this.createTime = createTime;
         }
 

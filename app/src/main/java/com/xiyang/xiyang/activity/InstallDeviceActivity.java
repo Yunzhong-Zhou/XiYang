@@ -37,7 +37,7 @@ import okhttp3.Response;
  */
 public class InstallDeviceActivity extends BaseActivity {
     StoreDetailModel model;
-    String deviceName = "", storeId = "", shopId = "", roomId = "",transactionId="";
+    String deviceName = "", storeId = "", shopId = "", roomId = "", transactionId = "";
     LinearLayout ll_scan;
     TextView iv_scan;
     TextView tv_scan;
@@ -63,6 +63,8 @@ public class InstallDeviceActivity extends BaseActivity {
     @Override
     protected void initData() {
         transactionId = getIntent().getStringExtra("transactionId");
+        if (transactionId == null) transactionId = "";
+
     }
 
     @Override
@@ -101,14 +103,14 @@ public class InstallDeviceActivity extends BaseActivity {
 //                Bundle bundle= new Bundle();
 //                bundle.putSerializable("StoreDetailModel",model);
 //                CommonUtil.gotoActivityWithData(InstallDeviceActivity.this, RoomNoManagementActivity.class,bundle);
-                if (model !=null){
+                if (model != null) {
                     Intent intent3 = new Intent(InstallDeviceActivity.this, RoomNoManagementActivity.class);
                     Bundle bundle3 = new Bundle();
                     bundle3.putInt("requestCode", Constant.SELECT_ROOMNO);
                     bundle3.putSerializable("StoreDetailModel", model);
                     intent3.putExtras(bundle3);
                     startActivityForResult(intent3, Constant.SELECT_ROOMNO);
-                }else {
+                } else {
                     myToast("请先选择门店");
                 }
 
@@ -116,19 +118,20 @@ public class InstallDeviceActivity extends BaseActivity {
 
             case R.id.tv_confirm:
                 //确认安装
-                if (match()){
+                if (match()) {
                     this.showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("transactionId", transactionId);
-                    params.put("deviceName", deviceName);
-                    params.put("storeId", storeId);
-                    params.put("shopId", shopId);
+                    params.put("deviceApplyId", transactionId);
+                    params.put("sn", deviceName);
+                    params.put("stroreId", storeId);
+//                    params.put("shopId", shopId);
                     params.put("roomId", roomId);
                     requestUpData(params);
                 }
                 break;
         }
     }
+
     private boolean match() {
         if (TextUtils.isEmpty(deviceName)) {
             myToast("请先扫码");
@@ -149,11 +152,11 @@ public class InstallDeviceActivity extends BaseActivity {
 
         return true;
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("安装设备");
     }
-
 
 
     @Override
@@ -204,7 +207,7 @@ public class InstallDeviceActivity extends BaseActivity {
                         showProgress(true, getString(R.string.app_loading2));
                         params.clear();
 //                        params.put("id", storeId);
-                        requestStoreDetail(params,storeId);
+                        requestStoreDetail(params, storeId);
                     }
                     break;
                 case Constant.SELECT_SHOP:
@@ -259,8 +262,8 @@ public class InstallDeviceActivity extends BaseActivity {
      *
      * @param params
      */
-    private void requestStoreDetail(HashMap<String, String> params,String storeId) {
-        OkhttpUtil.okHttpGet(URLs.StoreDetail+storeId, params, headerMap, new CallBackUtil<StoreDetailModel>() {
+    private void requestStoreDetail(HashMap<String, String> params, String storeId) {
+        OkhttpUtil.okHttpGet(URLs.StoreDetail + storeId, params, headerMap, new CallBackUtil<StoreDetailModel>() {
             @Override
             public StoreDetailModel onParseResponse(Call call, Response response) {
                 return null;

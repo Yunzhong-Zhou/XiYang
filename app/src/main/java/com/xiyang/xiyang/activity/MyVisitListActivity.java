@@ -136,10 +136,27 @@ public class MyVisitListActivity extends BaseActivity {
                             (MyVisitListActivity.this, R.layout.item_myvisitlist, list) {
                         @Override
                         protected void convert(ViewHolder holder, MyVisitListModel.RecordsBean model, int position) {
-                           /* holder.setText(R.id.tv_name,model.getName());//标题
-//                            holder.setText(R.id.tv_yixiang, model.get);//意向
-                            holder.setText(R.id.tv_type, model.getTypeTitle());
-                            holder.setText(R.id.tv_time, model.getVisitedAt());*/
+                            holder.setText(R.id.tv_name, model.getStoreName());//标题
+                            TextView tv_yixiang = holder.getView(R.id.tv_yixiang);
+                            tv_yixiang.setVisibility(View.GONE);
+                            switch (model.getType()) { //1-远程拜访，2-上门拜访,3-陌生拜访
+                                case "1":
+                                    holder.setText(R.id.tv_type, "远程拜访");
+                                    holder.setText(R.id.tv_time, model.getCreateTime());
+                                    break;
+                                case "2":
+                                    holder.setText(R.id.tv_type, "上门拜访");
+                                    holder.setText(R.id.tv_time, model.getCreateTime());
+                                    break;
+                                case "3":
+                                    tv_yixiang.setVisibility(View.VISIBLE);
+                                    holder.setText(R.id.tv_type, "陌生拜访");
+                                    if (model.getIsIntention() != null && model.getIsIntention().equals("1"))
+                                        tv_yixiang.setText("有意向");
+                                    else tv_yixiang.setText("无意向");
+                                    holder.setText(R.id.tv_time, model.getVisitTime());
+                                    break;
+                            }
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -264,8 +281,10 @@ public class MyVisitListActivity extends BaseActivity {
         ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView1);
         contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
         final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_jiangxu));
-        list.add(getString(R.string.app_type_shengxu));
+        list.add("全部");
+        list.add("远程拜访");
+        list.add("上门拜访");
+        list.add("陌生拜访");
         final Pop_ListAdapter adapter = new Pop_ListAdapter(MyVisitListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
@@ -276,9 +295,9 @@ public class MyVisitListActivity extends BaseActivity {
                 adapter.notifyDataSetChanged();
                 i1 = i;
                 if (i == 0) {
-                    sort = "desc";
+                    type = "";
                 } else {
-                    sort = "asc";
+                    type = i + "";
                 }
 //                textView1.setText(list.get(i));
                 requestServer();
