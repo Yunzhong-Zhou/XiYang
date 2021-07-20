@@ -139,6 +139,25 @@ public class StoreDetailModel implements Serializable {
         private String delFlag;
         private String transferStatus;
 
+        private String transfterStatus;
+        private String showPointBtn;
+
+        public String getTransfterStatus() {
+            return transfterStatus;
+        }
+
+        public void setTransfterStatus(String transfterStatus) {
+            this.transfterStatus = transfterStatus;
+        }
+
+        public String getShowPointBtn() {
+            return showPointBtn;
+        }
+
+        public void setShowPointBtn(String showPointBtn) {
+            this.showPointBtn = showPointBtn;
+        }
+
         public String getId() {
             return id;
         }

@@ -146,7 +146,7 @@ public class MyContractActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, MyContractModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
                             holder.setText(R.id.tv_shop, "《" + model.getTypeTitle() + "》");
-                            holder.setText(R.id.tv_num, model.getStatusTitle());//money
+                            holder.setText(R.id.tv_num, model.getStatusTitle());
                             holder.setText(R.id.tv_addr, model.getCreatedAt());
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);

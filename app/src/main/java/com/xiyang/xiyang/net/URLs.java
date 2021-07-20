@@ -90,6 +90,8 @@ public class URLs {
     public static final String AddContract_quxiao = HOST + "/bd/bdservice/cancelContracts";
     //添加合同-调价
     public static final String AddContract_tiaojia = HOST + "/bd/bdservice/adjustPriceContracts";
+    //门店数据
+    public static final String StoreInfo = HOST + "/bd/bdservice/adjustPriceContracts";
     //我的合同列表
     public static final String MyContract = HOST + "/bd/bdservice/getContractsListInfo";
     //合同详情
@@ -124,6 +126,8 @@ public class URLs {
     public static final String CaiGouDetail = HOST + "/purchase/purchase/apply/detail/";
     //人事记录
     public static final String PersonnelList = HOST + "/service-ucenter/organ/change/apply/list";
+    //人事详情
+    public static final String PersonnelDetail = HOST + "/service-ucenter/organ/change/apply/getById/";
     //仓库信息
     public static final String CangKu = HOST + "/purchase/purchase/CmWarehouse/get";
     //采购申请

@@ -106,14 +106,20 @@ public class AffairDetailActivity extends BaseActivity {
      */
     LinearLayout ll_shenhe;
     RecyclerView rv_anzhuang;
-//    List<AffairDetailModel.InstallBean> list_anzhuang = new ArrayList<>();
-//    CommonAdapter<AffairDetailModel.InstallBean> mAdapter_anzhuang;
+    List<AffairDetailModel.DeviceInstallLogVoListBean> list_anzhuang = new ArrayList<>();
+    CommonAdapter<AffairDetailModel.DeviceInstallLogVoListBean> mAdapter_anzhuang;
     TextView iv_scan, tv_scan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_affairdetail);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();
     }
 
     @Override
@@ -372,7 +378,6 @@ public class AffairDetailActivity extends BaseActivity {
         list_fangshi.add("邮寄");
 
         id = getIntent().getStringExtra("id");
-        requestServer();
     }
 
     @Override
@@ -444,28 +449,29 @@ public class AffairDetailActivity extends BaseActivity {
                 /**
                  * 安装记录
                  */
-                /*list_anzhuang = response.getInstall();
-                mAdapter_anzhuang = new CommonAdapter<AffairDetailModel.InstallBean>
+                list_anzhuang = response.getDeviceInstallLogVoList();
+                mAdapter_anzhuang = new CommonAdapter<AffairDetailModel.DeviceInstallLogVoListBean>
                         (AffairDetailActivity.this, R.layout.item_affairedetail_anzhuang, list_anzhuang) {
                     @Override
-                    protected void convert(ViewHolder holder, AffairDetailModel.InstallBean model, int position) {
-                        holder.setText(R.id.textView1, model.getAddr());
-                        holder.setText(R.id.textView2, model.getSn());
+                    protected void convert(ViewHolder holder, AffairDetailModel.DeviceInstallLogVoListBean model, int position) {
+                        holder.setText(R.id.textView1, model.getStoreName()+"·"+model.getStoreChildName()+"·"+model.getRoomName());
+                        holder.setText(R.id.textView2, model.getDeviceNo());
 //                        holder.setText(R.id.textView3, model.get);
-                        holder.setText(R.id.textView4, model.getInstallAt() + "");
+                        holder.setText(R.id.textView4, model.getInstallTime() + "");
 
                         holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Bundle bundle = new Bundle();
-                                bundle.putString("deviceName", model.getSn());
+//                                bundle.putString("deviceName", model.getDeviceNo());
+                                bundle.putString("deviceName", model.getDeviceNo());
                                 CommonUtil.gotoActivityWithData(AffairDetailActivity.this, DeviceDetailActivity.class, bundle, false);
                             }
                         });
 
                     }
                 };
-                rv_anzhuang.setAdapter(mAdapter_anzhuang);*/
+                rv_anzhuang.setAdapter(mAdapter_anzhuang);
 
             }
         });

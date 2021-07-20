@@ -122,9 +122,6 @@ public class StoreDetailActivity extends BaseActivity {
         view4 = findViewByID_My(R.id.view4);
 
         right_btn1 = findViewByID_My(R.id.right_btn1);
-        if (localUserInfo.getUserJob().equals("BD"))
-            right_btn1.setVisibility(View.INVISIBLE);
-        else right_btn1.setVisibility(View.VISIBLE);
 
         imageView = findViewByID_My(R.id.imageView);
         textView1 = findViewByID_My(R.id.textView1);
@@ -167,7 +164,11 @@ public class StoreDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.right_btn1:
-                CommonUtil.gotoActivity(StoreDetailActivity.this, AssignActivity.class);
+                bundle.putString("id", model.getStoreInfo().getShowPointBtn());
+                bundle.putInt("type_m", 2);//1、商户分派 2、门店分派 3、工单分派
+                bundle.putString("name", model.getStoreInfo().getName());
+                bundle.putString("userName", model.getStoreInfo().getContactName());
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, AssignActivity.class, bundle, false);
                 break;
             case R.id.linearLayout1:
                 //设备
@@ -176,13 +177,13 @@ public class StoreDetailActivity extends BaseActivity {
             case R.id.linearLayout2:
                 //房号
 //                bundle.putString("storeId",model.getId());
-                bundle.putSerializable("StoreDetailModel",model);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, RoomNoManagementActivity.class,bundle);
+                bundle.putSerializable("StoreDetailModel", model);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, RoomNoManagementActivity.class, bundle);
                 break;
             case R.id.linearLayout3:
                 //员工
-                bundle.putString("storeId",id);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, StaffManagementActivity.class,bundle);
+                bundle.putString("storeId", id);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, StaffManagementActivity.class, bundle);
                 break;
             case R.id.linearLayout4:
                 //移位
@@ -190,15 +191,15 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_change1:
                 //修改账号
-                bundle.putString("storeId",id);
-                bundle.putString("storeName",model.getStoreInfo().getName());
-                bundle.putString("storeAccount",model.getStoreInfo().getAccount());
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, ChangeStoreAccountActivity.class,bundle);
+                bundle.putString("storeId", id);
+                bundle.putString("storeName", model.getStoreInfo().getName());
+                bundle.putString("storeAccount", model.getStoreInfo().getAccount());
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, ChangeStoreAccountActivity.class, bundle);
                 break;
             case R.id.tv_change2:
                 //修改信息
-                bundle.putSerializable("StoreDetailModel",model);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, ChangeStoreActivity.class,bundle);
+                bundle.putSerializable("StoreDetailModel", model);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, ChangeStoreActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
                 //待拜访
@@ -231,7 +232,7 @@ public class StoreDetailActivity extends BaseActivity {
 
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.StoreDetail+id, params, headerMap, new CallBackUtil<StoreDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.StoreDetail + id, params, headerMap, new CallBackUtil<StoreDetailModel>() {
             @Override
             public StoreDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -259,6 +260,11 @@ public class StoreDetailActivity extends BaseActivity {
                 textView2.setText(response.getDeviceNumber());//设备数
                 textView3.setText(response.getRunDeviceNumber());//运行中
                 textView4.setText(response.getOffLineDeviceNumber());//离线中
+
+                if (!localUserInfo.getUserJob().equals("BD") && response.getStoreInfo().getShowPointBtn() != null && !response.getStoreInfo().getShowPointBtn().equals(""))
+                    right_btn1.setVisibility(View.VISIBLE);
+                else right_btn1.setVisibility(View.INVISIBLE);
+
                 /**
                  * 门店信息
                  */

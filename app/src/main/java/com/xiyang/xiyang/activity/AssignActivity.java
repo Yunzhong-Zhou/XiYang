@@ -26,7 +26,6 @@ import okhttp3.Response;
 public class AssignActivity extends BaseActivity {
     int type_m = 1;//1、商户分派 2、门店分派 3、工单分派
     String id = "", name = "", userName = "", job_xiaji = "", staffId = "";
-    ;
     TextView tv_1, tv_2, tv_3,
             textView1, textView2, textView3;
 

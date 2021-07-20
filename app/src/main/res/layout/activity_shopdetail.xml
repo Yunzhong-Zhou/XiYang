@@ -841,6 +841,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_contract_more"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -850,6 +851,7 @@
                         android:paddingBottom="15dp">
 
                         <View
+                            android:id="@+id/view_addcontract"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:layout_weight="1" />
@@ -908,6 +910,7 @@
                         android:background="@drawable/yuanjiao_12_baise" />
 
                     <LinearLayout
+                        android:id="@+id/ll_store_more"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -917,6 +920,7 @@
                         android:paddingBottom="15dp">
 
                         <View
+                            android:id="@+id/view_addstore"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:layout_weight="1" />

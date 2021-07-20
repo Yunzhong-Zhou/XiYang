@@ -44,6 +44,8 @@ public class ShopDetailActivity extends BaseActivity {
     ShopDetailModel model;
     TextView tv_name, tv_shop, tv_num, tv_addr;
     ImageView imageView1, imageView2;
+
+
     /**
      * 商户信息
      */
@@ -72,18 +74,21 @@ public class ShopDetailActivity extends BaseActivity {
     /**
      * 合同信息
      */
-    LinearLayout ll_contract;
+    LinearLayout ll_contract, ll_contract_more;
     RecyclerView rv_contract;
     List<ShopDetailModel.ContractsListBean> list_contract = new ArrayList<>();
     CommonAdapter<ShopDetailModel.ContractsListBean> mAdapter_contract;
-
+    TextView tv_addcontract;
+    View view_addcontract;
     /**
      * 门店信息
      */
-    LinearLayout ll_store;
+    LinearLayout ll_store, ll_store_more;
     RecyclerView rv_store;
     List<ShopDetailModel.StoresListBean> list_store = new ArrayList<>();
     CommonAdapter<ShopDetailModel.StoresListBean> mAdapter_store;
+    TextView tv_addstore;
+    View view_addstore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,12 +166,36 @@ public class ShopDetailActivity extends BaseActivity {
         ll_contract = findViewByID_My(R.id.ll_contract);
         rv_contract = findViewByID_My(R.id.rv_contract);
         rv_contract.setLayoutManager(new LinearLayoutManager(this));
+        ll_contract_more = findViewByID_My(R.id.ll_contract_more);
+        tv_addcontract = findViewByID_My(R.id.tv_addcontract);
+        view_addcontract = findViewByID_My(R.id.view_addcontract);
+        if (localUserInfo.getUserJob().equals("BD")) {
+            ll_contract_more.setVisibility(View.VISIBLE);
+            tv_addcontract.setVisibility(View.VISIBLE);
+            view_addcontract.setVisibility(View.VISIBLE);
+        } else {
+            ll_contract_more.setVisibility(View.GONE);
+            tv_addcontract.setVisibility(View.GONE);
+            view_addcontract.setVisibility(View.GONE);
+        }
         /**
          * 门店信息
          */
         ll_store = findViewByID_My(R.id.ll_store);
         rv_store = findViewByID_My(R.id.rv_store);
         rv_store.setLayoutManager(new LinearLayoutManager(this));
+        ll_store_more = findViewByID_My(R.id.ll_store_more);
+        tv_addstore = findViewByID_My(R.id.tv_addstore);
+        view_addstore = findViewByID_My(R.id.view_addstore);
+        if (localUserInfo.getUserJob().equals("BD")) {
+            ll_store_more.setVisibility(View.VISIBLE);
+            tv_addstore.setVisibility(View.VISIBLE);
+            view_addstore.setVisibility(View.VISIBLE);
+        } else {
+            ll_store_more.setVisibility(View.GONE);
+            tv_addstore.setVisibility(View.GONE);
+            view_addstore.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -192,7 +221,7 @@ public class ShopDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_morestore:
                 //门店-查看更多
-                CommonUtil.gotoActivity(ShopDetailActivity.this, MyShopListActivity.class);
+                CommonUtil.gotoActivity(ShopDetailActivity.this, MyStoreListActivity.class);
                 break;
             case R.id.ll_tab1:
                 //待拜访
@@ -236,7 +265,7 @@ public class ShopDetailActivity extends BaseActivity {
                 model = response;
                 tv_name.setText(response.getBase().getName());
 //                tv_shop.setText(response.getBase().get);
-//                tv_num.setText(response.getBase().get);
+                tv_num.setText(response.getBase().getAccount());
                 tv_addr.setText(response.getBase().getAddress());
                 Glide.with(ShopDetailActivity.this)
                         .load(model.getBase().getCertificateUrl())
@@ -246,12 +275,26 @@ public class ShopDetailActivity extends BaseActivity {
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-                /*if (model.getStatus() != null && model.getStatus().equals("4")) {
+                if (model.getBase().getStatus() != null && model.getBase().getStatus().equals("4")) {
                     imageView2.setImageResource(R.mipmap.bg_yiqianyue);
                 } else {
                     //待签约
                     imageView2.setImageResource(R.mipmap.bg_daiqianyue);
-                }*/
+                }
+
+                if (!localUserInfo.getUserJob().equals("BD") && response.getBase().getShowPointBtn() != null && !response.getBase().getShowPointBtn().equals("")) {
+                    titleView.showRightTxtBtn("立即指派", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("id", response.getBase().getShowPointBtn());
+                            bundle.putInt("type_m", 1);//1、商户分派 2、门店分派 3、工单分派
+                            bundle.putString("name", model.getBase().getName());
+                            bundle.putString("userName", model.getBase().getContactName());
+                            CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AssignActivity.class, bundle, false);
+                        }
+                    });
+                }
                 /**
                  * 商户信息
                  */
@@ -288,6 +331,8 @@ public class ShopDetailActivity extends BaseActivity {
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(iv_info);//加载图片
+
+
                 //统计数据
                 list_tongji.clear();
                 list_tongji.add(new KeyValueModel("门店数", response.getCountData().getStoreNum()));
@@ -321,7 +366,7 @@ public class ShopDetailActivity extends BaseActivity {
 
                 //签约信息
                 list_qianyue.clear();
-                if (response.getSignData() !=null){
+                if (response.getSignData() != null) {
                     list_qianyue.add(new KeyValueModel("签约合同", response.getSignData().getContract()));
                     list_qianyue.add(new KeyValueModel("是否独家", response.getSignData().getSole()));
                     list_qianyue.add(new KeyValueModel("签约时间", response.getSignData().getRenewalTime()));
@@ -394,6 +439,7 @@ public class ShopDetailActivity extends BaseActivity {
                 /**
                  * 门店信息
                  */
+                list_store = response.getStoresList();
                 mAdapter_store = new CommonAdapter<ShopDetailModel.StoresListBean>
                         (ShopDetailActivity.this, R.layout.item_fragment2_2, list_store) {
                     @Override
@@ -450,14 +496,7 @@ public class ShopDetailActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("商户详情");
-        if (!localUserInfo.getUserJob().equals("BD")) {
-            titleView.showRightTxtBtn("立即指派", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CommonUtil.gotoActivity(ShopDetailActivity.this, AssignActivity.class);
-                }
-            });
-        }
+
 
     }
 

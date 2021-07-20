@@ -539,6 +539,7 @@
                     android:drawableRight="@mipmap/ic_down_black"
                     android:drawablePadding="10dp"
                     android:focusable="false"
+                    android:onClick="onClick"
                     android:paddingLeft="100dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"

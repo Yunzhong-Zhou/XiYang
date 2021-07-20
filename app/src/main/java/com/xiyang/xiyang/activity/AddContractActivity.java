@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,7 +26,7 @@ import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.CommonModel;
 import com.xiyang.xiyang.model.IndustryModel;
-import com.xiyang.xiyang.model.StoreDetailModel;
+import com.xiyang.xiyang.model.StoreInfoModel;
 import com.xiyang.xiyang.model.WarehouseModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -64,7 +65,7 @@ public class AddContractActivity extends BaseActivity {
     List<CommonModel.ListBean> list_qixian = new ArrayList<>();
     List<CommonModel.ListBean> list_jianshaoyuanyin = new ArrayList<>();
     List<CommonModel.ListBean> list_quxiaoyuanyin = new ArrayList<>();
-    List<CommonModel.ListBean> list_jifeidanyuan = new ArrayList<>();
+    List<String> list_jifeidanyuan = new ArrayList<>();
 
     List<WarehouseModel.ListBean> list_cangku = new ArrayList<>();
     List<String> list_huishou = new ArrayList<>();
@@ -213,6 +214,8 @@ public class AddContractActivity extends BaseActivity {
         list_qixian.add("二年");
         list_qixian.add("三年");*/
 
+        list_jifeidanyuan.add("30分钟");
+        list_jifeidanyuan.add("1小时");
 
         item_hetong = getIntent().getIntExtra("item_hetong", 0);
         tv_hetongleixing.setText(list_hetong.get(item_hetong));
@@ -311,6 +314,10 @@ public class AddContractActivity extends BaseActivity {
             case R.id.tv_xuanzeyuanyin:
                 //取消原因
                 dialogList_quxiaoyuanyin(tv_xuanzeyuanyin);
+                break;
+            case R.id.tv_jifeidanyuan:
+                //计费单元
+                dialogList_jifeidanyuan();
                 break;
             case R.id.tv_shanghuhangye:
                 //商户行业
@@ -589,8 +596,6 @@ public class AddContractActivity extends BaseActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     file = response;//文件地址
-
-                                    params.put("merchantId", shopId);
                                     params.put("storeId", storeId);
                                     params.put("contractType", contractType);
                                     params.put("file", file);
@@ -623,10 +628,10 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请输入营业执照号");
                     return false;
                 }
-                /*if (TextUtils.isEmpty(renewalPeriod)) {
+                if (TextUtils.isEmpty(renewalPeriod)) {
                     myToast("请选择签约期限");
                     return false;
-                }*/
+                }
                 sole = itme_truefalse + "";
                 if (TextUtils.isEmpty(sole)) {
                     myToast("请选择是否独家");
@@ -636,9 +641,10 @@ public class AddContractActivity extends BaseActivity {
                 if (TextUtils.isEmpty(signTime)) {
                     myToast("请选择签约时间");
                     return false;
-                } /*else {
-                    signTime = TimeUtils.string2Millis(tv_qianyueshijian.getText().toString().trim(), "yyyy-MM-dd") + "";
-                }*/
+                } else {
+                    signTime = TimeUtils.string2Millis(signTime, "yyyy-MM-dd") + "";
+//                    signTime = TimeUtils.string2Date(signTime, "yyyy-MM-dd") + "";
+                }
                 if (pdffile == null) {
                     myToast("请选择合同文件");
                     return false;
@@ -790,9 +796,10 @@ public class AddContractActivity extends BaseActivity {
                 if (TextUtils.isEmpty(renewalTime)) {
                     myToast("请选择续签时间");
                     return false;
-                } /*else {
-                    renewalTime = TimeUtils.string2Millis(tv_xuqianshijian.getText().toString().trim(), "yyyy-MM-dd") + "";
-                }*/
+                } else {
+                    renewalTime = TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "";
+//                    renewalTime = TimeUtils.string2Date(TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "") + "";
+                }
                 if (pdffile == null) {
                     myToast("请选择合同文件");
                     return false;
@@ -870,8 +877,8 @@ public class AddContractActivity extends BaseActivity {
                                     //调价合同-去获取门店信息
                                     showProgress(true, getString(R.string.app_loading2));
                                     params.clear();
-                                    params.put("id", storeId);
-                                    requestStore(params,storeId);
+                                    params.put("storeId", storeId);
+                                    requestStore(params);
                                 }
                                 break;
                             case 1:
@@ -1112,7 +1119,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_tiaojialiyou.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
 //                params.put("type", "storeUnit");
-                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//计费单元
+//                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//计费单元
                 break;
         }
     }
@@ -1182,10 +1189,10 @@ public class AddContractActivity extends BaseActivity {
      *
      * @param params
      */
-    private void requestStore(HashMap<String, String> params,String id) {
-        OkhttpUtil.okHttpGet(URLs.StoreDetail+id, params, headerMap, new CallBackUtil<StoreDetailModel>() {
+    private void requestStore(HashMap<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.StoreInfo, params, headerMap, new CallBackUtil<StoreInfoModel>() {
             @Override
-            public StoreDetailModel onParseResponse(Call call, Response response) {
+            public StoreInfoModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -1196,13 +1203,12 @@ public class AddContractActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(StoreDetailModel response) {
+            public void onResponse(StoreInfoModel response) {
                 hideProgress();
-                shopId = response.getStoreInfo().getMerchantId();
-//                tv_shougexiaoshi.setText(response.getStoreInfo().getSystemPrice());
-//                tv_jichujijia.setText(response.getStoreInfo().getUnitPrice());
-//                tv_meirifengding.setText(response.getStoreInfo().getSystemCapping());
-//                tv_mianfeishichang.setText(response.getStoreInfo().getFreeTime());
+                tv_shougexiaoshi.setText(response.getSysStartPrice());
+                tv_jichujijia.setText(response.getSysOverTimeUnit());
+                tv_meirifengding.setText(response.getSysMaxPrice());
+                tv_mianfeishichang.setText(response.getSysFreeTime());
 
             }
         });
@@ -1524,7 +1530,49 @@ public class AddContractActivity extends BaseActivity {
         });
         rv_list.setAdapter(adapter);
     }
+    /**
+     * 计费单元
+     */
+    private void dialogList_jifeidanyuan() {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<String> adapter = new CommonAdapter<String>
+                (AddContractActivity.this, R.layout.item_help, list_jifeidanyuan) {
+            @Override
+            protected void convert(ViewHolder holder, String model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model);
+                if (item_jifeidanyuan == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_jifeidanyuan = position;
+                tv_jifeidanyuan.setText(list_jifeidanyuan.get(position));
+                storeUnit = position+"";
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
 
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
     /**
      * 选择行业
      */

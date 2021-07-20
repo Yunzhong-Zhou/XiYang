@@ -82,7 +82,21 @@ public class PersonnelDetailActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 params.clear();
-//                params.put("id", id);
+//        params.put("id", id);
+                switch (PersonnelType) {
+                    case 1:
+                        //调整上级
+                    case 2:
+                        //调整市场
+                    case 3:
+                        //升职降职
+                        request(params, URLs.PersonnelDetail + id);
+                        break;
+                    case 4:
+                        //采购审批
+                        request(params, URLs.CaiGouDetail + id);
+                        break;
+                }
 
             }
 
@@ -180,26 +194,22 @@ public class PersonnelDetailActivity extends BaseActivity {
         switch (PersonnelType) {
             case 1:
                 //调整上级
-
-                break;
             case 2:
                 //调整市场
-
-                break;
             case 3:
                 //升职降职
-
+                request(params, URLs.PersonnelDetail + id);
                 break;
             case 4:
                 //采购审批
-                request(params, URLs.CaiGouDetail);
+                request(params, URLs.CaiGouDetail + id);
                 break;
         }
 
     }
 
     private void request(HashMap<String, String> params, String url) {
-        OkhttpUtil.okHttpGet(url + id, params, headerMap, new CallBackUtil<PersonnelDetailModel>() {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<PersonnelDetailModel>() {
             @Override
             public PersonnelDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -215,48 +225,191 @@ public class PersonnelDetailActivity extends BaseActivity {
             public void onResponse(PersonnelDetailModel response) {
                 hideProgress();
                 model = response;
-
-                tv_name.setText(response.getPurchaseApplicantName());
-                tv_shop.setText(response.getPurchaseApplicantPhoneNumber());
-                tv_shenpi.setVisibility(View.GONE);
-                switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
-                    case 1:
-                        tv_num.setText("处理中");
-                        tv_num.setTextColor(getResources().getColor(R.color.black3));
-                        tv_shenpi.setVisibility(View.VISIBLE);
-                        break;
-                    case 2:
-                        tv_num.setText("驳回");
-                        tv_num.setTextColor(getResources().getColor(R.color.red));
-                        break;
-                    case 3:
-                        tv_num.setText("已完成");
-                        tv_num.setTextColor(getResources().getColor(R.color.green));
-                        break;
-                }
-
-                tv_addr.setText("职位：" + response.getPurchaseApplicantOrganCode());
-
-                Glide.with(PersonnelDetailActivity.this)
-                        .load(model.getPurchaseApplicantAvatar())
-//                                .fitCenter()
-                        .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(PersonnelDetailActivity.this, 10))))
-                        .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.zanwutupian)//加载失败
-                        .into(imageView1);//加载图片
-
-
                 /**
                  * 基本信息
                  */
                 list_info.clear();
-                list_info.add(new KeyValueModel("ID", response.getSn()));
-                list_info.add(new KeyValueModel("申请人", response.getPurchaseApplicantName()));
-                list_info.add(new KeyValueModel("提货仓库", response.getWarehouseName()));
-                list_info.add(new KeyValueModel("申请数量", response.getPurchaseQuantity() + "台"));
-                list_info.add(new KeyValueModel("提货时间", response.getDeliveryTime()));
-                list_info.add(new KeyValueModel("申请时间", response.getCreateTime()));
+                if (PersonnelType == 4){
+                    /**
+                     * 采购审批
+                     */
+                    tv_name.setText(response.getPurchaseApplicantName());
+                    tv_shop.setText(response.getPurchaseApplicantPhoneNumber());
+                    tv_addr.setText("职位：" + response.getPurchaseApplicantOrganCode());
+                    Glide.with(PersonnelDetailActivity.this)
+                            .load(model.getPurchaseApplicantAvatar())
+//                                .fitCenter()
+                            .apply(RequestOptions.bitmapTransform(new
+                                    RoundedCorners(CommonUtil.dip2px(PersonnelDetailActivity.this, 10))))
+                            .placeholder(R.mipmap.loading)//加载站位图
+                            .error(R.mipmap.zanwutupian)//加载失败
+                            .into(imageView1);//加载图片
+
+                    list_info.add(new KeyValueModel("ID", response.getSn()));
+                    list_info.add(new KeyValueModel("申请人", response.getPurchaseApplicantName()));
+                    list_info.add(new KeyValueModel("提货仓库", response.getWarehouseName()));
+                    list_info.add(new KeyValueModel("申请数量", response.getPurchaseQuantity() + "台"));
+                    list_info.add(new KeyValueModel("提货时间", response.getDeliveryTime()));
+                    list_info.add(new KeyValueModel("申请时间", response.getCreateTime()));
+
+                    /**
+                     * 审核合同
+                     */
+                    list_shenhe = response.getList();
+                    if (list_shenhe != null && list_shenhe.size() > 0) {
+                        showContentPage();
+                        mAdapter_shenhe = new CommonAdapter<PersonnelDetailModel.ListBean>
+                                (PersonnelDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
+                            @Override
+                            protected void convert(ViewHolder holder, PersonnelDetailModel.ListBean model, int position) {
+                                //隐藏最前和最后的竖线
+                                View view_top = holder.getView(R.id.view_top);
+                                View view_bottom = holder.getView(R.id.view_bottom);
+                                if (position == 0) {
+                                    view_top.setVisibility(View.INVISIBLE);
+                                } else {
+                                    view_top.setVisibility(View.VISIBLE);
+                                }
+                                if (position == (list_shenhe.size() - 1)) {
+                                    view_bottom.setVisibility(View.GONE);
+                                } else {
+                                    view_bottom.setVisibility(View.VISIBLE);
+                                }
+                                //横向图片
+                                List<String> list_img = new ArrayList<>();
+                                if (model.getApprovalImages() != null) {
+                                    String[] strArr = model.getApprovalImages().split(",");//拆分
+                                    for (String s : strArr) {
+                                        list_img.add(s);
+                                    }
+                                }
+
+                                RecyclerView rv = holder.getView(R.id.rv);
+                                LinearLayoutManager llm1 = new LinearLayoutManager(PersonnelDetailActivity.this);
+                                llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
+                                rv.setLayoutManager(llm1);
+                                CommonAdapter<String> ca = new CommonAdapter<String>
+                                        (PersonnelDetailActivity.this, R.layout.item_img_28_28, list_img) {
+                                    @Override
+                                    protected void convert(ViewHolder holder, String model, int position) {
+                                        ImageView iv = holder.getView(R.id.iv);
+                                        Glide.with(PersonnelDetailActivity.this).load(model)
+                                                .centerCrop()
+                                                .apply(RequestOptions.bitmapTransform(new
+                                                        RoundedCorners(CommonUtil.dip2px(PersonnelDetailActivity.this, 7))))
+                                                .placeholder(R.mipmap.loading)//加载站位图
+                                                .error(R.mipmap.zanwutupian)//加载失败
+                                                .into(iv);//加载图片
+                                    }
+                                };
+                                ca.setOnItemClickListener(new OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                        PhotoShowDialog photoShowDialog = new PhotoShowDialog(PersonnelDetailActivity.this, list_img, i);
+                                        photoShowDialog.show();
+                                    }
+
+                                    @Override
+                                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                                        return false;
+                                    }
+                                });
+                                rv.setAdapter(ca);
+
+                                ImageView iv_head = holder.getView(R.id.iv_head);
+                                Glide.with(PersonnelDetailActivity.this)
+                                        .load(model.getApprovalAvatar())
+                                        .fitCenter()
+                                        .apply(RequestOptions.bitmapTransform(new
+                                                RoundedCorners(CommonUtil.dip2px(PersonnelDetailActivity.this, 3))))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.headimg)//加载失败
+                                        .into(iv_head);//加载图片
+                                holder.setText(R.id.tv_name, model.getApprovalName());
+                                holder.setText(R.id.tv_time, model.getApprovalTime());
+                                holder.setText(R.id.tv_content, model.getApprovalRemark());
+                                //状态图片
+                                ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
+                                TextView tv_type = holder.getView(R.id.tv_type);
+                                switch (model.getApprovalStatus()) {//1待处理2已处理3驳回
+                                    case "1":
+                                        tv_type.setText("待审核");
+                                        tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                        iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                        break;
+                                    case "2":
+                                        tv_type.setText("已完成");
+                                        tv_type.setTextColor(getResources().getColor(R.color.green));
+                                        iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
+                                        break;
+                                    case "3":
+                                        tv_type.setText("驳回");
+                                        tv_type.setTextColor(getResources().getColor(R.color.red));
+                                        iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
+                                        break;
+                                }
+                            }
+                        };
+                        rv_shenhe.setAdapter(mAdapter_shenhe);
+                    } else {
+                        showEmptyPage();
+                    }
+                }else {
+                    tv_name.setText(response.getAdminName());
+                    tv_shop.setText(response.getAdminPhone());
+                    tv_addr.setText("职位：" + response.getOldOrganCode());
+                    Glide.with(PersonnelDetailActivity.this)
+                            .load(model.getAdminAvatar())
+//                                .fitCenter()
+                            .apply(RequestOptions.bitmapTransform(new
+                                    RoundedCorners(CommonUtil.dip2px(PersonnelDetailActivity.this, 10))))
+                            .placeholder(R.mipmap.loading)//加载站位图
+                            .error(R.mipmap.zanwutupian)//加载失败
+                            .into(imageView1);//加载图片
+                    list_info.add(new KeyValueModel("ID", response.getSn()));
+                    list_info.add(new KeyValueModel("是否跨区", response.getCrossRegional()));
+                    list_info.add(new KeyValueModel("调整人", response.getAdminName()));
+                    list_info.add(new KeyValueModel("职位", response.getOldOrganCode()));
+
+
+                    switch (PersonnelType) {
+                        case 1:
+                            //调整上级
+                            list_info.add(new KeyValueModel("调整前上级", response.getOldParentName()));
+                            list_info.add(new KeyValueModel("调整后上级", response.getNewParentName()));
+                            break;
+                        case 2:
+                            //调整市场
+                            list_info.add(new KeyValueModel("调整前省市", response.getOldOrganCode()));
+                            list_info.add(new KeyValueModel("调整后省市", response.getNewOrganCode()));
+                            break;
+                        case 3:
+                            //升职降职
+                            list_info.add(new KeyValueModel("调整前职位", response.getOldOrganCode()));
+                            list_info.add(new KeyValueModel("调整后职位", response.getNewOrganCode()));
+                            break;
+                        case 4:
+
+                            break;
+                    }
+                }
+
+                tv_shenpi.setVisibility(View.GONE);
+                switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
+                    case "1":
+                        tv_num.setText("处理中");
+                        tv_num.setTextColor(getResources().getColor(R.color.black3));
+                        tv_shenpi.setVisibility(View.VISIBLE);
+                        break;
+                    case "2":
+                        tv_num.setText("驳回");
+                        tv_num.setTextColor(getResources().getColor(R.color.red));
+                        break;
+                    case "3":
+                        tv_num.setText("已完成");
+                        tv_num.setTextColor(getResources().getColor(R.color.green));
+                        break;
+                }
 
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (PersonnelDetailActivity.this, R.layout.item_keyvalue, list_info) {
@@ -268,108 +421,7 @@ public class PersonnelDetailActivity extends BaseActivity {
                 };
                 rv_info.setAdapter(mAdapter_info);
 
-                /**
-                 * 审核合同
-                 */
-                list_shenhe = response.getList();
-                if (list_shenhe != null && list_shenhe.size() > 0) {
-                    showContentPage();
-                    mAdapter_shenhe = new CommonAdapter<PersonnelDetailModel.ListBean>
-                            (PersonnelDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
-                        @Override
-                        protected void convert(ViewHolder holder, PersonnelDetailModel.ListBean model, int position) {
-                            //隐藏最前和最后的竖线
-                            View view_top = holder.getView(R.id.view_top);
-                            View view_bottom = holder.getView(R.id.view_bottom);
-                            if (position == 0) {
-                                view_top.setVisibility(View.INVISIBLE);
-                            } else {
-                                view_top.setVisibility(View.VISIBLE);
-                            }
-                            if (position == (list_shenhe.size() - 1)) {
-                                view_bottom.setVisibility(View.GONE);
-                            } else {
-                                view_bottom.setVisibility(View.VISIBLE);
-                            }
-                            //横向图片
-                            List<String> list_img = new ArrayList<>();
-                            if (model.getApprovalImages()!=null){
-                                String[] strArr = model.getApprovalImages().split(",");//拆分
-                                for (String s : strArr) {
-                                    list_img.add(s);
-                                }
-                            }
 
-                            RecyclerView rv = holder.getView(R.id.rv);
-                            LinearLayoutManager llm1 = new LinearLayoutManager(PersonnelDetailActivity.this);
-                            llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
-                            rv.setLayoutManager(llm1);
-                            CommonAdapter<String> ca = new CommonAdapter<String>
-                                    (PersonnelDetailActivity.this, R.layout.item_img_28_28, list_img) {
-                                @Override
-                                protected void convert(ViewHolder holder, String model, int position) {
-                                    ImageView iv = holder.getView(R.id.iv);
-                                    Glide.with(PersonnelDetailActivity.this).load(model)
-                                            .centerCrop()
-                                            .apply(RequestOptions.bitmapTransform(new
-                                                    RoundedCorners(CommonUtil.dip2px(PersonnelDetailActivity.this, 7))))
-                                            .placeholder(R.mipmap.loading)//加载站位图
-                                            .error(R.mipmap.zanwutupian)//加载失败
-                                            .into(iv);//加载图片
-                                }
-                            };
-                            ca.setOnItemClickListener(new OnItemClickListener() {
-                                @Override
-                                public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(PersonnelDetailActivity.this, list_img, i);
-                                    photoShowDialog.show();
-                                }
-
-                                @Override
-                                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                    return false;
-                                }
-                            });
-                            rv.setAdapter(ca);
-
-                            ImageView iv_head = holder.getView(R.id.iv_head);
-                            Glide.with(PersonnelDetailActivity.this)
-                                    .load(model.getApprovalAvatar())
-                                    .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(PersonnelDetailActivity.this, 3))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.headimg)//加载失败
-                                    .into(iv_head);//加载图片
-                            holder.setText(R.id.tv_name, model.getApprovalName());
-                            holder.setText(R.id.tv_time, model.getApprovalTime());
-                            holder.setText(R.id.tv_content, model.getApprovalRemark());
-                            //状态图片
-                            ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
-                            TextView tv_type = holder.getView(R.id.tv_type);
-                            switch (model.getApprovalStatus()) {//1待处理2已处理3驳回
-                                case 1:
-                                    tv_type.setText("待审核");
-                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                    break;
-                                case 2:
-                                    tv_type.setText("已完成");
-                                    tv_type.setTextColor(getResources().getColor(R.color.green));
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
-                                    break;
-                                case 3:
-                                    tv_type.setText("驳回");
-                                    tv_type.setTextColor(getResources().getColor(R.color.red));
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
-                                    break;
-                            }
-                        }
-                    };
-                    rv_shenhe.setAdapter(mAdapter_shenhe);
-                } else {
-                    showEmptyPage();
-                }
             }
         });
     }
