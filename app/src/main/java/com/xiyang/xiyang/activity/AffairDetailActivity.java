@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -32,6 +33,7 @@ import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.AffairDetailModel;
+import com.xiyang.xiyang.model.CommonModel;
 import com.xiyang.xiyang.model.KeyValueModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -40,7 +42,6 @@ import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -99,7 +100,7 @@ public class AffairDetailActivity extends BaseActivity {
     //省市
     CityConfig cityConfig = null;
     CityPickerView mPicker = new CityPickerView();
-    String receiveName = "", phone = "", areaId = "", address = "", scene = "";
+    String receiveName = "", phone = "",provinceId = "",cityId="", areaId = "", address = "", scene = "";
     /**
      * 安装记录
      */
@@ -260,7 +261,9 @@ public class AffairDetailActivity extends BaseActivity {
                         .setNeedRing(true);//是否需要提示音
                 //ScanConfig 也可以不配置 默认都是打开
                 CaptureActivity.launch(this, config);*/
-                bundle.putString("transactionId", model.getTransactionId());
+                bundle.putString("transactionId", model.getAddDeivceTransactionsVo().getApplyId());
+                bundle.putString("storeId", model.getAddDeivceTransactionsVo().getStoreId());
+                bundle.putString("storeName", model.getAddDeivceTransactionsVo().getName());
                 CommonUtil.gotoActivityWithData(AffairDetailActivity.this, InstallDeviceActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
@@ -288,7 +291,8 @@ public class AffairDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_shouhuodizhi:
                 //选择地址
-                mPicker.showCityPicker();
+//                mPicker.showCityPicker();
+                dialogList_chengshi("0");
                 break;
 
             case R.id.tv_confirm:
@@ -297,43 +301,52 @@ public class AffairDetailActivity extends BaseActivity {
                     switch (expressWay) {
                         case 1:
                             //自取
-                            new UpFileToQiNiuUtil(AffairDetailActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
+                            Map<String, File> fileMap = new HashMap<>();
+                            fileMap.put("file", imgfile);
+                            params.clear();
+                            OkhttpUtil.okHttpUploadMapFile(URLs.UpFile, fileMap, "file", params, headerMap, new CallBackUtil<String>() {
                                 @Override
-                                public void complete(boolean isok, String result, String url) {
-                                    if (isok) {
-                                        MyLogger.i(">>>>上传文件路径：" + url);
-                                        params.clear();
-                                        params.put("transactionId", model.getTransactionId());
-                                        params.put("expressWay", expressWay + "");
-                                        params.put("voucher", url);
+                                public String onParseResponse(Call call, Response response) {
+                                    return null;
+                                }
+
+                                @Override
+                                public void onFailure(Call call, Exception e, String err) {
+                                    hideProgress();
+                                    myToast("图片上传失败" + err);
+                                }
+
+                                @Override
+                                public void onResponse(String response) {
+                                    params.put("relationId", model.getAddDeivceTransactionsVo().getApplyId());
+                                    params.put("expressWay", expressWay + "");//1-自取，2-邮寄
+                                    params.put("voucher", response);
                                         /*params.put("expressNo", "");
                                         params.put("expressCompany", "");
                                         params.put("receiveName", "");
                                         params.put("phone", "");
                                         params.put("areaId", "");
                                         params.put("address", "");*/
-                                        params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
-                                        requestUpData(params);
-
-                                    } else {
-                                        hideProgress();
-                                        myToast("图片上传失败");
-                                    }
+//                                        params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
+                                    requestUpData(params);
                                 }
-                            };
+                            });
+
                             break;
                         case 2:
                             //邮寄
                             params.clear();
-                            params.put("transactionId", model.getTransactionId());
-                            params.put("expressWay", expressWay + "");
-                            params.put("expressNo", "");
-                            params.put("expressCompany", "");
-                            params.put("receiveName", receiveName);
-                            params.put("phone", phone);
-                            params.put("areaId", areaId);
+                            params.put("relationId", model.getAddDeivceTransactionsVo().getApplyId());
+                            params.put("expressWay", expressWay + "");//1-自取，2-邮寄
+//                            params.put("expressNo", "");
+//                            params.put("expressCompany", "");
+                            params.put("receiveName", receiveName);//收货人
+                            params.put("phone", phone);//收货人联系方式
+                            params.put("provinceId", provinceId);//省
+                            params.put("cityId", cityId);//市
+                            params.put("areaId", areaId);//区
                             params.put("address", address);
-                            params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
+//                            params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
                             requestUpData(params);
                             break;
                     }
@@ -343,12 +356,12 @@ public class AffairDetailActivity extends BaseActivity {
                 //确定签收
                 showProgress(true, getString(R.string.app_loading1));
                 params.clear();
-                params.put("transactionId", model.getTransactionId());
+                /*params.put("transactionId", model.getAddDeivceTransactionsVo().getApplyId());
                 params.put("expressWay", expressWay + "");
                 params.put("expressNo", "");
                 params.put("expressCompany", "");
-                params.put("scene", "confirm");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
-                requestUpData(params);
+                params.put("scene", "confirm");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货*/
+                requestQiansShou(params,model.getAddDeivceTransactionsVo().getApplyId());
                 break;
         }
     }
@@ -390,12 +403,12 @@ public class AffairDetailActivity extends BaseActivity {
             public void onResponse(AffairDetailModel response) {
                 hideProgress();
                 model = response;
-                tv_name.setText(response.getStoresName());
-                tv_shop.setText(response.getType());
-                tv_num.setText(response.getStatus());
-                tv_addr.setText(response.getStoresDeviceNum() + "台");
+                tv_name.setText(response.getAddDeivceTransactionsVo().getName());
+                tv_shop.setText(response.getAddDeivceTransactionsVo().getDeviceType());
+                tv_num.setText(response.getAddDeivceTransactionsVo().getStatus());
+                tv_addr.setText(response.getAddDeivceTransactionsVo().getNum() + "台");
                 Glide.with(AffairDetailActivity.this)
-                        .load(model.getImage())
+                        .load(model.getAddDeivceTransactionsVo().getImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
@@ -407,11 +420,11 @@ public class AffairDetailActivity extends BaseActivity {
                  * 事务信息
                  */
                 list_shiwu.clear();
-                list_shiwu.add(new KeyValueModel("类型设备", response.getType()));
-                list_shiwu.add(new KeyValueModel("安装门店", response.getStoresName()));
-                list_shiwu.add(new KeyValueModel("安装台数", response.getApplyNum() + "台"));
-                list_shiwu.add(new KeyValueModel("创建时间", response.getCreateTime()));
-                list_shiwu.add(new KeyValueModel("事务ID", response.getTransactionId()));
+                list_shiwu.add(new KeyValueModel("类型设备", response.getAddDeivceTransactionsVo().getTranscationType()));
+                list_shiwu.add(new KeyValueModel("安装门店", response.getAddDeivceTransactionsVo().getName()));
+                list_shiwu.add(new KeyValueModel("安装台数", response.getAddDeivceTransactionsVo().getNum() + "台"));
+                list_shiwu.add(new KeyValueModel("创建时间", response.getAddDeivceTransactionsVo().getCreateTime()));
+                list_shiwu.add(new KeyValueModel("事务ID", response.getAddDeivceTransactionsVo().getApplyId()));
 
                 mAdapter_shiwu = new CommonAdapter<KeyValueModel>
                         (AffairDetailActivity.this, R.layout.item_keyvalue, list_shiwu) {
@@ -558,7 +571,7 @@ public class AffairDetailActivity extends BaseActivity {
         tv_confirm.setVisibility(View.GONE);
         tv_shenlingfangshi.setClickable(false);
         iv_shangchuanzhaopian.setClickable(false);
-        switch (model.getIsApply()) {
+        switch (model.getAddDeivceTransactionsVo().getGetType()) {
             case "0":
                 //未选择邮寄方式
                 tv_confirm.setVisibility(View.VISIBLE);
@@ -569,7 +582,7 @@ public class AffairDetailActivity extends BaseActivity {
                 //自取
                 expressWay = 1;
                 Glide.with(AffairDetailActivity.this)
-                        .load(model.getImage())
+                        .load(model.getAddDeivceTransactionsVo().getImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
@@ -715,8 +728,12 @@ public class AffairDetailActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 提交邮寄方式
+     * @param params
+     */
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.AffairDetail_ShenLing, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.AffairDetail_ShenLing, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -731,6 +748,31 @@ public class AffairDetailActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 myToast("提交成功");
+                hideProgress();
+                requestServer();
+            }
+        });
+    }
+    /**
+     * 提交签收
+     * @param params
+     */
+    private void requestQiansShou(Map<String, String> params,String id) {
+        OkhttpUtil.okHttpGet(URLs.AffairDetail_QianShou+id, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                myToast("签收成功");
                 hideProgress();
                 requestServer();
             }
@@ -780,5 +822,99 @@ public class AffairDetailActivity extends BaseActivity {
             }
         });
         rv_list.setAdapter(adapter);
+    }
+    /**
+     * 选择城市
+     */
+    List<CommonModel.ListBean> list_chengshi = new ArrayList<>();
+    int maxIdex_chengshi = 1;
+    String string_chengshi = "";
+
+    private void dialogList_chengshi(String parentId) {
+        showProgress(true, getString(R.string.app_loading2));
+        params.clear();
+        params.put("id", parentId);
+        params.put("level", maxIdex_chengshi + "");
+        OkhttpUtil.okHttpPostJson(URLs.Region, GsonUtils.toJson(params), headerMap, new CallBackUtil<CommonModel>() {
+            @Override
+            public CommonModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(CommonModel response) {
+                hideProgress();
+                list_chengshi = response.getList();
+                dialog.contentView(R.layout.dialog_list_center)
+//                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                        .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                CommonUtil.dip2px(AffairDetailActivity.this, 400)))
+                        .animType(BaseDialog.AnimInType.BOTTOM)
+                        .canceledOnTouchOutside(false)
+                        .gravity(Gravity.CENTER)
+                        .dimAmount(0.5f)
+                        .show();
+                RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+                rv_list.setLayoutManager(new LinearLayoutManager(AffairDetailActivity.this));
+                CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
+                        (AffairDetailActivity.this, R.layout.item_help, list_chengshi) {
+                    @Override
+                    protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
+                        TextView tv = holder.getView(R.id.textView1);
+                        tv.setText(model.getName());
+                    }
+                };
+                adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                        string_chengshi = string_chengshi + list_chengshi.get(position).getName() + "-";
+                        switch (maxIdex_chengshi) {
+                            case 3:
+                                //区
+                                //最后一个，赋值
+                                if (!string_chengshi.equals("")) {
+                                    string_chengshi = string_chengshi.substring(0, string_chengshi.length() - 1);
+                                }
+                                tv_shouhuodizhi.setText(string_chengshi);
+                                areaId = list_chengshi.get(position).getId();
+                                //初始化
+                                string_chengshi = "";
+                                maxIdex_chengshi = 1;
+
+                                dialog.dismiss();
+                                break;
+                            case 2:
+                                //市
+                                cityId = list_chengshi.get(position).getId();
+                                maxIdex_chengshi = 3;
+                                dialogList_chengshi(list_chengshi.get(position).getId());
+                                break;
+                            case 1:
+                                //省
+                                provinceId = list_chengshi.get(position).getId();
+                                maxIdex_chengshi = 2;
+                                dialogList_chengshi(list_chengshi.get(position).getId());
+                                break;
+                        }
+
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                        return false;
+                    }
+                });
+                rv_list.setAdapter(adapter);
+
+            }
+        });
     }
 }

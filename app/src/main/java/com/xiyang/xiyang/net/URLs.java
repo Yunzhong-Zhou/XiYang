@@ -79,17 +79,17 @@ public class URLs {
     //添加合同-新增
     public static final String AddContract_xinzeng = HOST + "/bd/bdservice/applyContracts";
     //添加合同-回收
-    public static final String AddContract_huishou = HOST + "/bd/bdservice/signContracts";
+    public static final String AddContract_huishou = HOST + "/bd/bdservice/reduceContracts";
     //添加合同-换绑
-    public static final String AddContract_huanbang = HOST + "/bd/bdservice/signContracts";
+    public static final String AddContract_huanbang = HOST + "/bd/bdservice/changeBindContracts";
     //添加合同-修改
-    public static final String AddContract_xiugai = HOST + "/bd/bdservice/signContracts";
+    public static final String AddContract_xiugai = HOST + "/bd/bdservice/updateMerchantContracts";
     //添加合同-续签
-    public static final String AddContract_xuqian = HOST + "/bd/bdservice/signContracts";
+    public static final String AddContract_xuqian = HOST + "/bd/bdservice/addRenewalContracts";
     //添加合同-取消
-    public static final String AddContract_quxiao = HOST + "/bd/bdservice/signContracts";
+    public static final String AddContract_quxiao = HOST + "/bd/bdservice/cancelContracts";
     //添加合同-调价
-    public static final String AddContract_tiaojia = HOST + "/bd/bdservice/signContracts";
+    public static final String AddContract_tiaojia = HOST + "/bd/bdservice/adjustPriceContracts";
     //我的合同列表
     public static final String MyContract = HOST + "/bd/bdservice/getContractsListInfo";
     //合同详情
@@ -232,13 +232,15 @@ public class URLs {
     //事务列表
     public static final String AffairList = HOST + "/bd/transaction/listTransaction";
     //事务详情
-    public static final String AffairDetail = HOST + "/bd/transaction/getTransactionsDetails/";
+    public static final String AffairDetail = HOST + "/bd/store/getDeviceTranscations/";
     //事务详情-申领-邮寄方式
-    public static final String AffairDetail_ShenLing = HOST + API + "device/apply/update";
+    public static final String AffairDetail_ShenLing = HOST + "/bd/device/apply/add/logistic";
+    //事务详情-签收
+    public static final String AffairDetail_QianShou = HOST + "/bd/device/apply/sign/logistic/";
     //设备详情
     public static final String DeviceDetail = HOST + "/service-device/device/sysUser/detail/";
     //安装设备
-    public static final String InstallDevice = HOST + "/service-device/install/install";
+    public static final String InstallDevice = HOST + "/device/install/install";
     //开启设备
     public static final String Device = HOST + "/device/aliyuniot/controlDevice";
     //调试设备
@@ -246,7 +248,7 @@ public class URLs {
     //控制设备
     public static final String DeviceSetUp = HOST + API + "/service-device/operate";
     //换绑设备
-    public static final String ChangeTieDevice = HOST + "/device/deviceChangeBind";
+    public static final String ChangeTieDevice = HOST + "/service-device/device/deviceChangeBind";
 
     /**
      * ********************************数据*****************************************

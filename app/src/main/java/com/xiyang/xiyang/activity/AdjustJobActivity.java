@@ -142,7 +142,7 @@ public class AdjustJobActivity extends BaseActivity {
                 break;
             case R.id.tv_code:
                 //获取验证码
-                showProgress(false, getString(R.string.app_sendcode_hint1));
+                showProgress(true, getString(R.string.app_sendcode_hint1));
                 tv_code.setClickable(false);
                 HashMap<String, String> params1 = new HashMap<>();
                 params1.put("mobile", localUserInfo.getPhonenumber());
@@ -152,7 +152,7 @@ public class AdjustJobActivity extends BaseActivity {
             case R.id.tv_confirm:
                 //提交
                 if (match()) {
-                    showProgress(false, getString(R.string.app_loading1));
+                    showProgress(true, getString(R.string.app_loading1));
                     params.clear();
                     params.put("crossLevel", crossLevel);//跨区
                     params.put("userId", adminId);
@@ -298,7 +298,7 @@ public class AdjustJobActivity extends BaseActivity {
                 hideProgress();
 //                finish();
                 Bundle bundle = new Bundle();
-                bundle.putInt("type", 2);////1、调整上级 2、调整市场 3、升职降职 4、采购申请
+                bundle.putInt("type", 3);////1、调整上级 2、调整市场 3、升职降职 4、采购申请
                 CommonUtil.gotoActivityWithData(AdjustJobActivity.this, PersonnelListActivity.class, bundle, false);
             }
         });

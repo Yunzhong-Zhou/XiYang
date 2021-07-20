@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,6 +24,7 @@ import com.cy.dialog.BaseDialog;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.CommonModel;
+import com.xiyang.xiyang.model.IndustryModel;
 import com.xiyang.xiyang.model.StoreDetailModel;
 import com.xiyang.xiyang.model.WarehouseModel;
 import com.xiyang.xiyang.net.URLs;
@@ -61,7 +61,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class AddContractActivity extends BaseActivity {
     List<String> list_hetong = new ArrayList<>();
     List<String> list_truefalse = new ArrayList<>();
-    List<String> list_qixian = new ArrayList<>();
+    List<CommonModel.ListBean> list_qixian = new ArrayList<>();
     List<CommonModel.ListBean> list_jianshaoyuanyin = new ArrayList<>();
     List<CommonModel.ListBean> list_quxiaoyuanyin = new ArrayList<>();
     List<CommonModel.ListBean> list_jifeidanyuan = new ArrayList<>();
@@ -209,9 +209,9 @@ public class AddContractActivity extends BaseActivity {
         list_huishou.add("邮寄");
         list_huishou.add("自取");
 
-        list_qixian.add("一年");
+        /*list_qixian.add("一年");
         list_qixian.add("二年");
-        list_qixian.add("三年");
+        list_qixian.add("三年");*/
 
 
         item_hetong = getIntent().getIntExtra("item_hetong", 0);
@@ -314,11 +314,11 @@ public class AddContractActivity extends BaseActivity {
                 break;
             case R.id.tv_shanghuhangye:
                 //商户行业
-                dialogList_hangye("");
+                dialogList_hangye("0");
                 break;
             case R.id.tv_suozaichengshi:
                 //所在城市
-                dialogList_chengshi("");
+                dialogList_chengshi("0");
                 break;
             case R.id.tv_hetongwenjian:
                 //选取合同文件
@@ -435,7 +435,7 @@ public class AddContractActivity extends BaseActivity {
                                     params.put("contractType", contractType);
                                     params.put("file", file);
                                     params.put("reasonId", reasonId);
-                                    params.put("warehouseId", warehouseId);
+                                    params.put("warehouseId", warehouseId);//仓库id
                                     requestUpData(URLs.AddContract_huishou, params);
 
                                 }
@@ -632,12 +632,13 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择是否独家");
                     return false;
                 }
-                if (TextUtils.isEmpty(tv_qianyueshijian.getText().toString().trim())) {
+                signTime = tv_qianyueshijian.getText().toString().trim();
+                if (TextUtils.isEmpty(signTime)) {
                     myToast("请选择签约时间");
                     return false;
-                } else {
+                } /*else {
                     signTime = TimeUtils.string2Millis(tv_qianyueshijian.getText().toString().trim(), "yyyy-MM-dd") + "";
-                }
+                }*/
                 if (pdffile == null) {
                     myToast("请选择合同文件");
                     return false;
@@ -684,10 +685,10 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择减少原因");
                     return false;
                 }
-                if (TextUtils.isEmpty(warehouseId)) {
+                /*if (TextUtils.isEmpty(warehouseId)) {
                     myToast("请选择退回仓库");
                     return false;
-                }
+                }*/
                 if (pdffile == null) {
                     myToast("请选择合同文件");
                     return false;
@@ -785,12 +786,13 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择是否独家");
                     return false;
                 }
-                if (TextUtils.isEmpty(tv_xuqianshijian.getText().toString().trim())) {
+                renewalTime = tv_xuqianshijian.getText().toString().trim();
+                if (TextUtils.isEmpty(renewalTime)) {
                     myToast("请选择续签时间");
                     return false;
-                } else {
+                } /*else {
                     renewalTime = TimeUtils.string2Millis(tv_xuqianshijian.getText().toString().trim(), "yyyy-MM-dd") + "";
-                }
+                }*/
                 if (pdffile == null) {
                     myToast("请选择合同文件");
                     return false;
@@ -869,7 +871,7 @@ public class AddContractActivity extends BaseActivity {
                                     showProgress(true, getString(R.string.app_loading2));
                                     params.clear();
                                     params.put("id", storeId);
-                                    requestStore(params);
+                                    requestStore(params,storeId);
                                 }
                                 break;
                             case 1:
@@ -1028,7 +1030,8 @@ public class AddContractActivity extends BaseActivity {
                 iv_add.setVisibility(View.VISIBLE);
 
 //                params.put("type", "renewalPeriod");
-                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//期限
+                request(URLs.AddContract_qianyue, params);//期限
+
                 break;
             case 1:
                 //新增合同
@@ -1042,16 +1045,11 @@ public class AddContractActivity extends BaseActivity {
                 rl_xuanzemendian.setVisibility(View.VISIBLE);
                 rl_shebeishuliang.setVisibility(View.VISIBLE);
                 rl_jianshaoyuanyin.setVisibility(View.VISIBLE);
-                rl_tuihuicangku.setVisibility(View.VISIBLE);
-//                rl_huishoufangshi.setVisibility(View.VISIBLE);
-                rl_shoujianren.setVisibility(View.VISIBLE);
-                rl_shoujiandianhua.setVisibility(View.VISIBLE);
-                rl_shoujiandizhi.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
 
                 requestChangKu(params);
 //                params.put("type", "merchantRecoverReason");
-                request(URLs.Common + "MERCHANT_CANCEL_REASON", params);//减少原因
+                request(URLs.Common + "CONTRACT_DEVICE_RECOVER_REASON", params);//减少原因
 
                 break;
             case 3:
@@ -1090,6 +1088,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_shifoudujia.setVisibility(View.VISIBLE);
                 rl_xuqianshijian.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
+                request(URLs.AddContract_qianyue, params);//期限
 
                 break;
             case 6:
@@ -1143,7 +1142,7 @@ public class AddContractActivity extends BaseActivity {
                 item_qixian = -1;
                 item_jianshaoyuanyin = -1;
                 renewalPeriod = "";
-//                list_qixian = response.getRenewalPeriod();
+                list_qixian = response;
                 list_jianshaoyuanyin = response;
                 list_quxiaoyuanyin = response;
 //                list_jifeidanyuan = response.get;
@@ -1183,8 +1182,8 @@ public class AddContractActivity extends BaseActivity {
      *
      * @param params
      */
-    private void requestStore(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.StoreDetail, params, headerMap, new CallBackUtil<StoreDetailModel>() {
+    private void requestStore(HashMap<String, String> params,String id) {
+        OkhttpUtil.okHttpGet(URLs.StoreDetail+id, params, headerMap, new CallBackUtil<StoreDetailModel>() {
             @Override
             public StoreDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -1357,12 +1356,12 @@ public class AddContractActivity extends BaseActivity {
                 .show();
         RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<String> adapter = new CommonAdapter<String>
+        CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
                 (AddContractActivity.this, R.layout.item_help, list_qixian) {
             @Override
-            protected void convert(ViewHolder holder, String model, int position) {
+            protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
-                tv.setText(model);
+                tv.setText(model.getValue());
                 if (item_qixian == position)
                     tv.setTextColor(getResources().getColor(R.color.green));
                 else
@@ -1373,11 +1372,10 @@ public class AddContractActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 item_qixian = position;
-                textView.setText(list_qixian.get(position));
-                renewalPeriod = position + 1 + "";
+                textView.setText(list_qixian.get(position).getValue());
+                renewalPeriod = list_qixian.get(position).getKey();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
-
             }
 
             @Override
@@ -1530,17 +1528,17 @@ public class AddContractActivity extends BaseActivity {
     /**
      * 选择行业
      */
-    List<CommonModel.ListBean> list_hangye = new ArrayList<>();
+    List<IndustryModel.ListBean> list_hangye = new ArrayList<>();
     int maxIdex_hangye = 2;
     String string_hangye = "";
 
     private void dialogList_hangye(String parentId) {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("parentId", parentId);
-        OkhttpUtil.okHttpGet(URLs.Industry, params, headerMap, new CallBackUtil<CommonModel>() {
+//        params.put("parentId", parentId);
+        OkhttpUtil.okHttpGet(URLs.Industry + parentId, params, headerMap, new CallBackUtil<IndustryModel>() {
             @Override
-            public CommonModel onParseResponse(Call call, Response response) {
+            public IndustryModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -1551,7 +1549,7 @@ public class AddContractActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(CommonModel response) {
+            public void onResponse(IndustryModel response) {
                 hideProgress();
                 list_hangye = response.getList();
                 dialog.contentView(R.layout.dialog_list_center)
@@ -1564,10 +1562,10 @@ public class AddContractActivity extends BaseActivity {
                         .show();
                 RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
                 rv_list.setLayoutManager(new LinearLayoutManager(AddContractActivity.this));
-                CommonAdapter<CommonModel.ListBean> adapter = new CommonAdapter<CommonModel.ListBean>
+                CommonAdapter<IndustryModel.ListBean> adapter = new CommonAdapter<IndustryModel.ListBean>
                         (AddContractActivity.this, R.layout.item_help, list_hangye) {
                     @Override
-                    protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
+                    protected void convert(ViewHolder holder, IndustryModel.ListBean model, int position) {
                         TextView tv = holder.getView(R.id.textView1);
                         tv.setText(model.getName());
                     }
@@ -1611,14 +1609,15 @@ public class AddContractActivity extends BaseActivity {
      * 选择城市
      */
     List<CommonModel.ListBean> list_chengshi = new ArrayList<>();
-    int maxIdex_chengshi = 3;
+    int maxIdex_chengshi = 1;
     String string_chengshi = "";
 
     private void dialogList_chengshi(String parentId) {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("parentId", parentId);
-        OkhttpUtil.okHttpGet(URLs.Region, params, headerMap, new CallBackUtil<CommonModel>() {
+        params.put("id", parentId);
+        params.put("level", maxIdex_chengshi + "");
+        OkhttpUtil.okHttpPostJson(URLs.Region, GsonUtils.toJson(params), headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {
                 return null;
@@ -1639,8 +1638,8 @@ public class AddContractActivity extends BaseActivity {
                         .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                 CommonUtil.dip2px(AddContractActivity.this, 400)))
                         .animType(BaseDialog.AnimInType.BOTTOM)
-                        .canceledOnTouchOutside(true)
-                        .gravity(Gravity.TOP)
+                        .canceledOnTouchOutside(false)
+                        .gravity(Gravity.CENTER)
                         .dimAmount(0.5f)
                         .show();
                 RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
@@ -1656,10 +1655,9 @@ public class AddContractActivity extends BaseActivity {
                 adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                        maxIdex_chengshi--;
                         string_chengshi = string_chengshi + list_chengshi.get(position).getName() + "-";
                         switch (maxIdex_chengshi) {
-                            case 0:
+                            case 3:
                                 //区
                                 //最后一个，赋值
                                 if (!string_chengshi.equals("")) {
@@ -1669,21 +1667,24 @@ public class AddContractActivity extends BaseActivity {
                                 areaId = list_chengshi.get(position).getId();
                                 //初始化
                                 string_chengshi = "";
-                                maxIdex_chengshi = 3;
+                                maxIdex_chengshi = 1;
 
                                 dialog.dismiss();
                                 break;
-                            case 1:
+                            case 2:
                                 //市
                                 cityId = list_chengshi.get(position).getId();
+                                maxIdex_chengshi = 3;
                                 dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
-                            case 2:
+                            case 1:
                                 //省
                                 provinceId = list_chengshi.get(position).getId();
+                                maxIdex_chengshi = 2;
                                 dialogList_chengshi(list_chengshi.get(position).getId());
                                 break;
                         }
+
                         adapter.notifyDataSetChanged();
 
                     }

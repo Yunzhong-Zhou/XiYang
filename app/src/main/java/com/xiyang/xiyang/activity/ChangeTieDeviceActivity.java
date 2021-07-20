@@ -111,11 +111,11 @@ public class ChangeTieDeviceActivity extends BaseActivity {
             return false;
         }
         if (TextUtils.isEmpty(shopId)) {
-            myToast("请先扫码，获取安装商户");
+            myToast("请先扫码，获取换绑前门店");
             return false;
         }
         if (TextUtils.isEmpty(storeId)) {
-            myToast("请先扫码，获取安装门店");
+            myToast("请先扫码，获取换绑后门店");
             return false;
         }
         if (TextUtils.isEmpty(roomId)) {

@@ -1,17 +1,20 @@
 package com.xiyang.xiyang.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Mr.Z on 2021/4/22.
  */
 public class ShopDetailModel implements Serializable {
     /**
-     * base : {"id":"1415133648994308096","name":"测试商户1","account":"19000000006","companyName":"公司名称1","contactPhone":"19000000006","contactName":"阿斯顿马丁","insduty":null,"city":null,"address":"阿斯顿马丁路德金","logoUrl":"","licenseNo":"12345677777655","certificateUrl":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/14/16262299988521626229796507.png"}
-     * countData : {"deviceNum":0,"storeNum":1,"money":0,"profit":0}
+     * base : {"id":"1415133648994308096","name":"测试商户1","account":"19000000006","companyName":"公司名称1","contactPhone":"19000000006","contactName":"阿斯顿马丁","insduty":null,"city":null,"address":"阿斯顿马丁路德金","logoUrl":"","licenseNo":"12345677777655","certificateUrl":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/14/16262299988521626229796507.png","provinceId":110000,"cityId":110100,"areaId":110105,"status":4,"industryId":null,"level":null,"tag":null,"isPublic":null,"isBindBank":null,"sources":0}
+     * countData : {"deviceNum":0,"storeNum":2,"money":0,"profit":0}
      * applyData : {"inviteCode":null,"inviteType":null,"applyAt":null}
      * signData : {"contract":"56a95e48-858e-4bfd-85cc-86ba4a660bf9","sole":1,"renewalTime":null,"renewalPeriod":3,"userName":"黄BD","signType":"merchant_sign","verifyedAt":null}
      * bdData : {"name":"黄BD","type":null}
+     * storesList : [{"id":"1415855164790804480","storeSn":"a3c9c891e5724dd69b86271bb6e0c002","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/16/16264011506861626400954357.png","name":"信达门店3","address":"黄山大道重庆高科总部广场西南侧约220米","userTypeId":"1415855164825493505","visitStatus":1,"contractStatus":1,"transferStatus":1,"totalRevenue":0,"deviceNumber":0},{"id":"1417012983346892800","storeSn":"20e6c29745874802b99ffb4cf5316b5c","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/19/16266771961741626676993642.png","name":"信达门店4","address":"黄山大道重庆高科总部广场西南侧约220米","userTypeId":"1417012983427727361","visitStatus":1,"contractStatus":1,"transferStatus":1,"totalRevenue":0,"deviceNumber":0}]
+     * contractsList : [{"id":"1415137301742358528","status":3,"type":"merchant_sign","createTime":"2021-07-14 10:33:19"},{"id":"1415557230765412352","status":2,"type":"device_add","createTime":"2021-07-15 14:21:58"},{"id":"1415557321324630016","status":2,"type":"device_add","createTime":"2021-07-15 14:22:20"}]
      */
 
     private BaseBean base;
@@ -19,6 +22,8 @@ public class ShopDetailModel implements Serializable {
     private ApplyDataBean applyData;
     private SignDataBean signData;
     private BdDataBean bdData;
+    private List<StoresListBean> storesList;
+    private List<ContractsListBean> contractsList;
 
     public BaseBean getBase() {
         return base;
@@ -60,6 +65,22 @@ public class ShopDetailModel implements Serializable {
         this.bdData = bdData;
     }
 
+    public List<StoresListBean> getStoresList() {
+        return storesList;
+    }
+
+    public void setStoresList(List<StoresListBean> storesList) {
+        this.storesList = storesList;
+    }
+
+    public List<ContractsListBean> getContractsList() {
+        return contractsList;
+    }
+
+    public void setContractsList(List<ContractsListBean> contractsList) {
+        this.contractsList = contractsList;
+    }
+
     public static class BaseBean {
         /**
          * id : 1415133648994308096
@@ -74,6 +95,16 @@ public class ShopDetailModel implements Serializable {
          * logoUrl :
          * licenseNo : 12345677777655
          * certificateUrl : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/14/16262299988521626229796507.png
+         * provinceId : 110000
+         * cityId : 110100
+         * areaId : 110105
+         * status : 4
+         * industryId : null
+         * level : null
+         * tag : null
+         * isPublic : null
+         * isBindBank : null
+         * sources : 0
          */
 
         private String id;
@@ -88,6 +119,16 @@ public class ShopDetailModel implements Serializable {
         private String logoUrl;
         private String licenseNo;
         private String certificateUrl;
+        private String provinceId;
+        private String cityId;
+        private String areaId;
+        private String status;
+        private String industryId;
+        private String level;
+        private String tag;
+        private String isPublic;
+        private String isBindBank;
+        private String sources;
 
         public String getId() {
             return id;
@@ -184,12 +225,92 @@ public class ShopDetailModel implements Serializable {
         public void setCertificateUrl(String certificateUrl) {
             this.certificateUrl = certificateUrl;
         }
+
+        public String getProvinceId() {
+            return provinceId;
+        }
+
+        public void setProvinceId(String provinceId) {
+            this.provinceId = provinceId;
+        }
+
+        public String getCityId() {
+            return cityId;
+        }
+
+        public void setCityId(String cityId) {
+            this.cityId = cityId;
+        }
+
+        public String getAreaId() {
+            return areaId;
+        }
+
+        public void setAreaId(String areaId) {
+            this.areaId = areaId;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getIndustryId() {
+            return industryId;
+        }
+
+        public void setIndustryId(String industryId) {
+            this.industryId = industryId;
+        }
+
+        public String getLevel() {
+            return level;
+        }
+
+        public void setLevel(String level) {
+            this.level = level;
+        }
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+
+        public String getIsPublic() {
+            return isPublic;
+        }
+
+        public void setIsPublic(String isPublic) {
+            this.isPublic = isPublic;
+        }
+
+        public String getIsBindBank() {
+            return isBindBank;
+        }
+
+        public void setIsBindBank(String isBindBank) {
+            this.isBindBank = isBindBank;
+        }
+
+        public String getSources() {
+            return sources;
+        }
+
+        public void setSources(String sources) {
+            this.sources = sources;
+        }
     }
 
     public static class CountDataBean {
         /**
          * deviceNum : 0
-         * storeNum : 1
+         * storeNum : 2
          * money : 0
          * profit : 0
          */
@@ -367,6 +488,168 @@ public class ShopDetailModel implements Serializable {
 
         public void setType(String type) {
             this.type = type;
+        }
+    }
+
+    public static class StoresListBean {
+        /**
+         * id : 1415855164790804480
+         * storeSn : a3c9c891e5724dd69b86271bb6e0c002
+         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/16/16264011506861626400954357.png
+         * name : 信达门店3
+         * address : 黄山大道重庆高科总部广场西南侧约220米
+         * userTypeId : 1415855164825493505
+         * visitStatus : 1
+         * contractStatus : 1
+         * transferStatus : 1
+         * totalRevenue : 0
+         * deviceNumber : 0
+         */
+
+        private String id;
+        private String storeSn;
+        private String image;
+        private String name;
+        private String address;
+        private String userTypeId;
+        private String visitStatus;
+        private String contractStatus;
+        private String transferStatus;
+        private String totalRevenue;
+        private String deviceNumber;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getStoreSn() {
+            return storeSn;
+        }
+
+        public void setStoreSn(String storeSn) {
+            this.storeSn = storeSn;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getUserTypeId() {
+            return userTypeId;
+        }
+
+        public void setUserTypeId(String userTypeId) {
+            this.userTypeId = userTypeId;
+        }
+
+        public String getVisitStatus() {
+            return visitStatus;
+        }
+
+        public void setVisitStatus(String visitStatus) {
+            this.visitStatus = visitStatus;
+        }
+
+        public String getContractStatus() {
+            return contractStatus;
+        }
+
+        public void setContractStatus(String contractStatus) {
+            this.contractStatus = contractStatus;
+        }
+
+        public String getTransferStatus() {
+            return transferStatus;
+        }
+
+        public void setTransferStatus(String transferStatus) {
+            this.transferStatus = transferStatus;
+        }
+
+        public String getTotalRevenue() {
+            return totalRevenue;
+        }
+
+        public void setTotalRevenue(String totalRevenue) {
+            this.totalRevenue = totalRevenue;
+        }
+
+        public String getDeviceNumber() {
+            return deviceNumber;
+        }
+
+        public void setDeviceNumber(String deviceNumber) {
+            this.deviceNumber = deviceNumber;
+        }
+    }
+
+    public static class ContractsListBean {
+        /**
+         * id : 1415137301742358528
+         * status : 3
+         * type : merchant_sign
+         * createTime : 2021-07-14 10:33:19
+         */
+
+        private String id;
+        private String status;
+        private String type;
+        private String createTime;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
     }
 }

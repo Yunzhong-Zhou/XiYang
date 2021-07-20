@@ -47,7 +47,7 @@ public class MyContractModel implements Serializable {
         private String image;
         private String contractType;
         private String typeTitle;
-        private int status;
+        private String status;
         private String statusTitle;
         private String createdAt;
 
@@ -91,11 +91,11 @@ public class MyContractModel implements Serializable {
             this.typeTitle = typeTitle;
         }
 
-        public int getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 

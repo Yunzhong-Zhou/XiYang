@@ -147,7 +147,7 @@ public class PersonnelListActivity extends BaseActivity {
                         break;
                     case 3:
                         //升职降职
-                        params.put("type", "8");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                        params.put("type", "4");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
                         params.put("current", page + "");
                         params.put("pageSize", "10");
                         params.put("keyWord", keyWord);
@@ -229,15 +229,15 @@ public class PersonnelListActivity extends BaseActivity {
                             holder.setText(R.id.tv_id, model.getSn());
                             TextView tv_type = holder.getView(R.id.tv_type);
                             switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
-                                case 1:
+                                case "1":
                                     tv_type.setText("处理中");
                                     tv_type.setTextColor(getResources().getColor(R.color.black3));
                                     break;
-                                case 2:
+                                case "2":
                                     tv_type.setText("驳回");
                                     tv_type.setTextColor(getResources().getColor(R.color.red));
                                     break;
-                                case 3:
+                                case "3":
                                     tv_type.setText("已完成");
                                     tv_type.setTextColor(getResources().getColor(R.color.green));
                                     break;
@@ -251,21 +251,41 @@ public class PersonnelListActivity extends BaseActivity {
                                     tv_key1.setText("调整人");
                                     tv_key2.setText("调整前上级");
                                     tv_key3.setText("调整后上级");
-                                    holder.setText(R.id.tv_value1, model.getName());
-                                    holder.setText(R.id.tv_value2, model.getNum() + "台");
-                                    holder.setText(R.id.tv_value3, model.getFetchAt());
+                                    holder.setText(R.id.tv_value1, model.getAdminName());
+                                    holder.setText(R.id.tv_value2, model.getOldParentName());
+                                    holder.setText(R.id.tv_value3, model.getNewParentName());
                                     break;
                                 case 2:
                                     //调整市场
+                                    String oldcity = "";
+                                    for (PersonnelListModel.RecordsBean.OldRegionsBean bean : model.getOldRegions()) {
+                                        oldcity = oldcity + bean.getNameX() + "、";
+                                    }
+                                    String newcity = "";
+                                    for (PersonnelListModel.RecordsBean.NewRegionsBean bean : model.getNewRegions()) {
+                                        newcity = newcity + bean.getNameX() + "、";
+                                    }
+                                    if (!oldcity.equals("")) {
+                                        oldcity = oldcity.substring(0, oldcity.length() - 1);
+                                    }
+                                    if (!newcity.equals("")) {
+                                        newcity = newcity.substring(0, newcity.length() - 1);
+                                    }
                                     tv_key1.setText("调整人");
                                     tv_key2.setText("调整前省市");
                                     tv_key3.setText("调整后省市");
+                                    holder.setText(R.id.tv_value1, model.getAdminName());
+                                    holder.setText(R.id.tv_value2, oldcity);
+                                    holder.setText(R.id.tv_value3, newcity);
                                     break;
                                 case 3:
                                     //升职降职
                                     tv_key1.setText("调整人");
                                     tv_key2.setText("调整前职位");
                                     tv_key3.setText("调整后职位");
+                                    holder.setText(R.id.tv_value1, model.getAdminName());
+                                    holder.setText(R.id.tv_value2, model.getOldOrganCode());
+                                    holder.setText(R.id.tv_value3, model.getNewOrganCode());
                                     break;
                                 case 4:
                                     //采购审批
@@ -394,7 +414,7 @@ public class PersonnelListActivity extends BaseActivity {
                 break;
             case 3:
                 //升职降职
-                params.put("type", "8");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
+                params.put("type", "4");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
                 params.put("current", page + "");
                 params.put("pageSize", "10");
                 params.put("keyWord", keyWord);

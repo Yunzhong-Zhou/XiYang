@@ -63,6 +63,13 @@ public class InstallDeviceActivity extends BaseActivity {
     @Override
     protected void initData() {
         transactionId = getIntent().getStringExtra("transactionId");
+        storeId = getIntent().getStringExtra("storeId");
+        tv_anzhuangmendian.setText(getIntent().getStringExtra("storeName"));
+
+        showProgress(true, getString(R.string.app_loading2));
+                        params.clear();
+//                        params.put("id", storeId);
+                        requestStoreDetail(params, storeId);
         if (transactionId == null) transactionId = "";
 
     }
@@ -137,10 +144,10 @@ public class InstallDeviceActivity extends BaseActivity {
             myToast("请先扫码");
             return false;
         }
-        if (TextUtils.isEmpty(shopId)) {
+       /* if (TextUtils.isEmpty(shopId)) {
             myToast("请选择安装商户");
             return false;
-        }
+        }*/
         if (TextUtils.isEmpty(storeId)) {
             myToast("请选择安装门店");
             return false;
@@ -181,10 +188,10 @@ public class InstallDeviceActivity extends BaseActivity {
                                 iv_scan.setVisibility(View.GONE);
                                 tv_scan.setText("SN号:" + deviceName);
 
-                            /*showProgress(true, getString(R.string.app_loading2));
-                            params.clear();
-                            params.put("deviceName", deviceName);
-                            requestDeviceDetail(params);*/
+                               /* showProgress(true, getString(R.string.app_loading2));
+                                params.clear();
+                                params.put("deviceName", deviceName);
+                                requestDeviceDetail(params);*/
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

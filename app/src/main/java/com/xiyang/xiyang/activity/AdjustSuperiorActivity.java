@@ -152,7 +152,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 break;
             case R.id.tv_code:
                 //获取验证码
-                showProgress(false, getString(R.string.app_sendcode_hint1));
+                showProgress(true, getString(R.string.app_sendcode_hint1));
                 tv_code.setClickable(false);
                 params.clear();
                 /*params1.put("mobile", localUserInfo.getPhonenumber());
@@ -162,7 +162,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
             case R.id.tv_confirm:
                 //提交
                 if (match()) {
-                    showProgress(false, getString(R.string.app_loading1));
+                    showProgress(true, getString(R.string.app_loading1));
                     params.clear();
                     params.put("crossLevel", crossLevel);//是否跨区
                     params.put("userId", userId);

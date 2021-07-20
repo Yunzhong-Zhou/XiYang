@@ -178,7 +178,7 @@ public class AdjustMarketActivity extends BaseActivity {
                 break;
             case R.id.tv_code:
                 //获取验证码
-                showProgress(false, getString(R.string.app_sendcode_hint1));
+                showProgress(true, getString(R.string.app_sendcode_hint1));
                 tv_code.setClickable(false);
                 HashMap<String, String> params1 = new HashMap<>();
                 params1.put("mobile", localUserInfo.getPhonenumber());
@@ -188,7 +188,7 @@ public class AdjustMarketActivity extends BaseActivity {
             case R.id.tv_confirm:
                 //提交
                 if (match()) {
-                    showProgress(false, getString(R.string.app_loading1));
+                    showProgress(true, getString(R.string.app_loading1));
                     params.put("crossLevel", crossLevel);//跨区
                     params.put("userId", userId);
                     params.put("oldAreaIds", oldAreaIds);

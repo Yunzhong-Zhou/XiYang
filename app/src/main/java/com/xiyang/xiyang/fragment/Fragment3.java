@@ -14,10 +14,10 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddWorkListActivity;
+import com.xiyang.xiyang.activity.AffairListActivity;
 import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.DebugDeviceActivity;
 import com.xiyang.xiyang.activity.DeviceAddressActivity;
-import com.xiyang.xiyang.activity.InstallDeviceActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.SelectDeviceActivity;
@@ -58,7 +58,7 @@ public class Fragment3 extends BaseFragment {
     private RecyclerView recyclerView1, recyclerView2;
     List<MyFragment1Model> list1 = new ArrayList<>();
     CommonAdapter<MyFragment1Model> mAdapter1;
-//    List<Fragment3Model.DevicesBean> list2 = new ArrayList<>();
+    //    List<Fragment3Model.DevicesBean> list2 = new ArrayList<>();
 //    CommonAdapter<Fragment3Model.DevicesBean> mAdapter2;
     TextView tv_mymore;
 
@@ -324,7 +324,8 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout6:
                 //安装设备
-                CommonUtil.gotoActivity(getActivity(), InstallDeviceActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), InstallDeviceActivity.class);
+                CommonUtil.gotoActivity(getActivity(), AffairListActivity.class);
                 break;
             case R.id.linearLayout7:
                 //调试设备
@@ -388,8 +389,8 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment3Model.WaitingInstallListBean bean:model.getWaitingInstallList()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getStoreName(),bean.getCreateTime()));
+                for (Fragment3Model.WaitingInstallListBean bean : model.getWaitingInstallList()) {
+                    list1.add(new MyFragment1Model(bean.getId(), bean.getStoreName(), bean.getCreateTime()));
                 }
                 break;
             case 2:
@@ -399,8 +400,8 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment3Model.WaitingRecycleListBean bean:model.getWaitingRecycleList()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getStoreName(),bean.getCreateTime()));
+                for (Fragment3Model.WaitingRecycleListBean bean : model.getWaitingRecycleList()) {
+                    list1.add(new MyFragment1Model(bean.getId(), bean.getStoreName(), bean.getCreateTime()));
                 }
                 break;
             case 3:
@@ -410,8 +411,8 @@ public class Fragment3 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
-                for (Fragment3Model.WaitingSwapListBean bean:model.getWaitingSwapList()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getStoreName(),bean.getCreateTime()));
+                for (Fragment3Model.WaitingSwapListBean bean : model.getWaitingSwapList()) {
+                    list1.add(new MyFragment1Model(bean.getId(), bean.getStoreName(), bean.getCreateTime()));
                 }
                 break;
 

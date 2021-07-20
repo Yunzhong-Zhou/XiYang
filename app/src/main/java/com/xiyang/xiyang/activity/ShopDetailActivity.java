@@ -74,16 +74,16 @@ public class ShopDetailActivity extends BaseActivity {
      */
     LinearLayout ll_contract;
     RecyclerView rv_contract;
-    List<ShopDetailModel.CountDataBean> list_contract = new ArrayList<>();
-    CommonAdapter<ShopDetailModel.CountDataBean> mAdapter_contract;
+    List<ShopDetailModel.ContractsListBean> list_contract = new ArrayList<>();
+    CommonAdapter<ShopDetailModel.ContractsListBean> mAdapter_contract;
 
     /**
      * 门店信息
      */
     LinearLayout ll_store;
     RecyclerView rv_store;
-    List<ShopDetailModel.CountDataBean> list_store = new ArrayList<>();
-    CommonAdapter<ShopDetailModel.CountDataBean> mAdapter_store;
+    List<ShopDetailModel.StoresListBean> list_store = new ArrayList<>();
+    CommonAdapter<ShopDetailModel.StoresListBean> mAdapter_store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,11 +265,11 @@ public class ShopDetailActivity extends BaseActivity {
                 list_info.add(new KeyValueModel("营业执照号", response.getBase().getLicenseNo()));
                 list_info.add(new KeyValueModel("所在城市", response.getBase().getCity()));
                 list_info.add(new KeyValueModel("所在行业", response.getBase().getInsduty()));
-//                list_info.add(new KeyValueModel("商户等级", response.getBase().getLevel()));
-//                list_info.add(new KeyValueModel("商户标识", response.getBase().getSlag()));
-//                list_info.add(new KeyValueModel("商户来源", response.getBase().getSource()));
-//                list_info.add(new KeyValueModel("是否对公", response.getBase().getToPublic()));
-//                list_info.add(new KeyValueModel("是否绑卡", response.getBase().getIsCard()));
+                list_info.add(new KeyValueModel("商户等级", response.getBase().getLevel()));
+                list_info.add(new KeyValueModel("商户标识", response.getBase().getTag()));
+                list_info.add(new KeyValueModel("商户来源", response.getBase().getSources()));
+                list_info.add(new KeyValueModel("是否对公", response.getBase().getIsPublic()));
+                list_info.add(new KeyValueModel("是否绑卡", response.getBase().getIsBindBank()));
                 list_info.add(new KeyValueModel("执照图片", ""));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_info) {
@@ -321,13 +321,15 @@ public class ShopDetailActivity extends BaseActivity {
 
                 //签约信息
                 list_qianyue.clear();
-                list_qianyue.add(new KeyValueModel("签约合同", response.getSignData().getContract()));
-                list_qianyue.add(new KeyValueModel("是否独家", response.getSignData().getSole()));
-                list_qianyue.add(new KeyValueModel("签约时间", response.getSignData().getRenewalTime()));
-                list_qianyue.add(new KeyValueModel("签约年限", response.getSignData().getRenewalPeriod()));
-                list_qianyue.add(new KeyValueModel("签约人", response.getSignData().getUserName()));
-                list_qianyue.add(new KeyValueModel("签约类型", response.getSignData().getSignType()));
-                list_qianyue.add(new KeyValueModel("审核时间", response.getSignData().getVerifyedAt()));
+                if (response.getSignData() !=null){
+                    list_qianyue.add(new KeyValueModel("签约合同", response.getSignData().getContract()));
+                    list_qianyue.add(new KeyValueModel("是否独家", response.getSignData().getSole()));
+                    list_qianyue.add(new KeyValueModel("签约时间", response.getSignData().getRenewalTime()));
+                    list_qianyue.add(new KeyValueModel("签约年限", response.getSignData().getRenewalPeriod()));
+                    list_qianyue.add(new KeyValueModel("签约人", response.getSignData().getUserName()));
+                    list_qianyue.add(new KeyValueModel("签约类型", response.getSignData().getSignType()));
+                    list_qianyue.add(new KeyValueModel("审核时间", response.getSignData().getVerifyedAt()));
+                }
                 mAdapter_qianyue = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_qianyue) {
                     @Override
@@ -355,14 +357,14 @@ public class ShopDetailActivity extends BaseActivity {
                 /**
                  * 合同信息
                  */
-                /*list_contract = response.getContract();
-                mAdapter_contract = new CommonAdapter<ShopDetailModel.ContractBean>
+                list_contract = response.getContractsList();
+                mAdapter_contract = new CommonAdapter<ShopDetailModel.ContractsListBean>
                         (ShopDetailActivity.this, R.layout.item_shopdetail_contract, list_contract) {
                     @Override
-                    protected void convert(ViewHolder holder, ShopDetailModel.ContractBean model, int position) {
-                        holder.setText(R.id.tv1, "《" + model.getName() + "》");
+                    protected void convert(ViewHolder holder, ShopDetailModel.ContractsListBean model, int position) {
+                        holder.setText(R.id.tv1, "《" + model.getType() + "》");
                         TextView tv2 = holder.getView(R.id.tv2);
-                        tv2.setText(model.getStatusTitle());
+                        tv2.setText(model.getStatus());
                         switch (model.getStatus()) {
                             case "1":
                                 tv2.setTextColor(getResources().getColor(R.color.green));
@@ -375,7 +377,7 @@ public class ShopDetailActivity extends BaseActivity {
                                 break;
                         }
 
-                        holder.setText(R.id.tv3, model.getCreatedAt());
+                        holder.setText(R.id.tv3, model.getCreateTime());
                         holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -387,18 +389,18 @@ public class ShopDetailActivity extends BaseActivity {
 
                     }
                 };
-                rv_contract.setAdapter(mAdapter_contract);*/
+                rv_contract.setAdapter(mAdapter_contract);
 
                 /**
                  * 门店信息
                  */
-                /*mAdapter_store = new CommonAdapter<ShopDetailModel.StoreBean>
+                mAdapter_store = new CommonAdapter<ShopDetailModel.StoresListBean>
                         (ShopDetailActivity.this, R.layout.item_fragment2_2, list_store) {
                     @Override
-                    protected void convert(ViewHolder holder, ShopDetailModel.StoreBean model, int position) {
+                    protected void convert(ViewHolder holder, ShopDetailModel.StoresListBean model, int position) {
                         holder.setText(R.id.tv_name, model.getName());//标题
-                        holder.setText(R.id.tv_shop, model.getDeviceNum());
-                        holder.setText(R.id.tv_num, model.getMoney());//money
+                        holder.setText(R.id.tv_shop, model.getDeviceNumber());
+                        holder.setText(R.id.tv_num, model.getTotalRevenue());//money
                         holder.setText(R.id.tv_addr, model.getAddress());
 
                         ImageView imageView1 = holder.getView(R.id.imageView1);
@@ -411,13 +413,13 @@ public class ShopDetailActivity extends BaseActivity {
                                 .error(R.mipmap.zanwutupian)//加载失败
                                 .into(imageView1);//加载图片
 
-                        *//*ImageView imageView2 = holder.getView(R.id.imageView2);
-                        if (model.getStatus().equals("1")) {
+                        ImageView imageView2 = holder.getView(R.id.imageView2);
+                        if (model.getContractStatus().equals("1")) {
                             //待签约
                             imageView2.setImageResource(R.mipmap.bg_daiqianyue);
                         } else {
                             imageView2.setImageResource(R.mipmap.bg_yiqianyue);
-                        }*//*
+                        }
 
                         holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -430,7 +432,7 @@ public class ShopDetailActivity extends BaseActivity {
 
                     }
                 };
-                rv_store.setAdapter(mAdapter_store);*/
+                rv_store.setAdapter(mAdapter_store);
             }
         });
     }

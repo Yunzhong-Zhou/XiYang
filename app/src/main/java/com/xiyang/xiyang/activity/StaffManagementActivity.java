@@ -167,7 +167,7 @@ public class StaffManagementActivity extends BaseActivity {
                                         @Override
                                         public void onClick(View v) {
                                             dialog.dismiss();
-                                            showProgress(false, getString(R.string.app_loading1));
+                                            showProgress(true, getString(R.string.app_loading1));
                                             params.clear();
                                             params.put("workerId", list.get(position).getUserId());
                                             params.put("storeId", storeId);

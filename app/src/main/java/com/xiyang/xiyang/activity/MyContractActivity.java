@@ -159,11 +159,11 @@ public class MyContractActivity extends BaseActivity {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            /*if (model.getStatus().equals("1")) {
+                            /*if (model.getStatus() != null && model.getStatus().equals("4")) {
+                                imageView2.setImageResource(R.mipmap.bg_yiqianyue);
+                            } else {
                                 //待签约
                                 imageView2.setImageResource(R.mipmap.bg_daiqianyue);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_yiqianyue);
                             }*/
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
