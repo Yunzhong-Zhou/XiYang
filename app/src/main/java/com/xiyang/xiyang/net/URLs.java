@@ -182,6 +182,8 @@ public class URLs {
     public static final String AddStore = HOST + "/bd/store/addStore";
     //门店详情
     public static final String StoreDetail = HOST + "/bd/store/select/";
+    //修改门店
+    public static final String ChangeStore = HOST + "/bd/store/updateStore";
     //房号管理
     public static final String RoomNoManagement = HOST + "/bd/storeRoom/appQueryRoomByStoreIdAndParentId";
     //添加房号
@@ -201,7 +203,7 @@ public class URLs {
     //划转门店
     public static final String TransferStore = HOST + "/bd/store/transfer/add";
     //修改账户信息
-    public static final String ChangeStoreAccount = HOST + API + "store/account";
+    public static final String ChangeStoreAccount = HOST + "/bd/store/updateStoreUser";
 
     /**
      * ********************************设备*****************************************
@@ -253,7 +255,8 @@ public class URLs {
     public static final String DeviceSetUp = HOST + API + "/service-device/operate";
     //换绑设备
     public static final String ChangeTieDevice = HOST + "/service-device/device/deviceChangeBind";
-
+    //设备移位
+    public static final String ChangeRoomDevice = HOST + "/service-device/device/deviceChangeBind";
     /**
      * ********************************数据*****************************************
      */

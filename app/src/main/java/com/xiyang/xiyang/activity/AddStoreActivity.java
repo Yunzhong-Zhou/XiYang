@@ -36,7 +36,6 @@ import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
 import com.xiyang.xiyang.utils.MyLogger;
-import com.xiyang.xiyang.utils.UpFileToQiNiuUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -273,19 +272,6 @@ public class AddStoreActivity extends BaseActivity {
                             requestUpData(params);
                         }
                     });
-                    new UpFileToQiNiuUtil(AddStoreActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                        @Override
-                        public void complete(boolean isok, String result, String url) {
-                            if (isok) {
-                                MyLogger.i(">>>>上传文件路径：" + url);
-
-
-                            } else {
-                                hideProgress();
-                                myToast("图片上传失败" + result);
-                            }
-                        }
-                    };
                 }
                 break;
         }

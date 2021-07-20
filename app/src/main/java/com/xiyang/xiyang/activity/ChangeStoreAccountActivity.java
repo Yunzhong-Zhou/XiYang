@@ -2,12 +2,15 @@ package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.net.URLs;
@@ -56,6 +59,27 @@ public class ChangeStoreAccountActivity extends BaseActivity {
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
         editText4 = findViewByID_My(R.id.editText4);
+        editText4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (!s.toString().trim().equals("") && s.length() == 11) {
+                    params.clear();
+                    params.put("phone", s.toString().trim());
+                    requestDetect(params,editText4);
+                }
+            }
+        });
+
         textView1 = findViewByID_My(R.id.textView1);
         textView1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,9 +102,11 @@ public class ChangeStoreAccountActivity extends BaseActivity {
             public void onClick(View view) {
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
-                    HashMap<String, String> params = new HashMap<>();
+                    params.clear();
+                    params.put("compulsoryNormalUserToStoreUserType","true");
                     params.put("id", storeId);
-                    params.put("mobile", mobile);
+                    params.put("account",editText2.getText().toString().trim());
+                    params.put("newAccount", mobile);
                     params.put("code", code);
                     RequestUpData(params);
                 }
@@ -115,7 +141,7 @@ public class ChangeStoreAccountActivity extends BaseActivity {
     }
 
     private void RequestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.ChangeStoreAccount, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPutJson(URLs.ChangeStoreAccount, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -192,5 +218,42 @@ public class ChangeStoreAccountActivity extends BaseActivity {
             textView1.setClickable(false);
             textView1.setText(millisUntilFinished / 1000 + getString(R.string.app_codethen));
         }
+    }
+
+    /**
+     * 检测账号是否存在
+     *
+     * @param params
+     */
+    private void requestDetect(HashMap<String, String> params,TextView textView) {
+        OkhttpUtil.okHttpGet(URLs.AddShop_Detect,params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                if (err.contains("存在")) {
+                    showToast("该账号已存在是否同意\n切换为商户账号？", "同意", "取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            textView.setText("");
+                        }
+                    });
+                } else
+                    myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+            }
+        });
     }
 }

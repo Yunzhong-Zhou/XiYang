@@ -67,9 +67,9 @@ public class InstallDeviceActivity extends BaseActivity {
         tv_anzhuangmendian.setText(getIntent().getStringExtra("storeName"));
 
         showProgress(true, getString(R.string.app_loading2));
-                        params.clear();
+        params.clear();
 //                        params.put("id", storeId);
-                        requestStoreDetail(params, storeId);
+        requestStoreDetail(params, storeId);
         if (transactionId == null) transactionId = "";
 
     }

@@ -465,7 +465,7 @@ public class AddContractActivity extends BaseActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     file = response;//文件地址
-
+                                    params.put("storeId", outStoreId);
                                     params.put("outStoreId", outStoreId);
                                     params.put("inStoreId", inStoreId);
                                     params.put("contractType", contractType);

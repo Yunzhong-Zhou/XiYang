@@ -36,7 +36,7 @@ import okhttp3.Response;
  */
 public class ChangeTieDeviceActivity extends BaseActivity {
     StoreDetailModel model;
-    String deviceName = "", storeId = "", shopId = "", roomId = "";
+    String deviceName = "", oldStoreId = "", newStoreId = "", roomId = "";
     LinearLayout ll_scan;
     TextView iv_scan;
     TextView tv_scan;
@@ -78,44 +78,54 @@ public class ChangeTieDeviceActivity extends BaseActivity {
                 CaptureActivity.launch(this, config);
 
                 break;
+            case R.id.tv_anzhuangmendian:
+                //选择门店
+                Intent intent1 = new Intent(ChangeTieDeviceActivity.this, MyStoreListActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("requestCode", Constant.SELECT_STORE);
+                bundle1.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
+                break;
             case R.id.tv_xuanzefanghao:
                 //选择房号
-                if (model !=null){
+                if (model != null) {
                     Intent intent3 = new Intent(ChangeTieDeviceActivity.this, RoomNoManagementActivity.class);
                     Bundle bundle3 = new Bundle();
                     bundle3.putInt("requestCode", Constant.SELECT_ROOMNO);
                     bundle3.putSerializable("StoreDetailModel", model);
                     intent3.putExtras(bundle3);
                     startActivityForResult(intent3, Constant.SELECT_ROOMNO);
-                }else {
+                } else {
                     myToast("请先扫码，获取设备所属门店");
                 }
                 break;
             case R.id.tv_confirm:
                 //确认换绑
-                if (match()){
+                if (match()) {
                     this.showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
                     params.put("hostname", deviceName);
-                    params.put("storeId", storeId);
-//                    params.put("shopId", shopId);
+                    params.put("oldStoreId", oldStoreId);
+                    params.put("newStoreId", newStoreId);
                     params.put("roomId", roomId);
                     requestUpData(params);
                 }
                 break;
         }
     }
+
     private boolean match() {
         if (TextUtils.isEmpty(deviceName)) {
             myToast("请先扫码");
             return false;
         }
-        if (TextUtils.isEmpty(shopId)) {
+        if (TextUtils.isEmpty(oldStoreId)) {
             myToast("请先扫码，获取换绑前门店");
             return false;
         }
-        if (TextUtils.isEmpty(storeId)) {
-            myToast("请先扫码，获取换绑后门店");
+        if (TextUtils.isEmpty(newStoreId)) {
+            myToast("请选择换绑后门店");
             return false;
         }
         if (TextUtils.isEmpty(roomId)) {
@@ -125,6 +135,7 @@ public class ChangeTieDeviceActivity extends BaseActivity {
 
         return true;
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("换绑设备");
@@ -133,16 +144,14 @@ public class ChangeTieDeviceActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /**
-         * 处理二维码扫描结果
-         */
-        if (requestCode == CaptureActivity.REQUEST_CODE_SCAN) {
-            // 扫描二维码回传
-            if (resultCode == RESULT_OK) {
+        switch (requestCode) {
+            case CaptureActivity.REQUEST_CODE_SCAN:
+                //二维码扫码
                 if (data != null) {
                     //获取扫描结果
                     Bundle bundle = data.getExtras();
                     String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
+                    //{"deviceName": "641708882ef84e09995d70440e12ebf9"}
                     MyLogger.i("扫码返回", result);
                     if (!result.equals("")) {
                         try {
@@ -153,8 +162,8 @@ public class ChangeTieDeviceActivity extends BaseActivity {
 
                             showProgress(true, getString(R.string.app_loading2));
                             params.clear();
-                            params.put("deviceName", deviceName);
-                            requestDeviceDetail(params);
+//                            params.put("deviceName", deviceName);
+                            requestDeviceRoom(params,deviceName);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -165,15 +174,39 @@ public class ChangeTieDeviceActivity extends BaseActivity {
                         tv_scan.setVisibility(View.GONE);
                     }
                 }
-            }
+                break;
+            case Constant.SELECT_STORE:
+                //选择门店
+                if (data != null) {
+                    Bundle bundle = data.getExtras();
+                    oldStoreId = bundle.getString("storeId");
+                    tv_anzhuangmendian.setText(bundle.getString("storeName"));
+
+                    //获取门店详情
+                    showProgress(true, getString(R.string.app_loading2));
+                    params.clear();
+//                        params.put("id", storeId);
+                    requestStoreDetail(params, oldStoreId);
+                }
+                break;
+            case Constant.SELECT_ROOMNO:
+                //选择房号
+                if (data != null) {
+                    Bundle bundle = data.getExtras();
+                    roomId = bundle.getString("roomId");
+                    tv_xuanzefanghao.setText(bundle.getString("roomName"));
+                }
+                break;
+
         }
     }
+
     /**
-     * 获取设备详情
+     * 获取设备房号
      *
      * @param params
      */
-    private void requestDeviceDetail(HashMap<String, String> params) {
+    private void requestDeviceRoom(HashMap<String, String> params, String deviceName) {
         OkhttpUtil.okHttpGet(URLs.DeviceDetail, params, headerMap, new CallBackUtil<DeviceDetailModel>() {
             @Override
             public DeviceDetailModel onParseResponse(Call call, Response response) {
@@ -188,13 +221,8 @@ public class ChangeTieDeviceActivity extends BaseActivity {
 
             @Override
             public void onResponse(DeviceDetailModel response) {
-//                hideProgress();
-//                tv_anzhuangshanghu.setText(response.get);
-                tv_anzhuangmendian.setText(response.getStoreName());
+                hideProgress();
 
-                params.clear();
-                params.put("id", response.getStoreName());
-                requestStoreDetail(params);
             }
         });
     }
@@ -203,8 +231,8 @@ public class ChangeTieDeviceActivity extends BaseActivity {
      *
      * @param params
      */
-    private void requestStoreDetail(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.StoreDetail, params, headerMap, new CallBackUtil<StoreDetailModel>() {
+    private void requestStoreDetail(HashMap<String, String> params, String id) {
+        OkhttpUtil.okHttpGet(URLs.StoreDetail + id, params, headerMap, new CallBackUtil<StoreDetailModel>() {
             @Override
             public StoreDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -223,6 +251,7 @@ public class ChangeTieDeviceActivity extends BaseActivity {
             }
         });
     }
+
     private void requestUpData(Map<String, String> params) {
         OkhttpUtil.okHttpPostJson(URLs.ChangeTieDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
