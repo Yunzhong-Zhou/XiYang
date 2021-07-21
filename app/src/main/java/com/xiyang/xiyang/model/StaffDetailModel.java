@@ -7,61 +7,105 @@ import java.io.Serializable;
  */
 public class StaffDetailModel implements Serializable {
     /**
-     * id : 70
-     * name : cm周
-     * head : http://localhost:8000/head/head.png
-     * mobile : 18306043082
-     * sex :
-     * money : 0.00
-     * deviceNum : 0
-     * storeNum : 0
-     * merchantNum : 0
-     * bdNum : 0
-     * bdmNum : 1
-     * account : 18306043082
-     * joinAt : 2021-05-11 14:49:39
-     * parentName : 大区周
+     * userId : 1415121041232207873
+     * organId : 1415121040921829377
+     * scopeOrganId : 1415121041248985089
+     * username : 19000000003
+     * organName : CM
+     * avatar :
+     * name : 黄CM1
+     * parentOrganId : 1414885152384065537
+     * phone : 19000000003
+     * gender : 1
+     * joinTime : 2021-07-13 00:00:00
+     * statisticInfo : {"organId":"1415121040921829377","areaNumber":1,"cmNumber":0,"bdmNumber":1,"bdNumber":1,"merchantNumber":3,"storeNumber":3,"deviceNumber":0,"money":0}
+     * availableMoney : 0
+     * availableIndicators : 0
+     * usedIndicators : 0
+     * childCompany : 分公司一
      */
 
-    private String id;
+    private String userId;
+    private String organId;
+    private String scopeOrganId;
+    private String username;
+    private String organName;
+    private String avatar;
     private String name;
-    private String head;
-    private String mobile;
-    private String sex;
-    private String money;
-    private String deviceNum;
-    private String storeNum;
-    private String merchantNum;
-    private String bdNum;
-    private String bdmNum;
-    private String account;
-    private String joinAt;
-    private String parentName;
-    private String regionName;
-    private String role;
+    private String parentOrganId;
+    private String phone;
+    private String gender;
+    private String joinTime;
+    private StatisticInfoBean statisticInfo;
+    private String availableMoney;
+    private String availableIndicators;
+    private String usedIndicators;
+    private String childCompany;
+    private String warehouseId;
+    private String warehouseName;
 
-    public String getRegionName() {
-        return regionName;
+    public String getWarehouseId() {
+        return warehouseId;
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public void setWarehouseId(String warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
-    public String getRole() {
-        return role;
+    public String getWarehouseName() {
+        return warehouseName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getOrganId() {
+        return organId;
+    }
+
+    public void setOrganId(String organId) {
+        this.organId = organId;
+    }
+
+    public String getScopeOrganId() {
+        return scopeOrganId;
+    }
+
+    public void setScopeOrganId(String scopeOrganId) {
+        this.scopeOrganId = scopeOrganId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getOrganName() {
+        return organName;
+    }
+
+    public void setOrganName(String organName) {
+        this.organName = organName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getName() {
@@ -72,99 +116,171 @@ public class StaffDetailModel implements Serializable {
         this.name = name;
     }
 
-    public String getHead() {
-        return head;
+    public String getParentOrganId() {
+        return parentOrganId;
     }
 
-    public void setHead(String head) {
-        this.head = head;
+    public void setParentOrganId(String parentOrganId) {
+        this.parentOrganId = parentOrganId;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getSex() {
-        return sex;
+    public String getGender() {
+        return gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getMoney() {
-        return money;
+    public String getJoinTime() {
+        return joinTime;
     }
 
-    public void setMoney(String money) {
-        this.money = money;
+    public void setJoinTime(String joinTime) {
+        this.joinTime = joinTime;
     }
 
-    public String getDeviceNum() {
-        return deviceNum;
+    public StatisticInfoBean getStatisticInfo() {
+        return statisticInfo;
     }
 
-    public void setDeviceNum(String deviceNum) {
-        this.deviceNum = deviceNum;
+    public void setStatisticInfo(StatisticInfoBean statisticInfo) {
+        this.statisticInfo = statisticInfo;
     }
 
-    public String getStoreNum() {
-        return storeNum;
+    public String getAvailableMoney() {
+        return availableMoney;
     }
 
-    public void setStoreNum(String storeNum) {
-        this.storeNum = storeNum;
+    public void setAvailableMoney(String availableMoney) {
+        this.availableMoney = availableMoney;
     }
 
-    public String getMerchantNum() {
-        return merchantNum;
+    public String getAvailableIndicators() {
+        return availableIndicators;
     }
 
-    public void setMerchantNum(String merchantNum) {
-        this.merchantNum = merchantNum;
+    public void setAvailableIndicators(String availableIndicators) {
+        this.availableIndicators = availableIndicators;
     }
 
-    public String getBdNum() {
-        return bdNum;
+    public String getUsedIndicators() {
+        return usedIndicators;
     }
 
-    public void setBdNum(String bdNum) {
-        this.bdNum = bdNum;
+    public void setUsedIndicators(String usedIndicators) {
+        this.usedIndicators = usedIndicators;
     }
 
-    public String getBdmNum() {
-        return bdmNum;
+    public String getChildCompany() {
+        return childCompany;
     }
 
-    public void setBdmNum(String bdmNum) {
-        this.bdmNum = bdmNum;
+    public void setChildCompany(String childCompany) {
+        this.childCompany = childCompany;
     }
 
-    public String getAccount() {
-        return account;
-    }
+    public static class StatisticInfoBean {
+        /**
+         * organId : 1415121040921829377
+         * areaNumber : 1
+         * cmNumber : 0
+         * bdmNumber : 1
+         * bdNumber : 1
+         * merchantNumber : 3
+         * storeNumber : 3
+         * deviceNumber : 0
+         * money : 0
+         */
 
-    public void setAccount(String account) {
-        this.account = account;
-    }
+        private String organId;
+        private String areaNumber;
+        private String cmNumber;
+        private String bdmNumber;
+        private String bdNumber;
+        private String merchantNumber;
+        private String storeNumber;
+        private String deviceNumber;
+        private String money;
 
-    public String getJoinAt() {
-        return joinAt;
-    }
+        public String getOrganId() {
+            return organId;
+        }
 
-    public void setJoinAt(String joinAt) {
-        this.joinAt = joinAt;
-    }
+        public void setOrganId(String organId) {
+            this.organId = organId;
+        }
 
-    public String getParentName() {
-        return parentName;
-    }
+        public String getAreaNumber() {
+            return areaNumber;
+        }
 
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
+        public void setAreaNumber(String areaNumber) {
+            this.areaNumber = areaNumber;
+        }
+
+        public String getCmNumber() {
+            return cmNumber;
+        }
+
+        public void setCmNumber(String cmNumber) {
+            this.cmNumber = cmNumber;
+        }
+
+        public String getBdmNumber() {
+            return bdmNumber;
+        }
+
+        public void setBdmNumber(String bdmNumber) {
+            this.bdmNumber = bdmNumber;
+        }
+
+        public String getBdNumber() {
+            return bdNumber;
+        }
+
+        public void setBdNumber(String bdNumber) {
+            this.bdNumber = bdNumber;
+        }
+
+        public String getMerchantNumber() {
+            return merchantNumber;
+        }
+
+        public void setMerchantNumber(String merchantNumber) {
+            this.merchantNumber = merchantNumber;
+        }
+
+        public String getStoreNumber() {
+            return storeNumber;
+        }
+
+        public void setStoreNumber(String storeNumber) {
+            this.storeNumber = storeNumber;
+        }
+
+        public String getDeviceNumber() {
+            return deviceNumber;
+        }
+
+        public void setDeviceNumber(String deviceNumber) {
+            this.deviceNumber = deviceNumber;
+        }
+
+        public String getMoney() {
+            return money;
+        }
+
+        public void setMoney(String money) {
+            this.money = money;
+        }
     }
 }

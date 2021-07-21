@@ -44,6 +44,7 @@ import okhttp3.Response;
  * 事务列表
  */
 public class AffairListActivity extends BaseActivity {
+    int type = 1;//1、主机、2、4g模块 3、过滤网 4、换绑 5、回收
     private RecyclerView recyclerView;
     List<AffairListModel.RecordsBean> list = new ArrayList<>();
     CommonAdapter<AffairListModel.RecordsBean> mAdapter;
@@ -53,7 +54,7 @@ public class AffairListActivity extends BaseActivity {
     private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "", cityId = "", instudyId = "",type = "1";
+    String area = "", status = "", keyword = "", industry = "";
     int i1 = 0;
     int i2 = 0;
 
@@ -83,10 +84,10 @@ public class AffairListActivity extends BaseActivity {
                 params.put("current", page + "");
                 params.put("pageSize", "10");
                 params.put("status", status);
-                params.put("type", type);
-                params.put("sort", sort);
-                params.put("cityId", cityId);
-                params.put("instudyId", instudyId);
+                params.put("type", type + "");
+                params.put("area", area);
+                params.put("keyword", keyword);
+                params.put("industry", industry);
                 requestList(params);
             }
 
@@ -97,10 +98,10 @@ public class AffairListActivity extends BaseActivity {
                 params.put("current", page + "");
                 params.put("pageSize", "10");
                 params.put("status", status);
-                params.put("type", type);
-                params.put("sort", sort);
-                params.put("cityId", cityId);
-                params.put("instudyId", instudyId);
+                params.put("type", type + "");
+                params.put("area", area);
+                params.put("keyword", keyword);
+                params.put("industry", industry);
                 requestListMore(params);
             }
         });
@@ -117,7 +118,7 @@ public class AffairListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        type = getIntent().getIntExtra("type", 1);
     }
 
     private void requestList(Map<String, String> params) {
@@ -149,7 +150,7 @@ public class AffairListActivity extends BaseActivity {
                             holder.setText(R.id.tv_name, model.getName());//标题
                             holder.setText(R.id.tv_shop, model.getTypeTitle());
                             holder.setText(R.id.tv_num, model.getStatusTitle());//money
-                            holder.setText(R.id.tv_addr, model.getDeviceNum()+"台");
+                            holder.setText(R.id.tv_addr, model.getDeviceNum() + "台");
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(AffairListActivity.this)
@@ -258,7 +259,44 @@ public class AffairListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("事务列表");
+
+        Bundle bundle = new Bundle();
+        switch (type) {
+            case 1:
+                titleView.setTitle("申领主机列表");
+                break;
+            case 2:
+                //4G模块
+                titleView.setTitle("申领4G模块列表");
+                titleView.showRightTextview("申领4G模块", v -> {
+                    bundle.putInt("type", type);
+                    CommonUtil.gotoActivityWithData(AffairListActivity.this, AddDeviceActivity.class, bundle);
+                });
+                break;
+            case 3:
+                //过滤网
+                titleView.setTitle("申领过滤网列表");
+                titleView.showRightTextview("申领过滤网", v -> {
+                    bundle.putInt("type", type);
+                    CommonUtil.gotoActivityWithData(AffairListActivity.this, AddDeviceActivity.class, bundle);
+                });
+                break;
+            case 4:
+                titleView.setTitle("设备换绑列表");
+                titleView.showRightTextview("设备换绑", v -> {
+                    bundle.putInt("item_hetong", 3);
+                    CommonUtil.gotoActivityWithData(AffairListActivity.this, AddContractActivity.class, bundle);
+//                    CommonUtil.gotoActivity(AffairListActivity.this, ChangeTieDeviceActivity.class);
+                });
+                break;
+            case 5:
+                titleView.setTitle("设备回收列表");
+                titleView.showRightTextview("回收设备", v -> {
+                    bundle.putInt("item_hetong", 2);
+                    CommonUtil.gotoActivityWithData(AffairListActivity.this, AddContractActivity.class, bundle);
+                });
+                break;
+        }
     }
 
     @Override
@@ -269,10 +307,10 @@ public class AffairListActivity extends BaseActivity {
         params.put("current", page + "");
         params.put("pageSize", "10");
         params.put("status", status);
-        params.put("type", type);
-        params.put("sort", sort);
-        params.put("cityId", cityId);
-        params.put("instudyId", instudyId);
+        params.put("type", type + "");
+        params.put("area", area);
+        params.put("keyword", keyword);
+        params.put("industry", industry);
         requestList(params);
     }
 
@@ -320,11 +358,11 @@ public class AffairListActivity extends BaseActivity {
                 adapter.setSelectItem(i);
                 adapter.notifyDataSetChanged();
                 i1 = i;
-                if (i == 0) {
+                /*if (i == 0) {
                     sort = "desc";
                 } else {
                     sort = "asc";
-                }
+                }*/
 //                textView1.setText(list.get(i));
                 requestServer();
                 popupWindow.dismiss();

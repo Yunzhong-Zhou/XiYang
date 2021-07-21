@@ -253,7 +253,7 @@ public class Fragment1 extends BaseFragment {
                         @Override
                         protected void convert(ViewHolder holder, Fragment1Model.MerchantsListBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, model.getDeviceNum());
+                            holder.setText(R.id.tv_shop, model.getStoreNum());
                             holder.setText(R.id.tv_num, model.getMoney());//money
                             holder.setText(R.id.tv_addr, model.getAddress());
 

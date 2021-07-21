@@ -5,19 +5,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.cretin.tools.scancode.CaptureActivity;
 import com.cretin.tools.scancode.config.ScanConfig;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
-import com.xiyang.xiyang.activity.AddContractActivity;
 import com.xiyang.xiyang.activity.AddWorkListActivity;
 import com.xiyang.xiyang.activity.AffairListActivity;
-import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
 import com.xiyang.xiyang.activity.DebugDeviceActivity;
-import com.xiyang.xiyang.activity.DeviceAddressActivity;
+import com.xiyang.xiyang.activity.DeviceDetailActivity;
+import com.xiyang.xiyang.activity.DeviceListActivity_Position;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.SelectDeviceActivity;
@@ -58,8 +61,8 @@ public class Fragment3 extends BaseFragment {
     private RecyclerView recyclerView1, recyclerView2;
     List<MyFragment1Model> list1 = new ArrayList<>();
     CommonAdapter<MyFragment1Model> mAdapter1;
-    //    List<Fragment3Model.DevicesBean> list2 = new ArrayList<>();
-//    CommonAdapter<Fragment3Model.DevicesBean> mAdapter2;
+        List<Fragment3Model.DeviceListBean> list2 = new ArrayList<>();
+    CommonAdapter<Fragment3Model.DeviceListBean> mAdapter2;
     TextView tv_mymore;
 
     TextView textView1, textView2, textView3, textView4;
@@ -244,20 +247,20 @@ public class Fragment3 extends BaseFragment {
 
                 changeUI();
 
-                /*list2 = response.getDevices();
+                list2 = response.getDeviceList();
                 if (list2 != null && list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<Fragment3Model.DevicesBean>
+                    mAdapter2 = new CommonAdapter<Fragment3Model.DeviceListBean>
                             (getActivity(), R.layout.item_fragment2_2, list2) {
                         @Override
-                        protected void convert(ViewHolder holder, Fragment3Model.DevicesBean model, int position) {
-                            holder.setText(R.id.tv_name, model.getName());//标题
-                            holder.setText(R.id.tv_shop, model.getDeviceSn());
-                            holder.setText(R.id.tv_num, model.getMoney());//money
-                            holder.setText(R.id.tv_addr, model.getAddress());
+                        protected void convert(ViewHolder holder, Fragment3Model.DeviceListBean model, int position) {
+                            holder.setText(R.id.tv_name, model.getStoreName());//标题
+                            holder.setText(R.id.tv_shop, "SN:"+model.getHostName());
+                            holder.setText(R.id.tv_num, model.getTotalRevenue());//money
+                            holder.setText(R.id.tv_addr, model.getStoreAddress());
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);
                             Glide.with(getActivity())
-                                    .load(model.getImage())
+                                    .load(model.getStoreImage())
 //                                .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
@@ -265,11 +268,11 @@ public class Fragment3 extends BaseFragment {
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
                             ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getStatus() != null && model.getStatus().equals("1")) {
+                            if (model.getAliyunStatus() != null && model.getAliyunStatus().equals("1")) {
+                                imageView2.setImageResource(R.mipmap.bg_zaixian);
+                            } else {
                                 //离线
                                 imageView2.setImageResource(R.mipmap.bg_lixian);
-                            } else {
-                                imageView2.setImageResource(R.mipmap.bg_zaixian);
                             }
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -277,7 +280,6 @@ public class Fragment3 extends BaseFragment {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("deviceName", model.getId());
                                     CommonUtil.gotoActivityWithData(getActivity(), DeviceDetailActivity.class, bundle, false);
-
                                 }
                             });
 
@@ -286,7 +288,7 @@ public class Fragment3 extends BaseFragment {
                     recyclerView2.setAdapter(mAdapter2);
                 } else {
                     showEmptyPage();
-                }*/
+                }
 
                 MainActivity.isOver = true;
 
@@ -339,12 +341,13 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //回收设备
-                bundle.putInt("item_hetong", 2);
-                CommonUtil.gotoActivityWithData(getActivity(), AddContractActivity.class, bundle);
+                bundle.putInt("type", 5);//1、主机、2、4g模块 3、过滤网 4、换绑 5、回收
+                CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
                 break;
             case R.id.linearLayout9:
                 //设备换绑
-                CommonUtil.gotoActivity(getActivity(), ChangeTieDeviceActivity.class);
+                bundle.putInt("type", 4);//1、主机、2、4g模块 3、过滤网 4、换绑 5、回收
+                CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
                 break;
             case R.id.linearLayout10:
                 //设备报失-工单
@@ -358,7 +361,8 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout12:
                 //设备定位
-                CommonUtil.gotoActivity(getActivity(), DeviceAddressActivity.class);
+                CommonUtil.gotoActivity(getActivity(), DeviceListActivity_Position.class);
+
                 break;
 
             case R.id.ll_tab1:

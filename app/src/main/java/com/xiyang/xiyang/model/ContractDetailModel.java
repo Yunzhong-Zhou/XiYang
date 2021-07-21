@@ -8,13 +8,11 @@ import java.util.List;
  */
 public class ContractDetailModel implements Serializable {
     /**
-     * contractsVo : {"id":"1412963273288060928","contractNumber":"f7514dd5-8cd7-4840-bcfa-5964b23092f6","name":"商户名称1","image":null,"contractType":"merchant_sign","status":"1","statusTitle":null,"createdAt":null,"merchantsName":null,"signExpied":null,"isExclusive":null,"approvalTime":null,"contractsFile":null,"uploadQualification":null}
-     * workFlowApplylogOperateVo : [{"userName":"1200020020002","auditTime":null,"auditStat":0,"reason":null}]
-     * workFlowApplyLogVo : {"id":"1412963273666646017","type":"merchant_sign","typeTitle":null,"image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/07/16256385343791625638348687.png","status":0,"statusTitle":null,"createTime":"2021-07-08 10:34:31","name":"商户名称1"}
+     * contractsVo : {"id":"1416981047563915264","contractNumber":"457a11e7-2558-4a2c-8c24-bf9fee543413","storeId":"1415855164790804480","name":null,"image":null,"contractType":null,"typeTitle":null,"status":1,"statusTitle":null,"createdAt":null,"signedAt":null,"signedDateLimit":null,"isOnlyOperation":null,"contractsFileUrl":null,"listContractsAddFileVos":null,"storesName":null,"appendMun":null,"auditTime":null,"createTime":"Mon Jul 19 12:39:43 CST 2021","contractsFile":null,"type":"device_recover","contractStatus":null}
+     * workFlowApplylogOperateVo : [{"userName":"19000000004","auditTime":null,"auditStat":null,"reason":null}]
      */
 
     private ContractsVoBean contractsVo;
-    private WorkFlowApplyLogVoBean workFlowApplyLogVo;
     private List<WorkFlowApplylogOperateVoBean> workFlowApplylogOperateVo;
 
     public ContractsVoBean getContractsVo() {
@@ -23,14 +21,6 @@ public class ContractDetailModel implements Serializable {
 
     public void setContractsVo(ContractsVoBean contractsVo) {
         this.contractsVo = contractsVo;
-    }
-
-    public WorkFlowApplyLogVoBean getWorkFlowApplyLogVo() {
-        return workFlowApplyLogVo;
-    }
-
-    public void setWorkFlowApplyLogVo(WorkFlowApplyLogVoBean workFlowApplyLogVo) {
-        this.workFlowApplyLogVo = workFlowApplyLogVo;
     }
 
     public List<WorkFlowApplylogOperateVoBean> getWorkFlowApplylogOperateVo() {
@@ -43,36 +33,52 @@ public class ContractDetailModel implements Serializable {
 
     public static class ContractsVoBean {
         /**
-         * id : 1412963273288060928
-         * contractNumber : f7514dd5-8cd7-4840-bcfa-5964b23092f6
-         * name : 商户名称1
+         * id : 1416981047563915264
+         * contractNumber : 457a11e7-2558-4a2c-8c24-bf9fee543413
+         * storeId : 1415855164790804480
+         * name : null
          * image : null
-         * contractType : merchant_sign
+         * contractType : null
+         * typeTitle : null
          * status : 1
          * statusTitle : null
          * createdAt : null
-         * merchantsName : null
-         * signExpied : null
-         * isExclusive : null
-         * approvalTime : null
+         * signedAt : null
+         * signedDateLimit : null
+         * isOnlyOperation : null
+         * contractsFileUrl : null
+         * listContractsAddFileVos : null
+         * storesName : null
+         * appendMun : null
+         * auditTime : null
+         * createTime : Mon Jul 19 12:39:43 CST 2021
          * contractsFile : null
-         * uploadQualification : null
+         * type : device_recover
+         * contractStatus : null
          */
 
         private String id;
         private String contractNumber;
+        private String storeId;
         private String name;
         private String image;
         private String contractType;
+        private String typeTitle;
         private String status;
         private String statusTitle;
         private String createdAt;
-        private String merchantsName;
-        private String signExpied;
-        private String isExclusive;
-        private String approvalTime;
+        private String signedAt;
+        private String signedDateLimit;
+        private String isOnlyOperation;
+        private String contractsFileUrl;
+        private String listContractsAddFileVos;
+        private String storesName;
+        private String appendMun;
+        private String auditTime;
+        private String createTime;
         private String contractsFile;
-        private String uploadQualification;
+        private String type;
+        private String contractStatus;
 
         public String getId() {
             return id;
@@ -88,6 +94,14 @@ public class ContractDetailModel implements Serializable {
 
         public void setContractNumber(String contractNumber) {
             this.contractNumber = contractNumber;
+        }
+
+        public String getStoreId() {
+            return storeId;
+        }
+
+        public void setStoreId(String storeId) {
+            this.storeId = storeId;
         }
 
         public String getName() {
@@ -114,6 +128,14 @@ public class ContractDetailModel implements Serializable {
             this.contractType = contractType;
         }
 
+        public String getTypeTitle() {
+            return typeTitle;
+        }
+
+        public void setTypeTitle(String typeTitle) {
+            this.typeTitle = typeTitle;
+        }
+
         public String getStatus() {
             return status;
         }
@@ -138,122 +160,68 @@ public class ContractDetailModel implements Serializable {
             this.createdAt = createdAt;
         }
 
-        public String getMerchantsName() {
-            return merchantsName;
+        public String getSignedAt() {
+            return signedAt;
         }
 
-        public void setMerchantsName(String merchantsName) {
-            this.merchantsName = merchantsName;
+        public void setSignedAt(String signedAt) {
+            this.signedAt = signedAt;
         }
 
-        public String getSignExpied() {
-            return signExpied;
+        public String getSignedDateLimit() {
+            return signedDateLimit;
         }
 
-        public void setSignExpied(String signExpied) {
-            this.signExpied = signExpied;
+        public void setSignedDateLimit(String signedDateLimit) {
+            this.signedDateLimit = signedDateLimit;
         }
 
-        public String getIsExclusive() {
-            return isExclusive;
+        public String getIsOnlyOperation() {
+            return isOnlyOperation;
         }
 
-        public void setIsExclusive(String isExclusive) {
-            this.isExclusive = isExclusive;
+        public void setIsOnlyOperation(String isOnlyOperation) {
+            this.isOnlyOperation = isOnlyOperation;
         }
 
-        public String getApprovalTime() {
-            return approvalTime;
+        public String getContractsFileUrl() {
+            return contractsFileUrl;
         }
 
-        public void setApprovalTime(String approvalTime) {
-            this.approvalTime = approvalTime;
+        public void setContractsFileUrl(String contractsFileUrl) {
+            this.contractsFileUrl = contractsFileUrl;
         }
 
-        public String getContractsFile() {
-            return contractsFile;
+        public String getListContractsAddFileVos() {
+            return listContractsAddFileVos;
         }
 
-        public void setContractsFile(String contractsFile) {
-            this.contractsFile = contractsFile;
+        public void setListContractsAddFileVos(String listContractsAddFileVos) {
+            this.listContractsAddFileVos = listContractsAddFileVos;
         }
 
-        public String getUploadQualification() {
-            return uploadQualification;
+        public String getStoresName() {
+            return storesName;
         }
 
-        public void setUploadQualification(String uploadQualification) {
-            this.uploadQualification = uploadQualification;
-        }
-    }
-
-    public static class WorkFlowApplyLogVoBean {
-        /**
-         * id : 1412963273666646017
-         * type : merchant_sign
-         * typeTitle : null
-         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/07/16256385343791625638348687.png
-         * status : 0
-         * statusTitle : null
-         * createTime : 2021-07-08 10:34:31
-         * name : 商户名称1
-         */
-
-        private String id;
-        private String type;
-        private String typeTitle;
-        private String image;
-        private int status;
-        private String statusTitle;
-        private String createTime;
-        private String name;
-
-        public String getId() {
-            return id;
+        public void setStoresName(String storesName) {
+            this.storesName = storesName;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public String getAppendMun() {
+            return appendMun;
         }
 
-        public String getType() {
-            return type;
+        public void setAppendMun(String appendMun) {
+            this.appendMun = appendMun;
         }
 
-        public void setType(String type) {
-            this.type = type;
+        public String getAuditTime() {
+            return auditTime;
         }
 
-        public String getTypeTitle() {
-            return typeTitle;
-        }
-
-        public void setTypeTitle(String typeTitle) {
-            this.typeTitle = typeTitle;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-        public String getStatusTitle() {
-            return statusTitle;
-        }
-
-        public void setStatusTitle(String statusTitle) {
-            this.statusTitle = statusTitle;
+        public void setAuditTime(String auditTime) {
+            this.auditTime = auditTime;
         }
 
         public String getCreateTime() {
@@ -264,20 +232,36 @@ public class ContractDetailModel implements Serializable {
             this.createTime = createTime;
         }
 
-        public String getName() {
-            return name;
+        public String getContractsFile() {
+            return contractsFile;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setContractsFile(String contractsFile) {
+            this.contractsFile = contractsFile;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getContractStatus() {
+            return contractStatus;
+        }
+
+        public void setContractStatus(String contractStatus) {
+            this.contractStatus = contractStatus;
         }
     }
 
     public static class WorkFlowApplylogOperateVoBean {
         /**
-         * userName : 1200020020002
+         * userName : 19000000004
          * auditTime : null
-         * auditStat : 0
+         * auditStat : null
          * reason : null
          */
 

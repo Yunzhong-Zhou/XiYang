@@ -76,7 +76,7 @@ public class RoomNoManagementActivity extends BaseActivity {
             public void onRefresh() {
                 params.put("parentId", parentId);
                 params.put("storeId", model_sdm.getStoreInfo().getId());
-                params.put("level", type+"");
+                params.put("level", type + "");
                 request(params);
             }
 
@@ -120,7 +120,7 @@ public class RoomNoManagementActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         params.put("parentId", parentId);
         params.put("storeId", model_sdm.getStoreInfo().getId());
-        params.put("level", type+"");
+        params.put("level", type + "");
         request(params);
     }
 
@@ -223,7 +223,7 @@ public class RoomNoManagementActivity extends BaseActivity {
                                                 Intent resultIntent = new Intent();
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("roomId", model.getId());
-                                                bundle.putString("roomName", name1 + name2 + name3 + model.getName());
+                                                bundle.putString("roomName", name1 + "·" + name2 + "·" + name3 + "·" + model.getName());
                                                 resultIntent.putExtras(bundle);
                                                 RoomNoManagementActivity.this.setResult(RESULT_OK, resultIntent);
                                                 finish();

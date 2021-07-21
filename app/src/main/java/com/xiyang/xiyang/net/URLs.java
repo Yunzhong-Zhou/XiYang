@@ -74,6 +74,8 @@ public class URLs {
     public static final String ShopList = HOST + "/bd/merchants/list";
     //商户详情
     public static final String ShopDetail = HOST + "/bd/merchants/app/merchant/detail/";
+    //修改商户
+    public static final String ChangeShop = HOST + "/bd/merchants/update";
     //添加合同-签约
     public static final String AddContract_qianyue = HOST + "/bd/bdservice/signContracts";
     //添加合同-新增
@@ -111,7 +113,7 @@ public class URLs {
     //我的下级员工
     public static final String Subordinate = HOST + "/service-ucenter/organ/statisticOrganUserLevelHr";
     //员工详情
-    public static final String StaffDetail = HOST + API + "manage/subordinate/detail";
+    public static final String StaffDetail = HOST + "/service-ucenter/organ/statisticOrganUser/";
     //调整上级
     public static final String AdjustSuperior = HOST + "/service-ucenter/organ/change/apply/upper";
     //调整市场
@@ -243,8 +245,20 @@ public class URLs {
     public static final String AffairDetail_ShenLing = HOST + "/bd/device/apply/add/logistic";
     //事务详情-签收
     public static final String AffairDetail_QianShou = HOST + "/bd/device/apply/sign/logistic/";
+    //我的设备列表
+    public static final String MyDevice = HOST + "/service-device/device/sysUser/page";
+    //定位异常设备
+    public static final String DeviceList_Position = HOST + "/bd/device/apply/queryLocationDeviceErrorList";
     //设备详情
     public static final String DeviceDetail = HOST + "/service-device/device/sysUser/detail/";
+    //获取门店下的设备
+    public static final String Device2Store = HOST + "/bd/device/apply/queryStoreDeviceListByStoreId";
+    //获取设备房号
+    public static final String DeviceRoom = HOST + "/bd/store/getStoresAndRoomVoByHostname/";
+    //添加申领信息-4G
+    public static final String AddDevice_4G = HOST + "/bd/device/apply/apply4GModule";
+    //添加申领信息-过滤网
+    public static final String AddDevice_GuoLv = HOST + "/bd/device/apply/applyPercolator";
     //安装设备
     public static final String InstallDevice = HOST + "/device/install/install";
     //开启设备
@@ -256,7 +270,7 @@ public class URLs {
     //换绑设备
     public static final String ChangeTieDevice = HOST + "/service-device/device/deviceChangeBind";
     //设备移位
-    public static final String ChangeRoomDevice = HOST + "/service-device/device/deviceChangeBind";
+    public static final String ChangeRoomDevice = HOST + "/service-device/device/moveDeviceToOther";
     /**
      * ********************************数据*****************************************
      */
@@ -301,8 +315,6 @@ public class URLs {
     public static final String About = HOST + API + "about";
     //分润记录
     public static final String ShareProfitList = HOST + "/order/consumerOrder/appOpenQueryOderSharePage";
-    //我的设备列表
-    public static final String MyDevice = HOST + "/service-device/device/sysUser/page";
     //系统公告
     public static final String Information = HOST + "/applet/notice/openPage";
 

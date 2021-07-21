@@ -357,7 +357,7 @@ public class PersonnelDetailActivity extends BaseActivity {
                 }else {
                     tv_name.setText(response.getAdminName());
                     tv_shop.setText(response.getAdminPhone());
-                    tv_addr.setText("职位：" + response.getOldOrganCode());
+                    tv_addr.setText("职位：" + response.getAdminOrganCode());
                     Glide.with(PersonnelDetailActivity.this)
                             .load(model.getAdminAvatar())
 //                                .fitCenter()
@@ -369,7 +369,7 @@ public class PersonnelDetailActivity extends BaseActivity {
                     list_info.add(new KeyValueModel("ID", response.getSn()));
                     list_info.add(new KeyValueModel("是否跨区", response.getCrossRegional()));
                     list_info.add(new KeyValueModel("调整人", response.getAdminName()));
-                    list_info.add(new KeyValueModel("职位", response.getOldOrganCode()));
+                    list_info.add(new KeyValueModel("职位", response.getAdminOrganCode()));
 
 
                     switch (PersonnelType) {

@@ -205,24 +205,18 @@ public class ContractDetailActivity extends BaseActivity {
             public void onResponse(ContractDetailModel response) {
                 hideProgress();
                 model = response;
-                tv_name.setText(response.getWorkFlowApplyLogVo().getName());
-                tv_shop.setText("《" + response.getWorkFlowApplyLogVo().getTypeTitle() + "》");
-                tv_num.setText(response.getWorkFlowApplyLogVo().getStatusTitle());
+                tv_name.setText(response.getContractsVo().getName());
+                tv_shop.setText("《" + response.getContractsVo().getTypeTitle() + "》");
+                tv_num.setText(response.getContractsVo().getStatusTitle());
                 tv_addr.setText(response.getContractsVo().getContractNumber());
                 Glide.with(ContractDetailActivity.this)
-                        .load(model.getWorkFlowApplyLogVo().getImage())
+                        .load(model.getContractsVo().getImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-               /* if (model.getStatus().equals("1")) {
-                    //待签约
-                    imageView2.setImageResource(R.mipmap.bg_daiqianyue);
-                } else {
-                    imageView2.setImageResource(R.mipmap.bg_yiqianyue);
-                }*/
 
                 /**
                  * 商户信息
@@ -233,19 +227,19 @@ public class ContractDetailActivity extends BaseActivity {
                  * 合同信息
                  */
                 list_contract.clear();
-                list_contract.add(new KeyValueModel("合同类型", response.getWorkFlowApplyLogVo().getTypeTitle()));
-                list_contract.add(new KeyValueModel("商户名称", response.getWorkFlowApplyLogVo().getName()));
+                list_contract.add(new KeyValueModel("合同类型", response.getContractsVo().getTypeTitle()));
+                list_contract.add(new KeyValueModel("商户名称", response.getContractsVo().getName()));
 
                 //签约合同
-                /*if (response.getBase().getExtra().getSole() != null) {
-                    list_contract.add(new KeyValueModel("签约期限", response.getBase().getExtra().getRenewalPeriod() + "年"));
-                    if (response.getBase().getExtra().getSole().equals("1"))
+                /*if (response.getContractsVo().getSole() != null) {
+                    list_contract.add(new KeyValueModel("签约期限", response.getContractsVo().getRenewalPeriod() + "年"));
+                    if (response.getContractsVo().getSole().equals("1"))
                         list_contract.add(new KeyValueModel("是否独家", "是"));
                     else list_contract.add(new KeyValueModel("是否独家", "否"));
                 }*/
 
 
-                list_contract.add(new KeyValueModel("审核时间", response.getContractsVo().getApprovalTime()));
+                list_contract.add(new KeyValueModel("审核时间", response.getContractsVo().getAuditTime()));
 
                 mAdapter_contract = new CommonAdapter<KeyValueModel>
                         (ContractDetailActivity.this, R.layout.item_keyvalue, list_contract) {
@@ -257,7 +251,7 @@ public class ContractDetailActivity extends BaseActivity {
                 };
                 rv_contract.setAdapter(mAdapter_contract);
                 Glide.with(ContractDetailActivity.this)
-                        .load(response.getWorkFlowApplyLogVo().getImage())
+                        .load(response.getContractsVo().getImage())
                         .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))

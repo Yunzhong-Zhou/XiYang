@@ -43,14 +43,15 @@
                         android:padding="7dp">
 
                         <RelativeLayout
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="69dp"
                             android:gravity="center">
 
                             <ImageView
                                 android:id="@+id/imageView1"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:src="@mipmap/ic_device_green"/>
 
                             <ImageView
                                 android:id="@+id/imageView2"
@@ -90,8 +91,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:drawableLeft="@mipmap/ic_shop_gray"
-                                    android:drawablePadding="6dp"
                                     android:text="0"
                                     android:textColor="@color/black3"
                                     android:textSize="12.5sp"
@@ -106,6 +105,7 @@
                                     android:text="0"
                                     android:textColor="@color/green"
                                     android:textSize="18sp"
+                                    android:visibility="gone"
                                     android:textStyle="bold" />
 
 
@@ -116,8 +116,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:drawableLeft="@mipmap/ic_addr_gray"
-                                android:drawablePadding="6dp"
                                 android:text="addr"
                                 android:textColor="@color/black3"
                                 android:textSize="12.5sp"
@@ -130,23 +128,46 @@
                 </com.lihang.ShadowLayout>
 
                 <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/bg_yichang"/>
+                    android:src="@mipmap/bg_yichang" />
+
                 <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="设备异常！\n\n距离偏移100米！\n北京市朝阳区人民路23号"
-                    android:layout_marginTop="10dp"
-                    android:lineSpacingExtra="8dp"
-                    android:textColor="@color/red"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="8dp"
+                    android:text="设备异常！\n\n距离偏移100米！\n北京市朝阳区人民路23号"
+                    android:textColor="@color/red"
                     android:textSize="19sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="90dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/btn_img1"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="禁用设备"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
 
 
             </LinearLayout>

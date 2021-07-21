@@ -64,6 +64,7 @@ public class PersonnelDetailModel implements Serializable {
     private String adminName;
     private String adminPhone;
     private String adminAvatar;
+    private String adminOrganCode;
     private String oldParentOrganId;
     private String oldParentId;
     private String oldParentName;
@@ -85,6 +86,14 @@ public class PersonnelDetailModel implements Serializable {
     private String updateTime;
     private String delFlag;
     private List<AuditInfosBean> auditInfos;
+
+    public String getAdminOrganCode() {
+        return adminOrganCode;
+    }
+
+    public void setAdminOrganCode(String adminOrganCode) {
+        this.adminOrganCode = adminOrganCode;
+    }
 
     public String getAdminAvatar() {
         return adminAvatar;

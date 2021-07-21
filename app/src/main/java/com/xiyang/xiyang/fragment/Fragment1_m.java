@@ -400,7 +400,7 @@ public class Fragment1_m extends BaseFragment {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("id", model.getUserId());
+                                    bundle.putString("id", model.getOrganId());
                                     CommonUtil.gotoActivityWithData(getActivity(), StaffDetailActivity.class, bundle, false);
                                 }
                             });

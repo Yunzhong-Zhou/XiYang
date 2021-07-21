@@ -153,7 +153,7 @@ public class Fragment1Model implements Serializable {
         private String id;
         private String name;
         private String image;
-        private String deviceNum;
+        private String storeNum;
         private String address;
         private String status;
         private String statusTitle;
@@ -184,12 +184,12 @@ public class Fragment1Model implements Serializable {
             this.image = image;
         }
 
-        public String getDeviceNum() {
-            return deviceNum;
+        public String getStoreNum() {
+            return storeNum;
         }
 
-        public void setDeviceNum(String deviceNum) {
-            this.deviceNum = deviceNum;
+        public void setStoreNum(String storeNum) {
+            this.storeNum = storeNum;
         }
 
         public String getAddress() {

@@ -35,21 +35,18 @@ public class SelectDeviceActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.textView1:
                 //空气净化主机>>
-//                bundle.putInt("type", 1);
-                CommonUtil.gotoActivity(SelectDeviceActivity.this,AffairListActivity.class);
-                return;
+                bundle.putInt("type", 1);
+                break;
             case R.id.textView2:
                 //4G网络模块>>
                 bundle.putInt("type", 2);
-
                 break;
             case R.id.textView3:
                 //过滤网>>
                 bundle.putInt("type", 3);
-
                 break;
         }
-        CommonUtil.gotoActivityWithData(SelectDeviceActivity.this, AddDeviceActivity.class, bundle);
+        CommonUtil.gotoActivityWithData(SelectDeviceActivity.this,AffairListActivity.class,bundle);
     }
 
     @Override

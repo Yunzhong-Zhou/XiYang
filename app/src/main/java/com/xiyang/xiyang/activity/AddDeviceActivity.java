@@ -1,5 +1,6 @@
 package com.xiyang.xiyang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -7,18 +8,16 @@ import android.widget.TextView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.AddDeviceModel;
+import com.xiyang.xiyang.model.Device2StoreModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.CommonUtil;
-import com.xiyang.xiyang.utils.MyLogger;
+import com.xiyang.xiyang.utils.Constant;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +33,11 @@ import okhttp3.Response;
 public class AddDeviceActivity extends BaseActivity {
     int type = 1;//1、主机、2、4g模块 3、过滤网
     int page = 1;
+    String storeId = "";
+    TextView textView1;
     private RecyclerView recyclerView;
-    List<AddDeviceModel> list = new ArrayList<>();
-    CommonAdapter<AddDeviceModel> mAdapter;
+    List<Device2StoreModel.DeviceListBean> list = new ArrayList<>();
+    CommonAdapter<Device2StoreModel.DeviceListBean> mAdapter;
 
     TextView tv_num;
 
@@ -48,21 +49,19 @@ public class AddDeviceActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        textView1 = findViewByID_My(R.id.textView1);
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        setSpringViewMore(true);//需要加载更多
+        setSpringViewMore(false);//需要加载更多
         springView.setListener(new SpringView.OnFreshListener() {
             @Override
             public void onRefresh() {
                 //刷新
                 page = 1;
-                /*String string = "?status=" + status//状态（1.待审核 2.通过 3.未通过）
-                        + "&sort=" + sort
-                        + "&page=" + page//当前页号
-                        + "&count=" + "10"//页面行数
-                        + "&token=" + localUserInfo.getToken();
-                RequestMyInvestmentList(string);*/
+                params.clear();
+                params.put("storeId", storeId);
+                requestDevice2Store(params, storeId);
             }
 
             @Override
@@ -83,16 +82,35 @@ public class AddDeviceActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.textView1:
                 //选择门店
-
+                Intent intent1 = new Intent(AddDeviceActivity.this, MyStoreListActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("requestCode", Constant.SELECT_STORE);
+                bundle1.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
                 break;
             case R.id.tv_add:
                 //申领
-                Bundle bundle = new Bundle();
-                bundle.putInt("type", type);
-                CommonUtil.gotoActivityWithData(AddDeviceActivity.this, AddDeviceDetailActivity.class, bundle);
+                if (list.size() > 0) {
+                    this.showProgress(true, getString(R.string.app_loading1));
+                    String deviceIds = "";
+                    for (int i = 0; i < list.size(); i++) {
+                        deviceIds = deviceIds + list.get(i).getDeviceId() + ",";
+                    }
+                    if (!deviceIds.equals("")) {
+                        deviceIds = deviceIds.substring(0, deviceIds.length() - 1);
+                    }
+                    params.clear();
+                    params.put("storesId", storeId);
+                    params.put("deviceIds", String.valueOf(deviceIds));
+                    if (type == 2)
+                        requestUpData(params, URLs.AddDevice_4G);
+                    else requestUpData(params, URLs.AddDevice_GuoLv);
+
+                } else myToast("没有选择申领的设备");
                 break;
         }
     }
@@ -100,142 +118,10 @@ public class AddDeviceActivity extends BaseActivity {
     @Override
     protected void initData() {
         type = getIntent().getIntExtra("type", 1);
-        requestServer();//获取数据
-
-        for (int i = 0; i < 5; i++) {
-            list.add(new AddDeviceModel());
-        }
-        mAdapter = new CommonAdapter<AddDeviceModel>
-                (AddDeviceActivity.this, R.layout.item_adddevice, list) {
-            @Override
-            protected void convert(ViewHolder holder, AddDeviceModel model, int position) {
-
-//                        holder.setText(R.id.tv1, model.getTitle());
-//                        holder.setText(R.id.tv2, model.getProvince() + model.getCity() + model.getDistrict());
-                //删除
-                holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        list.remove(position);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-               /* holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                        CommonUtil.gotoActivityWithData(AddDeviceActivity.this, ContractDetailActivity.class, bundle, false);
-                    }
-                });*/
-            }
-        };
-        recyclerView.setAdapter(mAdapter);
-    }
-    private void RequestList(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
-            @Override
-            public String onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-                showErrorPage();
-                hideProgress();
-                myToast(err);
-            }
-
-            @Override
-            public void onResponse(String response) {
-                showContentPage();
-                hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表" + response);
-                JSONObject jObj;
-                /*try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list.size() == 0) {
-                        showEmptyPage();//空数据
-                    } else {
-                        mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_addservice, list) {
-                            @Override
-                            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
-                                holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                                holder.setText(R.id.textView2, model.getCreated_at());//时间
-                                holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                                holder.setText(R.id.textView4, model.getStatus_title());//状态
-                            }
-                        };
-                        recyclerView.setAdapter(mAdapter);
-                        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("id", list.get(position).getId());
-                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, TakeCashDetailActivity.class, bundle1, false);
-                            }
-
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                return false;
-                            }
-                        });
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
-            }
-        });
-
+//        requestServer();//获取数据
+        showEmptyPage();
     }
 
-    private void RequestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyIncome, params, headerMap, new CallBackUtil<String>() {
-            @Override
-            public String onParseResponse(Call call, Response response) {
-                return null;
-            }
-
-            @Override
-            public void onFailure(Call call, Exception e, String err) {
-//                showErrorPage();
-                hideProgress();
-                myToast(err);
-                page--;
-            }
-
-            @Override
-            public void onResponse(String response) {
-//                showContentPage();
-                hideProgress();
-                MyLogger.i(">>>>>>>>>提现记录列表更多" + response);
-                /*JSONObject jObj;
-                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list1.size() == 0) {
-                        myToast(getString(R.string.app_nomore));
-                        page--;
-                    } else {
-                        list.addAll(list1);
-                        mAdapter.notifyDataSetChanged();
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
-            }
-        });
-
-    }
     @Override
     protected void updateView() {
         switch (type) {
@@ -250,5 +136,104 @@ public class AddDeviceActivity extends BaseActivity {
                 break;
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Constant.SELECT_STORE:
+                    //选择门店
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        storeId = bundle.getString("storeId");
+                        textView1.setText(bundle.getString("storeName"));
+
+                        //获取门店下的设备
+                        showProgress(true, getString(R.string.app_loading2));
+                        params.clear();
+                        params.put("storeId", storeId);
+                        requestDevice2Store(params, storeId);
+                    }
+                    break;
+
+            }
+        }
+    }
+
+    private void requestUpData(Map<String, String> params, String url) {
+        OkhttpUtil.okHttpPost(url, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                myToast("提交成功");
+                hideProgress();
+                finish();
+            }
+        });
+    }
+
+    /**
+     * 获取门店下的设备
+     *
+     * @param params
+     */
+    private void requestDevice2Store(HashMap<String, String> params, String storeId) {
+        OkhttpUtil.okHttpGet(URLs.Device2Store, params, headerMap, new CallBackUtil<Device2StoreModel>() {
+            @Override
+            public Device2StoreModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+                showErrorPage();
+            }
+
+            @Override
+            public void onResponse(Device2StoreModel response) {
+                hideProgress();
+                showContentPage();
+                list = response.getDeviceList();
+                if (list.size() > 0) {
+                    mAdapter = new CommonAdapter<Device2StoreModel.DeviceListBean>
+                            (AddDeviceActivity.this, R.layout.item_adddevice, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, Device2StoreModel.DeviceListBean model, int position) {
+                            holder.setText(R.id.textView1, model.getStoreFullName());
+                            holder.setText(R.id.textView2, model.getDeviceHostName());
+                            //删除
+                            holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    list.remove(model);
+                                    mAdapter.notifyDataSetChanged();
+                                    tv_num.setText(list.size() + "");
+                                }
+                            });
+
+                        }
+                    };
+                    recyclerView.setAdapter(mAdapter);
+                    tv_num.setText(list.size() + "");
+                } else {
+                    showEmptyPage();
+                }
+
+            }
+        });
     }
 }

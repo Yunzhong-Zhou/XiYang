@@ -13,7 +13,7 @@ import com.cretin.tools.scancode.CaptureActivity;
 import com.cretin.tools.scancode.config.ScanConfig;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.DeviceDetailModel;
+import com.xiyang.xiyang.model.DeviceRoomModel;
 import com.xiyang.xiyang.model.StoreDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -41,7 +41,7 @@ public class MoveDeviceActivity extends BaseActivity {
     TextView tv_scan;
     EditText tv_dangqianfanghao, tv_xuanzefanghao;
 
-    String deviceName = "", roomId = "";
+    String deviceName = "",oldRoomId ="", newRoomId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +97,10 @@ public class MoveDeviceActivity extends BaseActivity {
                 if (match()) {
                     this.showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("sn", deviceName);
-                    params.put("stroreId", model_sdm.getStoreInfo().getId());
-//                    params.put("shopId", shopId);
-                    params.put("roomId", roomId);
+                    params.put("hostName", deviceName);
+                    params.put("storeId", model_sdm.getStoreInfo().getId());
+                    params.put("roomId", oldRoomId);
+                    params.put("newRoomId", newRoomId);
                     requestUpData(params);
                 }
                 break;
@@ -112,7 +112,7 @@ public class MoveDeviceActivity extends BaseActivity {
             myToast("请先扫码");
             return false;
         }
-        if (TextUtils.isEmpty(roomId)) {
+        if (TextUtils.isEmpty(newRoomId)) {
             myToast("请选择房号");
             return false;
         }
@@ -128,49 +128,48 @@ public class MoveDeviceActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /**
-         * 处理二维码扫描结果
-         */
-        switch (requestCode) {
-            case CaptureActivity.REQUEST_CODE_SCAN:
-                //二维码扫码
-                if (data != null) {
-                    //获取扫描结果
-                    Bundle bundle = data.getExtras();
-                    String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
-                    //{"deviceName": "641708882ef84e09995d70440e12ebf9"}
-                    MyLogger.i("扫码返回", result);
-                    if (!result.equals("")) {
-                        try {
-                            JSONObject mJsonObject = new JSONObject(result);
-                            deviceName = mJsonObject.getString("deviceName");
-                            iv_scan.setVisibility(View.GONE);
-                            tv_scan.setText("SN号:" + deviceName);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case CaptureActivity.REQUEST_CODE_SCAN:
+                    //二维码扫码
+                    if (data != null) {
+                        //获取扫描结果
+                        Bundle bundle = data.getExtras();
+                        String result = bundle.getString(CaptureActivity.EXTRA_SCAN_RESULT);
+                        //{"deviceName": "641708882ef84e09995d70440e12ebf9"}
+                        MyLogger.i("扫码返回", result);
+                        if (!result.equals("")) {
+                            try {
+                                JSONObject mJsonObject = new JSONObject(result);
+                                deviceName = mJsonObject.getString("deviceName");
+                                iv_scan.setVisibility(View.GONE);
+                                tv_scan.setText("SN号:" + deviceName);
 
-                            showProgress(true, getString(R.string.app_loading2));
-                            params.clear();
+                                showProgress(true, getString(R.string.app_loading2));
+                                params.clear();
 //                                params.put("deviceName", deviceName);
-                            requestDeviceRoom(params, deviceName);
+                                requestDeviceRoom(params, deviceName);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            myToast("解析出错");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                myToast("解析出错");
+                            }
+                        } else {
+                            iv_scan.setVisibility(View.VISIBLE);
+                            tv_scan.setVisibility(View.GONE);
                         }
-                    } else {
-                        iv_scan.setVisibility(View.VISIBLE);
-                        tv_scan.setVisibility(View.GONE);
                     }
-                }
-                break;
-            case Constant.SELECT_ROOMNO:
-                //选择房号
-                if (data != null) {
-                    Bundle bundle = data.getExtras();
-                    roomId = bundle.getString("roomId");
-                    tv_xuanzefanghao.setText(bundle.getString("roomName"));
-                }
-                break;
+                    break;
+                case Constant.SELECT_ROOMNO:
+                    //选择房号
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        newRoomId = bundle.getString("roomId");
+                        tv_xuanzefanghao.setText(bundle.getString("roomName"));
+                    }
+                    break;
 
+            }
         }
     }
 
@@ -180,9 +179,9 @@ public class MoveDeviceActivity extends BaseActivity {
      * @param params
      */
     private void requestDeviceRoom(HashMap<String, String> params, String deviceName) {
-        OkhttpUtil.okHttpGet(URLs.DeviceDetail, params, headerMap, new CallBackUtil<DeviceDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.DeviceRoom+deviceName, params, headerMap, new CallBackUtil<DeviceRoomModel>() {
             @Override
-            public DeviceDetailModel onParseResponse(Call call, Response response) {
+            public DeviceRoomModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -193,9 +192,10 @@ public class MoveDeviceActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(DeviceDetailModel response) {
+            public void onResponse(DeviceRoomModel response) {
                 hideProgress();
-
+                oldRoomId = response.getRoomId();
+                tv_dangqianfanghao.setText(response.getRoomName());
             }
         });
     }

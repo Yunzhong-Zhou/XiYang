@@ -131,6 +131,15 @@ public class ShopDetailModel implements Serializable {
         private String sources;
         private String transfterStatus;
         private String showPointBtn;
+        private String signStatus;
+
+        public String getSignStatus() {
+            return signStatus;
+        }
+
+        public void setSignStatus(String signStatus) {
+            this.signStatus = signStatus;
+        }
 
         public String getTransfterStatus() {
             return transfterStatus;

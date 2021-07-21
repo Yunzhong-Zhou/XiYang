@@ -182,7 +182,7 @@ public class ChangeStoreAccountActivity extends BaseActivity {
     }
 
     private boolean match() {
-        code = editText2.getText().toString().trim();
+        code = editText3.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
             myToast(getString(R.string.settransactionpassword_h5));
             return false;
