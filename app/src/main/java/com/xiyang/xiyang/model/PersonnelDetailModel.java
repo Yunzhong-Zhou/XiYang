@@ -34,6 +34,7 @@ public class PersonnelDetailModel implements Serializable {
     private String deliveryTime;
     private String createTime;
     private List<ListBean> list;
+
     /**
      * id : 1417042777162883073
      * adminId : 1415121041232207873
@@ -85,7 +86,9 @@ public class PersonnelDetailModel implements Serializable {
     private String extra;
     private String updateTime;
     private String delFlag;
-    private List<AuditInfosBean> auditInfos;
+    private List<OldRegionsBean> oldRegions;
+    private List<OldRegionsBean> newRegions;
+
 
     public String getAdminOrganCode() {
         return adminOrganCode;
@@ -391,12 +394,20 @@ public class PersonnelDetailModel implements Serializable {
         this.delFlag = delFlag;
     }
 
-    public List<AuditInfosBean> getAuditInfos() {
-        return auditInfos;
+    public List<OldRegionsBean> getOldRegions() {
+        return oldRegions;
     }
 
-    public void setAuditInfos(List<AuditInfosBean> auditInfos) {
-        this.auditInfos = auditInfos;
+    public void setOldRegions(List<OldRegionsBean> oldRegions) {
+        this.oldRegions = oldRegions;
+    }
+
+    public List<OldRegionsBean> getNewRegions() {
+        return newRegions;
+    }
+
+    public void setNewRegions(List<OldRegionsBean> newRegions) {
+        this.newRegions = newRegions;
     }
 
     public static class ListBean {
@@ -415,6 +426,36 @@ public class PersonnelDetailModel implements Serializable {
         private String approvalRemark;
         private String approvalStatus;
         private String approvalTime;
+        /**
+         * id : 1418038590722797571
+         * sn : 1418038590721626112
+         * adminId : 1415121041232207873
+         * adminName : 黄CM1
+         * adminAvatar :
+         * remark : 大概发发发
+         * createTime : 2021-07-22 10:42:01
+         * updateTime : 2021-07-22 11:03:05
+         * images : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/22/1626922984525IMG_CMP_200958875.jpeg,http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/22/1626922984517IMG_CMP_119574347.png
+         */
+
+        private String id;
+        private String sn;
+        private String adminId;
+        private String adminName;
+        private String adminAvatar;
+        private String remark;
+        private String createTime;
+        private String updateTime;
+        private String images;
+        private String status;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
         public String getApprovalAvatar() {
             return approvalAvatar;
@@ -463,26 +504,6 @@ public class PersonnelDetailModel implements Serializable {
         public void setApprovalTime(String approvalTime) {
             this.approvalTime = approvalTime;
         }
-    }
-
-    public static class AuditInfosBean {
-        /**
-         * id : 1417042777175465985
-         * sn : 1417042777149149184
-         * adminId : 10
-         * adminName : 分公司一
-         * createTime : 2021-07-19 16:45:00
-         * updateTime : 2021-07-19 16:45:00
-         */
-
-        private String id;
-        @SerializedName("sn")
-        private String snX;
-        private String adminId;
-        private String adminName;
-        @SerializedName("createTime")
-        private String createTimeX;
-        private String updateTime;
 
         public String getId() {
             return id;
@@ -492,12 +513,12 @@ public class PersonnelDetailModel implements Serializable {
             this.id = id;
         }
 
-        public String getSnX() {
-            return snX;
+        public String getSn() {
+            return sn;
         }
 
-        public void setSnX(String snX) {
-            this.snX = snX;
+        public void setSn(String sn) {
+            this.sn = sn;
         }
 
         public String getAdminId() {
@@ -516,12 +537,28 @@ public class PersonnelDetailModel implements Serializable {
             this.adminName = adminName;
         }
 
-        public String getCreateTimeX() {
-            return createTimeX;
+        public String getAdminAvatar() {
+            return adminAvatar;
         }
 
-        public void setCreateTimeX(String createTimeX) {
-            this.createTimeX = createTimeX;
+        public void setAdminAvatar(String adminAvatar) {
+            this.adminAvatar = adminAvatar;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
 
         public String getUpdateTime() {
@@ -530,6 +567,52 @@ public class PersonnelDetailModel implements Serializable {
 
         public void setUpdateTime(String updateTime) {
             this.updateTime = updateTime;
+        }
+
+        public String getImages() {
+            return images;
+        }
+
+        public void setImages(String images) {
+            this.images = images;
+        }
+    }
+
+
+    public static class OldRegionsBean {
+        /**
+         * id : 130000
+         * name : 河北省
+         * level : 1
+         */
+
+        @SerializedName("id")
+        private int idX;
+        private String name;
+        private int level;
+
+        public int getIdX() {
+            return idX;
+        }
+
+        public void setIdX(int idX) {
+            this.idX = idX;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
         }
     }
 }

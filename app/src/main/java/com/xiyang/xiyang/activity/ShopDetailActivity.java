@@ -326,8 +326,8 @@ public class ShopDetailActivity extends BaseActivity {
                 hideProgress();
                 model = response;
                 tv_name.setText(response.getBase().getName());
-//                tv_shop.setText(response.getBase().get);//门店数量
-//                tv_num.setText(response.getBase().get);//商户营收
+                tv_shop.setText(response.getCountData().getStoreNum());//门店数量
+                tv_num.setText(response.getCountData().getMoney());//商户营收
                 tv_addr.setText(response.getBase().getAddress());
                 Glide.with(ShopDetailActivity.this)
                         .load(model.getBase().getCertificateUrl())

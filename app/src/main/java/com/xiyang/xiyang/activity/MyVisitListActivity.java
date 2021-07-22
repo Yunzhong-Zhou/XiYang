@@ -299,7 +299,7 @@ public class MyVisitListActivity extends BaseActivity {
                 } else {
                     type = i + "";
                 }
-//                textView1.setText(list.get(i));
+                textView1.setText(list.get(i));
                 requestServer();
                 popupWindow.dismiss();
             }

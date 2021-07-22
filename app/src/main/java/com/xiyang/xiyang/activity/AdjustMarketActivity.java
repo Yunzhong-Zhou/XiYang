@@ -123,7 +123,7 @@ public class AdjustMarketActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         params.put("role", editText1.getText().toString().toLowerCase());
-        requestStaff(params);
+//        requestStaff(params);
     }
 
     private void requestStaff(HashMap<String, String> params) {

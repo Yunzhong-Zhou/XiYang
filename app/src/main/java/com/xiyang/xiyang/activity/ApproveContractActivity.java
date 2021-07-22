@@ -59,7 +59,7 @@ public class ApproveContractActivity extends BaseActivity {
     EditText tv_jieguo, tv_shuoming, tv_shuliang;
     ImageView imageView1;
 
-    String id = "", status = "", remark = "", images = "", type = "", deviceNum = "", type_shenhe = "1";
+    String id = "", status = "", remark = "", images = "", type = "", deviceNum = "", type_shenhe = "1", sn = "";
 
     /**
      * 选择图片
@@ -122,7 +122,6 @@ public class ApproveContractActivity extends BaseActivity {
 //        rl_jieguo = findViewByID_My(R.id.rl_jieguo);
 //        rl_shuoming = findViewByID_My(R.id.rl_shuoming);
         rl_shuliang = findViewByID_My(R.id.rl_shuliang);
-        rl_shuliang.setVisibility(View.GONE);
 
         tv_jieguo = findViewByID_My(R.id.tv_jieguo);
         tv_shuliang = findViewByID_My(R.id.tv_shuliang);
@@ -141,8 +140,25 @@ public class ApproveContractActivity extends BaseActivity {
             rl_shuliang.setVisibility(View.VISIBLE);
             tv_shuliang.setText(getIntent().getStringExtra("num"));
             type_shenhe = getIntent().getStringExtra("type_shenhe");
-            if (type_shenhe!=null&&type_shenhe.equals("2")){
-                titleView.setTitle("审批采购申请");
+            if (type_shenhe != null && type_shenhe.equals("4")) {
+                titleView.setTitle("审批采购审核");
+            }
+        } else {
+            rl_shuliang.setVisibility(View.GONE);
+            type_shenhe = getIntent().getStringExtra("type_shenhe");
+            if (type_shenhe != null) {
+                sn = getIntent().getStringExtra("num");
+                switch (type_shenhe) {
+                    case "1":
+                        titleView.setTitle("调整上级审核");
+                        break;
+                    case "2":
+                        titleView.setTitle("调整市场审核");
+                        break;
+                    case "3":
+                        titleView.setTitle("升职降职审核");
+                        break;
+                }
             }
         }
 
@@ -194,7 +210,7 @@ public class ApproveContractActivity extends BaseActivity {
                                         images = images.substring(0, images.length() - 1);
                                     }
                                     params.clear();
-                                    if (type != null && type.equals("device_add") && type_shenhe != null && type_shenhe.equals("2")) {
+                                    if (type != null && type.equals("device_add") && type_shenhe != null && type_shenhe.equals("4")) {
                                         //采购审批
                                         params.put("remark", remark);
                                         params.put("images", images);
@@ -203,13 +219,25 @@ public class ApproveContractActivity extends BaseActivity {
                                         params.put("approvedQuantity", deviceNum);
                                         requestUpData(params, URLs.ApproveContract_CaiGou);
                                     } else {
-                                        //合同审批
-                                        params.put("reason", remark);
-                                        params.put("images", images);
-                                        params.put("id", id);
-                                        params.put("status", status);
-                                        params.put("num", deviceNum);
-                                        requestUpData(params, URLs.ApproveContract);
+
+                                        if (type_shenhe != null) {
+                                            //人事审核
+                                            params.put("auditDescription", remark);
+                                            params.put("images", images);
+                                            params.put("applyId", id);
+                                            params.put("status", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
+                                            params.put("sn", sn);
+                                            requestUpData(params, URLs.ApproveContract_RenShi);
+                                        } else {
+                                            //合同审批
+                                            params.put("reason", remark);
+                                            params.put("images", images);
+                                            params.put("id", id);
+                                            params.put("status", status);
+                                            params.put("num", deviceNum);
+                                            requestUpData(params, URLs.ApproveContract);
+                                        }
+
                                     }
 
 

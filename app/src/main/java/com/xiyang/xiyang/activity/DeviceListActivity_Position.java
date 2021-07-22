@@ -110,13 +110,13 @@ public class DeviceListActivity_Position extends BaseActivity {
                             @Override
                             protected void convert(ViewHolder holder, DeviceListModel_Position.LocationDeviceVoListBean model, int position) {
                                 holder.setText(R.id.tv_name, model.getStoreName());//标题
-                                holder.setText(R.id.tv_shop, model.getHostName());
-                                holder.setText(R.id.tv_num, model.getTotalRevenue());//money
+                                holder.setText(R.id.tv_shop, "SN:"+model.getDeviceHostName());
+                                holder.setText(R.id.tv_num, model.getTotalMoney());//money
                                 holder.setText(R.id.tv_addr, model.getStoreAddress());
 
                                 ImageView imageView1 = holder.getView(R.id.imageView1);
                                 Glide.with(DeviceListActivity_Position.this)
-                                        .load(model.getStoreImage())
+                                        .load(model.getStoreImg())
 //                                .fitCenter()
                                         .apply(RequestOptions.bitmapTransform(new
                                                 RoundedCorners(CommonUtil.dip2px(DeviceListActivity_Position.this, 10))))
@@ -124,17 +124,17 @@ public class DeviceListActivity_Position extends BaseActivity {
                                         .error(R.mipmap.zanwutupian)//加载失败
                                         .into(imageView1);//加载图片
                                 ImageView imageView2 = holder.getView(R.id.imageView2);
-                                if (model.getAliyunStatus() != null && model.getAliyunStatus().equals("1")) {
+                                if (model.getDeviceStatus() != null && model.getDeviceStatus().equals("1")) {
+                                    imageView2.setImageResource(R.mipmap.bg_zaixian);
+                                } else {
                                     //离线
                                     imageView2.setImageResource(R.mipmap.bg_lixian);
-                                } else {
-                                    imageView2.setImageResource(R.mipmap.bg_zaixian);
                                 }
                                 holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         Bundle bundle = new Bundle();
-                                        bundle.putString("deviceName", model.getId());
+                                        bundle.putSerializable("model",model);
                                         CommonUtil.gotoActivityWithData(DeviceListActivity_Position.this, DeviceAddressActivity.class, bundle, false);
 
                                     }

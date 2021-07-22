@@ -105,7 +105,7 @@ public class URLs {
      */
     public static final String Fragment1_m = HOST + "/service-ucenter/organ/home";
     //员工负责城市-无统计数据
-    public static final String StaffCity = HOST + "/organ/region/listLoginOrganUserCity";
+    public static final String StaffCity = HOST + "/service-ucenter/organ/region/listLoginOrganUserCity";
     //选择权限城市-有统计数据
     public static final String MyCity = HOST + "/service-ucenter/organ/region/getLoginOrganUserCityStatistic";
     //添加员工
@@ -167,9 +167,10 @@ public class URLs {
     public static final String ApproveDetail = HOST + "/bd/bdservice/app/bdm/verfiy/detail/";
     //审核合同
     public static final String ApproveContract = HOST + "/bd/bdservice/app/approval/deal";
-    //审核采购申请
+    //审核采购审批
     public static final String ApproveContract_CaiGou = HOST + "/purchase/purchase/apply/handle";
-
+    //人事审批
+    public static final String ApproveContract_RenShi = HOST + "/service-ucenter/organ/change/apply/audit";
     /**
      * ********************************门店*****************************************
      */
@@ -249,6 +250,8 @@ public class URLs {
     public static final String MyDevice = HOST + "/service-device/device/sysUser/page";
     //定位异常设备
     public static final String DeviceList_Position = HOST + "/bd/device/apply/queryLocationDeviceErrorList";
+    //禁用设备
+    public static final String StopDevice= HOST + "/service-device/forbidden/autoAddForbiddenLog";
     //设备详情
     public static final String DeviceDetail = HOST + "/service-device/device/sysUser/detail/";
     //获取门店下的设备
