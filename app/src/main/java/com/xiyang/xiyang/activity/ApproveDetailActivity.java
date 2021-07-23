@@ -232,11 +232,11 @@ public class ApproveDetailActivity extends BaseActivity {
 
 
                 tv_shenpi.setVisibility(View.VISIBLE);
-                /*if (response.getContractsVo().getStatus().equals("1")) {//需要审核
+                if (response.getContractsVo().getStatus().equals("1")) {//需要审核
                     tv_shenpi.setVisibility(View.VISIBLE);
                 } else {
                     tv_shenpi.setVisibility(View.GONE);
-                }*/
+                }
                 /**
                  * 合同信息
                  */

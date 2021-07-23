@@ -69,6 +69,71 @@ public class ContractDetailModel implements Serializable {
     private String addQuantity;
     private String applyType;
     private String storeName;
+    /**
+     * inStoreName : string
+     * outQuantity : 0
+     * outStoreName : string
+     * reason : string
+     * records : [{"auditImage":"string","auditName":"string","auditStat":0,"auditTime":"2021-07-23T01:55:46.332Z","imager":"string","reason":"string"}]
+     * recoverQuantity : 0
+     * status : 0
+     * warehouseName : string
+     */
+
+    private String inStoreName;
+    private String outQuantity;
+    private String outStoreName;
+    private String reason;
+    private String recoverQuantity;
+    private String warehouseName;
+    /**
+     * records : [{"auditImage":"string","auditName":"string","auditStat":0,"auditTime":"2021-07-23T02:36:32.988Z","imager":"string","reason":"string"}]
+     * renewalPeriod : 0
+     * renewalTime : 2021-07-23T02:36:32.988Z
+     * sole : 0
+     * status : 0
+     */
+
+    private String renewalPeriod;
+    private String renewalTime;
+
+    /**
+     * outQuantity : 0
+     * records : [{"auditImage":"string","auditName":"string","auditStat":0,"auditTime":"2021-07-23T02:26:45.935Z","imager":"string","reason":"string"}]
+     * recoverQuantity : 0
+     * status : 0
+     */
+
+    private String cancelReason;
+    /**
+     * billingUnit : string
+     * dailyTopPrice : 0
+     * firstHour : 0
+     * freeTime : 0
+     * reasonName : string
+     * records : [{"auditImage":"string","auditName":"string","auditStat":0,"auditTime":"2021-07-23T02:43:46.152Z","imager":"string","reason":"string"}]
+     * renewalTime : 0
+     * status : 0
+     * storePriceIncrease : 0
+     * storeTopPrice : 0
+     */
+
+    private String billingUnit;
+    private String dailyTopPrice;
+    private String firstHour;
+    private String freeTime;
+    private String reasonName;
+    private String storePriceIncrease;
+    private String storeTopPrice;
+
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 
     public String getCheckTime() {
         return checkTime;
@@ -284,6 +349,126 @@ public class ContractDetailModel implements Serializable {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
+    }
+
+    public String getInStoreName() {
+        return inStoreName;
+    }
+
+    public void setInStoreName(String inStoreName) {
+        this.inStoreName = inStoreName;
+    }
+
+    public String getOutQuantity() {
+        return outQuantity;
+    }
+
+    public void setOutQuantity(String outQuantity) {
+        this.outQuantity = outQuantity;
+    }
+
+    public String getOutStoreName() {
+        return outStoreName;
+    }
+
+    public void setOutStoreName(String outStoreName) {
+        this.outStoreName = outStoreName;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getRecoverQuantity() {
+        return recoverQuantity;
+    }
+
+    public void setRecoverQuantity(String recoverQuantity) {
+        this.recoverQuantity = recoverQuantity;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public String getRenewalPeriod() {
+        return renewalPeriod;
+    }
+
+    public void setRenewalPeriod(String renewalPeriod) {
+        this.renewalPeriod = renewalPeriod;
+    }
+
+    public String getRenewalTime() {
+        return renewalTime;
+    }
+
+    public void setRenewalTime(String renewalTime) {
+        this.renewalTime = renewalTime;
+    }
+
+    public String getBillingUnit() {
+        return billingUnit;
+    }
+
+    public void setBillingUnit(String billingUnit) {
+        this.billingUnit = billingUnit;
+    }
+
+    public String getDailyTopPrice() {
+        return dailyTopPrice;
+    }
+
+    public void setDailyTopPrice(String dailyTopPrice) {
+        this.dailyTopPrice = dailyTopPrice;
+    }
+
+    public String getFirstHour() {
+        return firstHour;
+    }
+
+    public void setFirstHour(String firstHour) {
+        this.firstHour = firstHour;
+    }
+
+    public String getFreeTime() {
+        return freeTime;
+    }
+
+    public void setFreeTime(String freeTime) {
+        this.freeTime = freeTime;
+    }
+
+    public String getReasonName() {
+        return reasonName;
+    }
+
+    public void setReasonName(String reasonName) {
+        this.reasonName = reasonName;
+    }
+
+    public String getStorePriceIncrease() {
+        return storePriceIncrease;
+    }
+
+    public void setStorePriceIncrease(String storePriceIncrease) {
+        this.storePriceIncrease = storePriceIncrease;
+    }
+
+    public String getStoreTopPrice() {
+        return storeTopPrice;
+    }
+
+    public void setStoreTopPrice(String storeTopPrice) {
+        this.storeTopPrice = storeTopPrice;
     }
 
     public static class RecordsBean {

@@ -265,9 +265,9 @@ public class URLs {
     //安装设备
     public static final String InstallDevice = HOST + "/device/install/install";
     //开启设备
-    public static final String Device = HOST + "/device/aliyuniot/controlDevice";
+    public static final String Device = HOST + "/device/debug/debugDeviceDoSomeThing";
     //调试设备
-    public static final String DebugDevice = HOST + API + "/service-device/properties";
+    public static final String DebugDevice = HOST + API + "/device/debug/debugDeviceDoSomeThing";
     //控制设备
     public static final String DeviceSetUp = HOST + API + "/service-device/operate";
     //换绑设备

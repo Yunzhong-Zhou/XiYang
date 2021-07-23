@@ -59,7 +59,6 @@ public class DeviceDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        requestServer();
     }
 
     @Override
@@ -122,6 +121,7 @@ public class DeviceDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         deviceName = getIntent().getStringExtra("deviceName");
+        requestServer();
     }
 
     @Override

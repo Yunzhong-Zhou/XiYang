@@ -116,7 +116,7 @@ public class SetUpActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Exception e, String err) {
                 hideProgress();
-                myToast(err);
+//                myToast(err);
             }
 
             @Override

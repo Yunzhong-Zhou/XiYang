@@ -105,7 +105,7 @@ public class ChangeStoreAccountActivity extends BaseActivity {
                     params.clear();
                     params.put("compulsoryNormalUserToStoreUserType","true");
                     params.put("id", storeId);
-                    params.put("account",editText2.getText().toString().trim());
+//                    params.put("account",editText2.getText().toString().trim());
                     params.put("newAccount", mobile);
                     params.put("code", code);
                     RequestUpData(params);

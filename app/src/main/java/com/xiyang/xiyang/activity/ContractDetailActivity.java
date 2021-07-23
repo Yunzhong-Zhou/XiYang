@@ -85,7 +85,7 @@ public class ContractDetailActivity extends BaseActivity {
                 //刷新
                 params.clear();
 //                params.put("id", id);
-                request(params,URLs.ContractDetail+typeStr+"/"+id);
+                request(params, URLs.ContractDetail + typeStr + "/" + id);
             }
 
             @Override
@@ -144,10 +144,10 @@ public class ContractDetailActivity extends BaseActivity {
                 /*PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ContractDetailActivity.this,
                         URLs.IMGHOST + "");
                 photoShowDialog.show();*/
-               /* if (model.getFile() != null && !model.getFile().equals("")) {
-                    bundle.putString("url", model.getFile());
-                    CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ShowPDFActivity.class, bundle, false);
-                }else myToast("暂无文件");*/
+                if (model.getContractUrl() != null && !model.getContractUrl().equals("")) {
+                    bundle.putString("url", model.getContractUrl());
+                    CommonUtil.gotoActivityWithData(ContractDetailActivity.this, ShowPDFActivity.class, bundle, false);
+                }else myToast("暂无文件");
                 break;
             /*case R.id.tv_shenpi:
                 //立即审批
@@ -181,11 +181,11 @@ public class ContractDetailActivity extends BaseActivity {
     protected void initData() {
         id = getIntent().getStringExtra("id");
         typeStr = getIntent().getStringExtra("typeStr");
-        if (typeStr.equals("merchant_sign")){
+        if (typeStr.equals("merchant_sign")) {
             //签约合同-显示商户信息
             type = 1;
             ll_tab1.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             type = 2;
             ll_tab1.setVisibility(View.GONE);
         }
@@ -201,10 +201,10 @@ public class ContractDetailActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
 //        params.put("id", id);
-        request(params,URLs.ContractDetail+typeStr+"/"+id);
+        request(params, URLs.ContractDetail + typeStr + "/" + id);
     }
 
-    private void request(HashMap<String, String> params,String url) {
+    private void request(HashMap<String, String> params, String url) {
         OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<ContractDetailModel>() {
             @Override
             public ContractDetailModel onParseResponse(Call call, Response response) {
@@ -223,7 +223,21 @@ public class ContractDetailActivity extends BaseActivity {
                 model = response;
                 tv_name.setText(response.getName());
                 tv_shop.setText("《" + response.getTypeName() + "》");
-                tv_num.setText(response.getStatus());
+                switch (response.getStatus()){//1:待处理; 2:处理中; 3:通过; 4:驳回;
+                    case "1":
+                        tv_num.setText("待审核");
+                        break;
+                    case "2":
+                        tv_num.setText("审核中");
+                        break;
+                    case "3":
+                        tv_num.setText("已通过");
+                        break;
+                    case "4":
+                        tv_num.setText("已驳回");
+                        break;
+                }
+
                 tv_addr.setText(response.getContractNumber());
                 Glide.with(ContractDetailActivity.this)
                         .load(model.getImage())
@@ -262,7 +276,7 @@ public class ContractDetailActivity extends BaseActivity {
                  * 合同信息
                  */
                 list_contract.clear();
-                switch (typeStr){
+                switch (typeStr) {
                     case "merchant_sign":
                         //签约合同
                         list_contract.add(new KeyValueModel("合同类型", response.getTypeName()));
@@ -283,9 +297,67 @@ public class ContractDetailActivity extends BaseActivity {
                     case "device_add":
                         //新增合同
                         list_contract.add(new KeyValueModel("门店名称", response.getStoreName()));
-                        list_contract.add(new KeyValueModel("新增数量", response.getAddQuantity()));
+                        list_contract.add(new KeyValueModel("新增数量", response.getAddQuantity() + "台"));
                         list_contract.add(new KeyValueModel("申领方式", response.getApplyType()));
                         iv_info.setVisibility(View.GONE);
+                        break;
+                    case "device_recover":
+                        //回收合同
+                        list_contract.add(new KeyValueModel("门店名称", response.getStoreName()));
+                        list_contract.add(new KeyValueModel("选择数量", response.getRecoverQuantity() + "台"));
+                        list_contract.add(new KeyValueModel("减少原因", response.getReason()));
+                        list_contract.add(new KeyValueModel("退回仓库", response.getWarehouseName()));
+                        break;
+                    case "device_exchange":
+                        //换绑合同
+                        list_contract.add(new KeyValueModel("转出门店名称", response.getOutStoreName()));
+                        list_contract.add(new KeyValueModel("转入门店名称", response.getInStoreName()));
+                        list_contract.add(new KeyValueModel("转出设备数量", response.getOutQuantity() + "台"));
+                        break;
+                    case "merchant_update":
+                        //修改合同
+                        list_contract.add(new KeyValueModel("商户名称", response.getMerchantName()));
+                        list_contract.add(new KeyValueModel("商户账号", response.getMerchantAccount()));
+                        list_contract.add(new KeyValueModel("商户联系人", response.getMerchantContactName()));
+                        list_contract.add(new KeyValueModel("联系电话", response.getMerchantContactPhone()));
+                        list_contract.add(new KeyValueModel("公司名称", response.getMerchantCompanyName()));
+                        list_contract.add(new KeyValueModel("营业执照号", response.getMerchantLicenseNo()));
+                        list_contract.add(new KeyValueModel("商户行业", response.getMerchantIndustry()));
+                        list_contract.add(new KeyValueModel("所在城市", response.getMerchantCityName()));
+                        list_contract.add(new KeyValueModel("详细地址", response.getMerchantAddress()));
+                        iv_info.setVisibility(View.VISIBLE);
+                        Glide.with(ContractDetailActivity.this)
+                                .load(response.getQualificationsImageUrl())
+                                .fitCenter()
+                                .apply(RequestOptions.bitmapTransform(new
+                                        RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(iv_info);//加载图片
+                        break;
+                    case "merchant_extend":
+                        //续签合同
+                        list_contract.add(new KeyValueModel("商户名称", response.getMerchantName()));
+                        list_contract.add(new KeyValueModel("续签年限", response.getRenewalPeriod()));
+                        list_contract.add(new KeyValueModel("续签时间", response.getRenewalTime()));
+                        list_contract.add(new KeyValueModel("是否独家", response.getSole()));
+                        break;
+                    case "merchant_cancel":
+                        //取消合同
+                        list_contract.add(new KeyValueModel("商户名称", response.getMerchantName()));
+                        list_contract.add(new KeyValueModel("取消原因", response.getCancelReason()));
+                        break;
+                    case "change_price":
+                        //调价合同
+                        list_contract.add(new KeyValueModel("门店名称", response.getStoreName()));
+                        list_contract.add(new KeyValueModel("首个小时", response.getFirstHour()));
+                        list_contract.add(new KeyValueModel("基础计价", response.getRenewalTime()));
+                        list_contract.add(new KeyValueModel("每日封顶", response.getDailyTopPrice()));
+                        list_contract.add(new KeyValueModel("免费时长", response.getFreeTime()));
+                        list_contract.add(new KeyValueModel("计费单元", response.getBillingUnit()));
+                        list_contract.add(new KeyValueModel("门店加价", response.getStorePriceIncrease()));
+                        list_contract.add(new KeyValueModel("门店封顶", response.getStoreTopPrice()));
+                        list_contract.add(new KeyValueModel("调价理由", response.getReasonName()));
                         break;
                 }
                 list_contract.add(new KeyValueModel("审核时间", response.getCheckTime()));
@@ -334,7 +406,7 @@ public class ContractDetailActivity extends BaseActivity {
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            if (model.getImager()!=null){
+                            if (model.getImager() != null) {
                                 String[] strArr = model.getImager().split(",");//拆分
                                 for (String s : strArr) {
                                     list_img.add(s);

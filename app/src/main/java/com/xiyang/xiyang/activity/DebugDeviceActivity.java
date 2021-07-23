@@ -9,7 +9,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
@@ -112,7 +111,7 @@ public class DebugDeviceActivity extends BaseActivity {
     }
 
     private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.Device, GsonUtils.toJson(params), headerMap, new CallBackUtil<DeviceModel>() {
+        OkhttpUtil.okHttpPost(URLs.DebugDevice, params, headerMap, new CallBackUtil<DeviceModel>() {
             @Override
             public DeviceModel onParseResponse(Call call, Response response) {
                 return null;
@@ -343,7 +342,7 @@ public class DebugDeviceActivity extends BaseActivity {
      * @param params
      */
     private void RequestSetUp(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.DeviceSetUp, GsonUtils.toJson(params), headerMap, new CallBackUtil<Object>() {
+        OkhttpUtil.okHttpPost(URLs.DebugDevice, params, headerMap, new CallBackUtil<Object>() {
             @Override
             public Object onParseResponse(Call call, Response response) {
                 return null;

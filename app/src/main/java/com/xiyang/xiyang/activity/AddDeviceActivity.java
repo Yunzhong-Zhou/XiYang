@@ -206,32 +206,34 @@ public class AddDeviceActivity extends BaseActivity {
             @Override
             public void onResponse(Device2StoreModel response) {
                 hideProgress();
-                showContentPage();
-                list = response.getDeviceList();
-                if (list.size() > 0) {
-                    mAdapter = new CommonAdapter<Device2StoreModel.DeviceListBean>
-                            (AddDeviceActivity.this, R.layout.item_adddevice, list) {
-                        @Override
-                        protected void convert(ViewHolder holder, Device2StoreModel.DeviceListBean model, int position) {
-                            holder.setText(R.id.textView1, model.getStoreFullName());
-                            holder.setText(R.id.textView2, model.getDeviceHostName());
-                            //删除
-                            holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    list.remove(model);
-                                    mAdapter.notifyDataSetChanged();
-                                    tv_num.setText(list.size() + "");
-                                }
-                            });
+                showEmptyPage();
+                if (response.getDeviceList()!=null){
+                    list = response.getDeviceList();
+                    if (list.size() > 0) {
+                        showContentPage();
+                        mAdapter = new CommonAdapter<Device2StoreModel.DeviceListBean>
+                                (AddDeviceActivity.this, R.layout.item_adddevice, list) {
+                            @Override
+                            protected void convert(ViewHolder holder, Device2StoreModel.DeviceListBean model, int position) {
+                                holder.setText(R.id.textView1, model.getStoreFullName());
+                                holder.setText(R.id.textView2, model.getDeviceHostName());
+                                //删除
+                                holder.getView(R.id.iv_delete).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        list.remove(model);
+                                        mAdapter.notifyDataSetChanged();
+                                        tv_num.setText(list.size() + "");
+                                    }
+                                });
 
-                        }
-                    };
-                    recyclerView.setAdapter(mAdapter);
-                    tv_num.setText(list.size() + "");
-                } else {
-                    showEmptyPage();
+                            }
+                        };
+                        recyclerView.setAdapter(mAdapter);
+                        tv_num.setText(list.size() + "");
+                    }
                 }
+
 
             }
         });
