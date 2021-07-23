@@ -267,9 +267,9 @@ public class URLs {
     //开启设备
     public static final String Device = HOST + "/device/debug/debugDeviceDoSomeThing";
     //调试设备
-    public static final String DebugDevice = HOST + API + "/device/debug/debugDeviceDoSomeThing";
+    public static final String DebugDevice = HOST + "/device/debug/debugDeviceDoSomeThing";
     //控制设备
-    public static final String DeviceSetUp = HOST + API + "/service-device/operate";
+    public static final String DeviceSetUp = HOST + "/device/debug/debugDeviceDoSomeThing";
     //换绑设备
     public static final String ChangeTieDevice = HOST + "/service-device/device/deviceChangeBind";
     //设备移位

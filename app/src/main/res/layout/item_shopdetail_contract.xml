@@ -22,10 +22,8 @@
 
         <TextView
             android:id="@+id/tv2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
             android:text="type"
             android:textColor="@color/green"
             android:textSize="12.5sp" />

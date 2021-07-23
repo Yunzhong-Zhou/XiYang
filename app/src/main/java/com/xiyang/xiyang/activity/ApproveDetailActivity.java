@@ -36,7 +36,7 @@ import okhttp3.Response;
  * 审批详情
  */
 public class ApproveDetailActivity extends BaseActivity {
-    String id = "";
+    String id = "" ,typeStr = "";
     int type = 2;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
@@ -66,8 +66,8 @@ public class ApproveDetailActivity extends BaseActivity {
     LinearLayout ll_shenhe;
     TextView tv_shenpi;
     RecyclerView rv_shenhe;
-    List<ApproveDetailModel.WorkFlowApplylogOperateVoBean> list_shenhe = new ArrayList<>();
-    CommonAdapter<ApproveDetailModel.WorkFlowApplylogOperateVoBean> mAdapter_shenhe;
+    List<ApproveDetailModel.ContractsDetailBasicVOBean.RecordsBean> list_shenhe = new ArrayList<>();
+    CommonAdapter<ApproveDetailModel.ContractsDetailBasicVOBean.RecordsBean> mAdapter_shenhe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,8 +149,8 @@ public class ApproveDetailActivity extends BaseActivity {
                 /*PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ApproveDetailActivity.this,
                         URLs.IMGHOST + "");
                 photoShowDialog.show();*/
-                if (model.getContractsVo().getContractsFile() != null && !model.getContractsVo().getContractsFile().equals("")) {
-                    bundle.putString("url", model.getContractsVo().getContractsFile());
+                if (model.getContractsDetailBasicVO().getContractUrl() != null && !model.getContractsDetailBasicVO().getContractUrl().equals("")) {
+                    bundle.putString("url", model.getContractsDetailBasicVO().getContractUrl());
                     CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ShowPDFActivity.class, bundle, false);
                 } else myToast("暂无文件");
 
@@ -159,7 +159,7 @@ public class ApproveDetailActivity extends BaseActivity {
                 //立即审批
                 bundle.putString("id", id);
 //                if (localUserInfo.getUserJob().equals("CM") && model.getWorkFlowApplyLogVo().getType().equals("device_add"))
-                if (model.getWorkFlowApplyLogVo().getType().equals("device_add")){
+                if ( typeStr.equals("device_add")){
                     bundle.putString("type", "device_add");
                     bundle.putString("type_shenhe", "1");//合同审核
                     bundle.putString("num", "");
@@ -187,6 +187,7 @@ public class ApproveDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         id = getIntent().getStringExtra("id");
+        typeStr = getIntent().getStringExtra("typeStr");
     }
 
     @Override
@@ -217,12 +218,25 @@ public class ApproveDetailActivity extends BaseActivity {
                 hideProgress();
                 model = response;
 
-                tv_name.setText(response.getWorkFlowApplyLogVo().getName());
-                tv_shop.setText("《" + response.getWorkFlowApplyLogVo().getTypeTitle() + "》");
-                tv_num.setText(response.getWorkFlowApplyLogVo().getStatusTitle());
-                tv_addr.setText(response.getContractsVo().getContractNumber());
+                tv_name.setText(response.getContractsDetailBasicVO().getName());
+                tv_shop.setText("《" + response.getContractsDetailBasicVO().getTypeName() + "》");
+                switch (response.getContractsDetailBasicVO().getStatus()){//1:待处理; 2:处理中; 3:通过; 4:驳回;
+                    case "1":
+                        tv_num.setText("待审核");
+                        break;
+                    case "2":
+                        tv_num.setText("审核中");
+                        break;
+                    case "3":
+                        tv_num.setText("已通过");
+                        break;
+                    case "4":
+                        tv_num.setText("已驳回");
+                        break;
+                }
+                tv_addr.setText(response.getContractsDetailBasicVO().getContractNumber());
                 Glide.with(ApproveDetailActivity.this)
-                        .load(model.getWorkFlowApplyLogVo().getImage())
+                        .load(model.getContractsDetailBasicVO().getImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
@@ -232,7 +246,7 @@ public class ApproveDetailActivity extends BaseActivity {
 
 
                 tv_shenpi.setVisibility(View.VISIBLE);
-                if (response.getContractsVo().getStatus().equals("1")) {//需要审核
+                if (response.getShowBtn().equals("1")) {//需要审核
                     tv_shenpi.setVisibility(View.VISIBLE);
                 } else {
                     tv_shenpi.setVisibility(View.GONE);
@@ -241,20 +255,92 @@ public class ApproveDetailActivity extends BaseActivity {
                  * 合同信息
                  */
                 list_contract.clear();
-                list_contract.add(new KeyValueModel("合同类型", response.getWorkFlowApplyLogVo().getTypeTitle()));
-                list_contract.add(new KeyValueModel("商户名称", response.getWorkFlowApplyLogVo().getName()));
-
-
-                //签约合同
-                /*if (response.getBase().getExtra().getSole() != null) {
-                    list_contract.add(new KeyValueModel("签约期限", response.getBase().getExtra().getRenewalPeriod() + "年"));
-                    if (response.getBase().getExtra().getSole().equals("1"))
-                        list_contract.add(new KeyValueModel("是否独家", "是"));
-                    else list_contract.add(new KeyValueModel("是否独家", "否"));
-                }*/
-
-
-                list_contract.add(new KeyValueModel("审核时间", response.getContractsVo().getApprovalTime()));
+                iv_contract.setVisibility(View.GONE);
+                switch (typeStr) {
+                    case "merchant_sign":
+                        //签约合同
+                        list_contract.add(new KeyValueModel("合同类型", response.getContractsDetailBasicVO().getTypeName()));
+                        list_contract.add(new KeyValueModel("商户名称", response.getContractsDetailBasicVO().getMerchantName()));
+                        list_contract.add(new KeyValueModel("签约期限", response.getContractsDetailBasicVO().getSignPeriod()));
+                        list_contract.add(new KeyValueModel("是否独家", response.getContractsDetailBasicVO().getSole()));
+                        list_contract.add(new KeyValueModel("签约时间", response.getContractsDetailBasicVO().getSignTime()));
+                        iv_contract.setVisibility(View.VISIBLE);
+                        Glide.with(ApproveDetailActivity.this)
+                                .load(response.getContractsDetailBasicVO().getMerchantLogoUrl())
+                                .fitCenter()
+                                .apply(RequestOptions.bitmapTransform(new
+                                        RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(iv_contract);//加载图片
+                        break;
+                    case "device_add":
+                        //新增合同
+                        list_contract.add(new KeyValueModel("门店名称", response.getContractsDetailBasicVO().getStoreName()));
+                        list_contract.add(new KeyValueModel("新增数量", response.getContractsDetailBasicVO().getAddQuantity() + "台"));
+                        list_contract.add(new KeyValueModel("申领方式", response.getContractsDetailBasicVO().getApplyType()));
+                        break;
+                    case "device_recover":
+                        //回收合同
+                        list_contract.add(new KeyValueModel("门店名称", response.getContractsDetailBasicVO().getStoreName()));
+                        list_contract.add(new KeyValueModel("选择数量", response.getContractsDetailBasicVO().getRecoverQuantity() + "台"));
+                        list_contract.add(new KeyValueModel("减少原因", response.getContractsDetailBasicVO().getReason()));
+                        list_contract.add(new KeyValueModel("退回仓库", response.getContractsDetailBasicVO().getWarehouseName()));
+                        break;
+                    case "device_exchange":
+                        //换绑合同
+                        list_contract.add(new KeyValueModel("转出门店名称", response.getContractsDetailBasicVO().getOutStoreName()));
+                        list_contract.add(new KeyValueModel("转入门店名称", response.getContractsDetailBasicVO().getInStoreName()));
+                        list_contract.add(new KeyValueModel("转出设备数量", response.getContractsDetailBasicVO().getOutQuantity() + "台"));
+                        break;
+                    case "merchant_update":
+                        //修改合同
+                        list_contract.add(new KeyValueModel("商户名称", response.getContractsDetailBasicVO().getMerchantName()));
+                        list_contract.add(new KeyValueModel("商户账号", response.getContractsDetailBasicVO().getMerchantAccount()));
+                        list_contract.add(new KeyValueModel("商户联系人", response.getContractsDetailBasicVO().getMerchantContactName()));
+                        list_contract.add(new KeyValueModel("联系电话", response.getContractsDetailBasicVO().getMerchantContactPhone()));
+                        list_contract.add(new KeyValueModel("公司名称", response.getContractsDetailBasicVO().getMerchantCompanyName()));
+                        list_contract.add(new KeyValueModel("营业执照号", response.getContractsDetailBasicVO().getMerchantLicenseNo()));
+                        list_contract.add(new KeyValueModel("商户行业", response.getContractsDetailBasicVO().getMerchantIndustry()));
+                        list_contract.add(new KeyValueModel("所在城市", response.getContractsDetailBasicVO().getMerchantCityName()));
+                        list_contract.add(new KeyValueModel("详细地址", response.getContractsDetailBasicVO().getMerchantAddress()));
+                        iv_contract.setVisibility(View.VISIBLE);
+                        Glide.with(ApproveDetailActivity.this)
+                                .load(response.getContractsDetailBasicVO().getQualificationsImageUrl())
+                                .fitCenter()
+                                .apply(RequestOptions.bitmapTransform(new
+                                        RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
+                                .placeholder(R.mipmap.loading)//加载站位图
+                                .error(R.mipmap.zanwutupian)//加载失败
+                                .into(iv_contract);//加载图片
+                        break;
+                    case "merchant_extend":
+                        //续签合同
+                        list_contract.add(new KeyValueModel("商户名称", response.getContractsDetailBasicVO().getMerchantName()));
+                        list_contract.add(new KeyValueModel("续签年限", response.getContractsDetailBasicVO().getRenewalPeriod()));
+                        list_contract.add(new KeyValueModel("续签时间", response.getContractsDetailBasicVO().getRenewalTime()));
+                        list_contract.add(new KeyValueModel("是否独家", response.getContractsDetailBasicVO().getSole()));
+                        break;
+                    case "merchant_cancel":
+                        //取消合同
+                        list_contract.add(new KeyValueModel("商户名称", response.getContractsDetailBasicVO().getMerchantName()));
+                        list_contract.add(new KeyValueModel("取消原因", response.getContractsDetailBasicVO().getCancelReason()));
+                        break;
+                    case "change_price":
+                        //调价合同
+                        list_contract.add(new KeyValueModel("门店名称", response.getContractsDetailBasicVO().getStoreName()));
+                        list_contract.add(new KeyValueModel("首个小时", response.getContractsDetailBasicVO().getFirstHour()));
+                        list_contract.add(new KeyValueModel("基础计价", response.getContractsDetailBasicVO().getRenewalTime()));
+                        list_contract.add(new KeyValueModel("每日封顶", response.getContractsDetailBasicVO().getDailyTopPrice()));
+                        list_contract.add(new KeyValueModel("免费时长", response.getContractsDetailBasicVO().getFreeTime()));
+                        list_contract.add(new KeyValueModel("计费单元", response.getContractsDetailBasicVO().getBillingUnit()));
+                        list_contract.add(new KeyValueModel("门店加价", response.getContractsDetailBasicVO().getStorePriceIncrease()));
+                        list_contract.add(new KeyValueModel("门店封顶", response.getContractsDetailBasicVO().getStoreTopPrice()));
+                        list_contract.add(new KeyValueModel("调价理由", response.getContractsDetailBasicVO().getReasonName()));
+                        break;
+                }
+                list_contract.add(new KeyValueModel("审核时间", response.getContractsDetailBasicVO().getCheckTime()));
+                list_contract.add(new KeyValueModel("创建时间", response.getContractsDetailBasicVO().getCreateTime()));
 
                 mAdapter_contract = new CommonAdapter<KeyValueModel>
                         (ApproveDetailActivity.this, R.layout.item_keyvalue, list_contract) {
@@ -265,25 +351,17 @@ public class ApproveDetailActivity extends BaseActivity {
                     }
                 };
                 rv_contract.setAdapter(mAdapter_contract);
-                Glide.with(ApproveDetailActivity.this)
-                        .load(response.getWorkFlowApplyLogVo().getImage())
-                        .fitCenter()
-                        .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 10))))
-                        .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.zanwutupian)//加载失败
-                        .into(iv_contract);//加载图片
 
                 /**
                  * 审核合同
                  */
-                list_shenhe = response.getWorkFlowApplylogOperateVo();
+                list_shenhe = response.getContractsDetailBasicVO().getRecords();
                 if (list_shenhe.size() > 0) {
                     showContentPage();
-                    mAdapter_shenhe = new CommonAdapter<ApproveDetailModel.WorkFlowApplylogOperateVoBean>
+                    mAdapter_shenhe = new CommonAdapter<ApproveDetailModel.ContractsDetailBasicVOBean.RecordsBean>
                             (ApproveDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
                         @Override
-                        protected void convert(ViewHolder holder, ApproveDetailModel.WorkFlowApplylogOperateVoBean model, int position) {
+                        protected void convert(ViewHolder holder, ApproveDetailModel.ContractsDetailBasicVOBean.RecordsBean model, int position) {
                             //隐藏最前和最后的竖线
                             View view_top = holder.getView(R.id.view_top);
                             View view_bottom = holder.getView(R.id.view_bottom);
@@ -300,12 +378,12 @@ public class ApproveDetailActivity extends BaseActivity {
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            /*if (model.getImages()!=null){
-                                String[] strArr = model.getImages().split(",");//拆分
+                            if (model.getImager()!=null){
+                                String[] strArr = model.getImager().split(",");//拆分
                                 for (String s : strArr) {
                                     list_img.add(s);
                                 }
-                            }*/
+                            }
                             /*for (String s : model.getImage()) {
                                 list_img.add(s);
                             }*/
@@ -342,15 +420,15 @@ public class ApproveDetailActivity extends BaseActivity {
                             rv.setAdapter(ca);
 
                             ImageView iv_head = holder.getView(R.id.iv_head);
-                            /*Glide.with(ApproveDetailActivity.this)
-                                    .load(model.getHead())
+                            Glide.with(ApproveDetailActivity.this)
+                                    .load(model.getAuditImage())
                                     .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
                                             RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 3))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.headimg)//加载失败
-                                    .into(iv_head);//加载图片*/
-                            holder.setText(R.id.tv_name, model.getUserName());
+                                    .into(iv_head);//加载图片
+                            holder.setText(R.id.tv_name, model.getAuditName());
                             holder.setText(R.id.tv_time, model.getAuditTime());
                             holder.setText(R.id.tv_content, model.getReason());
                             //状态图片

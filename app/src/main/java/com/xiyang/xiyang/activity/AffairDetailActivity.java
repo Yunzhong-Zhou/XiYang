@@ -733,7 +733,6 @@ public class AffairDetailActivity extends BaseActivity {
             }
         }
     }
-
     /**
      * 提交邮寄方式
      * @param params

@@ -271,11 +271,19 @@ public class ContractDetailActivity extends BaseActivity {
                     }
                 };
                 rv_info.setAdapter(mAdapter_info);
-
+                Glide.with(ContractDetailActivity.this)
+                        .load(response.getMerchantLogoUrl())
+                        .fitCenter()
+                        .apply(RequestOptions.bitmapTransform(new
+                                RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
+                        .placeholder(R.mipmap.loading)//加载站位图
+                        .error(R.mipmap.zanwutupian)//加载失败
+                        .into(iv_info);//加载图片
                 /**
                  * 合同信息
                  */
                 list_contract.clear();
+                iv_contract.setVisibility(View.GONE);
                 switch (typeStr) {
                     case "merchant_sign":
                         //签约合同
@@ -284,7 +292,7 @@ public class ContractDetailActivity extends BaseActivity {
                         list_contract.add(new KeyValueModel("签约期限", response.getSignPeriod()));
                         list_contract.add(new KeyValueModel("是否独家", response.getSole()));
                         list_contract.add(new KeyValueModel("签约时间", response.getSignTime()));
-                        iv_info.setVisibility(View.VISIBLE);
+                        iv_contract.setVisibility(View.VISIBLE);
                         Glide.with(ContractDetailActivity.this)
                                 .load(response.getMerchantLogoUrl())
                                 .fitCenter()
@@ -292,14 +300,13 @@ public class ContractDetailActivity extends BaseActivity {
                                         RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
                                 .placeholder(R.mipmap.loading)//加载站位图
                                 .error(R.mipmap.zanwutupian)//加载失败
-                                .into(iv_info);//加载图片
+                                .into(iv_contract);//加载图片
                         break;
                     case "device_add":
                         //新增合同
                         list_contract.add(new KeyValueModel("门店名称", response.getStoreName()));
                         list_contract.add(new KeyValueModel("新增数量", response.getAddQuantity() + "台"));
                         list_contract.add(new KeyValueModel("申领方式", response.getApplyType()));
-                        iv_info.setVisibility(View.GONE);
                         break;
                     case "device_recover":
                         //回收合同
@@ -325,7 +332,7 @@ public class ContractDetailActivity extends BaseActivity {
                         list_contract.add(new KeyValueModel("商户行业", response.getMerchantIndustry()));
                         list_contract.add(new KeyValueModel("所在城市", response.getMerchantCityName()));
                         list_contract.add(new KeyValueModel("详细地址", response.getMerchantAddress()));
-                        iv_info.setVisibility(View.VISIBLE);
+                        iv_contract.setVisibility(View.VISIBLE);
                         Glide.with(ContractDetailActivity.this)
                                 .load(response.getQualificationsImageUrl())
                                 .fitCenter()
@@ -333,7 +340,7 @@ public class ContractDetailActivity extends BaseActivity {
                                         RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
                                 .placeholder(R.mipmap.loading)//加载站位图
                                 .error(R.mipmap.zanwutupian)//加载失败
-                                .into(iv_info);//加载图片
+                                .into(iv_contract);//加载图片
                         break;
                     case "merchant_extend":
                         //续签合同
@@ -371,15 +378,6 @@ public class ContractDetailActivity extends BaseActivity {
                     }
                 };
                 rv_contract.setAdapter(mAdapter_contract);
-                Glide.with(ContractDetailActivity.this)
-                        .load(response.getImage())
-                        .fitCenter()
-                        .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
-                        .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.zanwutupian)//加载失败
-                        .into(iv_contract);//加载图片
-
                 /**
                  * 审核合同
                  */

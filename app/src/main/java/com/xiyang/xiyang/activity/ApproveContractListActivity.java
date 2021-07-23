@@ -193,6 +193,7 @@ public class ApproveContractListActivity extends BaseActivity {
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("id", model.getId());
+                                    bundle.putString("typeStr",model.getType());
                                     CommonUtil.gotoActivityWithData(ApproveContractListActivity.this, ApproveDetailActivity.class, bundle, false);
                                 }
                             });

@@ -53,7 +53,7 @@ public class MyDeviceListActivity extends BaseActivity {
     private View view1, view2,view3;
     private LinearLayout pop_view;
     int page = 1;
-    String sort = "desc", status = "",postionId="",storeId="",instudy="";
+    String sort = "", status = "",postionId="",storeId="",instudy="";
     int i1 = 0;
     int i2 = 0;
     @Override
