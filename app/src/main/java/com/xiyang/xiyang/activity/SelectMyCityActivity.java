@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.MyCityModel;
+import com.xiyang.xiyang.model.SelectMyCityModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -31,10 +31,11 @@ import okhttp3.Response;
  */
 public class SelectMyCityActivity extends BaseActivity {
     int requestCode = 0;
-    String type = "";
+    String job = "";
+
     private RecyclerView recyclerView;
-    List<MyCityModel> list = new ArrayList<>();
-    CommonAdapter<MyCityModel> mAdapter;
+    List<SelectMyCityModel> list = new ArrayList<>();
+    CommonAdapter<SelectMyCityModel> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,10 @@ public class SelectMyCityActivity extends BaseActivity {
 
                 String postionIds = "";
                 String postionCitys = "";
-                for (MyCityModel bean : list) {
+                for (SelectMyCityModel bean : list) {
                     if (bean.isIsxuanzhong()) {
-                        postionIds += bean.getRegionId() + ",";
-                        postionCitys += bean.getRegionName() + ",";
+                        postionIds += bean.getId() + ",";
+                        postionCitys += bean.getName() + ",";
                     }
                 }
                 if (!postionIds.equals("")) {
@@ -88,13 +89,14 @@ public class SelectMyCityActivity extends BaseActivity {
     @Override
     protected void initData() {
         requestCode = getIntent().getIntExtra("requestCode", 0);
+        job = getIntent().getStringExtra("job");
         requestServer();//获取数据
     }
 
     private void requestCity(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.MyCity, params, headerMap, new CallBackUtil<List<MyCityModel>>() {
+        OkhttpUtil.okHttpGet(URLs.StaffCity+job, params, headerMap, new CallBackUtil<List<SelectMyCityModel>>() {
             @Override
-            public List<MyCityModel> onParseResponse(Call call, Response response) {
+            public List<SelectMyCityModel> onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -106,18 +108,18 @@ public class SelectMyCityActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(List<MyCityModel> response) {
+            public void onResponse(List<SelectMyCityModel> response) {
                 showContentPage();
                 hideProgress();
                 list = response;
                 if (list.size() == 0) {
                     showEmptyPage();//空数据
                 } else {
-                    mAdapter = new CommonAdapter<MyCityModel>
+                    mAdapter = new CommonAdapter<SelectMyCityModel>
                             (SelectMyCityActivity.this, R.layout.item_selectmycity, list) {
                         @Override
-                        protected void convert(ViewHolder holder, MyCityModel model, int position) {
-                            holder.setText(R.id.textView, model.getRegionName());//标题
+                        protected void convert(ViewHolder holder, SelectMyCityModel model, int position) {
+                            holder.setText(R.id.textView, model.getName());//标题
                             ImageView iv = holder.getView(R.id.imageView);
                             if (model.isIsxuanzhong()) {
                                 iv.setImageResource(R.mipmap.ic_xuanzhong);
@@ -133,7 +135,6 @@ public class SelectMyCityActivity extends BaseActivity {
                             if (list.get(position).isIsxuanzhong())
                                 list.get(position).setIsxuanzhong(false);
                             else list.get(position).setIsxuanzhong(true);
-
                             mAdapter.notifyDataSetChanged();
                         }
 
@@ -163,10 +164,10 @@ public class SelectMyCityActivity extends BaseActivity {
             public void onClick(View v) {
                 String postionIds = "";
                 String postionCitys = "";
-                for (MyCityModel bean : list) {
+                for (SelectMyCityModel bean : list) {
                     if (bean.isIsxuanzhong()) {
-                        postionIds += bean.getRegionId() + ",";
-                        postionCitys += bean.getRegionName() + ",";
+                        postionIds += bean.getId() + ",";
+                        postionCitys += bean.getName() + ",";
                     }
                 }
                 if (!postionIds.equals("")) {
@@ -190,6 +191,8 @@ public class SelectMyCityActivity extends BaseActivity {
     public void requestServer() {
         super.requestServer();
         this.showLoadingPage();
+        params.clear();
+//        params.put("",)
         requestCity(params);
     }
 

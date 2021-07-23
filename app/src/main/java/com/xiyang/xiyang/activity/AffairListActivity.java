@@ -44,7 +44,7 @@ import okhttp3.Response;
  * 事务列表
  */
 public class AffairListActivity extends BaseActivity {
-    int type = 1;//1、主机、2、4g模块 3、过滤网 4、换绑 5、回收
+    int type = 1;//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
     private RecyclerView recyclerView;
     List<AffairListModel.RecordsBean> list = new ArrayList<>();
     CommonAdapter<AffairListModel.RecordsBean> mAdapter;
@@ -261,7 +261,7 @@ public class AffairListActivity extends BaseActivity {
     protected void updateView() {
 
         Bundle bundle = new Bundle();
-        switch (type) {
+        switch (type) {//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
             case 1:
                 titleView.setTitle("申领主机列表");
                 break;
@@ -282,18 +282,18 @@ public class AffairListActivity extends BaseActivity {
                 });
                 break;
             case 4:
+                titleView.setTitle("设备回收列表");
+                titleView.showRightTextview("回收设备", v -> {
+                    bundle.putInt("item_hetong", 2);
+                    CommonUtil.gotoActivityWithData(AffairListActivity.this, AddContractActivity.class, bundle);
+                });
+                break;
+            case 5:
                 titleView.setTitle("设备换绑列表");
                 titleView.showRightTextview("设备换绑", v -> {
                     bundle.putInt("item_hetong", 3);
                     CommonUtil.gotoActivityWithData(AffairListActivity.this, AddContractActivity.class, bundle);
 //                    CommonUtil.gotoActivity(AffairListActivity.this, ChangeTieDeviceActivity.class);
-                });
-                break;
-            case 5:
-                titleView.setTitle("设备回收列表");
-                titleView.showRightTextview("回收设备", v -> {
-                    bundle.putInt("item_hetong", 2);
-                    CommonUtil.gotoActivityWithData(AffairListActivity.this, AddContractActivity.class, bundle);
                 });
                 break;
         }

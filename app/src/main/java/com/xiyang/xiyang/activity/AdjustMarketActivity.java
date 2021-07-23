@@ -280,6 +280,7 @@ public class AdjustMarketActivity extends BaseActivity {
                         Intent intent2 = new Intent(AdjustMarketActivity.this, SelectMyCityActivity.class);
                         Bundle bundle2 = new Bundle();
                         bundle2.putInt("requestCode", Constant.SELECT_MYCITY);
+                        bundle2.putString("job",job);
                         intent2.putExtras(bundle2);
                         startActivityForResult(intent2, Constant.SELECT_MYCITY, bundle2);
                     }

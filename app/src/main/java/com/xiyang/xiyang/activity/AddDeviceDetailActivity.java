@@ -31,7 +31,6 @@ import okhttp3.Response;
  * 申领设备详情
  */
 public class AddDeviceDetailActivity extends BaseActivity {
-
     int type = 1, type_device = 1;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
@@ -185,9 +184,7 @@ public class AddDeviceDetailActivity extends BaseActivity {
                 holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
-                        CommonUtil.gotoActivityWithData(AddDeviceDetailActivity.this, ContractDetailActivity.class, bundle, false);
+
                     }
                 });
 

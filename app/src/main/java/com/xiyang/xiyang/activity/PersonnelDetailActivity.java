@@ -439,6 +439,7 @@ public class PersonnelDetailActivity extends BaseActivity {
                     case "1":
                         tv_num.setText("处理中");
                         tv_num.setTextColor(getResources().getColor(R.color.black3));
+
                         tv_shenpi.setVisibility(View.VISIBLE);
                         break;
                     case "2":

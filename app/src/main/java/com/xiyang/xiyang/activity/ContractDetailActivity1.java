@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.ContractDetailModel;
+import com.xiyang.xiyang.model.ContractDetailModel1;
 import com.xiyang.xiyang.model.KeyValueModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
@@ -35,24 +35,21 @@ import okhttp3.Response;
  * Created by Mr.Z on 2021/3/30.
  * 合同详情
  */
-public class ContractDetailActivity extends BaseActivity {
+public class ContractDetailActivity1 extends BaseActivity {
     String id = "", typeStr = "";
     int type = 1;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
 
-    ContractDetailModel model;
+    ContractDetailModel1 model;
     TextView tv_name, tv_shop, tv_num, tv_addr;
     ImageView imageView1, imageView2;
     /**
      * 商户信息
      */
     LinearLayout ll_shopinfo;
-    private RecyclerView rv_info;
-    List<KeyValueModel> list_info = new ArrayList<>();
-    CommonAdapter<KeyValueModel> mAdapter_info;
-    ImageView iv_info;
+
     /**
      * 合同信息
      */
@@ -67,8 +64,8 @@ public class ContractDetailActivity extends BaseActivity {
      */
     LinearLayout ll_shenhe;
     RecyclerView rv_shenhe;
-    List<ContractDetailModel.RecordsBean> list_shenhe = new ArrayList<>();
-    CommonAdapter<ContractDetailModel.RecordsBean> mAdapter_shenhe;
+    List<ContractDetailModel1.WorkFlowApplylogOperateVoBean> list_shenhe = new ArrayList<>();
+    CommonAdapter<ContractDetailModel1.WorkFlowApplylogOperateVoBean> mAdapter_shenhe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,9 +113,7 @@ public class ContractDetailActivity extends BaseActivity {
          *商户信息
          */
         ll_shopinfo = findViewByID_My(R.id.ll_shopinfo);
-        rv_info = findViewByID_My(R.id.rv_info);
-        rv_info.setLayoutManager(new LinearLayoutManager(this));
-        iv_info = findViewByID_My(R.id.iv_info);
+
         /**
          * 合同信息
          */
@@ -144,8 +139,8 @@ public class ContractDetailActivity extends BaseActivity {
                 /*PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ContractDetailActivity.this,
                         URLs.IMGHOST + "");
                 photoShowDialog.show();*/
-               /* if (model.getFile() != null && !model.getFile().equals("")) {
-                    bundle.putString("url", model.getFile());
+               /* if (model.getBase().getFile() != null && !model.getBase().getFile().equals("")) {
+                    bundle.putString("url", model.getBase().getFile());
                     CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ShowPDFActivity.class, bundle, false);
                 }else myToast("暂无文件");*/
                 break;
@@ -181,16 +176,6 @@ public class ContractDetailActivity extends BaseActivity {
     protected void initData() {
         id = getIntent().getStringExtra("id");
         typeStr = getIntent().getStringExtra("typeStr");
-        if (typeStr.equals("merchant_sign")){
-            //签约合同-显示商户信息
-            type = 1;
-            ll_tab1.setVisibility(View.VISIBLE);
-        }else {
-            type = 2;
-            ll_tab1.setVisibility(View.GONE);
-        }
-        changeUI();
-
         requestServer();
     }
 
@@ -205,9 +190,9 @@ public class ContractDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params,String url) {
-        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<ContractDetailModel>() {
+        OkhttpUtil.okHttpGet(url, params, headerMap, new CallBackUtil<ContractDetailModel1>() {
             @Override
-            public ContractDetailModel onParseResponse(Call call, Response response) {
+            public ContractDetailModel1 onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -218,18 +203,18 @@ public class ContractDetailActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(ContractDetailModel response) {
+            public void onResponse(ContractDetailModel1 response) {
                 hideProgress();
                 model = response;
-                tv_name.setText(response.getName());
-                tv_shop.setText("《" + response.getTypeName() + "》");
-                tv_num.setText(response.getStatus());
-                tv_addr.setText(response.getContractNumber());
-                Glide.with(ContractDetailActivity.this)
-                        .load(model.getImage())
+                tv_name.setText(response.getContractsVo().getName());
+                tv_shop.setText("《" + response.getContractsVo().getTypeTitle() + "》");
+                tv_num.setText(response.getContractsVo().getStatusTitle());
+                tv_addr.setText(response.getContractsVo().getContractNumber());
+                Glide.with(ContractDetailActivity1.this)
+                        .load(model.getContractsVo().getImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
+                                RoundedCorners(CommonUtil.dip2px(ContractDetailActivity1.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
@@ -237,61 +222,28 @@ public class ContractDetailActivity extends BaseActivity {
                 /**
                  * 商户信息
                  */
-                //基本信息
-                list_info.clear();
-                list_info.add(new KeyValueModel("商户账号", response.getMerchantAccount()));
-                list_info.add(new KeyValueModel("商户联系人", response.getMerchantContactName()));
-                list_info.add(new KeyValueModel("联系电话", response.getMerchantContactPhone()));
-                list_info.add(new KeyValueModel("公司名称", response.getMerchantCompanyName()));
-                list_info.add(new KeyValueModel("营业执照号", response.getMerchantLicenseNo()));
-                list_info.add(new KeyValueModel("商户行业", response.getMerchantIndustry()));
-                list_info.add(new KeyValueModel("所在城市", response.getMerchantCityName()));
-                list_info.add(new KeyValueModel("详细地址", response.getMerchantAddress()));
-                list_info.add(new KeyValueModel("商户封面", ""));
-                mAdapter_info = new CommonAdapter<KeyValueModel>
-                        (ContractDetailActivity.this, R.layout.item_keyvalue, list_info) {
-                    @Override
-                    protected void convert(ViewHolder holder, KeyValueModel model, int position) {
-                        holder.setText(R.id.tv_kay, model.getKey());
-                        holder.setText(R.id.tv_value, "" + model.getValue());
-                    }
-                };
-                rv_info.setAdapter(mAdapter_info);
+
 
                 /**
                  * 合同信息
                  */
                 list_contract.clear();
-                switch (typeStr){
-                    case "merchant_sign":
-                        //签约合同
-                        list_contract.add(new KeyValueModel("合同类型", response.getTypeName()));
-                        list_contract.add(new KeyValueModel("商户名称", response.getMerchantName()));
-                        list_contract.add(new KeyValueModel("签约期限", response.getSignPeriod()));
-                        list_contract.add(new KeyValueModel("是否独家", response.getSole()));
-                        list_contract.add(new KeyValueModel("签约时间", response.getSignTime()));
-                        iv_info.setVisibility(View.VISIBLE);
-                        Glide.with(ContractDetailActivity.this)
-                                .load(response.getMerchantLogoUrl())
-                                .fitCenter()
-                                .apply(RequestOptions.bitmapTransform(new
-                                        RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
-                                .placeholder(R.mipmap.loading)//加载站位图
-                                .error(R.mipmap.zanwutupian)//加载失败
-                                .into(iv_info);//加载图片
-                        break;
-                    case "device_add":
-                        //新增合同
-                        list_contract.add(new KeyValueModel("门店名称", response.getStoreName()));
-                        list_contract.add(new KeyValueModel("新增数量", response.getAddQuantity()));
-                        list_contract.add(new KeyValueModel("申领方式", response.getApplyType()));
-                        iv_info.setVisibility(View.GONE);
-                        break;
-                }
-                list_contract.add(new KeyValueModel("审核时间", response.getCheckTime()));
-                list_contract.add(new KeyValueModel("创建时间", response.getCreateTime()));
+                list_contract.add(new KeyValueModel("合同类型", response.getContractsVo().getTypeTitle()));
+                list_contract.add(new KeyValueModel("商户名称", response.getContractsVo().getName()));
+
+                //签约合同
+                /*if (response.getContractsVo().getSole() != null) {
+                    list_contract.add(new KeyValueModel("签约期限", response.getContractsVo().getRenewalPeriod() + "年"));
+                    if (response.getContractsVo().getSole().equals("1"))
+                        list_contract.add(new KeyValueModel("是否独家", "是"));
+                    else list_contract.add(new KeyValueModel("是否独家", "否"));
+                }*/
+
+
+                list_contract.add(new KeyValueModel("审核时间", response.getContractsVo().getAuditTime()));
+
                 mAdapter_contract = new CommonAdapter<KeyValueModel>
-                        (ContractDetailActivity.this, R.layout.item_keyvalue, list_contract) {
+                        (ContractDetailActivity1.this, R.layout.item_keyvalue, list_contract) {
                     @Override
                     protected void convert(ViewHolder holder, KeyValueModel model, int position) {
                         holder.setText(R.id.tv_kay, model.getKey());
@@ -299,11 +251,11 @@ public class ContractDetailActivity extends BaseActivity {
                     }
                 };
                 rv_contract.setAdapter(mAdapter_contract);
-                Glide.with(ContractDetailActivity.this)
-                        .load(response.getImage())
+                Glide.with(ContractDetailActivity1.this)
+                        .load(response.getContractsVo().getImage())
                         .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
+                                RoundedCorners(CommonUtil.dip2px(ContractDetailActivity1.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(iv_contract);//加载图片
@@ -311,13 +263,13 @@ public class ContractDetailActivity extends BaseActivity {
                 /**
                  * 审核合同
                  */
-                list_shenhe = response.getRecords();
+                list_shenhe = response.getWorkFlowApplylogOperateVo();
                 if (list_shenhe.size() > 0) {
                     showContentPage();
-                    mAdapter_shenhe = new CommonAdapter<ContractDetailModel.RecordsBean>
-                            (ContractDetailActivity.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
+                    mAdapter_shenhe = new CommonAdapter<ContractDetailModel1.WorkFlowApplylogOperateVoBean>
+                            (ContractDetailActivity1.this, R.layout.item_contractdetail_shenhe, list_shenhe) {
                         @Override
-                        protected void convert(ViewHolder holder, ContractDetailModel.RecordsBean model, int position) {
+                        protected void convert(ViewHolder holder, ContractDetailModel1.WorkFlowApplylogOperateVoBean model, int position) {
                             //隐藏最前和最后的竖线
                             View view_top = holder.getView(R.id.view_top);
                             View view_bottom = holder.getView(R.id.view_bottom);
@@ -334,28 +286,28 @@ public class ContractDetailActivity extends BaseActivity {
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            if (model.getImager()!=null){
-                                String[] strArr = model.getImager().split(",");//拆分
+                            /*if (model.getImages()!=null){
+                                String[] strArr = model.getImages().split(",");//拆分
                                 for (String s : strArr) {
                                     list_img.add(s);
                                 }
-                            }
+                            }*/
                             /*for (String s : model.getImage()) {
                                 list_img.add(s);
                             }*/
                             RecyclerView rv = holder.getView(R.id.rv);
-                            LinearLayoutManager llm1 = new LinearLayoutManager(ContractDetailActivity.this);
+                            LinearLayoutManager llm1 = new LinearLayoutManager(ContractDetailActivity1.this);
                             llm1.setOrientation(LinearLayoutManager.HORIZONTAL);// 设置 recyclerview 布局方式为横向布局
                             rv.setLayoutManager(llm1);
                             CommonAdapter<String> ca = new CommonAdapter<String>
-                                    (ContractDetailActivity.this, R.layout.item_img_28_28, list_img) {
+                                    (ContractDetailActivity1.this, R.layout.item_img_28_28, list_img) {
                                 @Override
                                 protected void convert(ViewHolder holder, String model, int position) {
                                     ImageView iv = holder.getView(R.id.iv);
-                                    Glide.with(ContractDetailActivity.this).load(model)
+                                    Glide.with(ContractDetailActivity1.this).load(model)
                                             .centerCrop()
                                             .apply(RequestOptions.bitmapTransform(new
-                                                    RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 7))))
+                                                    RoundedCorners(CommonUtil.dip2px(ContractDetailActivity1.this, 7))))
                                             .placeholder(R.mipmap.loading)//加载站位图
                                             .error(R.mipmap.zanwutupian)//加载失败
                                             .into(iv);//加载图片
@@ -364,7 +316,7 @@ public class ContractDetailActivity extends BaseActivity {
                             ca.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(ContractDetailActivity.this, list_img, i);
+                                    PhotoShowDialog photoShowDialog = new PhotoShowDialog(ContractDetailActivity1.this, list_img, i);
                                     photoShowDialog.show();
                                 }
 
@@ -376,15 +328,15 @@ public class ContractDetailActivity extends BaseActivity {
                             rv.setAdapter(ca);
 
                             ImageView iv_head = holder.getView(R.id.iv_head);
-                            Glide.with(ContractDetailActivity.this)
-                                    .load(model.getAuditImage())
+                            /*Glide.with(ApproveDetailActivity.this)
+                                    .load(model.getHead())
                                     .fitCenter()
                                     .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 3))))
+                                            RoundedCorners(CommonUtil.dip2px(ApproveDetailActivity.this, 3))))
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.headimg)//加载失败
-                                    .into(iv_head);//加载图片
-                            holder.setText(R.id.tv_name, model.getAuditName());
+                                    .into(iv_head);//加载图片*/
+                            holder.setText(R.id.tv_name, model.getUserName());
                             holder.setText(R.id.tv_time, model.getAuditTime());
                             holder.setText(R.id.tv_content, model.getReason());
                             //状态图片
@@ -436,6 +388,13 @@ public class ContractDetailActivity extends BaseActivity {
                 ll_contract.setVisibility(View.GONE);
                 ll_shenhe.setVisibility(View.GONE);
 
+                /*if (list1.size() > 0) {
+                    showContentPage();
+                    recyclerView1.setAdapter(mAdapter1);
+//                mAdapter1.notifyDataSetChanged();
+                } else {
+                    showEmptyPage();
+                }*/
                 break;
             case 2:
                 tv_tab1.setTextColor(getResources().getColor(R.color.black3));

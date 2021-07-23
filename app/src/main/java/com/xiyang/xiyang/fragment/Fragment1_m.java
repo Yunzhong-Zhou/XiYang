@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
+import com.cy.cyflowlayoutlibrary.FlowLayout;
+import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.liaoinstan.springview.widget.SpringView;
 import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
@@ -364,37 +366,42 @@ public class Fragment1_m extends BaseFragment {
 
                             TextView tv_bdm = holder.getView(R.id.tv_bdm);
                             TextView tv_bd = holder.getView(R.id.tv_bd);
-                            TextView tv_city1 = holder.getView(R.id.tv_city1);
-                            TextView tv_city2 = holder.getView(R.id.tv_city1);
-
-
                             tv_bdm.setVisibility(View.VISIBLE);
                             tv_bd.setVisibility(View.VISIBLE);
-                            tv_city1.setVisibility(View.VISIBLE);
-                            tv_city2.setVisibility(View.VISIBLE);
-
-
                             switch (localUserInfo.getUserJob()) {
                                 case "CM":
                                     tv_bdm.setText("BDM:" + model.getStatisticInfo().getBdmNumber());
                                     tv_bd.setText("BD:" + model.getStatisticInfo().getBdNumber());
-                                    tv_city1.setText(model.getAddress());
-                                    tv_city2.setText(model.getAddress());
                                     break;
                                 case "BDM":
                                     tv_bdm.setVisibility(View.GONE);
-
                                     tv_bd.setText("BD:" + model.getStatisticInfo().getBdmNumber());
-                                    tv_city1.setText(model.getAddress());
-                                    tv_city2.setText(model.getAddress());
                                     break;
                                 case "BD":
                                     tv_bdm.setVisibility(View.GONE);
                                     tv_bd.setVisibility(View.GONE);
-                                    tv_city2.setVisibility(View.VISIBLE);
-                                    tv_city1.setText(model.getAddress());
                                     break;
                             }
+                            //负责城市
+                            FlowLayout flowLayout = holder.getView(R.id.flowLayout);
+                            FlowLayoutAdapter<SubordinateModel.RegionsBean> flowLayoutAdapter = new FlowLayoutAdapter<SubordinateModel.RegionsBean>(model.getRegions()) {
+                                @Override
+                                public void bindDataToView(FlowLayoutAdapter.ViewHolder holder, int position, SubordinateModel.RegionsBean bean) {
+                                    holder.setText(R.id.tv, bean.getNameX());
+                                }
+
+                                @Override
+                                public void onItemClick(int position, SubordinateModel.RegionsBean bean) {
+
+                                }
+
+                                @Override
+                                public int getItemLayoutID(int position, SubordinateModel.RegionsBean bean) {
+                                    return R.layout.item_flowlayout_yuanjiaobiankuang;
+                                }
+                            };
+
+                            flowLayout.setAdapter(flowLayoutAdapter);
 
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override

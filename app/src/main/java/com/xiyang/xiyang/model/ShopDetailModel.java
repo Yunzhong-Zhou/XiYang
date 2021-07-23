@@ -641,11 +641,28 @@ public class ShopDetailModel implements Serializable {
          * type : merchant_sign
          * createTime : 2021-07-14 10:33:19
          */
-
         private String id;
         private String status;
         private String type;
+        private String typeStr;
         private String createTime;
+        private String statusTitle;
+
+        public String getTypeStr() {
+            return typeStr;
+        }
+
+        public void setTypeStr(String typeStr) {
+            this.typeStr = typeStr;
+        }
+
+        public String getStatusTitle() {
+            return statusTitle;
+        }
+
+        public void setStatusTitle(String statusTitle) {
+            this.statusTitle = statusTitle;
+        }
 
         public String getId() {
             return id;

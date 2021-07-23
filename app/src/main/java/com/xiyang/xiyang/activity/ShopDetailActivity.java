@@ -362,7 +362,7 @@ public class ShopDetailActivity extends BaseActivity {
                 /**
                  * 商户信息 - 已审核
                  */
-                //基本信息 - 已审核
+                //基本信息
                 list_info.clear();
                 list_info.add(new KeyValueModel("商户ID", response.getBase().getId()));
                 list_info.add(new KeyValueModel("商户名称", response.getBase().getName()));
@@ -484,9 +484,9 @@ public class ShopDetailActivity extends BaseActivity {
                         (ShopDetailActivity.this, R.layout.item_shopdetail_contract, list_contract) {
                     @Override
                     protected void convert(ViewHolder holder, ShopDetailModel.ContractsListBean model, int position) {
-                        holder.setText(R.id.tv1, "《" + model.getType() + "》");
+                        holder.setText(R.id.tv1, "《" + model.getTypeStr() + "》");
                         TextView tv2 = holder.getView(R.id.tv2);
-                        tv2.setText(model.getStatus());
+                        tv2.setText(model.getStatusTitle());
                         switch (model.getStatus()) {
                             case "1":
                                 tv2.setTextColor(getResources().getColor(R.color.green));
@@ -504,7 +504,8 @@ public class ShopDetailActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 Bundle bundle = new Bundle();
-//                    bundle.putString("id",model.getId());
+                                bundle.putString("id", model.getId());
+                                bundle.putString("typeStr", model.getType());
                                 CommonUtil.gotoActivityWithData(ShopDetailActivity.this, ContractDetailActivity.class, bundle, false);
                             }
                         });

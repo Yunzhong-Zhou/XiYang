@@ -191,9 +191,16 @@ public class StaffDetailActivity extends BaseActivity {
                 list_info.add(new KeyValueModel("帐号", response.getUsername()));
                 list_info.add(new KeyValueModel("联系手机号", response.getPhone()));
                 list_info.add(new KeyValueModel("性别", response.getGender()));
+                String city = "";
+                for (StaffDetailModel.RegionsBean bean : model.getRegions()) {
+                    city = city + bean.getNameX()+ "、";
+                }
+                if (!city.equals("")) {
+                    city = city.substring(0, city.length() - 1);
+                }
                 switch (response.getOrganName()) {
                     case "CM":
-//                        list_info.add(new KeyValueModel("负责城市", response.getRegionName()));
+                        list_info.add(new KeyValueModel("负责城市", city));
                         list_info.add(new KeyValueModel("加入时间", response.getJoinTime()));
                         list_info.add(new KeyValueModel("所属分公司", response.getChildCompany()));
                         list_info.add(new KeyValueModel("已用指标", response.getUsedIndicators()));
@@ -201,18 +208,18 @@ public class StaffDetailActivity extends BaseActivity {
 
                         break;
                     case "BDM":
-//                        list_info.add(new KeyValueModel("负责区县", response.getRegionName()));
+                        list_info.add(new KeyValueModel("负责区县", city));
                         list_info.add(new KeyValueModel("加入时间", response.getJoinTime()));
                         list_info.add(new KeyValueModel("所属分公司", response.getChildCompany()));
                         break;
                     case "BD":
-//                        list_info.add(new KeyValueModel("所属区域", response.getRegionName()));
+                        list_info.add(new KeyValueModel("所属区域", city));
                         list_info.add(new KeyValueModel("加入时间", response.getJoinTime()));
                         list_info.add(new KeyValueModel("所属分公司", response.getChildCompany()));
                         break;
                 }
 
-//                list_info.add(new KeyValueModel("领货仓库", response.getwarehouseName()));
+                list_info.add(new KeyValueModel("领货仓库", response.getWarehouseName()));
 //                list_info.add(new KeyValueModel("职业状态", response.get));
 //                list_info.add(new KeyValueModel("类型", response.get));
 //                list_info.add(new KeyValueModel("等级", response.get));

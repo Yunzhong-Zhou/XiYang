@@ -96,10 +96,11 @@ public class AdjustJobActivity extends BaseActivity {
 
 
         if (localUserInfo.getUserJob().equals("RM")) {
-            if (!job.equals("cm")) {
+            if (!job.equals("CM")) {
                 list_juese.add("CM");
             }
         }
+
         list_juese.add("BDM");
         list_juese.add("BD");
         editText2.setText(list_juese.get(itme_juese));
@@ -240,6 +241,7 @@ public class AdjustJobActivity extends BaseActivity {
                         Intent intent2 = new Intent(AdjustJobActivity.this, SelectMyCityActivity.class);
                         Bundle bundle2 = new Bundle();
                         bundle2.putInt("requestCode", Constant.SELECT_MYCITY);
+                        bundle2.putString("job",editText2.getText().toString());
                         intent2.putExtras(bundle2);
                         startActivityForResult(intent2, Constant.SELECT_MYCITY, bundle2);
                     }

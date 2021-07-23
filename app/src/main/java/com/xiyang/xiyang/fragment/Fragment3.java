@@ -326,8 +326,8 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout6:
                 //安装设备
-//                CommonUtil.gotoActivity(getActivity(), InstallDeviceActivity.class);
-                CommonUtil.gotoActivity(getActivity(), AffairListActivity.class);
+                bundle.putInt("type", 1);//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
                 break;
             case R.id.linearLayout7:
                 //调试设备
@@ -341,12 +341,12 @@ public class Fragment3 extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //回收设备
-                bundle.putInt("type", 5);//1、主机、2、4g模块 3、过滤网 4、换绑 5、回收
+                bundle.putInt("type", 4);//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
                 CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
                 break;
             case R.id.linearLayout9:
                 //设备换绑
-                bundle.putInt("type", 4);//1、主机、2、4g模块 3、过滤网 4、换绑 5、回收
+                bundle.putInt("type", 5);//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
                 CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
                 break;
             case R.id.linearLayout10:

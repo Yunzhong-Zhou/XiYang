@@ -1,63 +1,51 @@
 package com.xiyang.xiyang.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Mr.Z on 2021/4/19.
  */
 public class SelectMyCityModel implements Serializable {
-    private List<ListBean> list;
+    /**
+     * id : 0
+     * name : string
+     * level : 0
+     */
 
-    public List<ListBean> getList() {
-        return list;
+    private String id;
+    private String name;
+    private String level;
+    private boolean isxuanzhong = false;
+
+    public boolean isIsxuanzhong() {
+        return isxuanzhong;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setIsxuanzhong(boolean isxuanzhong) {
+        this.isxuanzhong = isxuanzhong;
     }
 
-    public static class ListBean implements Serializable{
-        /**
-         * id : 210100
-         * name : 沈阳市
-         * parentId : 210000
-         */
-        private boolean isxuanzhong = false;
-        private String id;
-        private String name;
-        private String parentId;
+    public String getId() {
+        return id;
+    }
 
-        public boolean isIsxuanzhong() {
-            return isxuanzhong;
-        }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-        public void setIsxuanzhong(boolean isxuanzhong) {
-            this.isxuanzhong = isxuanzhong;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public String getId() {
-            return id;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public void setId(String id) {
-            this.id = id;
-        }
+    public String getLevel() {
+        return level;
+    }
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getParentId() {
-            return parentId;
-        }
-
-        public void setParentId(String parentId) {
-            this.parentId = parentId;
-        }
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

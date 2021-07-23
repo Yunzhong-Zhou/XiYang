@@ -30,6 +30,7 @@ import okhttp3.Response;
  */
 public class DeviceDetailActivity extends BaseActivity {
     String deviceName = "";
+    DeviceDetailModel model;
     /**
      * 基本信息
      */
@@ -102,7 +103,7 @@ public class DeviceDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_tiaoshi:
                 //调试设备
-                bundle.putString("deviceName", deviceName);
+                bundle.putString("deviceName", model.getHostName());
                 CommonUtil.gotoActivityWithData(DeviceDetailActivity.this, DebugDeviceActivity.class, bundle, false);
                 break;
             case R.id.tv_shangbao:
@@ -112,7 +113,8 @@ public class DeviceDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_weixiu:
                 //维修记录
-                CommonUtil.gotoActivity(DeviceDetailActivity.this, AffairListActivity.class);
+                bundle.putString("fetch", "1");//1待接工单2我的工单
+                CommonUtil.gotoActivityWithData(DeviceDetailActivity.this, MyWorkListActivity.class, bundle);
                 break;
         }
     }
@@ -149,7 +151,7 @@ public class DeviceDetailActivity extends BaseActivity {
             @Override
             public void onResponse(DeviceDetailModel response) {
                 hideProgress();
-//                model = response;
+                model = response;
                 /**
                  * 基本信息
                  */

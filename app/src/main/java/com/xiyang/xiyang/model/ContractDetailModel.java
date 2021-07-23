@@ -8,282 +8,315 @@ import java.util.List;
  */
 public class ContractDetailModel implements Serializable {
     /**
-     * contractsVo : {"id":"1416981047563915264","contractNumber":"457a11e7-2558-4a2c-8c24-bf9fee543413","storeId":"1415855164790804480","name":null,"image":null,"contractType":null,"typeTitle":null,"status":1,"statusTitle":null,"createdAt":null,"signedAt":null,"signedDateLimit":null,"isOnlyOperation":null,"contractsFileUrl":null,"listContractsAddFileVos":null,"storesName":null,"appendMun":null,"auditTime":null,"createTime":"Mon Jul 19 12:39:43 CST 2021","contractsFile":null,"type":"device_recover","contractStatus":null}
-     * workFlowApplylogOperateVo : [{"userName":"19000000004","auditTime":null,"auditStat":null,"reason":null}]
+     * checkTime : 2021-07-22T09:21:17.945Z
+     * contractNumber : string
+     * contractUrl : string
+     * createTime : 2021-07-22T09:21:17.945Z
+     * id : string
+     * image : string
+     * merchantAccount : string
+     * merchantAddress : string
+     * merchantCityName : string
+     * merchantCompanyName : string
+     * merchantContactName : string
+     * merchantContactPhone : string
+     * merchantIndustry : string
+     * merchantLicenseNo : string
+     * merchantLogoUrl : string
+     * merchantName : string
+     * name : string
+     * qualificationsImageUrl : string
+     * records : [{"auditImage":"string","auditName":"string","auditStat":0,"auditTime":"2021-07-22T09:21:17.945Z","imager":"string","reason":"string"}]
+     * signPeriod : 0
+     * signTime : 2021-07-22T09:21:17.945Z
+     * sole : 0
+     * status : 0
+     * typeName : string
      */
 
-    private ContractsVoBean contractsVo;
-    private List<WorkFlowApplylogOperateVoBean> workFlowApplylogOperateVo;
+    private String checkTime;
+    private String contractNumber;
+    private String contractUrl;
+    private String createTime;
+    private String id;
+    private String image;
+    private String merchantAccount;
+    private String merchantAddress;
+    private String merchantCityName;
+    private String merchantCompanyName;
+    private String merchantContactName;
+    private String merchantContactPhone;
+    private String merchantIndustry;
+    private String merchantLicenseNo;
+    private String merchantLogoUrl;
+    private String merchantName;
+    private String name;
+    private String qualificationsImageUrl;
+    private String signPeriod;
+    private String signTime;
+    private String sole;
+    private String status;
+    private String typeName;
+    private List<RecordsBean> records;
+    /**
+     * addQuantity : 0
+     * applyType : 0
+     * records : [{"auditImage":"string","auditName":"string","auditStat":0,"auditTime":"2021-07-22T09:49:34.889Z","imager":"string","reason":"string"}]
+     * status : 0
+     * storeName : string
+     */
 
-    public ContractsVoBean getContractsVo() {
-        return contractsVo;
+    private String addQuantity;
+    private String applyType;
+    private String storeName;
+
+    public String getCheckTime() {
+        return checkTime;
     }
 
-    public void setContractsVo(ContractsVoBean contractsVo) {
-        this.contractsVo = contractsVo;
+    public void setCheckTime(String checkTime) {
+        this.checkTime = checkTime;
     }
 
-    public List<WorkFlowApplylogOperateVoBean> getWorkFlowApplylogOperateVo() {
-        return workFlowApplylogOperateVo;
+    public String getContractNumber() {
+        return contractNumber;
     }
 
-    public void setWorkFlowApplylogOperateVo(List<WorkFlowApplylogOperateVoBean> workFlowApplylogOperateVo) {
-        this.workFlowApplylogOperateVo = workFlowApplylogOperateVo;
+    public void setContractNumber(String contractNumber) {
+        this.contractNumber = contractNumber;
     }
 
-    public static class ContractsVoBean {
+    public String getContractUrl() {
+        return contractUrl;
+    }
+
+    public void setContractUrl(String contractUrl) {
+        this.contractUrl = contractUrl;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getMerchantAccount() {
+        return merchantAccount;
+    }
+
+    public void setMerchantAccount(String merchantAccount) {
+        this.merchantAccount = merchantAccount;
+    }
+
+    public String getMerchantAddress() {
+        return merchantAddress;
+    }
+
+    public void setMerchantAddress(String merchantAddress) {
+        this.merchantAddress = merchantAddress;
+    }
+
+    public String getMerchantCityName() {
+        return merchantCityName;
+    }
+
+    public void setMerchantCityName(String merchantCityName) {
+        this.merchantCityName = merchantCityName;
+    }
+
+    public String getMerchantCompanyName() {
+        return merchantCompanyName;
+    }
+
+    public void setMerchantCompanyName(String merchantCompanyName) {
+        this.merchantCompanyName = merchantCompanyName;
+    }
+
+    public String getMerchantContactName() {
+        return merchantContactName;
+    }
+
+    public void setMerchantContactName(String merchantContactName) {
+        this.merchantContactName = merchantContactName;
+    }
+
+    public String getMerchantContactPhone() {
+        return merchantContactPhone;
+    }
+
+    public void setMerchantContactPhone(String merchantContactPhone) {
+        this.merchantContactPhone = merchantContactPhone;
+    }
+
+    public String getMerchantIndustry() {
+        return merchantIndustry;
+    }
+
+    public void setMerchantIndustry(String merchantIndustry) {
+        this.merchantIndustry = merchantIndustry;
+    }
+
+    public String getMerchantLicenseNo() {
+        return merchantLicenseNo;
+    }
+
+    public void setMerchantLicenseNo(String merchantLicenseNo) {
+        this.merchantLicenseNo = merchantLicenseNo;
+    }
+
+    public String getMerchantLogoUrl() {
+        return merchantLogoUrl;
+    }
+
+    public void setMerchantLogoUrl(String merchantLogoUrl) {
+        this.merchantLogoUrl = merchantLogoUrl;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getQualificationsImageUrl() {
+        return qualificationsImageUrl;
+    }
+
+    public void setQualificationsImageUrl(String qualificationsImageUrl) {
+        this.qualificationsImageUrl = qualificationsImageUrl;
+    }
+
+    public String getSignPeriod() {
+        return signPeriod;
+    }
+
+    public void setSignPeriod(String signPeriod) {
+        this.signPeriod = signPeriod;
+    }
+
+    public String getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(String signTime) {
+        this.signTime = signTime;
+    }
+
+    public String getSole() {
+        return sole;
+    }
+
+    public void setSole(String sole) {
+        this.sole = sole;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public List<RecordsBean> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<RecordsBean> records) {
+        this.records = records;
+    }
+
+    public String getAddQuantity() {
+        return addQuantity;
+    }
+
+    public void setAddQuantity(String addQuantity) {
+        this.addQuantity = addQuantity;
+    }
+
+    public String getApplyType() {
+        return applyType;
+    }
+
+    public void setApplyType(String applyType) {
+        this.applyType = applyType;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public static class RecordsBean {
         /**
-         * id : 1416981047563915264
-         * contractNumber : 457a11e7-2558-4a2c-8c24-bf9fee543413
-         * storeId : 1415855164790804480
-         * name : null
-         * image : null
-         * contractType : null
-         * typeTitle : null
-         * status : 1
-         * statusTitle : null
-         * createdAt : null
-         * signedAt : null
-         * signedDateLimit : null
-         * isOnlyOperation : null
-         * contractsFileUrl : null
-         * listContractsAddFileVos : null
-         * storesName : null
-         * appendMun : null
-         * auditTime : null
-         * createTime : Mon Jul 19 12:39:43 CST 2021
-         * contractsFile : null
-         * type : device_recover
-         * contractStatus : null
+         * auditImage : string
+         * auditName : string
+         * auditStat : 0
+         * auditTime : 2021-07-22T09:21:17.945Z
+         * imager : string
+         * reason : string
          */
 
-        private String id;
-        private String contractNumber;
-        private String storeId;
-        private String name;
-        private String image;
-        private String contractType;
-        private String typeTitle;
-        private String status;
-        private String statusTitle;
-        private String createdAt;
-        private String signedAt;
-        private String signedDateLimit;
-        private String isOnlyOperation;
-        private String contractsFileUrl;
-        private String listContractsAddFileVos;
-        private String storesName;
-        private String appendMun;
-        private String auditTime;
-        private String createTime;
-        private String contractsFile;
-        private String type;
-        private String contractStatus;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getContractNumber() {
-            return contractNumber;
-        }
-
-        public void setContractNumber(String contractNumber) {
-            this.contractNumber = contractNumber;
-        }
-
-        public String getStoreId() {
-            return storeId;
-        }
-
-        public void setStoreId(String storeId) {
-            this.storeId = storeId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public String getContractType() {
-            return contractType;
-        }
-
-        public void setContractType(String contractType) {
-            this.contractType = contractType;
-        }
-
-        public String getTypeTitle() {
-            return typeTitle;
-        }
-
-        public void setTypeTitle(String typeTitle) {
-            this.typeTitle = typeTitle;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getStatusTitle() {
-            return statusTitle;
-        }
-
-        public void setStatusTitle(String statusTitle) {
-            this.statusTitle = statusTitle;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
-
-        public String getSignedAt() {
-            return signedAt;
-        }
-
-        public void setSignedAt(String signedAt) {
-            this.signedAt = signedAt;
-        }
-
-        public String getSignedDateLimit() {
-            return signedDateLimit;
-        }
-
-        public void setSignedDateLimit(String signedDateLimit) {
-            this.signedDateLimit = signedDateLimit;
-        }
-
-        public String getIsOnlyOperation() {
-            return isOnlyOperation;
-        }
-
-        public void setIsOnlyOperation(String isOnlyOperation) {
-            this.isOnlyOperation = isOnlyOperation;
-        }
-
-        public String getContractsFileUrl() {
-            return contractsFileUrl;
-        }
-
-        public void setContractsFileUrl(String contractsFileUrl) {
-            this.contractsFileUrl = contractsFileUrl;
-        }
-
-        public String getListContractsAddFileVos() {
-            return listContractsAddFileVos;
-        }
-
-        public void setListContractsAddFileVos(String listContractsAddFileVos) {
-            this.listContractsAddFileVos = listContractsAddFileVos;
-        }
-
-        public String getStoresName() {
-            return storesName;
-        }
-
-        public void setStoresName(String storesName) {
-            this.storesName = storesName;
-        }
-
-        public String getAppendMun() {
-            return appendMun;
-        }
-
-        public void setAppendMun(String appendMun) {
-            this.appendMun = appendMun;
-        }
-
-        public String getAuditTime() {
-            return auditTime;
-        }
-
-        public void setAuditTime(String auditTime) {
-            this.auditTime = auditTime;
-        }
-
-        public String getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
-        }
-
-        public String getContractsFile() {
-            return contractsFile;
-        }
-
-        public void setContractsFile(String contractsFile) {
-            this.contractsFile = contractsFile;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getContractStatus() {
-            return contractStatus;
-        }
-
-        public void setContractStatus(String contractStatus) {
-            this.contractStatus = contractStatus;
-        }
-    }
-
-    public static class WorkFlowApplylogOperateVoBean {
-        /**
-         * userName : 19000000004
-         * auditTime : null
-         * auditStat : null
-         * reason : null
-         */
-
-        private String userName;
-        private String auditTime;
+        private String auditImage;
+        private String auditName;
         private String auditStat;
+        private String auditTime;
+        private String imager;
         private String reason;
 
-        public String getUserName() {
-            return userName;
+        public String getAuditImage() {
+            return auditImage;
         }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
+        public void setAuditImage(String auditImage) {
+            this.auditImage = auditImage;
         }
 
-        public String getAuditTime() {
-            return auditTime;
+        public String getAuditName() {
+            return auditName;
         }
 
-        public void setAuditTime(String auditTime) {
-            this.auditTime = auditTime;
+        public void setAuditName(String auditName) {
+            this.auditName = auditName;
         }
 
         public String getAuditStat() {
@@ -292,6 +325,22 @@ public class ContractDetailModel implements Serializable {
 
         public void setAuditStat(String auditStat) {
             this.auditStat = auditStat;
+        }
+
+        public String getAuditTime() {
+            return auditTime;
+        }
+
+        public void setAuditTime(String auditTime) {
+            this.auditTime = auditTime;
+        }
+
+        public String getImager() {
+            return imager;
+        }
+
+        public void setImager(String imager) {
+            this.imager = imager;
         }
 
         public String getReason() {

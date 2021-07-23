@@ -1,6 +1,9 @@
 package com.xiyang.xiyang.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Mr.Z on 2021/5/11.
@@ -43,6 +46,8 @@ public class StaffDetailModel implements Serializable {
     private String childCompany;
     private String warehouseId;
     private String warehouseName;
+    private List<RegionsBean> regions;
+
 
     public String getWarehouseId() {
         return warehouseId;
@@ -188,6 +193,14 @@ public class StaffDetailModel implements Serializable {
         this.childCompany = childCompany;
     }
 
+    public List<RegionsBean> getRegions() {
+        return regions;
+    }
+
+    public void setRegions(List<RegionsBean> regions) {
+        this.regions = regions;
+    }
+
     public static class StatisticInfoBean {
         /**
          * organId : 1415121040921829377
@@ -281,6 +294,43 @@ public class StaffDetailModel implements Serializable {
 
         public void setMoney(String money) {
             this.money = money;
+        }
+    }
+
+    public static class RegionsBean {
+        /**
+         * id : 130000
+         * name : 河北省
+         * level : 1
+         */
+
+        private int id;
+        @SerializedName("name")
+        private String nameX;
+        private int level;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getNameX() {
+            return nameX;
+        }
+
+        public void setNameX(String nameX) {
+            this.nameX = nameX;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
         }
     }
 }

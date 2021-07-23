@@ -97,7 +97,7 @@ public class URLs {
     //我的合同列表
     public static final String MyContract = HOST + "/bd/bdservice/getContractsListInfo";
     //合同详情
-    public static final String ContractDetail = HOST + "/bd/bdservice/getContractsDetailInfo/";
+    public static final String ContractDetail = HOST + "/bd/bdservice/getContractsDetail/";
     //划转商户
     public static final String TransferShop = HOST + "/bd/merchant/transfer/add/apply";
     /**
@@ -105,7 +105,7 @@ public class URLs {
      */
     public static final String Fragment1_m = HOST + "/service-ucenter/organ/home";
     //员工负责城市-无统计数据
-    public static final String StaffCity = HOST + "/service-ucenter/organ/region/listLoginOrganUserCity";
+    public static final String StaffCity = HOST + "/service-ucenter//organ/region/platListLoginOrganUserLevelCity/";
     //选择权限城市-有统计数据
     public static final String MyCity = HOST + "/service-ucenter/organ/region/getLoginOrganUserCityStatistic";
     //添加员工

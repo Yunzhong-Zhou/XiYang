@@ -66,7 +66,6 @@ public class MyContractActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        requestServer();//获取数据
     }
 
     @Override
@@ -115,7 +114,7 @@ public class MyContractActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        requestServer();//获取数据
     }
 
     private void requestList(Map<String, String> params) {
@@ -179,6 +178,7 @@ public class MyContractActivity extends BaseActivity {
 //                                    } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("id", model.getId());
+                                    bundle.putString("typeStr", model.getContractType());
                                     CommonUtil.gotoActivityWithData(MyContractActivity.this, ContractDetailActivity.class, bundle, false);
                                     /*switch (model.getContractType()){
                                         case "设备添加":
