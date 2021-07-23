@@ -317,7 +317,7 @@ public class URLs {
     //关于我们
     public static final String About = HOST + API + "about";
     //分润记录
-    public static final String ShareProfitList = HOST + "/order/consumerOrder/appOpenQueryOderSharePage";
+    public static final String ShareProfitList = HOST + "/consumerOrder/order/appOpenQueryOderSharePage";
     //系统公告
     public static final String Information = HOST + "/applet/notice/openPage";
 

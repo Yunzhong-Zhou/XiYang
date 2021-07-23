@@ -14,6 +14,11 @@ public class AffairDetailModel implements Serializable {
 
     private AddDeivceTransactionsVoBean addDeivceTransactionsVo;
     private List<DeviceInstallLogVoListBean> deviceInstallLogVoList;
+    /**
+     * logistics : {"id":"1418484733290180610","type":2,"relationType":1,"relationId":"1415214942927327232","expressWay":1,"status":2,"voucher":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/23/16270280884271627027885216.png","checkAdminScopeOrganId":"1415128701016973313","checkAdminId":"1415128701008584706","adminId":"1415128701008584706","createTime":"2021-07-23 16:14:48","delFlag":0}
+     */
+
+    private LogisticsBean logistics;
 
     public AddDeivceTransactionsVoBean getAddDeivceTransactionsVo() {
         return addDeivceTransactionsVo;
@@ -29,6 +34,14 @@ public class AffairDetailModel implements Serializable {
 
     public void setDeviceInstallLogVoList(List<DeviceInstallLogVoListBean> deviceInstallLogVoList) {
         this.deviceInstallLogVoList = deviceInstallLogVoList;
+    }
+
+    public LogisticsBean getLogistics() {
+        return logistics;
+    }
+
+    public void setLogistics(LogisticsBean logistics) {
+        this.logistics = logistics;
     }
 
     public static class AddDeivceTransactionsVoBean {
@@ -218,6 +231,307 @@ public class AffairDetailModel implements Serializable {
 
         public void setInstallTime(String installTime) {
             this.installTime = installTime;
+        }
+    }
+
+
+    public static class LogisticsBean {
+        /**
+         * id : 1418484733290180610
+         * type : 2
+         * relationType : 1
+         * relationId : 1415214942927327232
+         * expressWay : 1
+         * status : 2
+         * voucher : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/23/16270280884271627027885216.png
+         * checkAdminScopeOrganId : 1415128701016973313
+         * checkAdminId : 1415128701008584706
+         * adminId : 1415128701008584706
+         * createTime : 2021-07-23 16:14:48
+         * delFlag : 0
+         */
+
+        private String id;
+        private String type;
+        private String relationType;
+        private String relationId;
+        private String expressWay;
+        private String status;
+        private String voucher;
+        private String checkAdminScopeOrganId;
+        private String checkAdminId;
+        private String adminId;
+        private String createTime;
+        private String delFlag;
+        /**
+         * type : 2
+         * relationType : 1
+         * expressWay : 2
+         * status : 1
+         * receiveName : 啊水电费阿斯顿
+         * phone : 1684587877788
+         * provinceId : 110000
+         * cityId : 110100
+         * areaId : 110105
+         * address : 阿道夫更丰富
+         * delFlag : 0
+         */
+
+        private String receiveName;
+        private String phone;
+        private int provinceId;
+        private int cityId;
+        private int areaId;
+        private String address;
+        private List<ExpressInfoBean> expressInfo;
+
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getRelationType() {
+            return relationType;
+        }
+
+        public void setRelationType(String relationType) {
+            this.relationType = relationType;
+        }
+
+        public String getRelationId() {
+            return relationId;
+        }
+
+        public void setRelationId(String relationId) {
+            this.relationId = relationId;
+        }
+
+        public String getExpressWay() {
+            return expressWay;
+        }
+
+        public void setExpressWay(String expressWay) {
+            this.expressWay = expressWay;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getVoucher() {
+            return voucher;
+        }
+
+        public void setVoucher(String voucher) {
+            this.voucher = voucher;
+        }
+
+        public String getCheckAdminScopeOrganId() {
+            return checkAdminScopeOrganId;
+        }
+
+        public void setCheckAdminScopeOrganId(String checkAdminScopeOrganId) {
+            this.checkAdminScopeOrganId = checkAdminScopeOrganId;
+        }
+
+        public String getCheckAdminId() {
+            return checkAdminId;
+        }
+
+        public void setCheckAdminId(String checkAdminId) {
+            this.checkAdminId = checkAdminId;
+        }
+
+        public String getAdminId() {
+            return adminId;
+        }
+
+        public void setAdminId(String adminId) {
+            this.adminId = adminId;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getDelFlag() {
+            return delFlag;
+        }
+
+        public void setDelFlag(String delFlag) {
+            this.delFlag = delFlag;
+        }
+
+        public String getReceiveName() {
+            return receiveName;
+        }
+
+        public void setReceiveName(String receiveName) {
+            this.receiveName = receiveName;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public int getProvinceId() {
+            return provinceId;
+        }
+
+        public void setProvinceId(int provinceId) {
+            this.provinceId = provinceId;
+        }
+
+        public int getCityId() {
+            return cityId;
+        }
+
+        public void setCityId(int cityId) {
+            this.cityId = cityId;
+        }
+
+        public int getAreaId() {
+            return areaId;
+        }
+
+        public void setAreaId(int areaId) {
+            this.areaId = areaId;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public List<ExpressInfoBean> getExpressInfo() {
+            return expressInfo;
+        }
+
+        public void setExpressInfo(List<ExpressInfoBean> expressInfo) {
+            this.expressInfo = expressInfo;
+        }
+
+        public static class ExpressInfoBean {
+            /**
+             * applyId : 1415216539682082816
+             * transportId : 123436
+             * transportCompany : 天天
+             * sendTime : 2021-07-23 08:39:01
+             * sendAdminId : 1414885152698638337
+             * sendAdminScopeOrganId : 6
+             * signTime : null
+             * signAdminId : null
+             * signAdminScopeOrganId : null
+             */
+
+            private String applyId;
+            private String transportId;
+            private String transportCompany;
+            private String sendTime;
+            private String sendAdminId;
+            private String sendAdminScopeOrganId;
+            private String signTime;
+            private String signAdminId;
+            private String signAdminScopeOrganId;
+
+            public String getApplyId() {
+                return applyId;
+            }
+
+            public void setApplyId(String applyId) {
+                this.applyId = applyId;
+            }
+
+            public String getTransportId() {
+                return transportId;
+            }
+
+            public void setTransportId(String transportId) {
+                this.transportId = transportId;
+            }
+
+            public String getTransportCompany() {
+                return transportCompany;
+            }
+
+            public void setTransportCompany(String transportCompany) {
+                this.transportCompany = transportCompany;
+            }
+
+            public String getSendTime() {
+                return sendTime;
+            }
+
+            public void setSendTime(String sendTime) {
+                this.sendTime = sendTime;
+            }
+
+            public String getSendAdminId() {
+                return sendAdminId;
+            }
+
+            public void setSendAdminId(String sendAdminId) {
+                this.sendAdminId = sendAdminId;
+            }
+
+            public String getSendAdminScopeOrganId() {
+                return sendAdminScopeOrganId;
+            }
+
+            public void setSendAdminScopeOrganId(String sendAdminScopeOrganId) {
+                this.sendAdminScopeOrganId = sendAdminScopeOrganId;
+            }
+
+            public String getSignTime() {
+                return signTime;
+            }
+
+            public void setSignTime(String signTime) {
+                this.signTime = signTime;
+            }
+
+            public String getSignAdminId() {
+                return signAdminId;
+            }
+
+            public void setSignAdminId(String signAdminId) {
+                this.signAdminId = signAdminId;
+            }
+
+            public String getSignAdminScopeOrganId() {
+                return signAdminScopeOrganId;
+            }
+
+            public void setSignAdminScopeOrganId(String signAdminScopeOrganId) {
+                this.signAdminScopeOrganId = signAdminScopeOrganId;
+            }
         }
     }
 }

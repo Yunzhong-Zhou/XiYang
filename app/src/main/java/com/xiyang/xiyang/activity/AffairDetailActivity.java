@@ -87,12 +87,12 @@ public class AffairDetailActivity extends BaseActivity {
     LinearLayout ll_contract, ll_shenlingfangshi, ll_shouhuoren, ll_lianxifangshi, ll_shouhuodizhi, ll_xiangxidizhi;
     EditText et_shouhuoren, et_lianxifangshi, et_xiangxidizhi;
     ImageView iv_shangchuanzhaopian;
-    TextView tv_shenlingxinxi, tv_shenlingfangshi, tv_shouhuodizhi, tv_dengdaifahuo, tv_quedingqianshou,
+    TextView tv_shenlingxinxi, tv_shenlingfangshi, tv_shouhuodizhi, tv_dengdaifahuo,
             tv_shangchuanzhaopian, tv_confirm;
-    ShadowLayout sl_wuliu;
+    ShadowLayout sl_daifahuo;
     private RecyclerView rv_wuliu;
-    List<KeyValueModel> list_wuliu = new ArrayList<>();
-    CommonAdapter<KeyValueModel> mAdapter_wuliu;
+    List<AffairDetailModel.LogisticsBean.ExpressInfoBean> list_wuliu = new ArrayList<>();
+    CommonAdapter<AffairDetailModel.LogisticsBean.ExpressInfoBean> mAdapter_wuliu;
     int expressWay = 1;//邮寄方式 1-自取，2-邮寄
     List<String> list_fangshi = new ArrayList<>();
     int itme_fangshi = 0;
@@ -100,7 +100,7 @@ public class AffairDetailActivity extends BaseActivity {
     //省市
     CityConfig cityConfig = null;
     CityPickerView mPicker = new CityPickerView();
-    String receiveName = "", phone = "",provinceId = "",cityId="", areaId = "", address = "", scene = "";
+    String receiveName = "", phone = "", provinceId = "", cityId = "", areaId = "", address = "", scene = "";
     /**
      * 安装记录
      */
@@ -183,11 +183,10 @@ public class AffairDetailActivity extends BaseActivity {
         tv_shangchuanzhaopian = findViewByID_My(R.id.tv_shangchuanzhaopian);
         iv_shangchuanzhaopian = findViewByID_My(R.id.iv_shangchuanzhaopian);
         tv_confirm = findViewByID_My(R.id.tv_confirm);
-        sl_wuliu = findViewByID_My(R.id.sl_wuliu);
+        sl_daifahuo = findViewByID_My(R.id.sl_daifahuo);
         rv_wuliu = findViewByID_My(R.id.rv_wuliu);
         rv_wuliu.setLayoutManager(new LinearLayoutManager(this));
         tv_dengdaifahuo = findViewByID_My(R.id.tv_dengdaifahuo);
-        tv_quedingqianshou = findViewByID_My(R.id.tv_quedingqianshou);
         //预先加载仿iOS滚轮实现的全部数据
         mPicker.init(this);
         cityConfig = new CityConfig.Builder()
@@ -358,17 +357,6 @@ public class AffairDetailActivity extends BaseActivity {
                     }
                 }
                 break;
-            case R.id.tv_quedingqianshou:
-                //确定签收
-                showProgress(true, getString(R.string.app_loading1));
-                params.clear();
-                /*params.put("transactionId", model.getAddDeivceTransactionsVo().getApplyId());
-                params.put("expressWay", expressWay + "");
-                params.put("expressNo", "");
-                params.put("expressCompany", "");
-                params.put("scene", "confirm");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货*/
-                requestQiansShou(params,model.getAddDeivceTransactionsVo().getApplyId());
-                break;
         }
     }
 
@@ -391,7 +379,7 @@ public class AffairDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.AffairDetail+id, params, headerMap, new CallBackUtil<AffairDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.AffairDetail + id, params, headerMap, new CallBackUtil<AffairDetailModel>() {
             @Override
             public AffairDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -454,7 +442,7 @@ public class AffairDetailActivity extends BaseActivity {
                         (AffairDetailActivity.this, R.layout.item_affairedetail_anzhuang, list_anzhuang) {
                     @Override
                     protected void convert(ViewHolder holder, AffairDetailModel.DeviceInstallLogVoListBean model, int position) {
-                        holder.setText(R.id.textView1, model.getStoreName()+"·"+model.getStoreChildName()+"·"+model.getRoomName());
+                        holder.setText(R.id.textView1, model.getStoreName() + "·" + model.getStoreChildName() + "·" + model.getRoomName());
                         holder.setText(R.id.textView2, model.getDeviceNo());
 //                        holder.setText(R.id.textView3, model.get);
                         holder.setText(R.id.textView4, model.getInstallTime() + "");
@@ -572,102 +560,108 @@ public class AffairDetailActivity extends BaseActivity {
         ll_xiangxidizhi.setVisibility(View.GONE);
         tv_shangchuanzhaopian.setVisibility(View.GONE);
         iv_shangchuanzhaopian.setVisibility(View.GONE);
-        sl_wuliu.setVisibility(View.GONE);
 
         tv_confirm.setVisibility(View.GONE);
         tv_shenlingfangshi.setClickable(false);
         iv_shangchuanzhaopian.setClickable(false);
-        switch (model.getAddDeivceTransactionsVo().getGetType()) {
-            case "0":
-                //未选择邮寄方式
-                tv_confirm.setVisibility(View.VISIBLE);
-                tv_shenlingfangshi.setClickable(true);
-                iv_shangchuanzhaopian.setClickable(true);
-                break;
-            case "1":
-                //自取
-                expressWay = 1;
-                Glide.with(AffairDetailActivity.this)
-                        .load(model.getAddDeivceTransactionsVo().getImage())
+        if (model.getLogistics() != null && model.getLogistics().getType() != null) {
+            switch (model.getLogistics().getExpressWay()) {
+                case "1":
+                    //自取
+                    expressWay = 1;
+                    Glide.with(AffairDetailActivity.this)
+                            .load(model.getLogistics().getVoucher())
 //                                .fitCenter()
-                        .apply(RequestOptions.bitmapTransform(new
-                                RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
-                        .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.zanwutupian)//加载失败
-                        .into(iv_shangchuanzhaopian);//加载图片
-                break;
-            case "2":
-                //邮寄
-                expressWay = 2;
-//                et_shouhuoren.setText(model.getApply().getName());
-//                et_lianxifangshi.setText(model.getApply().getMobile());
-//                tv_shouhuodizhi.setText(model.getApply().getAddres());
-//                et_xiangxidizhi.setText(model.getApply().getAddressDetail());
-                et_shouhuoren.setFocusable(false);
-                et_lianxifangshi.setFocusable(false);
-                tv_shouhuodizhi.setClickable(false);
-                et_xiangxidizhi.setFocusable(false);
-                break;
-        }
-        switch (expressWay) {
-            case 1:
-                //自取
-                tv_shenlingxinxi.setText("申领信息");
-                tv_shenlingfangshi.setText("自取");
-                tv_shangchuanzhaopian.setVisibility(View.VISIBLE);
-                iv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+                            .apply(RequestOptions.bitmapTransform(new
+                                    RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
+                            .placeholder(R.mipmap.loading)//加载站位图
+                            .error(R.mipmap.zanwutupian)//加载失败
+                            .into(iv_shangchuanzhaopian);//加载图片
+                    break;
+                case "2":
+                    //邮寄
+                    expressWay = 2;
+                    et_shouhuoren.setText(model.getLogistics().getReceiveName());
+                    et_lianxifangshi.setText(model.getLogistics().getPhone());
+//                    tv_shouhuodizhi.setText(model.getLogistics().getAddres());
+                    et_xiangxidizhi.setText(model.getLogistics().getAddress());
+                    et_shouhuoren.setFocusable(false);
+                    et_lianxifangshi.setFocusable(false);
+                    tv_shouhuodizhi.setClickable(false);
+                    et_xiangxidizhi.setFocusable(false);
+                    break;
+            }
+            //显示物流
+            switch (expressWay) {
+                case 1:
+                    //自取
+                    tv_shenlingxinxi.setText("申领信息");
+                    tv_shenlingfangshi.setText("自取");
+                    tv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+                    iv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    //邮寄
+                    tv_shenlingxinxi.setText("收件信息");
+                    tv_shenlingfangshi.setText("邮寄");
+                    ll_shouhuoren.setVisibility(View.VISIBLE);
+                    ll_lianxifangshi.setVisibility(View.VISIBLE);
+                    ll_shouhuodizhi.setVisibility(View.VISIBLE);
+                    ll_xiangxidizhi.setVisibility(View.VISIBLE);
 
-                break;
-            case 2:
-                //邮寄
-                tv_shenlingxinxi.setText("收件信息");
-                tv_shenlingfangshi.setText("邮寄");
-                ll_shouhuoren.setVisibility(View.VISIBLE);
-                ll_lianxifangshi.setVisibility(View.VISIBLE);
-                ll_shouhuodizhi.setVisibility(View.VISIBLE);
-                ll_xiangxidizhi.setVisibility(View.VISIBLE);
+                    //物流列表
+                    if (model.getLogistics() != null && model.getLogistics().getExpressInfo() != null) {
+                        //有物流
+                        sl_daifahuo.setVisibility(View.GONE);
+                        tv_dengdaifahuo.setVisibility(View.GONE);
+                        rv_wuliu.setVisibility(View.VISIBLE);
 
-                /*switch (model.getApply().getStatus()) {
-                    case "1":
+                        list_wuliu = model.getLogistics().getExpressInfo();
+                        mAdapter_wuliu = new CommonAdapter<AffairDetailModel.LogisticsBean.ExpressInfoBean>
+                                (AffairDetailActivity.this, R.layout.item_wuliu, list_wuliu) {
+                            @Override
+                            protected void convert(ViewHolder holder, AffairDetailModel.LogisticsBean.ExpressInfoBean model, int position) {
+                                holder.setText(R.id.tv1, model.getTransportCompany());
+                                holder.setText(R.id.tv2, model.getTransportId());
+                                if (model.getSignTime() != null) {
+                                    //已签收
+                                    holder.setText(R.id.tv3, "已签收");
+                                    holder.getView(R.id.tv_quedingqianshou).setVisibility(View.GONE);
+                                } else {
+                                    //已发货
+                                    holder.setText(R.id.tv3, "待签收");
+                                    holder.getView(R.id.tv_quedingqianshou).setVisibility(View.VISIBLE);
+                                }
+
+                                holder.getView(R.id.tv_quedingqianshou).setOnClickListener(v -> {
+                                    //确定签收
+                                    showProgress(true, getString(R.string.app_loading1));
+                                    params.clear();
+                                    /*params.put("transactionId", model.getAddDeivceTransactionsVo().getApplyId());
+                                    params.put("expressWay", expressWay + "");
+                                    params.put("expressNo", "");
+                                    params.put("expressCompany", "");
+                                    params.put("scene", "confirm");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货*/
+                                    requestQiansShou(params, model.getApplyId()+"/"+model.getTransportId());
+                                });
+                            }
+                        };
+                        rv_wuliu.setAdapter(mAdapter_wuliu);
+                    } else {
                         //待发货
-                        sl_wuliu.setVisibility(View.VISIBLE);
+                        sl_daifahuo.setVisibility(View.VISIBLE);
                         tv_dengdaifahuo.setVisibility(View.VISIBLE);
                         rv_wuliu.setVisibility(View.GONE);
-                        tv_quedingqianshou.setVisibility(View.GONE);
-                        break;
-                    case "2":
-                        //已发货
-                        sl_wuliu.setVisibility(View.VISIBLE);
-                        tv_dengdaifahuo.setVisibility(View.GONE);
-                        rv_wuliu.setVisibility(View.VISIBLE);
-                        tv_quedingqianshou.setVisibility(View.VISIBLE);
-                        break;
-                    case "3":
-                        //已签收
-                        sl_wuliu.setVisibility(View.VISIBLE);
-                        tv_dengdaifahuo.setVisibility(View.GONE);
-                        rv_wuliu.setVisibility(View.VISIBLE);
-                        tv_quedingqianshou.setVisibility(View.GONE);
-                        break;
-                }
-                if (!model.getApply().getExpressNo().equals("")) {
-                    //有快递单号，显示快递信息
-                    list_wuliu.clear();
-                    list_wuliu.add(new KeyValueModel("快递公司", model.getApply().getExpressCompany()));
-                    list_wuliu.add(new KeyValueModel("物流单号", model.getApply().getExpressNo()));
-                    list_wuliu.add(new KeyValueModel("签收状态", model.getApply().getStatusTitle()));
+                    }
+                    break;
+            }
 
-                    mAdapter_wuliu = new CommonAdapter<KeyValueModel>
-                            (AffairDetailActivity.this, R.layout.item_keyvalue, list_wuliu) {
-                        @Override
-                        protected void convert(ViewHolder holder, KeyValueModel model, int position) {
-                            holder.setText(R.id.tv_kay, model.getKey());
-                            holder.setText(R.id.tv_value, "" + model.getValue());
-                        }
-                    };
-                    rv_wuliu.setAdapter(mAdapter_wuliu);
-                }*/
-                break;
+        } else {
+            //未选择邮寄方式
+            tv_confirm.setVisibility(View.VISIBLE);
+            tv_shenlingfangshi.setClickable(true);
+            iv_shangchuanzhaopian.setClickable(true);
+            et_lianxifangshi.setText(localUserInfo.getPhonenumber());
         }
     }
 
@@ -733,8 +727,10 @@ public class AffairDetailActivity extends BaseActivity {
             }
         }
     }
+
     /**
      * 提交邮寄方式
+     *
      * @param params
      */
     private void requestUpData(Map<String, String> params) {
@@ -758,12 +754,14 @@ public class AffairDetailActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 提交签收
+     *
      * @param params
      */
-    private void requestQiansShou(Map<String, String> params,String id) {
-        OkhttpUtil.okHttpGet(URLs.AffairDetail_QianShou+id, params, headerMap, new CallBackUtil<String>() {
+    private void requestQiansShou(Map<String, String> params, String id) {
+        OkhttpUtil.okHttpGet(URLs.AffairDetail_QianShou + id, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -828,6 +826,7 @@ public class AffairDetailActivity extends BaseActivity {
         });
         rv_list.setAdapter(adapter);
     }
+
     /**
      * 选择城市
      */
