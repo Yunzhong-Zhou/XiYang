@@ -400,10 +400,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/edittext_bg"
+                                    android:focusable="false"
                                     android:gravity="right"
                                     android:hint="请输入收货人联系方式"
                                     android:inputType="phone"
-                                    android:focusable="false"
                                     android:paddingBottom="10dp"
                                     android:text=""
                                     android:textColor="@color/black2"
@@ -566,11 +566,12 @@
                         </LinearLayout>
 
                     </com.lihang.ShadowLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_wuliu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"/>
+                        android:visibility="visible" />
 
                 </LinearLayout>
                 //安装记录
@@ -637,6 +638,45 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:background="@color/white">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="总安装数量："
+                            android:textColor="@color/black3"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tv_allnum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/black1"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="已安装数量："
+                            android:layout_marginLeft="15dp"
+                            android:textColor="@color/black3"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tv_innum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/black1"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

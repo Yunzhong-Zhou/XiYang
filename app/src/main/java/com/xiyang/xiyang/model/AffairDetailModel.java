@@ -8,246 +8,183 @@ import java.util.List;
  */
 public class AffairDetailModel implements Serializable {
     /**
-     * addDeivceTransactionsVo : {"name":"门店名称1","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/09/16257990118051625798824232.png","childName":"分店名称1","extra":"{\"name\": \"\", \"sole\": null, \"areaId\": \"\", \"cityId\": \"\", \"reason\": \"\", \"account\": \"\", \"address\": \"\", \"logoUrl\": \"\", \"deviceNum\": 10, \"expressNo\": \"\", \"inStoreId\": \"\", \"licenseNo\": \"\", \"storeUnit\": \"\", \"expressWay\": \"\", \"industryId\": \"\", \"outStoreId\": \"\", \"provinceId\": \"\", \"verifyedAt\": null, \"companyName\": \"\", \"contactName\": \"\", \"expressName\": \"\", \"renewalTime\": null, \"signExpired\": null, \"warehouseId\": \"\", \"contactPhone\": \"\", \"storeCapping\": \"\", \"renewalPeriod\": null, \"storeFreeTime\": \"\", \"certificateUrl\": \"\", \"storeUnitPrice\": \"\"}","num":10,"status":"待处理","transcationType":"主机安装","transcastionId":"1415218517946535936","createTime":"2021-07-14 15:56:03","deviceType":"新增主机","applyId":"1415218496647860224"}
-     * deviceInstallLogVoList : [{"storeName":"门店名称1","storeChildName":"分店名称1","roomName":"","deviceNo":"hostTestdevice4","installTime":null},{"storeName":"门店名称1","storeChildName":"分店名称1","roomName":"","deviceNo":"hostTestdevice2","installTime":null},{"storeName":"门店名称1","storeChildName":"分店名称1","roomName":"","deviceNo":"hostTestdevice3","installTime":null},{"storeName":"门店名称1","storeChildName":"分店名称1","roomName":"","deviceNo":"hostTestdevice1","installTime":null}]
+     * id : 1415216539774357504
+     * transactionNo : 80282acd-7b03-4e0d-8213-75dd237efb5a
+     * type : 1
+     * typeName : 新增设备
+     * relationId : 1415216539682082816
+     * status : 2
+     * storeName : 门店名称1-1
+     * storeImage : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/09/16257990118051625798824232.png
+     * logistic : {"id":"1418487037506580482","type":2,"relationType":1,"relationId":"1415216539682082816","expressWay":2,"status":3,"receiveName":"啊水电费阿斯顿","phone":"1684587877788","provinceId":110000,"provinceName":"北京","cityId":110100,"cityName":"北京市","areaId":110105,"areaName":"朝阳区","address":"阿道夫更丰富","expressInfo":[{"applyId":"1415216539682082816","transportId":"123123","transportCompany":"123","sendTime":"2021-07-25 18:43:27","sendAdminId":"1414885152698638337","sendAdminScopeOrganId":"6","signTime":"2021-07-26 02:47:00","signAdminId":"1415128701008584706","signAdminScopeOrganId":"1415128701016973313"},{"applyId":"1415216539682082816","transportId":"1231213","transportCompany":"123","sendTime":"2021-07-24 10:08:47","sendAdminId":"1414885152698638337","sendAdminScopeOrganId":"6","signTime":"2021-07-25 18:17:32","signAdminId":"1414885152698638337","signAdminScopeOrganId":"6"}],"checkTime":"2021-07-26 10:47:00","checkAdminScopeOrganId":"1415128701016973313","checkAdminId":"1415128701008584706","sendAdminId":"1414885152698638337","sendAdminScopeOrganId":"6","adminId":"1415128701008584706","createTime":"2021-07-23 16:23:58","updateTime":"2021-07-26 10:47:00","delFlag":0}
+     * list : [{"id":"1419588049709506561","type":1,"storeId":"1413329610791325696","deviceId":"1410512101939744768","deviceHostName":"hostTestdevice1","roomId":"1417038789582393344","roomFullName":"门店名称1-1·A1·B1·C1·D1","deviceApplyId":"1415216539682082816","status":1,"deviceModuleId":"0","installTime":"2021-07-26 17:19:00","createTime":"2021-07-26 17:19:00"}]
+     * installType : 安装中
+     * installNum : 43
+     * installedNum : 1
      */
 
-    private AddDeivceTransactionsVoBean addDeivceTransactionsVo;
-    private List<DeviceInstallLogVoListBean> deviceInstallLogVoList;
-    /**
-     * logistics : {"id":"1418484733290180610","type":2,"relationType":1,"relationId":"1415214942927327232","expressWay":1,"status":2,"voucher":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/23/16270280884271627027885216.png","checkAdminScopeOrganId":"1415128701016973313","checkAdminId":"1415128701008584706","adminId":"1415128701008584706","createTime":"2021-07-23 16:14:48","delFlag":0}
-     */
+    private String id;
+    private String transactionNo;
+    private String type;
+    private String typeName;
+    private String relationId;
+    private String status;
+    private String storeId;
+    private String storeName;
+    private String storeImage;
+    private LogisticBean logistic;
+    private String installType;
+    private String installNum;
+    private String installedNum;
+    private List<ListBean> list;
+    private String createTime;
 
-    private LogisticsBean logistics;
-
-    public AddDeivceTransactionsVoBean getAddDeivceTransactionsVo() {
-        return addDeivceTransactionsVo;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setAddDeivceTransactionsVo(AddDeivceTransactionsVoBean addDeivceTransactionsVo) {
-        this.addDeivceTransactionsVo = addDeivceTransactionsVo;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
-    public List<DeviceInstallLogVoListBean> getDeviceInstallLogVoList() {
-        return deviceInstallLogVoList;
+    public String getStoreId() {
+        return storeId;
     }
 
-    public void setDeviceInstallLogVoList(List<DeviceInstallLogVoListBean> deviceInstallLogVoList) {
-        this.deviceInstallLogVoList = deviceInstallLogVoList;
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
-    public LogisticsBean getLogistics() {
-        return logistics;
+    public String getId() {
+        return id;
     }
 
-    public void setLogistics(LogisticsBean logistics) {
-        this.logistics = logistics;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public static class AddDeivceTransactionsVoBean {
+    public String getTransactionNo() {
+        return transactionNo;
+    }
+
+    public void setTransactionNo(String transactionNo) {
+        this.transactionNo = transactionNo;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getRelationId() {
+        return relationId;
+    }
+
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getStoreImage() {
+        return storeImage;
+    }
+
+    public void setStoreImage(String storeImage) {
+        this.storeImage = storeImage;
+    }
+
+    public LogisticBean getLogistic() {
+        return logistic;
+    }
+
+    public void setLogistic(LogisticBean logistic) {
+        this.logistic = logistic;
+    }
+
+    public String getInstallType() {
+        return installType;
+    }
+
+    public void setInstallType(String installType) {
+        this.installType = installType;
+    }
+
+    public String getInstallNum() {
+        return installNum;
+    }
+
+    public void setInstallNum(String installNum) {
+        this.installNum = installNum;
+    }
+
+    public String getInstalledNum() {
+        return installedNum;
+    }
+
+    public void setInstalledNum(String installedNum) {
+        this.installedNum = installedNum;
+    }
+
+    public List<ListBean> getList() {
+        return list;
+    }
+
+    public void setList(List<ListBean> list) {
+        this.list = list;
+    }
+
+    public static class LogisticBean {
         /**
-         * name : 门店名称1
-         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/09/16257990118051625798824232.png
-         * childName : 分店名称1
-         * extra : {"name": "", "sole": null, "areaId": "", "cityId": "", "reason": "", "account": "", "address": "", "logoUrl": "", "deviceNum": 10, "expressNo": "", "inStoreId": "", "licenseNo": "", "storeUnit": "", "expressWay": "", "industryId": "", "outStoreId": "", "provinceId": "", "verifyedAt": null, "companyName": "", "contactName": "", "expressName": "", "renewalTime": null, "signExpired": null, "warehouseId": "", "contactPhone": "", "storeCapping": "", "renewalPeriod": null, "storeFreeTime": "", "certificateUrl": "", "storeUnitPrice": ""}
-         * num : 10
-         * status : 待处理
-         * transcationType : 主机安装
-         * transcastionId : 1415218517946535936
-         * createTime : 2021-07-14 15:56:03
-         * deviceType : 新增主机
-         * applyId : 1415218496647860224
-         */
-
-        private String name;
-        private String image;
-        private String childName;
-        private String extra;
-        private String num;
-        private String status;
-        private String transcationType;
-        private String transcastionId;
-        private String createTime;
-        private String deviceType;
-        private String applyId;
-        private String storeId;
-        private String getType;
-
-        public String getGetType() {
-            return getType;
-        }
-
-        public void setGetType(String getType) {
-            this.getType = getType;
-        }
-
-        public String getStoreId() {
-            return storeId;
-        }
-
-        public void setStoreId(String storeId) {
-            this.storeId = storeId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public String getChildName() {
-            return childName;
-        }
-
-        public void setChildName(String childName) {
-            this.childName = childName;
-        }
-
-        public String getExtra() {
-            return extra;
-        }
-
-        public void setExtra(String extra) {
-            this.extra = extra;
-        }
-
-        public String getNum() {
-            return num;
-        }
-
-        public void setNum(String num) {
-            this.num = num;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getTranscationType() {
-            return transcationType;
-        }
-
-        public void setTranscationType(String transcationType) {
-            this.transcationType = transcationType;
-        }
-
-        public String getTranscastionId() {
-            return transcastionId;
-        }
-
-        public void setTranscastionId(String transcastionId) {
-            this.transcastionId = transcastionId;
-        }
-
-        public String getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
-        }
-
-        public String getDeviceType() {
-            return deviceType;
-        }
-
-        public void setDeviceType(String deviceType) {
-            this.deviceType = deviceType;
-        }
-
-        public String getApplyId() {
-            return applyId;
-        }
-
-        public void setApplyId(String applyId) {
-            this.applyId = applyId;
-        }
-    }
-
-    public static class DeviceInstallLogVoListBean {
-        /**
-         * storeName : 门店名称1
-         * storeChildName : 分店名称1
-         * roomName :
-         * deviceNo : hostTestdevice4
-         * installTime : null
-         */
-
-        private String storeName;
-        private String storeChildName;
-        private String roomName;
-        private String deviceNo;
-        private String installTime;
-
-        public String getStoreName() {
-            return storeName;
-        }
-
-        public void setStoreName(String storeName) {
-            this.storeName = storeName;
-        }
-
-        public String getStoreChildName() {
-            return storeChildName;
-        }
-
-        public void setStoreChildName(String storeChildName) {
-            this.storeChildName = storeChildName;
-        }
-
-        public String getRoomName() {
-            return roomName;
-        }
-
-        public void setRoomName(String roomName) {
-            this.roomName = roomName;
-        }
-
-        public String getDeviceNo() {
-            return deviceNo;
-        }
-
-        public void setDeviceNo(String deviceNo) {
-            this.deviceNo = deviceNo;
-        }
-
-        public String getInstallTime() {
-            return installTime;
-        }
-
-        public void setInstallTime(String installTime) {
-            this.installTime = installTime;
-        }
-    }
-
-
-    public static class LogisticsBean {
-        /**
-         * id : 1418484733290180610
+         * id : 1418487037506580482
          * type : 2
          * relationType : 1
-         * relationId : 1415214942927327232
-         * expressWay : 1
-         * status : 2
-         * voucher : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/23/16270280884271627027885216.png
+         * relationId : 1415216539682082816
+         * expressWay : 2
+         * status : 3
+         * receiveName : 啊水电费阿斯顿
+         * phone : 1684587877788
+         * provinceId : 110000
+         * provinceName : 北京
+         * cityId : 110100
+         * cityName : 北京市
+         * areaId : 110105
+         * areaName : 朝阳区
+         * address : 阿道夫更丰富
+         * expressInfo : [{"applyId":"1415216539682082816","transportId":"123123","transportCompany":"123","sendTime":"2021-07-25 18:43:27","sendAdminId":"1414885152698638337","sendAdminScopeOrganId":"6","signTime":"2021-07-26 02:47:00","signAdminId":"1415128701008584706","signAdminScopeOrganId":"1415128701016973313"},{"applyId":"1415216539682082816","transportId":"1231213","transportCompany":"123","sendTime":"2021-07-24 10:08:47","sendAdminId":"1414885152698638337","sendAdminScopeOrganId":"6","signTime":"2021-07-25 18:17:32","signAdminId":"1414885152698638337","signAdminScopeOrganId":"6"}]
+         * checkTime : 2021-07-26 10:47:00
          * checkAdminScopeOrganId : 1415128701016973313
          * checkAdminId : 1415128701008584706
+         * sendAdminId : 1414885152698638337
+         * sendAdminScopeOrganId : 6
          * adminId : 1415128701008584706
-         * createTime : 2021-07-23 16:14:48
+         * createTime : 2021-07-23 16:23:58
+         * updateTime : 2021-07-26 10:47:00
          * delFlag : 0
          */
 
@@ -257,34 +194,34 @@ public class AffairDetailModel implements Serializable {
         private String relationId;
         private String expressWay;
         private String status;
-        private String voucher;
-        private String checkAdminScopeOrganId;
-        private String checkAdminId;
-        private String adminId;
-        private String createTime;
-        private String delFlag;
-        /**
-         * type : 2
-         * relationType : 1
-         * expressWay : 2
-         * status : 1
-         * receiveName : 啊水电费阿斯顿
-         * phone : 1684587877788
-         * provinceId : 110000
-         * cityId : 110100
-         * areaId : 110105
-         * address : 阿道夫更丰富
-         * delFlag : 0
-         */
-
         private String receiveName;
         private String phone;
-        private int provinceId;
-        private int cityId;
-        private int areaId;
+        private String provinceId;
+        private String provinceName;
+        private String cityId;
+        private String cityName;
+        private String areaId;
+        private String areaName;
         private String address;
+        private String checkTime;
+        private String checkAdminScopeOrganId;
+        private String checkAdminId;
+        private String sendAdminId;
+        private String sendAdminScopeOrganId;
+        private String adminId;
+        private String createTime;
+        private String updateTime;
+        private String delFlag;
         private List<ExpressInfoBean> expressInfo;
+        private String voucher;
 
+        public String getVoucher() {
+            return voucher;
+        }
+
+        public void setVoucher(String voucher) {
+            this.voucher = voucher;
+        }
 
         public String getId() {
             return id;
@@ -334,12 +271,84 @@ public class AffairDetailModel implements Serializable {
             this.status = status;
         }
 
-        public String getVoucher() {
-            return voucher;
+        public String getReceiveName() {
+            return receiveName;
         }
 
-        public void setVoucher(String voucher) {
-            this.voucher = voucher;
+        public void setReceiveName(String receiveName) {
+            this.receiveName = receiveName;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getProvinceId() {
+            return provinceId;
+        }
+
+        public void setProvinceId(String provinceId) {
+            this.provinceId = provinceId;
+        }
+
+        public String getProvinceName() {
+            return provinceName;
+        }
+
+        public void setProvinceName(String provinceName) {
+            this.provinceName = provinceName;
+        }
+
+        public String getCityId() {
+            return cityId;
+        }
+
+        public void setCityId(String cityId) {
+            this.cityId = cityId;
+        }
+
+        public String getCityName() {
+            return cityName;
+        }
+
+        public void setCityName(String cityName) {
+            this.cityName = cityName;
+        }
+
+        public String getAreaId() {
+            return areaId;
+        }
+
+        public void setAreaId(String areaId) {
+            this.areaId = areaId;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public void setAreaName(String areaName) {
+            this.areaName = areaName;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getCheckTime() {
+            return checkTime;
+        }
+
+        public void setCheckTime(String checkTime) {
+            this.checkTime = checkTime;
         }
 
         public String getCheckAdminScopeOrganId() {
@@ -358,6 +367,22 @@ public class AffairDetailModel implements Serializable {
             this.checkAdminId = checkAdminId;
         }
 
+        public String getSendAdminId() {
+            return sendAdminId;
+        }
+
+        public void setSendAdminId(String sendAdminId) {
+            this.sendAdminId = sendAdminId;
+        }
+
+        public String getSendAdminScopeOrganId() {
+            return sendAdminScopeOrganId;
+        }
+
+        public void setSendAdminScopeOrganId(String sendAdminScopeOrganId) {
+            this.sendAdminScopeOrganId = sendAdminScopeOrganId;
+        }
+
         public String getAdminId() {
             return adminId;
         }
@@ -374,60 +399,20 @@ public class AffairDetailModel implements Serializable {
             this.createTime = createTime;
         }
 
+        public String getUpdateTime() {
+            return updateTime;
+        }
+
+        public void setUpdateTime(String updateTime) {
+            this.updateTime = updateTime;
+        }
+
         public String getDelFlag() {
             return delFlag;
         }
 
         public void setDelFlag(String delFlag) {
             this.delFlag = delFlag;
-        }
-
-        public String getReceiveName() {
-            return receiveName;
-        }
-
-        public void setReceiveName(String receiveName) {
-            this.receiveName = receiveName;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-
-        public int getProvinceId() {
-            return provinceId;
-        }
-
-        public void setProvinceId(int provinceId) {
-            this.provinceId = provinceId;
-        }
-
-        public int getCityId() {
-            return cityId;
-        }
-
-        public void setCityId(int cityId) {
-            this.cityId = cityId;
-        }
-
-        public int getAreaId() {
-            return areaId;
-        }
-
-        public void setAreaId(int areaId) {
-            this.areaId = areaId;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
         }
 
         public List<ExpressInfoBean> getExpressInfo() {
@@ -441,14 +426,14 @@ public class AffairDetailModel implements Serializable {
         public static class ExpressInfoBean {
             /**
              * applyId : 1415216539682082816
-             * transportId : 123436
-             * transportCompany : 天天
-             * sendTime : 2021-07-23 08:39:01
+             * transportId : 123123
+             * transportCompany : 123
+             * sendTime : 2021-07-25 18:43:27
              * sendAdminId : 1414885152698638337
              * sendAdminScopeOrganId : 6
-             * signTime : null
-             * signAdminId : null
-             * signAdminScopeOrganId : null
+             * signTime : 2021-07-26 02:47:00
+             * signAdminId : 1415128701008584706
+             * signAdminScopeOrganId : 1415128701016973313
              */
 
             private String applyId;
@@ -532,6 +517,132 @@ public class AffairDetailModel implements Serializable {
             public void setSignAdminScopeOrganId(String signAdminScopeOrganId) {
                 this.signAdminScopeOrganId = signAdminScopeOrganId;
             }
+        }
+    }
+
+    public static class ListBean {
+        /**
+         * id : 1419588049709506561
+         * type : 1
+         * storeId : 1413329610791325696
+         * deviceId : 1410512101939744768
+         * deviceHostName : hostTestdevice1
+         * roomId : 1417038789582393344
+         * roomFullName : 门店名称1-1·A1·B1·C1·D1
+         * deviceApplyId : 1415216539682082816
+         * status : 1
+         * deviceModuleId : 0
+         * installTime : 2021-07-26 17:19:00
+         * createTime : 2021-07-26 17:19:00
+         */
+
+        private String id;
+        private String type;
+        private String storeId;
+        private String deviceId;
+        private String deviceHostName;
+        private String roomId;
+        private String roomFullName;
+        private String deviceApplyId;
+        private String status;
+        private String deviceModuleId;
+        private String installTime;
+        private String createTime;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getStoreId() {
+            return storeId;
+        }
+
+        public void setStoreId(String storeId) {
+            this.storeId = storeId;
+        }
+
+        public String getDeviceId() {
+            return deviceId;
+        }
+
+        public void setDeviceId(String deviceId) {
+            this.deviceId = deviceId;
+        }
+
+        public String getDeviceHostName() {
+            return deviceHostName;
+        }
+
+        public void setDeviceHostName(String deviceHostName) {
+            this.deviceHostName = deviceHostName;
+        }
+
+        public String getRoomId() {
+            return roomId;
+        }
+
+        public void setRoomId(String roomId) {
+            this.roomId = roomId;
+        }
+
+        public String getRoomFullName() {
+            return roomFullName;
+        }
+
+        public void setRoomFullName(String roomFullName) {
+            this.roomFullName = roomFullName;
+        }
+
+        public String getDeviceApplyId() {
+            return deviceApplyId;
+        }
+
+        public void setDeviceApplyId(String deviceApplyId) {
+            this.deviceApplyId = deviceApplyId;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getDeviceModuleId() {
+            return deviceModuleId;
+        }
+
+        public void setDeviceModuleId(String deviceModuleId) {
+            this.deviceModuleId = deviceModuleId;
+        }
+
+        public String getInstallTime() {
+            return installTime;
+        }
+
+        public void setInstallTime(String installTime) {
+            this.installTime = installTime;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
     }
 }

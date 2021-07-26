@@ -161,7 +161,7 @@ public class MyCityActivity extends BaseActivity {
                     //获取下一级
                     showLoadingPage();
                     params.clear();
-                    params.put("regionId",model.getRegionId());
+                    params.put("regionId", model.getRegionId());
                     if (localUserInfo.getUserJob().equals("RM")) {
                         rv.setVisibility(View.VISIBLE);
                         iv.setImageResource(R.mipmap.ic_jiantou_down);
@@ -250,7 +250,7 @@ public class MyCityActivity extends BaseActivity {
                     //获取下一级
                     showLoadingPage();
                     params.clear();
-                    params.put("regionId",model.getRegionId());
+                    params.put("regionId", model.getRegionId());
                     requestCity3(params);
 
                 } else {
@@ -293,9 +293,14 @@ public class MyCityActivity extends BaseActivity {
             @Override
             public void onResponse(List<MyCityModel> response) {
                 hideProgress();
-                list3 = response;
-                //显示第三级数据
-                showMyCity3();
+                if (response != null) {
+                    list3 = response;
+                    //显示第三级数据
+                    showMyCity3();
+                } else {
+                    showEmptyPage();//空数据
+                }
+
             }
         });
 
@@ -311,10 +316,10 @@ public class MyCityActivity extends BaseActivity {
                     (MyCityActivity.this, R.layout.item_mycity3, list3) {
                 @Override
                 protected void convert(ViewHolder holder, MyCityModel model, int position) {
-                    if (model.getRegionId() != null && !model.getRegionId().equals("")) {
+                    if (model != null && model.getRegionId() != null && !model.getRegionId().equals("")) {
                         holder.setText(R.id.tv_city, model.getRegionName());
                         TextView tv_name = holder.getView(R.id.tv_name);
-                        tv_name.setText("总营收:"+model.getRevenue());
+                        tv_name.setText("总营收:" + model.getRevenue());
                        /* switch (localUserInfo.getUserJob()) {
                             case "RM":
                                 tv_name.setText("CM:" + model.getc);
@@ -339,7 +344,6 @@ public class MyCityActivity extends BaseActivity {
         }
 
     }
-
 
 
     private void requestCityMore(Map<String, String> params) {
@@ -420,7 +424,7 @@ public class MyCityActivity extends BaseActivity {
                 break;
             case "CM":
                 showMyCity3();
-                requestCity2(params,rv1);
+                requestCity2(params, rv1);
                 break;
             case "BDM":
                 requestCity3(params);

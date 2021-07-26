@@ -91,8 +91,8 @@ public class AffairDetailActivity extends BaseActivity {
             tv_shangchuanzhaopian, tv_confirm;
     ShadowLayout sl_daifahuo;
     private RecyclerView rv_wuliu;
-    List<AffairDetailModel.LogisticsBean.ExpressInfoBean> list_wuliu = new ArrayList<>();
-    CommonAdapter<AffairDetailModel.LogisticsBean.ExpressInfoBean> mAdapter_wuliu;
+    List<AffairDetailModel.LogisticBean.ExpressInfoBean> list_wuliu = new ArrayList<>();
+    CommonAdapter<AffairDetailModel.LogisticBean.ExpressInfoBean> mAdapter_wuliu;
     int expressWay = 1;//邮寄方式 1-自取，2-邮寄
     List<String> list_fangshi = new ArrayList<>();
     int itme_fangshi = 0;
@@ -106,9 +106,9 @@ public class AffairDetailActivity extends BaseActivity {
      */
     LinearLayout ll_shenhe;
     RecyclerView rv_anzhuang;
-    List<AffairDetailModel.DeviceInstallLogVoListBean> list_anzhuang = new ArrayList<>();
-    CommonAdapter<AffairDetailModel.DeviceInstallLogVoListBean> mAdapter_anzhuang;
-    TextView iv_scan, tv_scan;
+    List<AffairDetailModel.ListBean> list_anzhuang = new ArrayList<>();
+    CommonAdapter<AffairDetailModel.ListBean> mAdapter_anzhuang;
+    TextView iv_scan, tv_scan,tv_allnum,tv_innum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,6 +249,9 @@ public class AffairDetailActivity extends BaseActivity {
         rv_anzhuang.setLayoutManager(new LinearLayoutManager(this));
         iv_scan = findViewByID_My(R.id.iv_scan);
         tv_scan = findViewByID_My(R.id.tv_scan);
+        tv_allnum = findViewByID_My(R.id.tv_allnum);
+        tv_innum = findViewByID_My(R.id.tv_innum);
+
 
         changeUI();
 
@@ -266,9 +269,9 @@ public class AffairDetailActivity extends BaseActivity {
                         .setNeedRing(true);//是否需要提示音
                 //ScanConfig 也可以不配置 默认都是打开
                 CaptureActivity.launch(this, config);*/
-                bundle.putString("transactionId", model.getAddDeivceTransactionsVo().getApplyId());
-                bundle.putString("storeId", model.getAddDeivceTransactionsVo().getStoreId());
-                bundle.putString("storeName", model.getAddDeivceTransactionsVo().getName());
+                bundle.putString("transactionId", model.getId());
+                bundle.putString("storeId", model.getStoreId());
+                bundle.putString("storeName", model.getStoreName());
                 CommonUtil.gotoActivityWithData(AffairDetailActivity.this, InstallDeviceActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
@@ -323,7 +326,7 @@ public class AffairDetailActivity extends BaseActivity {
 
                                 @Override
                                 public void onResponse(String response) {
-                                    params.put("relationId", model.getAddDeivceTransactionsVo().getApplyId());
+                                    params.put("relationId", model.getRelationId());
                                     params.put("expressWay", expressWay + "");//1-自取，2-邮寄
                                     params.put("voucher", response);
                                         /*params.put("expressNo", "");
@@ -341,7 +344,7 @@ public class AffairDetailActivity extends BaseActivity {
                         case 2:
                             //邮寄
                             params.clear();
-                            params.put("relationId", model.getAddDeivceTransactionsVo().getApplyId());
+                            params.put("relationId", model.getRelationId());
                             params.put("expressWay", expressWay + "");//1-自取，2-邮寄
 //                            params.put("expressNo", "");
 //                            params.put("expressCompany", "");
@@ -396,12 +399,12 @@ public class AffairDetailActivity extends BaseActivity {
             public void onResponse(AffairDetailModel response) {
                 hideProgress();
                 model = response;
-                tv_name.setText(response.getAddDeivceTransactionsVo().getName());
-                tv_shop.setText(response.getAddDeivceTransactionsVo().getDeviceType());
-                tv_num.setText(response.getAddDeivceTransactionsVo().getStatus());
-                tv_addr.setText(response.getAddDeivceTransactionsVo().getNum() + "台");
+                tv_name.setText(response.getStoreName());
+                tv_shop.setText(response.getTypeName());
+                tv_num.setText(response.getInstallType());
+                tv_addr.setText(response.getInstallNum() + "台");
                 Glide.with(AffairDetailActivity.this)
-                        .load(model.getAddDeivceTransactionsVo().getImage())
+                        .load(model.getStoreImage())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
@@ -413,11 +416,11 @@ public class AffairDetailActivity extends BaseActivity {
                  * 事务信息
                  */
                 list_shiwu.clear();
-                list_shiwu.add(new KeyValueModel("类型设备", response.getAddDeivceTransactionsVo().getTranscationType()));
-                list_shiwu.add(new KeyValueModel("安装门店", response.getAddDeivceTransactionsVo().getName()));
-                list_shiwu.add(new KeyValueModel("安装台数", response.getAddDeivceTransactionsVo().getNum() + "台"));
-                list_shiwu.add(new KeyValueModel("创建时间", response.getAddDeivceTransactionsVo().getCreateTime()));
-                list_shiwu.add(new KeyValueModel("事务ID", response.getAddDeivceTransactionsVo().getApplyId()));
+                list_shiwu.add(new KeyValueModel("类型设备", response.getTypeName()));
+                list_shiwu.add(new KeyValueModel("安装门店", response.getStoreName()));
+                list_shiwu.add(new KeyValueModel("安装台数", response.getInstallNum() + "台"));
+                list_shiwu.add(new KeyValueModel("创建时间", response.getCreateTime()));
+                list_shiwu.add(new KeyValueModel("事务ID", response.getId()));
 
                 mAdapter_shiwu = new CommonAdapter<KeyValueModel>
                         (AffairDetailActivity.this, R.layout.item_keyvalue, list_shiwu) {
@@ -437,29 +440,32 @@ public class AffairDetailActivity extends BaseActivity {
                 /**
                  * 安装记录
                  */
-                list_anzhuang = response.getDeviceInstallLogVoList();
-                mAdapter_anzhuang = new CommonAdapter<AffairDetailModel.DeviceInstallLogVoListBean>
-                        (AffairDetailActivity.this, R.layout.item_affairedetail_anzhuang, list_anzhuang) {
-                    @Override
-                    protected void convert(ViewHolder holder, AffairDetailModel.DeviceInstallLogVoListBean model, int position) {
-                        holder.setText(R.id.textView1, model.getStoreName() + "·" + model.getStoreChildName() + "·" + model.getRoomName());
-                        holder.setText(R.id.textView2, model.getDeviceNo());
+                tv_allnum.setText(response.getInstallNum());
+                tv_innum.setText(response.getInstalledNum());
+                if (response.getList() != null) {
+                    list_anzhuang = response.getList();
+                    mAdapter_anzhuang = new CommonAdapter<AffairDetailModel.ListBean>
+                            (AffairDetailActivity.this, R.layout.item_affairedetail_anzhuang, list_anzhuang) {
+                        @Override
+                        protected void convert(ViewHolder holder, AffairDetailModel.ListBean model, int position) {
+                            holder.setText(R.id.textView1, model.getRoomFullName());
+                            holder.setText(R.id.textView2, model.getDeviceHostName());
 //                        holder.setText(R.id.textView3, model.get);
-                        holder.setText(R.id.textView4, model.getInstallTime() + "");
+                            holder.setText(R.id.textView4, model.getInstallTime() + "");
 
-                        holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Bundle bundle = new Bundle();
+                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
 //                                bundle.putString("deviceName", model.getDeviceNo());
-                                bundle.putString("deviceName", model.getDeviceNo());
-                                CommonUtil.gotoActivityWithData(AffairDetailActivity.this, DeviceDetailActivity.class, bundle, false);
-                            }
-                        });
-
-                    }
-                };
-                rv_anzhuang.setAdapter(mAdapter_anzhuang);
+                                    bundle.putString("deviceName", model.getDeviceId());
+                                    CommonUtil.gotoActivityWithData(AffairDetailActivity.this, DeviceDetailActivity.class, bundle, false);
+                                }
+                            });
+                        }
+                    };
+                    rv_anzhuang.setAdapter(mAdapter_anzhuang);
+                }
 
             }
         });
@@ -560,17 +566,19 @@ public class AffairDetailActivity extends BaseActivity {
         ll_xiangxidizhi.setVisibility(View.GONE);
         tv_shangchuanzhaopian.setVisibility(View.GONE);
         iv_shangchuanzhaopian.setVisibility(View.GONE);
+        sl_daifahuo.setVisibility(View.GONE);
+        rv_wuliu.setVisibility(View.GONE);
 
         tv_confirm.setVisibility(View.GONE);
         tv_shenlingfangshi.setClickable(false);
         iv_shangchuanzhaopian.setClickable(false);
-        if (model.getLogistics() != null && model.getLogistics().getType() != null) {
-            switch (model.getLogistics().getExpressWay()) {
+        if (model.getLogistic() != null && model.getLogistic().getType() != null) {
+            switch (model.getLogistic().getExpressWay()) {
                 case "1":
                     //自取
                     expressWay = 1;
                     Glide.with(AffairDetailActivity.this)
-                            .load(model.getLogistics().getVoucher())
+                            .load(model.getLogistic().getVoucher())
 //                                .fitCenter()
                             .apply(RequestOptions.bitmapTransform(new
                                     RoundedCorners(CommonUtil.dip2px(AffairDetailActivity.this, 10))))
@@ -581,10 +589,10 @@ public class AffairDetailActivity extends BaseActivity {
                 case "2":
                     //邮寄
                     expressWay = 2;
-                    et_shouhuoren.setText(model.getLogistics().getReceiveName());
-                    et_lianxifangshi.setText(model.getLogistics().getPhone());
-//                    tv_shouhuodizhi.setText(model.getLogistics().getAddres());
-                    et_xiangxidizhi.setText(model.getLogistics().getAddress());
+                    et_shouhuoren.setText(model.getLogistic().getReceiveName());
+                    et_lianxifangshi.setText(model.getLogistic().getPhone());
+                    tv_shouhuodizhi.setText(model.getLogistic().getProvinceName() + model.getLogistic().getCityName() + model.getLogistic().getAreaName());
+                    et_xiangxidizhi.setText(model.getLogistic().getAddress());
                     et_shouhuoren.setFocusable(false);
                     et_lianxifangshi.setFocusable(false);
                     tv_shouhuodizhi.setClickable(false);
@@ -599,6 +607,7 @@ public class AffairDetailActivity extends BaseActivity {
                     tv_shenlingfangshi.setText("自取");
                     tv_shangchuanzhaopian.setVisibility(View.VISIBLE);
                     iv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+
                     break;
                 case 2:
                     //邮寄
@@ -610,17 +619,15 @@ public class AffairDetailActivity extends BaseActivity {
                     ll_xiangxidizhi.setVisibility(View.VISIBLE);
 
                     //物流列表
-                    if (model.getLogistics() != null && model.getLogistics().getExpressInfo() != null) {
+                    if (model.getLogistic() != null && model.getLogistic().getExpressInfo() != null && model.getLogistic().getExpressInfo().size() > 0) {
                         //有物流
-                        sl_daifahuo.setVisibility(View.GONE);
-                        tv_dengdaifahuo.setVisibility(View.GONE);
                         rv_wuliu.setVisibility(View.VISIBLE);
 
-                        list_wuliu = model.getLogistics().getExpressInfo();
-                        mAdapter_wuliu = new CommonAdapter<AffairDetailModel.LogisticsBean.ExpressInfoBean>
+                        list_wuliu = model.getLogistic().getExpressInfo();
+                        mAdapter_wuliu = new CommonAdapter<AffairDetailModel.LogisticBean.ExpressInfoBean>
                                 (AffairDetailActivity.this, R.layout.item_wuliu, list_wuliu) {
                             @Override
-                            protected void convert(ViewHolder holder, AffairDetailModel.LogisticsBean.ExpressInfoBean model, int position) {
+                            protected void convert(ViewHolder holder, AffairDetailModel.LogisticBean.ExpressInfoBean model, int position) {
                                 holder.setText(R.id.tv1, model.getTransportCompany());
                                 holder.setText(R.id.tv2, model.getTransportId());
                                 if (model.getSignTime() != null) {
@@ -642,7 +649,7 @@ public class AffairDetailActivity extends BaseActivity {
                                     params.put("expressNo", "");
                                     params.put("expressCompany", "");
                                     params.put("scene", "confirm");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货*/
-                                    requestQiansShou(params, model.getApplyId()+"/"+model.getTransportId());
+                                    requestQiansShou(params, model.getApplyId() + "/" + model.getTransportId());
                                 });
                             }
                         };
@@ -651,7 +658,6 @@ public class AffairDetailActivity extends BaseActivity {
                         //待发货
                         sl_daifahuo.setVisibility(View.VISIBLE);
                         tv_dengdaifahuo.setVisibility(View.VISIBLE);
-                        rv_wuliu.setVisibility(View.GONE);
                     }
                     break;
             }
@@ -662,6 +668,24 @@ public class AffairDetailActivity extends BaseActivity {
             tv_shenlingfangshi.setClickable(true);
             iv_shangchuanzhaopian.setClickable(true);
             et_lianxifangshi.setText(localUserInfo.getPhonenumber());
+            switch (expressWay) {
+                case 1:
+                    //自取
+                    tv_shenlingxinxi.setText("申领信息");
+                    tv_shenlingfangshi.setText("自取");
+                    tv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+                    iv_shangchuanzhaopian.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    //邮寄
+                    tv_shenlingxinxi.setText("收件信息");
+                    tv_shenlingfangshi.setText("邮寄");
+                    ll_shouhuoren.setVisibility(View.VISIBLE);
+                    ll_lianxifangshi.setVisibility(View.VISIBLE);
+                    ll_shouhuodizhi.setVisibility(View.VISIBLE);
+                    ll_xiangxidizhi.setVisibility(View.VISIBLE);
+                    break;
+            }
         }
     }
 

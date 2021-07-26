@@ -241,7 +241,7 @@ public class URLs {
     //事务列表
     public static final String AffairList = HOST + "/bd/transaction/listTransaction";
     //事务详情
-    public static final String AffairDetail = HOST + "/bd/store/getDeviceTranscations/";
+    public static final String AffairDetail = HOST + "/bd/transaction/getById/";
     //事务详情-申领-邮寄方式
     public static final String AffairDetail_ShenLing = HOST + "/bd/device/apply/add/logistic";
     //事务详情-签收
