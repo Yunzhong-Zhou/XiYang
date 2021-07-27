@@ -106,7 +106,6 @@ public class Fragment5_m extends BaseFragment {
             @Override
             public void onRefresh() {
                 Map<String, String> params = new HashMap<>();
-                params.put("u_token", localUserInfo.getToken());
                 requestCenter(params);
             }
 

@@ -36,7 +36,7 @@ import okhttp3.Response;
  */
 public class ChangeTieDeviceActivity extends BaseActivity {
     StoreDetailModel model;
-    String deviceName = "", oldStoreId = "", newStoreId = "", roomId = "";
+    String deviceName = "", oldStoreId = "", newStoreId = "", roomId = "", relationId = "", contractId = "";
     LinearLayout ll_scan;
     TextView iv_scan;
     TextView tv_scan;
@@ -61,7 +61,10 @@ public class ChangeTieDeviceActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        relationId = getIntent().getStringExtra("relationId");
+        if (relationId==null) relationId = "";
+        contractId = getIntent().getStringExtra("contractId");
+        if (contractId==null) contractId = "";
     }
 
     @Override
@@ -109,6 +112,8 @@ public class ChangeTieDeviceActivity extends BaseActivity {
                     params.put("oldStoreId", oldStoreId);
                     params.put("newStoreId", newStoreId);
                     params.put("roomId", roomId);
+                    params.put("contractId", contractId);
+                    params.put("relationId", relationId);
                     requestUpData(params);
                 }
                 break;
@@ -209,7 +214,7 @@ public class ChangeTieDeviceActivity extends BaseActivity {
      * @param params
      */
     private void requestDeviceRoom(HashMap<String, String> params, String deviceName) {
-        OkhttpUtil.okHttpGet(URLs.DeviceRoom+deviceName, params, headerMap, new CallBackUtil<DeviceRoomModel>() {
+        OkhttpUtil.okHttpGet(URLs.DeviceRoom + deviceName, params, headerMap, new CallBackUtil<DeviceRoomModel>() {
             @Override
             public DeviceRoomModel onParseResponse(Call call, Response response) {
                 return null;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,11 +15,9 @@ import com.cretin.tools.scancode.config.ScanConfig;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.DeviceRoomModel;
-import com.xiyang.xiyang.model.StoreDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.MyLogger;
 
 import org.json.JSONException;
@@ -31,22 +30,22 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * Created by Mr.Z on 2021/4/2.
- * 设备移位
+ * Created by Mr.Z on 2021/7/27.
+ * 回收设备（解绑）
  */
-public class MoveDeviceActivity extends BaseActivity {
-    StoreDetailModel model_sdm;
+public class UntieDeviceActivity extends BaseActivity {
     LinearLayout ll_scan;
     TextView iv_scan;
     TextView tv_scan;
-    EditText tv_dangqianfanghao, tv_xuanzefanghao;
+    EditText tv_anzhuangmendian, tv_dangqianfanghao;
+    ImageView iv_shi, iv_fou;
 
-    String deviceName = "",oldRoomId ="", newRoomId = "";
+    String deviceName = "", roomId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movedevice);
+        setContentView(R.layout.activity_untiedevice);
     }
 
     @Override
@@ -54,14 +53,15 @@ public class MoveDeviceActivity extends BaseActivity {
         ll_scan = findViewByID_My(R.id.ll_scan);
         iv_scan = findViewByID_My(R.id.iv_scan);
         tv_scan = findViewByID_My(R.id.tv_scan);
+        tv_anzhuangmendian = findViewByID_My(R.id.tv_anzhuangmendian);
         tv_dangqianfanghao = findViewByID_My(R.id.tv_dangqianfanghao);
-        tv_xuanzefanghao = findViewByID_My(R.id.tv_xuanzefanghao);
-
+        iv_shi = findViewByID_My(R.id.iv_shi);
+        iv_fou = findViewByID_My(R.id.iv_fou);
     }
 
     @Override
     protected void initData() {
-        model_sdm = (StoreDetailModel) getIntent().getSerializableExtra("StoreDetailModel");
+
     }
 
     @Override
@@ -78,29 +78,25 @@ public class MoveDeviceActivity extends BaseActivity {
                 CaptureActivity.launch(this, config);
 
                 break;
-            case R.id.tv_xuanzefanghao:
-                //选择房号
-                if (model_sdm != null) {
-                    Intent intent3 = new Intent(MoveDeviceActivity.this, RoomNoManagementActivity.class);
-                    Bundle bundle3 = new Bundle();
-                    bundle3.putInt("requestCode", Constant.SELECT_ROOMNO);
-                    bundle3.putSerializable("StoreDetailModel", model_sdm);
-                    intent3.putExtras(bundle3);
-                    startActivityForResult(intent3, Constant.SELECT_ROOMNO);
-                }/* else {
-                    myToast("请先选择门店");
-                }*/
+            case R.id.iv_shi:
+                //是
+                iv_shi.setImageResource(R.mipmap.ic_xuanzhong);
+                iv_fou.setImageResource(R.mipmap.ic_weixuanzhong);
                 break;
-
+            case R.id.iv_fou:
+                //否
+                iv_shi.setImageResource(R.mipmap.ic_weixuanzhong);
+                iv_fou.setImageResource(R.mipmap.ic_xuanzhong);
+                break;
             case R.id.tv_confirm:
                 //确认安装
                 if (match()) {
                     this.showProgress(true, getString(R.string.app_loading1));
                     params.clear();
-                    params.put("hostName", deviceName);
+                    /*params.put("hostName", deviceName);
                     params.put("storeId", model_sdm.getStoreInfo().getId());
                     params.put("roomId", oldRoomId);
-                    params.put("newRoomId", newRoomId);
+                    params.put("newRoomId", newRoomId);*/
                     requestUpData(params);
                 }
                 break;
@@ -112,17 +108,17 @@ public class MoveDeviceActivity extends BaseActivity {
             myToast("请先扫码");
             return false;
         }
-        if (TextUtils.isEmpty(newRoomId)) {
+       /* if (TextUtils.isEmpty(newRoomId)) {
             myToast("请选择房号");
             return false;
-        }
+        }*/
 
         return true;
     }
 
     @Override
     protected void updateView() {
-        titleView.setTitle("设备移位");
+        titleView.setTitle("回收设备");
     }
 
     @Override
@@ -160,14 +156,6 @@ public class MoveDeviceActivity extends BaseActivity {
                         }
                     }
                     break;
-                case Constant.SELECT_ROOMNO:
-                    //选择房号
-                    if (data != null) {
-                        Bundle bundle = data.getExtras();
-                        newRoomId = bundle.getString("roomId");
-                        tv_xuanzefanghao.setText(bundle.getString("roomName"));
-                    }
-                    break;
 
             }
         }
@@ -179,7 +167,7 @@ public class MoveDeviceActivity extends BaseActivity {
      * @param params
      */
     private void requestDeviceRoom(HashMap<String, String> params, String deviceName) {
-        OkhttpUtil.okHttpGet(URLs.DeviceRoom+deviceName, params, headerMap, new CallBackUtil<DeviceRoomModel>() {
+        OkhttpUtil.okHttpGet(URLs.DeviceRoom + deviceName, params, headerMap, new CallBackUtil<DeviceRoomModel>() {
             @Override
             public DeviceRoomModel onParseResponse(Call call, Response response) {
                 return null;
@@ -194,7 +182,7 @@ public class MoveDeviceActivity extends BaseActivity {
             @Override
             public void onResponse(DeviceRoomModel response) {
                 hideProgress();
-                oldRoomId = response.getRoomId();
+                roomId = response.getRoomId();
                 tv_dangqianfanghao.setText(response.getRoomName());
             }
         });

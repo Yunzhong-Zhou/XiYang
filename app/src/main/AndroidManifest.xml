@@ -259,11 +259,17 @@
             android:name=".activity.AddDeviceDetailActivity"
             android:label="申领设备详情" />
         <activity
+            android:name=".activity.Change4GModuleActivity"
+            android:label="更换4G模组" />
+        <activity
             android:name=".activity.InstallDeviceActivity"
             android:label="安装设备" />
         <activity
             android:name=".activity.ChangeTieDeviceActivity"
             android:label="换绑设备" />
+        <activity
+            android:name=".activity.UntieDeviceActivity"
+            android:label="回收设备" />
         <activity
             android:name=".activity.DebugDeviceActivity"
             android:label="调试设备" />

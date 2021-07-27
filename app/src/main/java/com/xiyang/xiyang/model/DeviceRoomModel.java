@@ -19,6 +19,16 @@ public class DeviceRoomModel implements Serializable {
     private String storeId;
     private String roomName;
     private String roomId;
+    /**
+     * productKey : string
+     * moduleName : string
+     * secret : string
+     */
+
+    private String productKey;
+    private String moduleName;
+    private String secret;
+
 
     public String getChildName() {
         return childName;
@@ -58,5 +68,29 @@ public class DeviceRoomModel implements Serializable {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getProductKey() {
+        return productKey;
+    }
+
+    public void setProductKey(String productKey) {
+        this.productKey = productKey;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }

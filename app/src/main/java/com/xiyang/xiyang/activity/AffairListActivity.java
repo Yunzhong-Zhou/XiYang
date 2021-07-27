@@ -182,6 +182,7 @@ public class AffairListActivity extends BaseActivity {
 //                                    } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("id", model.getId());
+                                    bundle.putString("apply_Type", model.getType()+"");
                                     CommonUtil.gotoActivityWithData(AffairListActivity.this, AffairDetailActivity.class, bundle, false);
 //                                    }
 

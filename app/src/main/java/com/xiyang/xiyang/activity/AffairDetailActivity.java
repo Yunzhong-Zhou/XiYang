@@ -65,7 +65,7 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  * 事务详情
  */
 public class AffairDetailActivity extends BaseActivity {
-    String id = "";
+    String id = "", apply_Type = "1";
     int type = 1;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
@@ -104,11 +104,12 @@ public class AffairDetailActivity extends BaseActivity {
     /**
      * 安装记录
      */
+    ShadowLayout sl_scan;
     LinearLayout ll_shenhe;
     RecyclerView rv_anzhuang;
     List<AffairDetailModel.ListBean> list_anzhuang = new ArrayList<>();
     CommonAdapter<AffairDetailModel.ListBean> mAdapter_anzhuang;
-    TextView iv_scan, tv_scan,tv_allnum,tv_innum;
+    TextView iv_scan, tv_scan, tv_allnum, tv_innum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,6 +245,7 @@ public class AffairDetailActivity extends BaseActivity {
         /**
          * 安装记录
          */
+        sl_scan = findViewByID_My(R.id.sl_scan);
         ll_shenhe = findViewByID_My(R.id.ll_shenhe);
         rv_anzhuang = findViewByID_My(R.id.rv_anzhuang);
         rv_anzhuang.setLayoutManager(new LinearLayoutManager(this));
@@ -269,10 +271,36 @@ public class AffairDetailActivity extends BaseActivity {
                         .setNeedRing(true);//是否需要提示音
                 //ScanConfig 也可以不配置 默认都是打开
                 CaptureActivity.launch(this, config);*/
-                bundle.putString("transactionId", model.getId());
-                bundle.putString("storeId", model.getStoreId());
-                bundle.putString("storeName", model.getStoreName());
-                CommonUtil.gotoActivityWithData(AffairDetailActivity.this, InstallDeviceActivity.class, bundle);
+                switch (model.getType()) {//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                    case "1":
+                        //主机
+                        bundle.putString("transactionId", model.getRelationId());
+                        bundle.putString("storeId", model.getStoreId());
+                        bundle.putString("storeName", model.getStoreName());
+                        CommonUtil.gotoActivityWithData(AffairDetailActivity.this, InstallDeviceActivity.class, bundle);
+                        break;
+                    case "2":
+                        //4G模块
+                        bundle.putString("transactionId", model.getRelationId());
+                        CommonUtil.gotoActivityWithData(AffairDetailActivity.this, Change4GModuleActivity.class, bundle);
+                        break;
+                    case "3":
+                        //过滤网
+
+                        break;
+                    case "4":
+                        //回收
+                        bundle.putString("relationId", model.getRelationId());
+                        bundle.putString("contractId", model.getContractId());
+                        CommonUtil.gotoActivityWithData(AffairDetailActivity.this, UntieDeviceActivity.class, bundle);
+                        break;
+                    case "5":
+                        //换绑
+                        bundle.putString("relationId", model.getRelationId());
+                        bundle.putString("contractId", model.getContractId());
+                        CommonUtil.gotoActivityWithData(AffairDetailActivity.this, ChangeTieDeviceActivity.class, bundle);
+                        break;
+                }
                 break;
             case R.id.ll_tab1:
                 //商户信息
@@ -369,6 +397,7 @@ public class AffairDetailActivity extends BaseActivity {
         list_fangshi.add("邮寄");
 
         id = getIntent().getStringExtra("id");
+        apply_Type = getIntent().getStringExtra("apply_Type");
     }
 
     @Override
@@ -382,7 +411,7 @@ public class AffairDetailActivity extends BaseActivity {
     }
 
     private void request(HashMap<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.AffairDetail + id, params, headerMap, new CallBackUtil<AffairDetailModel>() {
+        OkhttpUtil.okHttpGet(URLs.AffairDetail + apply_Type + "/" + id, params, headerMap, new CallBackUtil<AffairDetailModel>() {
             @Override
             public AffairDetailModel onParseResponse(Call call, Response response) {
                 return null;
@@ -440,6 +469,32 @@ public class AffairDetailActivity extends BaseActivity {
                 /**
                  * 安装记录
                  */
+                sl_scan.setVisibility(View.VISIBLE);
+                ll_tab2.setVisibility(View.VISIBLE);
+                switch (response.getType()) {//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                    case "1":
+                        //主机
+                        iv_scan.setText("安装设备");
+                        break;
+                    case "2":
+                        //4G模块
+                        iv_scan.setText("更换4G模组");
+                        break;
+                    case "3":
+                        //过滤网
+                        sl_scan.setVisibility(View.GONE);
+                        break;
+                    case "4":
+                        //回收
+                        iv_scan.setText("回收设备");
+                        break;
+                    case "5":
+                        //换绑
+                        ll_tab2.setVisibility(View.GONE);
+                        iv_scan.setText("换绑设备");
+                        break;
+                }
+
                 tv_allnum.setText(response.getInstallNum());
                 tv_innum.setText(response.getInstalledNum());
                 if (response.getList() != null) {
@@ -450,16 +505,40 @@ public class AffairDetailActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, AffairDetailModel.ListBean model, int position) {
                             holder.setText(R.id.textView1, model.getRoomFullName());
                             holder.setText(R.id.textView2, model.getDeviceHostName());
-//                        holder.setText(R.id.textView3, model.get);
+//                        holder.setText(R.id.textView3, model.getStatus());
                             holder.setText(R.id.textView4, model.getInstallTime() + "");
 
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
-//                                bundle.putString("deviceName", model.getDeviceNo());
-                                    bundle.putString("deviceName", model.getDeviceId());
-                                    CommonUtil.gotoActivityWithData(AffairDetailActivity.this, DeviceDetailActivity.class, bundle, false);
+                                    switch (response.getType()) {//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                                        case "1":
+                                            //主机
+                                            //                                bundle.putString("deviceName", model.getDeviceNo());
+                                            bundle.putString("deviceName", model.getDeviceId());
+                                            CommonUtil.gotoActivityWithData(AffairDetailActivity.this, DeviceDetailActivity.class, bundle, false);
+                                            break;
+                                        case "2":
+                                            //4G模块
+                                            bundle.putString("deviceName", model.getDeviceHostName());
+                                            bundle.putString("4GModule", model.getDeviceModuleId());
+                                            CommonUtil.gotoActivityWithData(AffairDetailActivity.this, Change4GModuleActivity.class, bundle, false);
+                                            break;
+                                        case "3":
+                                            //过滤网
+                                            break;
+                                        case "4":
+                                            //回收
+
+                                            break;
+                                        case "5":
+                                            //换绑
+
+                                            break;
+                                    }
+
+
                                 }
                             });
                         }

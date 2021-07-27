@@ -258,6 +258,8 @@ public class URLs {
     public static final String Device2Store = HOST + "/bd/device/apply/queryStoreDeviceListByStoreId";
     //获取设备房号
     public static final String DeviceRoom = HOST + "/bd/store/getStoresAndRoomVoByHostname/";
+    //获取4G模组
+    public static final String Device4G = HOST + "/service-device/device/Device/get4gModuleInfoByHostname/";
     //添加申领信息-4G
     public static final String AddDevice_4G = HOST + "/bd/device/apply/apply4GModule";
     //添加申领信息-过滤网
@@ -274,6 +276,8 @@ public class URLs {
     public static final String ChangeTieDevice = HOST + "/service-device/device/deviceChangeBind";
     //设备移位
     public static final String ChangeRoomDevice = HOST + "/service-device/device/moveDeviceToOther";
+    //更换4G模组
+    public static final String Change4G = HOST + "/service-device/device/updateMachine4GModelId/";
     /**
      * ********************************数据*****************************************
      */

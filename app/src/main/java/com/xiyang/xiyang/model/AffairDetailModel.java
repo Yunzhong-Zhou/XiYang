@@ -28,6 +28,7 @@ public class AffairDetailModel implements Serializable {
     private String type;
     private String typeName;
     private String relationId;
+    private String contractId;
     private String status;
     private String storeId;
     private String storeName;
@@ -38,6 +39,14 @@ public class AffairDetailModel implements Serializable {
     private String installedNum;
     private List<ListBean> list;
     private String createTime;
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
 
     public String getCreateTime() {
         return createTime;
