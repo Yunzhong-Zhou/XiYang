@@ -228,7 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <com.lihang.ShadowLayout
                         android:layout_width="match_parent"
@@ -281,7 +281,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <!--合同基本信息-->
                     <com.lihang.ShadowLayout
@@ -326,6 +326,7 @@
                                 android:paddingBottom="10dp">
 
                                 <TextView
+                                    android:id="@+id/tv_fangshi"
                                     android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:text="申领方式"
@@ -476,7 +477,188 @@
                                     android:textStyle="bold" />
 
                             </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/ll_wuliugongsi"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="10dp">
 
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="物流公司"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_wuliugongsi"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableRight="@mipmap/ic_down_black"
+                                    android:drawablePadding="6dp"
+                                    android:gravity="right"
+                                    android:hint="请选择物流公司"
+                                    android:onClick="onClick"
+                                    android:paddingBottom="10dp"
+                                    android:text=""
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/ll_kuaididanhao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="10dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="快递单号"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <EditText
+                                    android:id="@+id/et_kuaididanhao"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/edittext_bg"
+                                    android:gravity="right"
+                                    android:hint="请输入快递单号"
+                                    android:paddingBottom="10dp"
+                                    android:text=""
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_tuihuicangku"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="10dp"
+                                android:paddingBottom="10dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="退回仓库"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_tuihuicangku"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:hint=""
+                                    android:paddingBottom="10dp"
+                                    android:text=""
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/ll_qianshouren"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="10dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="签收人"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_qianshouren"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:hint=""
+                                    android:paddingBottom="10dp"
+                                    android:text=""
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/ll_qianshourendianhua"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="10dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="签收人电话"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_qianshourendianhua"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:hint=""
+                                    android:paddingBottom="10dp"
+                                    android:text=""
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_qianshoudizhi"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="10dp">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="签收地址"
+                                    android:textColor="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_qianshoudizhi"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/transparent"
+                                    android:gravity="right"
+                                    android:hint=""
+                                    android:paddingBottom="10dp"
+                                    android:text=""
+                                    android:textColor="@color/black2"
+                                    android:textColorHint="@color/black3"
+                                    android:textSize="12.5sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
                             <TextView
                                 android:id="@+id/tv_shangchuanzhaopian"
                                 android:layout_width="100dp"

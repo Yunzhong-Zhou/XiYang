@@ -10,8 +10,6 @@ import android.os.Handler;
 
 import com.hjq.toast.ToastUtils;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.tencent.smtt.sdk.QbSdk;
-import com.xiyang.xiyang.utils.MyLogger;
 import com.xiyang.xiyang.utils.changelanguage.LanguageUtil;
 import com.xiyang.xiyang.utils.changelanguage.SpUtil;
 
@@ -49,7 +47,7 @@ public class MyApplication extends Application {
 
         //腾讯bugly 异常上报初始化-建议在测试阶段建议设置成true，发布时设置为false。
         CrashReport.initCrashReport(getApplicationContext(), "789711ef96", false);
-        //非wifi情况下，主动下载x5内核
+        /*//非wifi情况下，主动下载x5内核
         QbSdk.setDownloadWithoutWifi(false);
         //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
         QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
@@ -65,7 +63,7 @@ public class MyApplication extends Application {
             }
         };
         //x5内核初始化接口
-        QbSdk.initX5Environment(getApplicationContext(), cb);
+        QbSdk.initX5Environment(getApplicationContext(), cb);*/
 
         //toast初始化
         ToastUtils.init(this);

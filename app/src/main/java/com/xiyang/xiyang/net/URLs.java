@@ -67,7 +67,7 @@ public class URLs {
      */
     public static final String Fragment1 = HOST + "/bd/merchants/app/merchant";
     //添加商户
-    public static final String AddShop = HOST + "/bd/merchants/add";
+    public static final String AddShop = HOST + "/bd/merchants/addMerchants";
     //添加商户-检测账号
     public static final String AddShop_Detect = HOST + "/user/verifyPhone";
     //商户列表
@@ -244,6 +244,8 @@ public class URLs {
     public static final String AffairDetail = HOST + "/bd/transaction/getById/";
     //事务详情-申领-邮寄方式
     public static final String AffairDetail_ShenLing = HOST + "/bd/device/apply/add/logistic";
+    //事务详情-申领-发货
+    public static final String AffairDetail_FaHuo = HOST + "/service-purchase/logistic/send";
     //事务详情-签收
     public static final String AffairDetail_QianShou = HOST + "/bd/device/apply/sign/logistic/";
     //我的设备列表
@@ -276,6 +278,8 @@ public class URLs {
     public static final String ChangeTieDevice = HOST + "/service-device/device/deviceChangeBind";
     //设备移位
     public static final String ChangeRoomDevice = HOST + "/service-device/device/moveDeviceToOther";
+    //设备回收
+    public static final String UntieDevice = HOST + "/device/recycling";
     //更换4G模组
     public static final String Change4G = HOST + "/service-device/device/updateMachine4GModelId/";
     /**

@@ -227,7 +227,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     //腾讯X5 WebView
-    implementation 'com.tencent.tbs.tbssdk:sdk:43697'
+//    implementation 'com.tencent.tbs.tbssdk:sdk:43697'
 
     //高德定位(猎鹰jar包 包含了定位包)
     implementation 'com.amap.api:3dmap:latest.integration'//3D地图

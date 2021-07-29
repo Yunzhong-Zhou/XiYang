@@ -1,5 +1,7 @@
 package com.xiyang.xiyang.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -39,6 +41,12 @@ public class AffairDetailModel implements Serializable {
     private String installedNum;
     private List<ListBean> list;
     private String createTime;
+    /**
+     * contract : {"deviceNum":1,"file":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/28/1627440347220订单流程.pdf","contractType":"device_exchange","storeId":"1413329610791325696","inStoreId":"1415855164790804480","outStoreId":"1413329610791325696"}
+     */
+
+    private ContractBean contract;
+
 
     public String getContractId() {
         return contractId;
@@ -168,6 +176,14 @@ public class AffairDetailModel implements Serializable {
         this.list = list;
     }
 
+    public ContractBean getContract() {
+        return contract;
+    }
+
+    public void setContract(ContractBean contract) {
+        this.contract = contract;
+    }
+
     public static class LogisticBean {
         /**
          * id : 1418487037506580482
@@ -223,6 +239,24 @@ public class AffairDetailModel implements Serializable {
         private String delFlag;
         private List<ExpressInfoBean> expressInfo;
         private String voucher;
+        private String warehouseName;
+        private String warehouseId;
+
+        public String getWarehouseId() {
+            return warehouseId;
+        }
+
+        public void setWarehouseId(String warehouseId) {
+            this.warehouseId = warehouseId;
+        }
+
+        public String getWarehouseName() {
+            return warehouseName;
+        }
+
+        public void setWarehouseName(String warehouseName) {
+            this.warehouseName = warehouseName;
+        }
 
         public String getVoucher() {
             return voucher;
@@ -652,6 +686,91 @@ public class AffairDetailModel implements Serializable {
 
         public void setCreateTime(String createTime) {
             this.createTime = createTime;
+        }
+    }
+
+    public static class ContractBean {
+        /**
+         * deviceNum : 1
+         * file : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/28/1627440347220订单流程.pdf
+         * contractType : device_exchange
+         * storeId : 1413329610791325696
+         * inStoreId : 1415855164790804480
+         * outStoreId : 1413329610791325696
+         */
+
+        private String deviceNum;
+        private String file;
+        private String contractType;
+        @SerializedName("storeId")
+        private String storeIdX;
+        private String inStoreId;
+        private String outStoreId;
+        private String reasonId;
+        private String warehouseId;
+
+        public String getWarehouseId() {
+            return warehouseId;
+        }
+
+        public void setWarehouseId(String warehouseId) {
+            this.warehouseId = warehouseId;
+        }
+
+        public String getReasonId() {
+            return reasonId;
+        }
+
+        public void setReasonId(String reasonId) {
+            this.reasonId = reasonId;
+        }
+
+        public String getDeviceNum() {
+            return deviceNum;
+        }
+
+        public void setDeviceNum(String deviceNum) {
+            this.deviceNum = deviceNum;
+        }
+
+        public String getFile() {
+            return file;
+        }
+
+        public void setFile(String file) {
+            this.file = file;
+        }
+
+        public String getContractType() {
+            return contractType;
+        }
+
+        public void setContractType(String contractType) {
+            this.contractType = contractType;
+        }
+
+        public String getStoreIdX() {
+            return storeIdX;
+        }
+
+        public void setStoreIdX(String storeIdX) {
+            this.storeIdX = storeIdX;
+        }
+
+        public String getInStoreId() {
+            return inStoreId;
+        }
+
+        public void setInStoreId(String inStoreId) {
+            this.inStoreId = inStoreId;
+        }
+
+        public String getOutStoreId() {
+            return outStoreId;
+        }
+
+        public void setOutStoreId(String outStoreId) {
+            this.outStoreId = outStoreId;
         }
     }
 }

@@ -65,7 +65,7 @@ public abstract class CallBackUtil<T> {
      */
     public void onSeccess(Call call, Response response) {
         mType = getSuperclassTypeParameter(getClass());
-        if (mGson == null){
+        if (mGson == null) {
             mGson = new Gson();
         }
         try {
@@ -73,7 +73,7 @@ public abstract class CallBackUtil<T> {
             if (!string.equals("")) {
                 MyLogger.i("数据返回onSeccess", string);
                 JSONObject mJsonObject = new JSONObject(string);
-                if (mJsonObject.has("code")){
+                if (mJsonObject.has("code")) {
                     //数据是否包含code
                     int result_code = mJsonObject.getInt("code");
                     //保存后台返回的最新时间戳
@@ -85,7 +85,6 @@ public abstract class CallBackUtil<T> {
                             //数据请求成功-解析数据
                             if (string.indexOf("data") != -1) {
                                 // TODO 有data数据 -解析data
-
                                 String result = mJsonObject.getString("data");
                                 if (mType == String.class) {//模型为string直接返回data数据
                                     mMainHandler.post(new Runnable() {
@@ -95,7 +94,7 @@ public abstract class CallBackUtil<T> {
                                             onResponse((T) result);
                                         }
                                     });
-                                }else if (mType == List.class){
+                                } else if (mType == List.class) {
                                     mMainHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -104,7 +103,7 @@ public abstract class CallBackUtil<T> {
                                         }
                                     });
 
-                                }else {
+                                } else {
                                     mMainHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -125,7 +124,7 @@ public abstract class CallBackUtil<T> {
                                             onResponse((T) msg);
                                         }
                                     });
-                                }else {
+                                } else {
                                     mMainHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -145,8 +144,7 @@ public abstract class CallBackUtil<T> {
                             }
                         });
                         break;*/
-                        case 50003:
-                        case 40002:
+                        case 401:
                             //会员token无效 - 跳转登录
                             ActivityUtils.finishAllActivitiesExceptNewest();//结束除最新之外的所有 Activity
                             LocalUserInfo.getInstance(MyApplication.getContext()).setToken("");

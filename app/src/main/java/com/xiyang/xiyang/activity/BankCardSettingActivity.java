@@ -160,24 +160,26 @@ public class BankCardSettingActivity extends BaseActivity {
             textView1.setText(model.getBankName());//开户行
             editText1.setText(model.getBankUserName());//开户名
             editText2.setText(model.getBankCardNumber());//银行卡号
+
+            if (!model.isTradePasswordFlag()) {
+                showToast(getString(R.string.password_h2),
+                        getString(R.string.password_h5), getString(R.string.password_h6),
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                CommonUtil.gotoActivity(BankCardSettingActivity.this, SetTransactionPasswordActivity.class, false);
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+            }
         }
-        if (!model.isTradePasswordFlag()) {
-            showToast(getString(R.string.password_h2),
-                    getString(R.string.password_h5), getString(R.string.password_h6),
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                            CommonUtil.gotoActivity(BankCardSettingActivity.this, SetTransactionPasswordActivity.class, false);
-                        }
-                    }, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    });
-        }
+
     }
 
     //获取收款设置

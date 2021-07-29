@@ -30,13 +30,13 @@ public class HelpModel implements Serializable {
          */
 
         private String id;
-        private boolean type;
+        private String type;
         private String name;
         private String descs;
-        private int adminId;
-        private Object createdTime;
-        private Object updatedTime;
-        private int delFlag;
+        private String adminId;
+        private String createdTime;
+        private String updatedTime;
+        private String delFlag;
 
         public String getId() {
             return id;
@@ -46,11 +46,11 @@ public class HelpModel implements Serializable {
             this.id = id;
         }
 
-        public boolean isType() {
+        public String isType() {
             return type;
         }
 
-        public void setType(boolean type) {
+        public void setType(String type) {
             this.type = type;
         }
 
@@ -70,35 +70,35 @@ public class HelpModel implements Serializable {
             this.descs = descs;
         }
 
-        public int getAdminId() {
+        public String getAdminId() {
             return adminId;
         }
 
-        public void setAdminId(int adminId) {
+        public void setAdminId(String adminId) {
             this.adminId = adminId;
         }
 
-        public Object getCreatedTime() {
+        public String getCreatedTime() {
             return createdTime;
         }
 
-        public void setCreatedTime(Object createdTime) {
+        public void setCreatedTime(String createdTime) {
             this.createdTime = createdTime;
         }
 
-        public Object getUpdatedTime() {
+        public String getUpdatedTime() {
             return updatedTime;
         }
 
-        public void setUpdatedTime(Object updatedTime) {
+        public void setUpdatedTime(String updatedTime) {
             this.updatedTime = updatedTime;
         }
 
-        public int getDelFlag() {
+        public String getDelFlag() {
             return delFlag;
         }
 
-        public void setDelFlag(int delFlag) {
+        public void setDelFlag(String delFlag) {
             this.delFlag = delFlag;
         }
     }

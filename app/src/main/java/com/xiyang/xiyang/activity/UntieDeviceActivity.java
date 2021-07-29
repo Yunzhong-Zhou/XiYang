@@ -40,7 +40,7 @@ public class UntieDeviceActivity extends BaseActivity {
     EditText tv_anzhuangmendian, tv_dangqianfanghao;
     ImageView iv_shi, iv_fou;
 
-    String deviceName = "", roomId = "";
+    String deviceName = "", roomId = "", faultFlag = "0",transactionsId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class UntieDeviceActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        transactionsId = getIntent().getStringExtra("relationId");
     }
 
     @Override
@@ -80,11 +80,13 @@ public class UntieDeviceActivity extends BaseActivity {
                 break;
             case R.id.iv_shi:
                 //是
+                faultFlag = "1";//0:正常; 1:故障
                 iv_shi.setImageResource(R.mipmap.ic_xuanzhong);
                 iv_fou.setImageResource(R.mipmap.ic_weixuanzhong);
                 break;
             case R.id.iv_fou:
                 //否
+                faultFlag = "0";//0:正常; 1:故障
                 iv_shi.setImageResource(R.mipmap.ic_weixuanzhong);
                 iv_fou.setImageResource(R.mipmap.ic_xuanzhong);
                 break;
@@ -93,10 +95,9 @@ public class UntieDeviceActivity extends BaseActivity {
                 if (match()) {
                     this.showProgress(true, getString(R.string.app_loading1));
                     params.clear();
-                    /*params.put("hostName", deviceName);
-                    params.put("storeId", model_sdm.getStoreInfo().getId());
-                    params.put("roomId", oldRoomId);
-                    params.put("newRoomId", newRoomId);*/
+                    params.put("hostname", deviceName);
+                    params.put("faultFlag", faultFlag);
+                    params.put("transactionsId", transactionsId);
                     requestUpData(params);
                 }
                 break;
@@ -183,13 +184,14 @@ public class UntieDeviceActivity extends BaseActivity {
             public void onResponse(DeviceRoomModel response) {
                 hideProgress();
                 roomId = response.getRoomId();
+                tv_anzhuangmendian.setText(response.getName());
                 tv_dangqianfanghao.setText(response.getRoomName());
             }
         });
     }
 
     private void requestUpData(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.ChangeRoomDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.UntieDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
