@@ -231,6 +231,7 @@
                     android:hint="请输入联系人电话"
                     android:paddingLeft="100dp"
                     android:inputType="phone"
+                    android:maxLength="11"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"
                     android:textColorHint="@color/black3"

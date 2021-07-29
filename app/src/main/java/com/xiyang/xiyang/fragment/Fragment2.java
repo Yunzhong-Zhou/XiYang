@@ -223,7 +223,7 @@ public class Fragment2 extends BaseFragment {
             @Override
             public void onResponse(Fragment2Model response) {
                 hideProgress();
-                showContentPage();
+                showEmptyPage();
 
                 model = response;
                 textView1.setText(response.getStoreNumber());
@@ -242,49 +242,50 @@ public class Fragment2 extends BaseFragment {
                 recyclerView1.setAdapter(mAdapter1);
 
                 changeUI();
-
-                list2 = response.getStores();
-                if (list2.size() > 0) {
-                    mAdapter2 = new CommonAdapter<Fragment2Model.StoresBean>
-                            (getActivity(), R.layout.item_fragment2_2, list2) {
-                        @Override
-                        protected void convert(ViewHolder holder, Fragment2Model.StoresBean model, int position) {
-                            holder.setText(R.id.tv_name, model.getName());//标题
+                if (response.getStores() != null){
+                    list2 = response.getStores();
+                    if (list2.size() > 0) {
+                        showContentPage();
+                        mAdapter2 = new CommonAdapter<Fragment2Model.StoresBean>
+                                (getActivity(), R.layout.item_fragment2_2, list2) {
+                            @Override
+                            protected void convert(ViewHolder holder, Fragment2Model.StoresBean model, int position) {
+                                holder.setText(R.id.tv_name, model.getName());//标题
 //                            holder.setText(R.id.tv_shop, model.get);
 //                            holder.setText(R.id.tv_num, model.get);//money
-                            holder.setText(R.id.tv_addr, model.getAddress());
+                                holder.setText(R.id.tv_addr, model.getAddress());
 
-                            ImageView imageView1 = holder.getView(R.id.imageView1);
-                            Glide.with(getActivity())
-                                    .load(model.getImage())
+                                ImageView imageView1 = holder.getView(R.id.imageView1);
+                                Glide.with(getActivity())
+                                        .load(model.getImage())
 //                                .fitCenter()
-                                    .apply(RequestOptions.bitmapTransform(new
-                                            RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
-                                    .placeholder(R.mipmap.loading)//加载站位图
-                                    .error(R.mipmap.zanwutupian)//加载失败
-                                    .into(imageView1);//加载图片
-                            ImageView imageView2 = holder.getView(R.id.imageView2);
-                            if (model.getVisitStatus() != null && model.getVisitStatus().equals("3")) {
-                                imageView2.setImageResource(R.mipmap.bg_yibaifang);
-                            } else {
-                                //待拜访
-                                imageView2.setImageResource(R.mipmap.bg_daibaifang);
-                            }
-                            holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("id", model.getId());
-                                    CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                                        .apply(RequestOptions.bitmapTransform(new
+                                                RoundedCorners(CommonUtil.dip2px(getActivity(), 10))))
+                                        .placeholder(R.mipmap.loading)//加载站位图
+                                        .error(R.mipmap.zanwutupian)//加载失败
+                                        .into(imageView1);//加载图片
+                                ImageView imageView2 = holder.getView(R.id.imageView2);
+                                if (model.getVisitStatus() != null && model.getVisitStatus().equals("3")) {
+                                    imageView2.setImageResource(R.mipmap.bg_yibaifang);
+                                } else {
+                                    //待拜访
+                                    imageView2.setImageResource(R.mipmap.bg_daibaifang);
                                 }
+                                holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("id", model.getId());
+                                        CommonUtil.gotoActivityWithData(getActivity(), StoreDetailActivity.class, bundle, false);
+                                    }
 
-                            });
-                        }
-                    };
-                    recyclerView2.setAdapter(mAdapter2);
-                } else {
-                    showEmptyPage();
+                                });
+                            }
+                        };
+                        recyclerView2.setAdapter(mAdapter2);
+                    }
                 }
+
 
                 MainActivity.isOver = true;
 

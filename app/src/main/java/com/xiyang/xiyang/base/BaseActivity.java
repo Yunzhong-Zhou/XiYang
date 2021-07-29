@@ -452,6 +452,8 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
 
     }
 
+
+
     @Override
     public String getStringbyid(int resId) {
         return getString(resId);

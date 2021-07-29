@@ -28,6 +28,26 @@
             android:scrollbars="none"
             android:background="@color/white">
         </ListView>
+        <ListView
+            android:id="@+id/pop_listView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="@color/xian"
+            android:dividerHeight="0.5dp"
+            android:scrollbars="none"
+            android:background="@color/white">
+        </ListView>
+        <ListView
+            android:id="@+id/pop_listView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="@color/xian"
+            android:dividerHeight="0.5dp"
+            android:scrollbars="none"
+            android:background="@color/white">
+        </ListView>
 
     </LinearLayout>
 

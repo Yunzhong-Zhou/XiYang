@@ -588,12 +588,12 @@ public class ShopDetailActivity extends BaseActivity {
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
 
-                if (model.getBase().getSignStatus() != null && (model.getBase().getSignStatus().equals("1") || model.getBase().getSignStatus().equals("2"))) {
-                    ll_shopinfo.setVisibility(View.GONE);
-                    ll_shopedit.setVisibility(View.VISIBLE);
-                } else {
+                if (model.getBase().getSignStatus() != null && model.getBase().getSignStatus().equals("4")) {
                     ll_shopinfo.setVisibility(View.VISIBLE);
                     ll_shopedit.setVisibility(View.GONE);
+                } else {
+                    ll_shopinfo.setVisibility(View.GONE);
+                    ll_shopedit.setVisibility(View.VISIBLE);
                 }
 
                 ll_contract.setVisibility(View.GONE);

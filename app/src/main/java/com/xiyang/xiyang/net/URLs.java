@@ -75,7 +75,7 @@ public class URLs {
     //商户详情
     public static final String ShopDetail = HOST + "/bd/merchants/app/merchant/detail/";
     //修改商户
-    public static final String ChangeShop = HOST + "/bd/merchants/update";
+    public static final String ChangeShop = HOST + "/bd/merchants/updateMerchants";
     //添加合同-签约
     public static final String AddContract_qianyue = HOST + "/bd/bdservice/signContracts";
     //添加合同-新增
@@ -149,7 +149,7 @@ public class URLs {
     //门店上报
     public static final String DispatchStore_ShangBao = HOST + "/bd/store/transfer/report/";
     //门店指派
-    public static final String DispatchStore = HOST + "/bd/store/transfer/assignMerchant";
+    public static final String DispatchStore = HOST + "/bd/store/transfer/assignStore";
     //工单分派列表
     public static final String DispatchWorkList = HOST + "/bd/work/orders/manageUser/page";
     //工单上报

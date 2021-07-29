@@ -450,6 +450,12 @@ public class ApproveDetailActivity extends BaseActivity {
                                     tv_type.setTextColor(getResources().getColor(R.color.red));
                                     iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
                                     break;
+
+                                default:
+                                    tv_type.setText("待审核");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                    break;
                             }
                         }
                     };

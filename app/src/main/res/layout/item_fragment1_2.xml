@@ -14,6 +14,7 @@
         app:hl_shadowColor="@color/bg_gray"
         app:hl_shadowHiddenTop="true"
         app:hl_shadowLimit="2dp"
+        app:clickable="false"
         app:hl_shadowOffsetX="0dp"
         app:hl_shadowOffsetY="2dp">
 
