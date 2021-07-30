@@ -330,7 +330,7 @@ public class ShopDetailActivity extends BaseActivity {
                 tv_num.setText(response.getCountData().getMoney());//商户营收
                 tv_addr.setText(response.getBase().getAddress());
                 Glide.with(ShopDetailActivity.this)
-                        .load(model.getBase().getCertificateUrl())
+                        .load(model.getBase().getLogoUrl())
 //                                .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(ShopDetailActivity.this, 10))))

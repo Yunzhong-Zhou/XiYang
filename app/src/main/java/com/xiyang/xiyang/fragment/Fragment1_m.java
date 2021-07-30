@@ -467,7 +467,7 @@ public class Fragment1_m extends BaseFragment {
                 //调整岗位
                 if (localUserInfo.getUserJob().equals("BDM")) {
                     myToast("调整岗位需CM及以上");
-                    /*bundle.putString("job", "bd");
+                    /*bundle.putString("job", "BD");
                     CommonUtil.gotoActivityWithData(getActivity(), AdjustJobActivity.class, bundle);*/
                 } else {
                     bundle.putInt("type", 3);

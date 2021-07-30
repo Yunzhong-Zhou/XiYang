@@ -121,7 +121,14 @@ public class AddDeviceActivity extends BaseActivity {
 //        requestServer();//获取数据
         showEmptyPage();
     }
-
+    @Override
+    public void requestServer() {
+        super.requestServer();
+        this.showLoadingPage();
+        params.clear();
+        params.put("storeId", storeId);
+        requestDevice2Store(params, storeId);
+    }
     @Override
     protected void updateView() {
         switch (type) {

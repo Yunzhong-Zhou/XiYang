@@ -57,7 +57,7 @@ public class ContractDetailActivity extends BaseActivity {
      * 合同信息
      */
     LinearLayout ll_contract;
-    TextView tv_liulan;
+    TextView tv_liulan,tv_contract;
     ImageView iv_contract;
     RecyclerView rv_contract;
     List<KeyValueModel> list_contract = new ArrayList<>();
@@ -124,6 +124,7 @@ public class ContractDetailActivity extends BaseActivity {
          */
         ll_contract = findViewByID_My(R.id.ll_contract);
         tv_liulan = findViewByID_My(R.id.tv_liulan);
+        tv_contract = findViewByID_My(R.id.tv_contract);
         iv_contract = findViewByID_My(R.id.iv_contract);
         rv_contract = findViewByID_My(R.id.rv_contract);
         rv_contract.setLayoutManager(new LinearLayoutManager(this));
@@ -283,6 +284,7 @@ public class ContractDetailActivity extends BaseActivity {
                  * 合同信息
                  */
                 list_contract.clear();
+                tv_contract.setVisibility(View.GONE);
                 iv_contract.setVisibility(View.GONE);
                 switch (typeStr) {
                     case "merchant_sign":
@@ -292,6 +294,7 @@ public class ContractDetailActivity extends BaseActivity {
                         list_contract.add(new KeyValueModel("签约期限", response.getSignPeriod()));
                         list_contract.add(new KeyValueModel("是否独家", response.getSole()));
                         list_contract.add(new KeyValueModel("签约时间", response.getSignTime()));
+                        tv_contract.setVisibility(View.VISIBLE);
                         iv_contract.setVisibility(View.VISIBLE);
                         Glide.with(ContractDetailActivity.this)
                                 .load(response.getMerchantLogoUrl())
@@ -332,6 +335,7 @@ public class ContractDetailActivity extends BaseActivity {
                         list_contract.add(new KeyValueModel("商户行业", response.getMerchantIndustry()));
                         list_contract.add(new KeyValueModel("所在城市", response.getMerchantCityName()));
                         list_contract.add(new KeyValueModel("详细地址", response.getMerchantAddress()));
+                        tv_contract.setVisibility(View.VISIBLE);
                         iv_contract.setVisibility(View.VISIBLE);
                         Glide.with(ContractDetailActivity.this)
                                 .load(response.getQualificationsImageUrl())

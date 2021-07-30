@@ -135,31 +135,33 @@ public class ApproveContractActivity extends BaseActivity {
     protected void initData() {
         id = getIntent().getStringExtra("id");
         type = getIntent().getStringExtra("type");
-        titleView.setTitle("审批合同");
-        if (type != null && type.equals("device_add")) {
-            rl_shuliang.setVisibility(View.VISIBLE);
-            tv_shuliang.setText(getIntent().getStringExtra("num"));
-            type_shenhe = getIntent().getStringExtra("type_shenhe");
-            if (type_shenhe != null && type_shenhe.equals("4")) {
-                titleView.setTitle("审批采购审核");
-            }
-        } else {
-            rl_shuliang.setVisibility(View.GONE);
-            type_shenhe = getIntent().getStringExtra("type_shenhe");
-            if (type_shenhe != null) {
-                sn = getIntent().getStringExtra("num");
-                switch (type_shenhe) {
-                    case "1":
-                        titleView.setTitle("调整上级审核");
-                        break;
-                    case "2":
-                        titleView.setTitle("调整市场审核");
-                        break;
-                    case "3":
-                        titleView.setTitle("升职降职审核");
-                        break;
+        type_shenhe = getIntent().getStringExtra("type_shenhe");
+        switch (type_shenhe){
+            case "0":
+                titleView.setTitle("审批合同");
+                if (type.equals("device_add")){
+                    //添加设备
+                    rl_shuliang.setVisibility(View.VISIBLE);
+                    tv_shuliang.setText(getIntent().getStringExtra("num"));
                 }
-            }
+                break;
+            case "1":
+                titleView.setTitle("调整上级审核");
+                break;
+            case "2":
+                titleView.setTitle("调整市场审核");
+                break;
+            case "3":
+                titleView.setTitle("升职降职审核");
+                break;
+            case "4":
+                titleView.setTitle("审批采购审核");
+                if (type.equals("device_add")){
+                    //添加设备
+                    rl_shuliang.setVisibility(View.VISIBLE);
+                    tv_shuliang.setText(getIntent().getStringExtra("num"));
+                }
+                break;
         }
 
         list_jieguo.add("通过");
@@ -210,25 +212,8 @@ public class ApproveContractActivity extends BaseActivity {
                                         images = images.substring(0, images.length() - 1);
                                     }
                                     params.clear();
-                                    if (type != null && type.equals("device_add") && type_shenhe != null && type_shenhe.equals("4")) {
-                                        //采购审批
-                                        params.put("remark", remark);
-                                        params.put("images", images);
-                                        params.put("purchaseApplyLogId", id);
-                                        params.put("handleResult", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
-                                        params.put("approvedQuantity", deviceNum);
-                                        requestUpData(params, URLs.ApproveContract_CaiGou);
-                                    } else {
-
-                                        if (type_shenhe != null) {
-                                            //人事审核
-                                            params.put("auditDescription", remark);
-                                            params.put("images", images);
-                                            params.put("applyId", id);
-                                            params.put("status", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
-                                            params.put("sn", sn);
-                                            requestUpData(params, URLs.ApproveContract_RenShi);
-                                        } else {
+                                    switch (type_shenhe){
+                                        case "0":
                                             //合同审批
                                             params.put("reason", remark);
                                             params.put("images", images);
@@ -236,10 +221,28 @@ public class ApproveContractActivity extends BaseActivity {
                                             params.put("status", status);
                                             params.put("num", deviceNum);
                                             requestUpData(params, URLs.ApproveContract);
-                                        }
-
+                                            break;
+                                        case "1":
+                                        case "2":
+                                        case "3":
+                                            //人事审核
+                                            params.put("auditDescription", remark);
+                                            params.put("images", images);
+                                            params.put("applyId", id);
+                                            params.put("status", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
+                                            params.put("sn", sn);
+                                            requestUpData(params, URLs.ApproveContract_RenShi);
+                                            break;
+                                        case "4":
+                                            //采购审批
+                                            params.put("remark", remark);
+                                            params.put("images", images);
+                                            params.put("purchaseApplyLogId", id);
+                                            params.put("handleResult", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
+                                            params.put("approvedQuantity", deviceNum);
+                                            requestUpData(params, URLs.ApproveContract_CaiGou);
+                                            break;
                                     }
-
 
                                 }
                             }

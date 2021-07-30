@@ -36,7 +36,7 @@ import okhttp3.Response;
  * 审批详情
  */
 public class ApproveDetailActivity extends BaseActivity {
-    String id = "" ,typeStr = "";
+    String id = "", typeStr = "";
     int type = 2;
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
@@ -54,7 +54,7 @@ public class ApproveDetailActivity extends BaseActivity {
      * 合同信息
      */
     LinearLayout ll_contract;
-    TextView tv_liulan;
+    TextView tv_liulan, tv_contract;
     ImageView iv_contract;
     RecyclerView rv_contract;
     List<KeyValueModel> list_contract = new ArrayList<>();
@@ -128,6 +128,7 @@ public class ApproveDetailActivity extends BaseActivity {
          */
         ll_contract = findViewByID_My(R.id.ll_contract);
         tv_liulan = findViewByID_My(R.id.tv_liulan);
+        tv_contract = findViewByID_My(R.id.tv_contract);
         iv_contract = findViewByID_My(R.id.iv_contract);
         rv_contract = findViewByID_My(R.id.rv_contract);
         rv_contract.setLayoutManager(new LinearLayoutManager(this));
@@ -158,10 +159,12 @@ public class ApproveDetailActivity extends BaseActivity {
             case R.id.tv_shenpi:
                 //立即审批
                 bundle.putString("id", id);
+                bundle.putString("type", typeStr);
+                bundle.putString("type_shenhe", "0");//合同审核
 //                if (localUserInfo.getUserJob().equals("CM") && model.getWorkFlowApplyLogVo().getType().equals("device_add"))
-                if ( typeStr.equals("device_add")){
-                    bundle.putString("type", "device_add");
-                    bundle.putString("type_shenhe", "1");//合同审核
+                if (typeStr.equals("device_add")){
+                    bundle.putString("num", model.getContractsDetailBasicVO().getAddQuantity());
+                }else {
                     bundle.putString("num", "");
                 }
                 CommonUtil.gotoActivityWithData(ApproveDetailActivity.this, ApproveContractActivity.class, bundle);
@@ -220,7 +223,7 @@ public class ApproveDetailActivity extends BaseActivity {
 
                 tv_name.setText(response.getContractsDetailBasicVO().getName());
                 tv_shop.setText("《" + response.getContractsDetailBasicVO().getTypeName() + "》");
-                switch (response.getContractsDetailBasicVO().getStatus()){//1:待处理; 2:处理中; 3:通过; 4:驳回;
+                switch (response.getContractsDetailBasicVO().getStatus()) {//1:待处理; 2:处理中; 3:通过; 4:驳回;
                     case "1":
                         tv_num.setText("待审核");
                         break;
@@ -255,6 +258,7 @@ public class ApproveDetailActivity extends BaseActivity {
                  * 合同信息
                  */
                 list_contract.clear();
+                tv_contract.setVisibility(View.GONE);
                 iv_contract.setVisibility(View.GONE);
                 switch (typeStr) {
                     case "merchant_sign":
@@ -264,6 +268,7 @@ public class ApproveDetailActivity extends BaseActivity {
                         list_contract.add(new KeyValueModel("签约期限", response.getContractsDetailBasicVO().getSignPeriod()));
                         list_contract.add(new KeyValueModel("是否独家", response.getContractsDetailBasicVO().getSole()));
                         list_contract.add(new KeyValueModel("签约时间", response.getContractsDetailBasicVO().getSignTime()));
+                        tv_contract.setVisibility(View.VISIBLE);
                         iv_contract.setVisibility(View.VISIBLE);
                         Glide.with(ApproveDetailActivity.this)
                                 .load(response.getContractsDetailBasicVO().getMerchantLogoUrl())
@@ -304,6 +309,7 @@ public class ApproveDetailActivity extends BaseActivity {
                         list_contract.add(new KeyValueModel("商户行业", response.getContractsDetailBasicVO().getMerchantIndustry()));
                         list_contract.add(new KeyValueModel("所在城市", response.getContractsDetailBasicVO().getMerchantCityName()));
                         list_contract.add(new KeyValueModel("详细地址", response.getContractsDetailBasicVO().getMerchantAddress()));
+                        tv_contract.setVisibility(View.VISIBLE);
                         iv_contract.setVisibility(View.VISIBLE);
                         Glide.with(ApproveDetailActivity.this)
                                 .load(response.getContractsDetailBasicVO().getQualificationsImageUrl())
@@ -378,7 +384,7 @@ public class ApproveDetailActivity extends BaseActivity {
 
                             //横向图片
                             List<String> list_img = new ArrayList<>();
-                            if (model.getImager()!=null){
+                            if (model.getImager() != null) {
                                 String[] strArr = model.getImager().split(",");//拆分
                                 for (String s : strArr) {
                                     list_img.add(s);

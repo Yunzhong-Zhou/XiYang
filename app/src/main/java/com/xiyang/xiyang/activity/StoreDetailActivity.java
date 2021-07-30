@@ -276,25 +276,24 @@ public class StoreDetailActivity extends BaseActivity {
                 list_mendian.add(new KeyValueModel("门店联系电话", response.getStoreInfo().getContactPhone()));
                 list_mendian.add(new KeyValueModel("门店区域", response.getStoreInfo().getCityName()));
                 list_mendian.add(new KeyValueModel("详细地址", response.getStoreInfo().getAddress()));
-//                list_mendian.add(new KeyValueModel("门店等级", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("门店标识", response.getStoreInfo().get));
+                list_mendian.add(new KeyValueModel("门店等级", response.getStoreInfo().getLevel()));
+                list_mendian.add(new KeyValueModel("门店标识", response.getStoreInfo().getType()));
                 list_mendian.add(new KeyValueModel("商户ID", response.getStoreInfo().getMerchantId()));
                 list_mendian.add(new KeyValueModel("商户名称", response.getStoreInfo().getMerchantName()));
-//                list_mendian.add(new KeyValueModel("所在行业", response.getStoreInfo().get));
+                list_mendian.add(new KeyValueModel("所在行业", response.getStoreInfo().getIndustryId()));
                 list_mendian.add(new KeyValueModel("营业时间", response.getStoreInfo().getBusinessHours()));
-//                list_mendian.add(new KeyValueModel("所属大区", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("签约人", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("签约类型", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("运维类型", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("当前运维人", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("运维BDM", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("运维城市经理", response.getStoreInfo().get));
-//                list_mendian.add(new KeyValueModel("大区经理", response.getStoreInfo().get));
+                list_mendian.add(new KeyValueModel("所属大区", response.getStoreInfo().getCityName()));
+                list_mendian.add(new KeyValueModel("签约人", response.getStoreInfo().getBdAdminName()));
+                list_mendian.add(new KeyValueModel("签约类型", response.getStoreInfo().getBdAdminScopeOrganId()));
+                list_mendian.add(new KeyValueModel("运维类型", response.getStoreInfo().getIsBusiness()));
+                list_mendian.add(new KeyValueModel("当前运维人", response.getStoreInfo().getBdAdminName()));
+                list_mendian.add(new KeyValueModel("拜访状态", response.getStoreInfo().getVisitStatus()));
+                list_mendian.add(new KeyValueModel("最近拜访时间", response.getStoreInfo().getLastVisitTime()));
                 list_mendian.add(new KeyValueModel("创建时间", response.getStoreInfo().getCreateTime()));
-                list_mendian.add(new KeyValueModel("上线时间", response.getStoreInfo().getUpdateTime()));
-//                list_mendian.add(new KeyValueModel("门店状态", response.getStoreInfo().get));
-                list_mendian.add(new KeyValueModel("是否划转", response.getStoreInfo().getIsLoss()));
-//                list_mendian.add(new KeyValueModel("安装状态", response.getStoreInfo().getVisitStatus()));
+                list_mendian.add(new KeyValueModel("上线时间", response.getStoreInfo().getInstallTime()));
+                list_mendian.add(new KeyValueModel("门店状态", response.getStoreInfo().getStatus()));
+                list_mendian.add(new KeyValueModel("是否划转", response.getStoreInfo().getTransferStatus()));
+                list_mendian.add(new KeyValueModel("安装状态", response.getStoreInfo().getContractStatus()));
 
                 mAdapter_mendian = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_mendian) {
@@ -310,15 +309,15 @@ public class StoreDetailActivity extends BaseActivity {
                  * 设备信息
                  */
                 list_shebei.clear();
-                list_shebei.add(new KeyValueModel("绑定设备", response.getDeviceNumber()));
-                list_shebei.add(new KeyValueModel("上线设备", response.getRunDeviceNumber()));
-                list_shebei.add(new KeyValueModel("在线设备", response.getRunDeviceNumber()));
-                list_shebei.add(new KeyValueModel("离线设备", response.getOffLineDeviceNumber()));
-//                list_shebei.add(new KeyValueModel("丢失设备", response.get));
-                list_shebei.add(new KeyValueModel("最新邦定设备时间", response.getStoreInfo().getCreateTime()));
-//                list_shebei.add(new KeyValueModel("待新增设备", response.get));
-//                list_shebei.add(new KeyValueModel("待回收设备", response.get));
-//                list_shebei.add(new KeyValueModel("待转出设备", response.get));
+                list_shebei.add(new KeyValueModel("绑定设备", response.getDeviceNumber() + "台"));
+                list_shebei.add(new KeyValueModel("上线设备", response.getRunDeviceNumber() + "台"));
+                list_shebei.add(new KeyValueModel("在线设备", response.getRunDeviceNumber() + "台"));
+                list_shebei.add(new KeyValueModel("离线设备", response.getOffLineDeviceNumber() + "台"));
+//                list_shebei.add(new KeyValueModel("丢失设备", response.get+"台"));
+                list_shebei.add(new KeyValueModel("最新绑定设备时间", response.getStoreInfo().getCreateTime()));
+//                list_shebei.add(new KeyValueModel("待新增设备", response.get+"台"));
+//                list_shebei.add(new KeyValueModel("待回收设备", response.get+"台"));
+//                list_shebei.add(new KeyValueModel("待转出设备", response.get+"台"));
                 mAdapter_shebei = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_shebei) {
                     @Override
@@ -360,13 +359,18 @@ public class StoreDetailActivity extends BaseActivity {
                  * 收费标准
                  */
                 list_shoufei.clear();
-                list_shoufei.add(new KeyValueModel("分成比例", response.getStoreInfo().getStoreShareRate()));
+//                list_shoufei.add(new KeyValueModel("首小时", response.getStoreInfo().get));
+//                list_shoufei.add(new KeyValueModel("系统续时", response.getStoreInfo().get));
+//                list_shoufei.add(new KeyValueModel("系统每日封顶", response.getStoreInfo().get));
 //                list_shoufei.add(new KeyValueModel("计费单元", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("单日封顶价格", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("计费单价", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("自定义单价", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("自定义封顶", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("免费时长", response.getStoreInfo().get));
+                list_shoufei.add(new KeyValueModel("免费时长", response.getStoreInfo().getFreeTime()));
+                list_shoufei.add(new KeyValueModel("自定义单价", response.getStoreInfo().getUnitPrice()));
+                list_shoufei.add(new KeyValueModel("自定义封顶", response.getStoreInfo().getMaxPriceDay()));
+                list_shoufei.add(new KeyValueModel("门店分成比例", response.getStoreInfo().getStoreShareRate()));
+                list_shoufei.add(new KeyValueModel("员工分成比例", response.getStoreInfo().getWorkerShareRate()));
+                list_shoufei.add(new KeyValueModel("设备分成比例", response.getStoreInfo().getDeviceShareRate()));
+                list_shoufei.add(new KeyValueModel("商户分成比例", response.getStoreInfo().getMerchantShareRate()));
+
                 mAdapter_shoufei = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_shoufei) {
                     @Override

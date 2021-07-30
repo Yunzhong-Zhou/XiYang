@@ -228,7 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
                     <!--商户基本信息-->
                     <com.lihang.ShadowLayout
                         android:layout_width="match_parent"
@@ -295,7 +295,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <!--合同基本信息-->
                     <com.lihang.ShadowLayout
@@ -339,15 +339,14 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:layout_marginTop="-10dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="14dp"
-                                    android:text="合同文件\n执照图片"
+                                    android:text="合同文件"
                                     android:textColor="@color/black3"
-                                    android:paddingTop="10dp"
                                     android:textSize="12.5sp"
                                     android:textStyle="bold" />
 
@@ -365,7 +364,14 @@
                                     android:textStyle="bold" />
 
                             </LinearLayout>
-
+                            <TextView
+                                android:id="@+id/tv_contract"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="合同文件"
+                                android:textColor="@color/black3"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
                             <ImageView
                                 android:id="@+id/iv_contract"
                                 android:layout_width="107dp"

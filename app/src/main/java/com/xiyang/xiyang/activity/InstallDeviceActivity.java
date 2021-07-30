@@ -128,9 +128,9 @@ public class InstallDeviceActivity extends BaseActivity {
                 if (match()) {
                     this.showProgress(true, getString(R.string.app_loading1));
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("deviceApplyId", transactionId);
+                    params.put("applyId", transactionId);
                     params.put("sn", deviceName);
-                    params.put("stroreId", storeId);
+                    params.put("storeId", storeId);
 //                    params.put("shopId", shopId);
                     params.put("roomId", roomId);
                     requestUpData(params);

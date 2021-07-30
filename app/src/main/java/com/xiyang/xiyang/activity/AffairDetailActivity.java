@@ -376,6 +376,7 @@ public class AffairDetailActivity extends BaseActivity {
                                 public void onResponse(String response) {
                                     params.put("relationId", model.getRelationId());
                                     params.put("expressWay", expressWay + "");//1-自取，2-邮寄
+                                    params.put("relationType",apply_Type);
                                     params.put("voucher", response);
                                         /*params.put("expressNo", "");
                                         params.put("expressCompany", "");
@@ -398,10 +399,12 @@ public class AffairDetailActivity extends BaseActivity {
                                 params.put("warehouseId", model.getContract().getWarehouseId());
                                 params.put("transportId", transportId);
                                 params.put("transportCompany", transportCompany);
+                                params.put("relationType",apply_Type);
                                 requestUpData(params, URLs.AffairDetail_FaHuo);
                             } else {
                                 params.put("relationId", model.getRelationId());
                                 params.put("expressWay", expressWay + "");//1-自取，2-邮寄
+                                params.put("relationType",apply_Type);
 //                            params.put("expressNo", "");
 //                            params.put("expressCompany", "");
                                 params.put("receiveName", receiveName);//收货人

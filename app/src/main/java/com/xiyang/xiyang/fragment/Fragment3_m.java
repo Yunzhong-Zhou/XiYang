@@ -92,10 +92,7 @@ public class Fragment3_m extends BaseFragment {
 
         switch (localUserInfo.getUserJob()){
             case "CM":
-                shadowLayout3.setVisibility(View.GONE);
-                break;
             case "BDM":
-                shadowLayout2.setVisibility(View.GONE);
                 shadowLayout3.setVisibility(View.GONE);
                 break;
         }

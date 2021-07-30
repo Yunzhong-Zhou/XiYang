@@ -183,7 +183,7 @@ public class StaffDetailActivity extends BaseActivity {
 //                        .apply(RequestOptions.bitmapTransform(new
 //                                RoundedCorners(CommonUtil.dip2px(StaffDetailActivity.this, 10))))
                         .placeholder(R.mipmap.loading)//加载站位图
-                        .error(R.mipmap.zanwutupian)//加载失败
+                        .error(R.mipmap.headimg)//加载失败
                         .into(imageView1);//加载图片
 
                 list_info.clear();
