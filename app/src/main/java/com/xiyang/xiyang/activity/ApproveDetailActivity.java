@@ -247,7 +247,6 @@ public class ApproveDetailActivity extends BaseActivity {
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
 
-
                 tv_shenpi.setVisibility(View.VISIBLE);
                 if (response.getShowBtn().equals("1")) {//需要审核
                     tv_shenpi.setVisibility(View.VISIBLE);
@@ -447,16 +446,15 @@ public class ApproveDetailActivity extends BaseActivity {
                                     iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
                                     break;
                                 case "2":
-                                    tv_type.setText("处理中");
-                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
-                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                    break;
-                                case "3":
                                     tv_type.setText("驳回");
                                     tv_type.setTextColor(getResources().getColor(R.color.red));
                                     iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
                                     break;
-
+                                case "3":
+                                    tv_type.setText("处理中");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
+                                    break;
                                 default:
                                     tv_type.setText("待审核");
                                     tv_type.setTextColor(getResources().getColor(R.color.black3));

@@ -277,7 +277,7 @@ public class MyStoreListActivity extends BaseActivity {
             titleView.showRightTextview("添加门店", true, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CommonUtil.gotoActivity(MyStoreListActivity.this, AddStoreActivity.class);
+                    CommonUtil.gotoActivity(MyStoreListActivity.this, SelectAddressActivity.class);
                 }
             });
         }

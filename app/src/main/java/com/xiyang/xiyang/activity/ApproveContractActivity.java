@@ -136,6 +136,7 @@ public class ApproveContractActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
         type = getIntent().getStringExtra("type");
         type_shenhe = getIntent().getStringExtra("type_shenhe");
+        rl_shuliang.setVisibility(View.GONE);
         switch (type_shenhe){
             case "0":
                 titleView.setTitle("审批合同");
@@ -229,7 +230,7 @@ public class ApproveContractActivity extends BaseActivity {
                                             params.put("auditDescription", remark);
                                             params.put("images", images);
                                             params.put("applyId", id);
-                                            params.put("status", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
+                                            params.put("status", Integer.valueOf(status) + 1 + "");//审批结果 1:通过; 2:驳回
                                             params.put("sn", sn);
                                             requestUpData(params, URLs.ApproveContract_RenShi);
                                             break;
@@ -238,7 +239,7 @@ public class ApproveContractActivity extends BaseActivity {
                                             params.put("remark", remark);
                                             params.put("images", images);
                                             params.put("purchaseApplyLogId", id);
-                                            params.put("handleResult", Integer.valueOf(status) + 1 + "");//审批结果 2:通过; 3:驳回
+                                            params.put("handleResult", Integer.valueOf(status) + 1 + "");//审批结果 1:通过; 2:驳回
                                             params.put("approvedQuantity", deviceNum);
                                             requestUpData(params, URLs.ApproveContract_CaiGou);
                                             break;

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -65,7 +66,7 @@ public class AddVisitActivity extends BaseActivity {
     List<CommonModel1.ListBean> list_yuanyin = new ArrayList<>();
 
     int type = 0;//  0-远程拜访，1-上门拜访,2-陌生拜访
-    int item_fangshi = -1, item_yingye = -1, item_fengxian = -1, item_fankui = -1, item_jingdui = 0, item_yuanyin = -1, itme_truefalse = 0;
+    int item_fangshi = -1, item_yingye = -1, item_fengxian = -1, item_fankui = -1, item_jingdui = 0, item_yuanyin = -1, itme_truefalse = 1;
     RelativeLayout rl_xuanzefangshi, rl_xuanzemendian, rl_baifangjilu, rl_yingyeqingkuang, rl_hezuofengxian,
             rl_baifangmendian, rl_baifangrenyuan, rl_lianxidianhua, rl_baifangshijian, rl_mendiandizhi,
             rl_baifangfangshi, rl_shifouyixiang, rl_baifanglianxiren, rl_baifangyuanyin, rl_baifangfankui,
@@ -286,7 +287,7 @@ public class AddVisitActivity extends BaseActivity {
                                     params.put("isBusiness", isBusiness);//当前营业状况 1-是，2-否
                                     params.put("reportStatus", reportStatus);//合作风险上报
                                     params.put("way", visitChannel);//拜访方式
-                                    params.put("contractMobile", contactName);//联系人
+                                    params.put("contractName", contactName);//联系人
                                     params.put("reason", reason);//拜访原因
                                     params.put("feedback", feedback);//拜访反馈
                                     params.put("isAdver", item_jingdui+"");//商户存在竟对 0否1是
@@ -302,7 +303,7 @@ public class AddVisitActivity extends BaseActivity {
                                     params.put("isBusiness", isBusiness);//当前营业状况 1-是，2-否
                                     params.put("reportStatus", reportStatus);//合作风险上报
                                     params.put("way", visitChannel);//拜访方式
-                                    params.put("contractMobile", contactName);//联系人
+                                    params.put("contractName", contactName);//联系人
                                     params.put("reason", reason);//拜访原因
                                     params.put("feedback", feedback);//拜访反馈
                                     params.put("isAdver", item_jingdui+"");//商户存在竟对 0否1是
@@ -409,6 +410,9 @@ public class AddVisitActivity extends BaseActivity {
                 if (TextUtils.isEmpty(visitTime)) {
                     myToast("请选择拜访时间");
                     return false;
+                }else {
+                    visitTime = TimeUtils.string2Millis(visitTime, "yyyy-MM-dd")/1000 + "";
+//                    renewalTime = TimeUtils.string2Date(TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "") + "";
                 }
                 address = tv_mendiandizhi.getText().toString().trim();
                 if (TextUtils.isEmpty(address)) {

@@ -279,7 +279,7 @@ public class ShopDetailActivity extends BaseActivity {
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("shopId", model.getBase().getId());
                 bundle2.putString("shopName", model.getBase().getName());
-                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AddStoreActivity.class, bundle2);
+                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, SelectAddressActivity.class, bundle2);
                 break;
             case R.id.tv_morestore:
                 //门店-查看更多

@@ -26,6 +26,7 @@ import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.CommonModel;
 import com.xiyang.xiyang.model.IndustryModel;
+import com.xiyang.xiyang.model.ShopDetailModel;
 import com.xiyang.xiyang.model.StoreInfoModel;
 import com.xiyang.xiyang.model.WarehouseModel;
 import com.xiyang.xiyang.net.URLs;
@@ -95,7 +96,7 @@ public class AddContractActivity extends BaseActivity {
             licenseNo = "", licenseNoImage = "", deviceNum = "", outStoreId = "", inStoreId = "", renewalTime = "",
             reasonId = "", warehouseId = "", recyleType = "1", industryId = "", provinceId = "", cityId = "", areaId = "",
             logoUrl = "", address = "", name = "", account = "", contactName = "", contactPhone = "", companyName = "",
-            storeUnitPrice = "", storeCapping = "", storeUnit = "", reason = "";
+            storeUnitPrice = "", storeCapping = "", storeUnit = "", reason = "",storeFreeTime="";
 
 
     File imgfile = null;
@@ -377,6 +378,7 @@ public class AddContractActivity extends BaseActivity {
                                         @Override
                                         public void onResponse(String response) {
                                             licenseNoImage = response;//图片地址
+
                                             params.put("merchantId", shopId);
                                             params.put("contractType", contractType);
                                             params.put("file", file);
@@ -513,10 +515,17 @@ public class AddContractActivity extends BaseActivity {
 
                                             params.put("merchantId", shopId);
                                             params.put("contractType", contractType);
+                                            params.put("name",name);
+                                            params.put("companyName",companyName);
+                                            params.put("contactName",contactName);
+                                            params.put("contactPhone",contactPhone);
+                                            params.put("provinceId",provinceId);
+                                            params.put("cityId",cityId);
+                                            params.put("areaId",areaId);
+                                            params.put("logoUrl",logoUrl);
+                                            params.put("address",address);
+                                            params.put("industryId",industryId);
                                             params.put("file", file);
-                                            params.put("sole", sole);
-                                            params.put("renewalPeriod", renewalPeriod);
-                                            params.put("signTime", signTime);
                                             params.put("licenseNo", licenseNo);
                                             params.put("certificateUrl", licenseNoImage);
                                             requestUpData(URLs.AddContract_xiugai, params);
@@ -600,6 +609,7 @@ public class AddContractActivity extends BaseActivity {
                                     params.put("contractType", contractType);
                                     params.put("file", file);
                                     params.put("storeUnit", storeUnit);
+                                    params.put("storeFreeTime",storeFreeTime);
                                     params.put("storeUnitPrice", storeUnitPrice);
                                     params.put("storeCapping", storeCapping);
                                     params.put("reason", reason);
@@ -642,7 +652,7 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择签约时间");
                     return false;
                 } else {
-                    signTime = TimeUtils.string2Millis(signTime, "yyyy-MM-dd") + "";
+                    signTime = TimeUtils.string2Millis(signTime, "yyyy-MM-dd")/1000 + "";
 //                    signTime = TimeUtils.string2Date(signTime, "yyyy-MM-dd") + "";
                 }
                 if (pdffile == null) {
@@ -797,7 +807,7 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择续签时间");
                     return false;
                 } else {
-                    renewalTime = TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "";
+                    renewalTime = TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd")/1000 + "";
 //                    renewalTime = TimeUtils.string2Date(TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "") + "";
                 }
                 if (pdffile == null) {
@@ -830,6 +840,11 @@ public class AddContractActivity extends BaseActivity {
                 }
                 if (TextUtils.isEmpty(storeUnit)) {
                     myToast("请选择计费单元");
+                    return false;
+                }
+                storeFreeTime = tv_mianfeishichang.getText().toString().trim();
+                if (TextUtils.isEmpty(storeFreeTime)) {
+                    myToast("请输入免费时长");
                     return false;
                 }
                 storeUnitPrice = tv_mendianjiajia.getText().toString().trim();
@@ -901,6 +916,13 @@ public class AddContractActivity extends BaseActivity {
                         Bundle bundle = data.getExtras();
                         shopId = bundle.getString("shopId");
                         tv_xuanzeshanghu.setText(bundle.getString("shopName"));
+                        if (item_hetong == 4) {
+                            //修改合同-去获取商户信息
+                            showProgress(true, getString(R.string.app_loading2));
+                            params.clear();
+//                            params.put("shopId", shopId);
+                            requestShop(params,shopId);
+                        }
                     }
                     break;
                 case SELECT_PDF_FILE:
@@ -941,6 +963,7 @@ public class AddContractActivity extends BaseActivity {
                 if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
                     bitmap = FileUtil.rotaingImageView(ImageUtils.getRotateDegree(imgpath), bitmap);
                 }
+
                 imgfile = FileUtil.bytesToImageFile(AddContractActivity.this,
                         ImageUtils.compressByQuality(bitmap, 50));
 
@@ -1210,6 +1233,44 @@ public class AddContractActivity extends BaseActivity {
                 tv_meirifengding.setText(response.getSysMaxPrice());
                 tv_mianfeishichang.setText(response.getSysFreeTime());
 
+            }
+        });
+    }
+    /**
+     * 获取商户信息
+     *
+     * @param params
+     */
+    private void requestShop(HashMap<String, String> params,String id) {
+        OkhttpUtil.okHttpGet(URLs.ShopDetail +id, params, headerMap, new CallBackUtil<ShopDetailModel>() {
+            @Override
+            public ShopDetailModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(ShopDetailModel response) {
+                hideProgress();
+                tv_shanghumingcheng.setText(response.getBase().getName());
+                tv_shanghuzhanghao.setText(response.getBase().getAccount());
+                tv_shanghulianxiren.setText(response.getBase().getContactName());
+                tv_lianxirendianhua.setText(response.getBase().getContactPhone());
+                tv_gongsimingcheng.setText(response.getBase().getCompanyName());
+                tv_yinyezhizhaohao.setText(response.getBase().getLicenseNo());
+                tv_shanghuhangye.setText(response.getBase().getInsduty());
+                tv_suozaichengshi.setText(response.getBase().getCity());
+                tv_xiangxidizhi.setText(response.getBase().getAddress());
+
+                provinceId = response.getBase().getProvinceId();
+                cityId = response.getBase().getCityId();
+                areaId = response.getBase().getAreaId();
+                industryId = response.getBase().getIndustryId();
             }
         });
     }

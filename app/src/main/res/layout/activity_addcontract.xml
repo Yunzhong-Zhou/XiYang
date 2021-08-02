@@ -508,7 +508,6 @@
                     android:hint="请输入免费时长"
                     android:inputType="numberDecimal"
                     android:paddingLeft="100dp"
-                    android:focusable="false"
                     android:paddingRight="10dp"
                     android:textColor="@color/black2"
                     android:textColorHint="@color/black3"

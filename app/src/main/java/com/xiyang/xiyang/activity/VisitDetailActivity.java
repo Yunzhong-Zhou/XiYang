@@ -124,9 +124,9 @@ public class VisitDetailActivity extends BaseActivity {
                     list_info.add(new KeyValueModel("拜访门店", response.getStoreName()));
                     list_info.add(new KeyValueModel("拜访方式", response.getWay()));
                     list_info.add(new KeyValueModel("营业情况", response.getBusinessStr()));
-                    list_info.add(new KeyValueModel("拜访联系人", response.getContractMobile()));
+                    list_info.add(new KeyValueModel("拜访联系人", response.getContractName()));
                     list_info.add(new KeyValueModel("是否竞对", response.getIsAdverStr()));
-                    list_info.add(new KeyValueModel("拜访时间", response.getCreateTime()));
+                    list_info.add(new KeyValueModel("拜访时间", response.getVisitTime()));
                     list_info.add(new KeyValueModel("拜访人", response.getBdAdminName()));
                     list_info.add(new KeyValueModel("合作风险上报", response.getReportStatusStr()));
                     list_info.add(new KeyValueModel("拜访原因", response.getReasonStr()));
