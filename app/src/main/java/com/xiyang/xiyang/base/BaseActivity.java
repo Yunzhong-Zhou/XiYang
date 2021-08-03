@@ -361,17 +361,11 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
 
                 TextView textView2 = dialog.findViewById(R.id.textView2);
                 textView2.setText(msg);
-                dialog.findViewById(R.id.textView3).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
+                dialog.findViewById(R.id.textView3).setOnClickListener(v -> {
+                    dialog.dismiss();
                 });
-                dialog.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
+                dialog.findViewById(R.id.dismiss).setOnClickListener(v -> {
+                    dialog.dismiss();
                 });
             }
         }
@@ -401,11 +395,8 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
                 TextView textView2 = dialog.findViewById(R.id.textView2);
                 textView2.setText(msg);
                 dialog.findViewById(R.id.textView3).setOnClickListener(listener);
-                dialog.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
+                dialog.findViewById(R.id.dismiss).setOnClickListener(v -> {
+                    dialog.dismiss();
                 });
             }
         }
@@ -441,17 +432,13 @@ public abstract class BaseActivity extends SwipeBackActivity implements IBaseVie
                 textView3.setOnClickListener(listener1);
                 textView4.setOnClickListener(listener2);
 
-                dialog.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
+                dialog.findViewById(R.id.dismiss).setOnClickListener(v -> {
+                    dialog.dismiss();
                 });
             }
         }
 
     }
-
 
 
     @Override

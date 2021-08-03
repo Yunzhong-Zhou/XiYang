@@ -15,15 +15,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddContractActivity;
-import com.xiyang.xiyang.activity.ChangeTieDeviceActivity;
+import com.xiyang.xiyang.activity.AffairListActivity;
 import com.xiyang.xiyang.activity.CloseStoreActivity;
 import com.xiyang.xiyang.activity.MainActivity;
+import com.xiyang.xiyang.activity.MyContractActivity;
 import com.xiyang.xiyang.activity.MyStoreListActivity;
 import com.xiyang.xiyang.activity.MyVisitListActivity;
 import com.xiyang.xiyang.activity.SelectAddressActivity;
 import com.xiyang.xiyang.activity.SelectVisitActivity;
 import com.xiyang.xiyang.activity.StoreDetailActivity;
-import com.xiyang.xiyang.activity.TransferStoreActivity;
+import com.xiyang.xiyang.activity.TransferListActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment2Model;
 import com.xiyang.xiyang.model.MyFragment1Model;
@@ -58,7 +59,7 @@ public class Fragment2 extends BaseFragment {
     CommonAdapter<MyFragment1Model> mAdapter1;
     List<Fragment2Model.StoresBean> list2 = new ArrayList<>();
     CommonAdapter<Fragment2Model.StoresBean> mAdapter2;
-    TextView tv_mymore,tv_more;
+    TextView tv_mymore, tv_more;
 
     TextView textView1, textView2, textView3, textView4;
     LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4, linearLayout5, linearLayout6,
@@ -242,7 +243,7 @@ public class Fragment2 extends BaseFragment {
                 recyclerView1.setAdapter(mAdapter1);
 
                 changeUI();
-                if (response.getStores() != null){
+                if (response.getStores() != null) {
                     list2 = response.getStores();
                     if (list2.size() > 0) {
                         showContentPage();
@@ -315,7 +316,19 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.tv_more:
                 //拜访记录
-                CommonUtil.gotoActivity(getActivity(), MyVisitListActivity.class);
+                switch (type) {
+                    case 1:
+                        CommonUtil.gotoActivity(getActivity(), MyVisitListActivity.class);
+                        break;
+                    case 2:
+                        bundle.putInt("type", 2);//1、商户 2、门店
+                        CommonUtil.gotoActivityWithData(getActivity(), TransferListActivity.class, bundle);
+                        break;
+                    case 3:
+                        CommonUtil.gotoActivity(getActivity(), MyContractActivity.class);
+                        break;
+                }
+
                 break;
             case R.id.tv_mymore:
                 //我的门店
@@ -338,11 +351,14 @@ public class Fragment2 extends BaseFragment {
                 break;
             case R.id.linearLayout8:
                 //划转门店
-                CommonUtil.gotoActivity(getActivity(), TransferStoreActivity.class);
+                bundle.putInt("type", 2);//1、商户 2、门店
+                CommonUtil.gotoActivityWithData(getActivity(), TransferListActivity.class, bundle);
                 break;
             case R.id.linearLayout9:
                 //设备变更
-                CommonUtil.gotoActivity(getActivity(), ChangeTieDeviceActivity.class);
+//                CommonUtil.gotoActivity(getActivity(), ChangeTieDeviceActivity.class);
+                bundle.putInt("type", 5);//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                CommonUtil.gotoActivityWithData(getActivity(), AffairListActivity.class, bundle);
                 break;
             case R.id.linearLayout10:
                 //门店纠错
@@ -385,8 +401,8 @@ public class Fragment2 extends BaseFragment {
                 view1.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment2Model.WaitVisitStoresBean bean:model.getWaitVisitStores()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
+                for (Fragment2Model.WaitVisitStoresBean bean : model.getWaitVisitStores()) {
+                    list1.add(new MyFragment1Model(bean.getId(), bean.getName(), bean.getCreateTime()));
                 }
                 break;
             case 2:
@@ -396,8 +412,8 @@ public class Fragment2 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.INVISIBLE);
-                for (Fragment2Model.WaitTransferStoresBean bean:model.getWaitTransferStores()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
+                for (Fragment2Model.WaitTransferStoresBean bean : model.getWaitTransferStores()) {
+                    list1.add(new MyFragment1Model(bean.getId(), bean.getName(), bean.getCreateTime()));
                 }
                 break;
             case 3:
@@ -407,8 +423,8 @@ public class Fragment2 extends BaseFragment {
                 view1.setVisibility(View.INVISIBLE);
                 view2.setVisibility(View.INVISIBLE);
                 view3.setVisibility(View.VISIBLE);
-                for (Fragment2Model.WaitContractStoresBean bean:model.getWaitContractStores()){
-                    list1.add(new MyFragment1Model(bean.getId(),bean.getName(),bean.getCreateTime()));
+                for (Fragment2Model.WaitContractStoresBean bean : model.getWaitContractStores()) {
+                    list1.add(new MyFragment1Model(bean.getId(), bean.getName(), bean.getCreateTime()));
                 }
                 break;
         }

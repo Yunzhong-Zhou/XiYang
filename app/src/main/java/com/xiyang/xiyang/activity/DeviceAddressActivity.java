@@ -62,11 +62,16 @@ public class DeviceAddressActivity extends BaseActivity {
                 //禁用设备
                 tv_confirm.setVisibility(View.VISIBLE);
                 tv_confirm.setOnClickListener(v -> {
-                    params.clear();
-                    params.put("deviceId", model.getDeviceHostName());
-                    params.put("type", "0");
-                    params.put("relationId", "");
-                    requestUpData(params);
+                    showToast("确认禁用该设备吗？","确认","取消",v1 -> {
+                        dialog.dismiss();
+                        params.clear();
+                        params.put("deviceId", model.getDeviceHostName());
+                        params.put("type", "0");
+                        params.put("relationId", "");
+                        requestUpData(params);
+                    },v2 -> {
+                        dialog.dismiss();
+                    });
 
                 });
             } else {

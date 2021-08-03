@@ -152,7 +152,25 @@ public class MyContractActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, MyContractModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
                             holder.setText(R.id.tv_shop, "《" + model.getTypeTitle() + "》");
-                            holder.setText(R.id.tv_num, model.getStatusTitle());
+                            TextView tv_num = holder.getView(R.id.tv_num);
+                            tv_num.setText(model.getStatusTitle());
+                            switch (model.getStatus()) {
+                                case "0":
+                                    //已提交
+                                    tv_num.setTextColor(getResources().getColor(R.color.black3));
+                                    break;
+                                case "1":
+                                    //已通过
+                                    tv_num.setTextColor(getResources().getColor(R.color.green));
+                                    break;
+                                case "2":
+                                    //失败
+                                    tv_num.setTextColor(getResources().getColor(R.color.red));
+                                    break;
+                                default:
+                                    break;
+
+                            }
                             holder.setText(R.id.tv_addr, model.getCreatedAt());
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);
@@ -171,6 +189,7 @@ public class MyContractActivity extends BaseActivity {
                                 //待签约
                                 imageView2.setImageResource(R.mipmap.bg_daiqianyue);
                             }*/
+
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

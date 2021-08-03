@@ -491,6 +491,7 @@ public class AddWorkListActivity extends BaseActivity {
             case 2:
                 //其他工单
 //                request(params, URLs.AddOtherList);
+                hideProgress();
                 break;
         }
     }

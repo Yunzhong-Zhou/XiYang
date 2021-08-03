@@ -66,12 +66,14 @@ public class AddContractActivity extends BaseActivity {
     List<CommonModel.ListBean> list_qixian = new ArrayList<>();
     List<CommonModel.ListBean> list_jianshaoyuanyin = new ArrayList<>();
     List<CommonModel.ListBean> list_quxiaoyuanyin = new ArrayList<>();
+    List<CommonModel.StatusBean> list_mianfeishichang = new ArrayList<>();
+
     List<String> list_jifeidanyuan = new ArrayList<>();
 
     List<WarehouseModel.ListBean> list_cangku = new ArrayList<>();
     List<String> list_huishou = new ArrayList<>();
     int item_hetong = 0, itme_truefalse = 1, item_qixian = -1, storetype = 0, item_cangku = -1,
-            item_huishou = 0, item_jianshaoyuanyin = -1, item_quxiaoyuanyin = -1, item_jifeidanyuan = -1;
+            item_huishou = 0, item_jianshaoyuanyin = -1, item_quxiaoyuanyin = -1, item_jifeidanyuan = -1,item_mianfeishichang = -1;
     RelativeLayout rl_hetongleixing, rl_xuanzeshanghu, rl_xuanzemendian, rl_shanghumingcheng, rl_shanghuzhanghao,
             rl_shanghulianxiren, rl_lianxirendianhua, rl_gongsimingcheng, rl_yinyezhizhaohao, rl_shanghuhangye,
             rl_suozaichengshi, rl_xiangxidizhi, rl_shougexiaoshi, rl_jichujijia, rl_meirifengding, rl_mianfeishichang,
@@ -218,6 +220,12 @@ public class AddContractActivity extends BaseActivity {
         list_jifeidanyuan.add("30分钟");
         list_jifeidanyuan.add("1小时");
 
+        list_mianfeishichang.add(new CommonModel.StatusBean("300","5分钟"));
+        list_mianfeishichang.add(new CommonModel.StatusBean("600","10分钟"));
+        list_mianfeishichang.add(new CommonModel.StatusBean("1200","20分钟"));
+        list_mianfeishichang.add(new CommonModel.StatusBean("1800","30分钟"));
+        list_mianfeishichang.add(new CommonModel.StatusBean("3600","60分钟"));
+
         item_hetong = getIntent().getIntExtra("item_hetong", 0);
         tv_hetongleixing.setText(list_hetong.get(item_hetong));
         titleView.setTitle(list_hetong.get(item_hetong));
@@ -315,6 +323,10 @@ public class AddContractActivity extends BaseActivity {
             case R.id.tv_xuanzeyuanyin:
                 //取消原因
                 dialogList_quxiaoyuanyin(tv_xuanzeyuanyin);
+                break;
+            case R.id.tv_mianfeishichang:
+                //免费时长
+                dialogList_mianfeishichang(tv_mianfeishichang);
                 break;
             case R.id.tv_jifeidanyuan:
                 //计费单元
@@ -652,7 +664,7 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择签约时间");
                     return false;
                 } else {
-                    signTime = TimeUtils.string2Millis(signTime, "yyyy-MM-dd")/1000 + "";
+                    signTime = TimeUtils.string2Millis(signTime, "yyyy-MM-dd")+ "";
 //                    signTime = TimeUtils.string2Date(signTime, "yyyy-MM-dd") + "";
                 }
                 if (pdffile == null) {
@@ -807,7 +819,7 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择续签时间");
                     return false;
                 } else {
-                    renewalTime = TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd")/1000 + "";
+                    renewalTime = TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "";
 //                    renewalTime = TimeUtils.string2Date(TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "") + "";
                 }
                 if (pdffile == null) {
@@ -842,7 +854,6 @@ public class AddContractActivity extends BaseActivity {
                     myToast("请选择计费单元");
                     return false;
                 }
-                storeFreeTime = tv_mianfeishichang.getText().toString().trim();
                 if (TextUtils.isEmpty(storeFreeTime)) {
                     myToast("请输入免费时长");
                     return false;
@@ -1228,11 +1239,11 @@ public class AddContractActivity extends BaseActivity {
             @Override
             public void onResponse(StoreInfoModel response) {
                 hideProgress();
-                tv_shougexiaoshi.setText(response.getSysStartPrice());
+                tv_shougexiaoshi.setText(response.getSysStartPrice()+"元");
                 tv_jichujijia.setText(response.getSysOverTimeUnit());
-                tv_meirifengding.setText(response.getSysMaxPrice());
-                tv_mianfeishichang.setText(response.getSysFreeTime());
-
+                tv_meirifengding.setText(response.getSysMaxPrice()+"元");
+                tv_mianfeishichang.setText(Integer.valueOf(response.getSysFreeTime())/60+"分钟");
+                storeFreeTime = response.getSysFreeTime();
             }
         });
     }
@@ -1542,7 +1553,50 @@ public class AddContractActivity extends BaseActivity {
         });
         rv_list.setAdapter(adapter);
     }
+    /**
+     * 选择免费时长
+     */
+    private void dialogList_mianfeishichang(TextView textView) {
+        dialog.contentView(R.layout.dialog_list_center)
+                .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT))
+                .animType(BaseDialog.AnimInType.BOTTOM)
+                .canceledOnTouchOutside(true)
+                .gravity(Gravity.CENTER)
+                .dimAmount(0.5f)
+                .show();
+        RecyclerView rv_list = dialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<CommonModel.StatusBean> adapter = new CommonAdapter<CommonModel.StatusBean>
+                (AddContractActivity.this, R.layout.item_help, list_mianfeishichang) {
+            @Override
+            protected void convert(ViewHolder holder, CommonModel.StatusBean model, int position) {
+                TextView tv = holder.getView(R.id.textView1);
+                tv.setText(model.getVal());
+                if (item_mianfeishichang == position)
+                    tv.setTextColor(getResources().getColor(R.color.green));
+                else
+                    tv.setTextColor(getResources().getColor(R.color.black1));
+            }
+        };
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
+                item_mianfeishichang = position;
+                textView.setText(list_mianfeishichang.get(position).getVal());
+                storeFreeTime = list_mianfeishichang.get(position).getKey();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
 
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        rv_list.setAdapter(adapter);
+    }
     /**
      * 选择仓库
      */

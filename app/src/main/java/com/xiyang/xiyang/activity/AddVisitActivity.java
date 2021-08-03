@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -237,7 +236,7 @@ public class AddVisitActivity extends BaseActivity {
             case R.id.tv_baifangjilu:
                 //拜访记录
                 Bundle bundle = new Bundle();
-                bundle.putString("type", type+1 + "");
+                bundle.putString("type", type + 1 + "");
                 /*switch (type){
                     case 1:
                         bundle.putString("type","2");
@@ -290,7 +289,7 @@ public class AddVisitActivity extends BaseActivity {
                                     params.put("contractName", contactName);//联系人
                                     params.put("reason", reason);//拜访原因
                                     params.put("feedback", feedback);//拜访反馈
-                                    params.put("isAdver", item_jingdui+"");//商户存在竟对 0否1是
+                                    params.put("isAdver", item_jingdui + "");//商户存在竟对 0否1是
                                     params.put("remark", remark);//补充说明
                                     params.put("images", images);
                                     requestUpData(params, URLs.AddVisit_YuanCheng);
@@ -306,7 +305,7 @@ public class AddVisitActivity extends BaseActivity {
                                     params.put("contractName", contactName);//联系人
                                     params.put("reason", reason);//拜访原因
                                     params.put("feedback", feedback);//拜访反馈
-                                    params.put("isAdver", item_jingdui+"");//商户存在竟对 0否1是
+                                    params.put("isAdver", item_jingdui + "");//商户存在竟对 0否1是
                                     params.put("remark", remark);//补充说明
                                     params.put("images", images);
                                     requestUpData(params, URLs.AddVisit_ShangMen);
@@ -322,7 +321,7 @@ public class AddVisitActivity extends BaseActivity {
                                     params.put("visitTime", visitTime);//拜访时间
                                     params.put("address", address);//拜访地址
                                     params.put("way", visitChannel);//拜访方式
-                                    params.put("isIntention", itme_truefalse+"");//是否意向0默认1是2否
+                                    params.put("isIntention", itme_truefalse + "");//是否意向0默认1是2否
                                     params.put("remark", remark);
                                     params.put("images", images);
                                     requestUpData(params, URLs.AddVisit_MoSheng);
@@ -410,8 +409,9 @@ public class AddVisitActivity extends BaseActivity {
                 if (TextUtils.isEmpty(visitTime)) {
                     myToast("请选择拜访时间");
                     return false;
-                }else {
-                    visitTime = TimeUtils.string2Millis(visitTime, "yyyy-MM-dd")/1000 + "";
+                } else {
+                    visitTime = visitTime + " 00:00:00";
+//                    visitTime = TimeUtils.string2Millis(visitTime, "yyyy-MM-dd")/1000 + "";
 //                    renewalTime = TimeUtils.string2Date(TimeUtils.string2Millis(renewalTime, "yyyy-MM-dd") + "") + "";
                 }
                 address = tv_mendiandizhi.getText().toString().trim();
@@ -515,7 +515,7 @@ public class AddVisitActivity extends BaseActivity {
                 myToast("提交成功");
                 hideProgress();
                 Bundle bundle = new Bundle();
-                bundle.putString("type", type+1 + "");
+                bundle.putString("type", type + 1 + "");
                 /*switch (type){
                     case 0:
                         bundle.putString("type","2");
@@ -527,7 +527,7 @@ public class AddVisitActivity extends BaseActivity {
                         bundle.putString("type","1");
                         break;
                 }*/
-                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class, bundle, true);
+                CommonUtil.gotoActivityWithData(AddVisitActivity.this, MyVisitListActivity.class, bundle, false);
             }
         });
     }

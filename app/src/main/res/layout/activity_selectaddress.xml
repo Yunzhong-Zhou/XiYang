@@ -50,26 +50,12 @@
 
     </LinearLayout>
 
-    <!-- <androidx.recyclerview.widget.RecyclerView
-         android:id="@+id/rv_sarch"
-         android:layout_width="match_parent"
-         android:layout_height="200dp"
-         android:background="@color/white"
-         android:layout_below="@id/ll_top" />-->
-
-    <!--底部-->
-    <!--<com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/springView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_addr"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_addr"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/background"
-            android:visibility="gone" />
-<!--    </com.liaoinstan.springview.widget.SpringView>-->
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background"
+        android:visibility="visible" />
 
 </RelativeLayout>

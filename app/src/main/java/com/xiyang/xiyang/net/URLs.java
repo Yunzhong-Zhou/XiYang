@@ -100,6 +100,8 @@ public class URLs {
     public static final String ContractDetail = HOST + "/bd/bdservice/getContractsDetail/";
     //划转商户
     public static final String TransferShop = HOST + "/bd/merchant/transfer/add/apply";
+    //划转商户列表
+    public static final String TransferShopList = HOST + "/bd/merchant/transfer/bdUser/page";
     /**
      * ********************************管理*****************************************
      */
@@ -205,6 +207,8 @@ public class URLs {
     public static final String CloseStore = HOST + "/bd/store/close";
     //划转门店
     public static final String TransferStore = HOST + "/bd/store/transfer/add";
+    //划转商户列表
+    public static final String TransferStoreList = HOST + "/bd/store/transfer/bdUser/page";
     //修改账户信息
     public static final String ChangeStoreAccount = HOST + "/bd/store/updateStoreUser";
 

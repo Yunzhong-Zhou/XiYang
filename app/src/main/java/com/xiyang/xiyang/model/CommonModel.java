@@ -120,6 +120,11 @@ public class CommonModel implements Serializable {
     }
 
     public static class StatusBean {
+        public StatusBean(String key, String val) {
+            this.key = key;
+            this.val = val;
+        }
+
         private String key;
         private String val;
 

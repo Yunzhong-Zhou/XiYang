@@ -19,7 +19,7 @@ import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyContractActivity;
 import com.xiyang.xiyang.activity.MyShopListActivity;
 import com.xiyang.xiyang.activity.ShopDetailActivity;
-import com.xiyang.xiyang.activity.TransferShopActivity;
+import com.xiyang.xiyang.activity.TransferListActivity;
 import com.xiyang.xiyang.base.BaseFragment;
 import com.xiyang.xiyang.model.Fragment1Model;
 import com.xiyang.xiyang.model.MyFragment1Model;
@@ -348,7 +348,8 @@ public class Fragment1 extends BaseFragment {
                 break;
             case R.id.linearLayout11:
                 //划转商户
-                CommonUtil.gotoActivity(getActivity(), TransferShopActivity.class);
+                bundle.putInt("type", 1);//1、商户 2、门店
+                CommonUtil.gotoActivityWithData(getActivity(), TransferListActivity.class, bundle);
                 break;
             case R.id.linearLayout12:
                 //续签商户

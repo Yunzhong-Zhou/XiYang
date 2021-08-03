@@ -131,6 +131,9 @@
             android:name=".activity.ContractDetailActivity"
             android:label="合同详情" />
         <activity
+            android:name=".activity.TransferListActivity"
+            android:label="划转列表" />
+        <activity
             android:name=".activity.TransferShopActivity"
             android:label="划转商户-申请商户划转" />
         <activity

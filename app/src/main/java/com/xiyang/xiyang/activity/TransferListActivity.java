@@ -17,14 +17,14 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.adapter.Pop_ListAdapter;
 import com.xiyang.xiyang.base.BaseActivity;
-import com.xiyang.xiyang.model.ShareProfitListModel;
+import com.xiyang.xiyang.model.TransferListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.view.FixedPopupWindow;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-
-import org.json.JSONObject;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,25 +37,33 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 分润记录
+ * 划转列表
  */
-public class ShareProfitListActivity extends BaseActivity {
+public class TransferListActivity extends BaseActivity {
+    int type = 1;//1、商户 2、门店
     private RecyclerView recyclerView;
-    List<ShareProfitListModel> list = new ArrayList<>();
-    CommonAdapter<ShareProfitListModel> mAdapter;
+    List<TransferListModel.RecordsBean> list = new ArrayList<>();
+    CommonAdapter<TransferListModel.RecordsBean> mAdapter;
     //筛选
-    private LinearLayout linearLayout1, linearLayout2,linearLayout3;
-    private TextView textView1, textView2,textView3;
-    private View view1, view2,view3;
+    private LinearLayout linearLayout1, linearLayout2, linearLayout3;
+    private TextView textView1, textView2, textView3;
+    private View view1, view2, view3;
     private LinearLayout pop_view;
     int page = 1;
-    String moneySort = "", status = "",startTime="",keyWord="";
+    String sort = "", startTime = "", endTime = "", url = "";
     int i1 = 0;
     int i2 = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shareprofitlist);
+        setContentView(R.layout.activity_myworklist);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestServer();//获取数据
     }
 
     @Override
@@ -69,11 +77,11 @@ public class ShareProfitListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                params.put("page",page+"");
-                params.put("pageSize","10");
-                params.put("keyWord",keyWord);
-                params.put("moneySort",moneySort);
-                params.put("timeSort",startTime);
+                params.put("page", page + "");
+                params.put("size", "10");
+                params.put("sort", sort);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
                 requestList(params);
             }
 
@@ -81,11 +89,11 @@ public class ShareProfitListActivity extends BaseActivity {
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("page",page+"");
-                params.put("pageSize","10");
-                params.put("keyWord",keyWord);
-                params.put("moneySort",moneySort);
-                params.put("timeSort",startTime);
+                params.put("page", page + "");
+                params.put("size", "10");
+                params.put("sort", sort);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
                 requestListMore(params);
             }
         });
@@ -102,13 +110,20 @@ public class ShareProfitListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestServer();//获取数据
+        type = getIntent().getIntExtra("type",1);
     }
 
     private void requestList(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.ShareProfitList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        if (type == 1) {
+            //商户
+            url = URLs.TransferShopList;
+        } else {
+            //门店
+            url = URLs.TransferStoreList;
+        }
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<TransferListModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public TransferListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -120,56 +135,42 @@ public class ShareProfitListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(TransferListModel response) {
                 showContentPage();
                 hideProgress();
-                JSONObject jObj;
-                /*try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list.size() == 0) {
-                        showEmptyPage();//空数据
-                    } else {
-                        mAdapter = new CommonAdapter<MyTakeCashModel>
-                                (MyTakeCashActivity.this, R.layout.item_shareprofit, list) {
-                            @Override
-                            protected void convert(ViewHolder holder, MyTakeCashModel model, int position) {
-                                holder.setText(R.id.textView1,getString(R.string.qianbao_h6));//标题
-                                holder.setText(R.id.textView2, model.getCreated_at());//时间
-                                holder.setText(R.id.textView3, "-"+model.getMoney());//money
-                                holder.setText(R.id.textView4, model.getStatus_title());//状态
-                            }
-                        };
-                        recyclerView.setAdapter(mAdapter);
-                        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("id", list.get(position).getId());
-                                CommonUtil.gotoActivityWithData(MyTakeCashActivity.this, TakeCashDetailActivity.class, bundle1, false);
-                            }
-
-                            @Override
-                            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                                return false;
-                            }
-                        });
-                    }
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
+                list = response.getRecords();
+                if (list.size() == 0) {
+                    showEmptyPage();//空数据
+                } else {
+                    mAdapter = new CommonAdapter<TransferListModel.RecordsBean>
+                            (TransferListActivity.this, R.layout.item_transferlist, list) {
+                        @Override
+                        protected void convert(ViewHolder holder, TransferListModel.RecordsBean model, int position) {
+                            holder.setText(R.id.tv1, model.getMerchantName());//标题
+                            holder.setText(R.id.tv2, model.getStatus());
+                            holder.setText(R.id.tv3, model.getTransferReason());
+                            holder.setText(R.id.tv4, model.getSn());
+                            holder.setText(R.id.tv5, model.getCreateTime());
+                        }
+                    };
+                    recyclerView.setAdapter(mAdapter);
+                }
             }
         });
 
     }
 
     private void requestListMore(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.ShareProfitList, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        if (type == 1) {
+            //商户
+            url = URLs.TransferShopList;
+        } else {
+            //门店
+            url = URLs.TransferStoreList;
+        }
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<TransferListModel>() {
             @Override
-            public String onParseResponse(Call call, Response response) {
+            public TransferListModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -182,27 +183,19 @@ public class ShareProfitListActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(TransferListModel response) {
 //                showContentPage();
-                hideProgress();
-                /*JSONObject jObj;
-                List<MyTakeCashModel> list1 = new ArrayList<MyTakeCashModel>();
-                try {
-                    jObj = new JSONObject(response);
-                    JSONArray jsonArray = jObj.getJSONArray("data");
-                    list1 = JSON.parseArray(jsonArray.toString(), MyTakeCashModel.class);
-                    if (list1.size() == 0) {
-                        myToast(getString(R.string.app_nomore));
-                        page--;
-                    } else {
-                        list.addAll(list1);
-                        mAdapter.notifyDataSetChanged();
-                    }
+                onHttpResult();
+                List<TransferListModel.RecordsBean> list1 = new ArrayList<>();
+                list1 = response.getRecords();
+                if (list1.size() == 0) {
+                    myToast(getString(R.string.app_nomore));
+                    page--;
+                } else {
+                    list.addAll(list1);
+                    mAdapter.notifyDataSetChanged();
+                }
 
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }*/
             }
         });
 
@@ -238,7 +231,24 @@ public class ShareProfitListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("分润记录");
+        if (type ==1) {
+            titleView.setTitle("商户划转列表");
+            titleView.showRightTextview("商户划转", true, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CommonUtil.gotoActivity(TransferListActivity.this, TransferShopActivity.class);
+                }
+            });
+        } else {
+            titleView.setTitle("门店划转列表");
+            titleView.showRightTextview("商户划转", true, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CommonUtil.gotoActivity(TransferListActivity.this, TransferStoreActivity.class);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -246,18 +256,23 @@ public class ShareProfitListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        params.put("page",page+"");
-        params.put("pageSize","10");
-        params.put("keyWord",keyWord);
-        params.put("moneySort",moneySort);
-        params.put("timeSort",startTime);
+        params.put("page", page + "");
+        params.put("size", "10");
+        params.put("sort", sort);
+        params.put("startTime", startTime);
+        params.put("endTime", endTime);
         requestList(params);
+
     }
 
+    public void onHttpResult() {
+        hideProgress();
+        springView.onFinishFreshAndLoad();
 
+    }
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(ShareProfitListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(TransferListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -282,9 +297,10 @@ public class ShareProfitListActivity extends BaseActivity {
         ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView1);
         contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
         final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_jiangxu));
-        list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(ShareProfitListActivity.this, list);
+        list.add(getString(R.string.app_type_quanbu));
+
+
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(TransferListActivity.this, list);
         adapter.setSelectItem(i1);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -293,11 +309,7 @@ public class ShareProfitListActivity extends BaseActivity {
                 adapter.setSelectItem(i);
                 adapter.notifyDataSetChanged();
                 i1 = i;
-                /*if (i == 0) {
-                    moneySort = "desc";
-                } else {
-                    moneySort = "asc";
-                }*/
+
 //                textView1.setText(list.get(i));
                 requestServer();
                 popupWindow.dismiss();
@@ -323,7 +335,7 @@ public class ShareProfitListActivity extends BaseActivity {
 
     private void showPopupWindow2(View v) {
         // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(ShareProfitListActivity.this).inflate(
+        final View contentView = LayoutInflater.from(TransferListActivity.this).inflate(
                 R.layout.pop_list2, null);
         final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -348,12 +360,10 @@ public class ShareProfitListActivity extends BaseActivity {
         contentView.findViewById(R.id.pop_listView1).setVisibility(View.INVISIBLE);
         ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView2);
         final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_quanbu));
-        list.add(getString(R.string.app_type_daishenhe));
-        list.add(getString(R.string.app_type_yitongguo));
-        list.add(getString(R.string.app_type_weitongguo));
+        list.add(getString(R.string.app_type_jiangxu));
+        list.add(getString(R.string.app_type_shengxu));
 
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(ShareProfitListActivity.this, list);
+        final Pop_ListAdapter adapter = new Pop_ListAdapter(TransferListActivity.this, list);
         adapter.setSelectItem(i2);
         pop_listView.setAdapter(adapter);
         pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -362,12 +372,12 @@ public class ShareProfitListActivity extends BaseActivity {
                 adapter.setSelectItem(i);
                 i2 = i;
                 adapter.notifyDataSetChanged();
-
-                if (i == 0) {
-                    status = "";
+                /*if (i == 0) {
+                    sort = "desc";
                 } else {
-                    status = i + "";
-                }
+                    sort = "asc";
+                }*/
+
 //                textView2.setText(list.get(i));
                 requestServer();
                 popupWindow.dismiss();

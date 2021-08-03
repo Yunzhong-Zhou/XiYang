@@ -181,6 +181,8 @@ public class MyShopListActivity extends BaseActivity {
                                 imageView2.setImageResource(R.mipmap.bg_daiqianyue);
                             }
 
+
+
                             RelativeLayout relativeLayout = holder.getView(R.id.relativeLayout);
                             if (selectItem == position) {
                                 relativeLayout.setVisibility(View.VISIBLE);

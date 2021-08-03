@@ -406,7 +406,7 @@ public class DispatchListActivity extends BaseActivity {
      * @param url
      */
     private void requestShangBao(String id, String url) {
-        OkhttpUtil.okHttpGet(url + id, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(url + id, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
