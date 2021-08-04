@@ -60,6 +60,16 @@ public class PersonnelDetailModel implements Serializable {
      * auditInfos : [{"id":"1417042777175465985","sn":"1417042777149149184","adminId":"10","adminName":"分公司一","createTime":"2021-07-19 16:45:00","updateTime":"2021-07-19 16:45:00"}]
      */
 
+    private boolean enableAudit;
+
+    public boolean isEnableAudit() {
+        return enableAudit;
+    }
+
+    public void setEnableAudit(boolean enableAudit) {
+        this.enableAudit = enableAudit;
+    }
+
     private String id;
     private String adminId;
     private String adminName;

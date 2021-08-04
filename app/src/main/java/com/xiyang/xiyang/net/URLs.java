@@ -227,9 +227,9 @@ public class URLs {
     //添加设备工单
     public static final String AddDeviceWorkList = HOST + "/bd/work/orders/reportDeviceFailure";
     //添加订单工单
-    public static final String AddOrderList = HOST + API + "/bd/work/orders/reportOrderFailure";
+    public static final String AddOrderList = HOST + "/bd/work/orders/reportOrderFailure";
     //添加其他工单
-    public static final String AddOtherList = HOST + API + "/bd/work/orders/reportOtherFailure";
+    public static final String AddOtherList = HOST + "/bd/work/orders/reportOtherFailure";
     //接手工单
     public static final String WorkList_JieShou = HOST + "/bd/work/orders/takeOver/";
     //工单详情
@@ -251,7 +251,7 @@ public class URLs {
     //事务详情-申领-发货
     public static final String AffairDetail_FaHuo = HOST + "/service-purchase/logistic/send";
     //事务详情-签收
-    public static final String AffairDetail_QianShou = HOST + "/bd/device/apply/sign/logistic/";
+    public static final String AffairDetail_QianShou = HOST + "/purchase/logistic/sign/";
     //我的设备列表
     public static final String MyDevice = HOST + "/service-device/device/sysUser/page";
     //定位异常设备
@@ -323,7 +323,7 @@ public class URLs {
     //帮助列表
     public static final String Help = HOST + "/applet/help/queryProblemList";
     //在线客服
-    public static final String OnlineService = HOST + "/baseinfo/onlineConsult/page";
+    public static final String OnlineService = HOST + "/baseinfo/onlineConsult/getall";
     //创建留言
     public static final String AddMessage = HOST + "/baseinfo/onlineConsult/create";
     //关于我们

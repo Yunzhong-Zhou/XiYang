@@ -40,6 +40,17 @@ public class TransferListModel implements Serializable {
         private String transferReason;
         private String sn;
         private String createTime;
+        /**
+         * storeId : 1422734357004816384
+         * storeName : 门店2
+         * storeAddress : 同熙路93号
+         * status : 1
+         */
+
+        private String storeId;
+        private String storeName;
+        private String storeAddress;
+
 
         public String getId() {
             return id;
@@ -111,6 +122,30 @@ public class TransferListModel implements Serializable {
 
         public void setCreateTime(String createTime) {
             this.createTime = createTime;
+        }
+
+        public String getStoreId() {
+            return storeId;
+        }
+
+        public void setStoreId(String storeId) {
+            this.storeId = storeId;
+        }
+
+        public String getStoreName() {
+            return storeName;
+        }
+
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
+        }
+
+        public String getStoreAddress() {
+            return storeAddress;
+        }
+
+        public void setStoreAddress(String storeAddress) {
+            this.storeAddress = storeAddress;
         }
     }
 }

@@ -110,7 +110,7 @@ public class TransferListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        type = getIntent().getIntExtra("type",1);
+        type = getIntent().getIntExtra("type", 1);
     }
 
     private void requestList(Map<String, String> params) {
@@ -146,7 +146,9 @@ public class TransferListActivity extends BaseActivity {
                             (TransferListActivity.this, R.layout.item_transferlist, list) {
                         @Override
                         protected void convert(ViewHolder holder, TransferListModel.RecordsBean model, int position) {
-                            holder.setText(R.id.tv1, model.getMerchantName());//标题
+                            if (type == 1)
+                                holder.setText(R.id.tv1, model.getMerchantName());//标题
+                            else holder.setText(R.id.tv1, model.getStoreName());//标题
                             holder.setText(R.id.tv2, model.getStatus());
                             holder.setText(R.id.tv3, model.getTransferReason());
                             holder.setText(R.id.tv4, model.getSn());
@@ -231,7 +233,7 @@ public class TransferListActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        if (type ==1) {
+        if (type == 1) {
             titleView.setTitle("商户划转列表");
             titleView.showRightTextview("商户划转", true, new View.OnClickListener() {
                 @Override
@@ -241,7 +243,7 @@ public class TransferListActivity extends BaseActivity {
             });
         } else {
             titleView.setTitle("门店划转列表");
-            titleView.showRightTextview("商户划转", true, new View.OnClickListener() {
+            titleView.showRightTextview("门店划转", true, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CommonUtil.gotoActivity(TransferListActivity.this, TransferStoreActivity.class);
@@ -270,6 +272,7 @@ public class TransferListActivity extends BaseActivity {
         springView.onFinishFreshAndLoad();
 
     }
+
     private void showPopupWindow1(View v) {
         // 一个自定义的布局，作为显示的内容
         final View contentView = LayoutInflater.from(TransferListActivity.this).inflate(

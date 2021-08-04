@@ -96,7 +96,7 @@ public class InstallDeviceActivity extends BaseActivity {
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
-            case R.id.tv_anzhuangmendian:
+            /*case R.id.tv_anzhuangmendian:
                 //选择门店
                 Intent intent1 = new Intent(InstallDeviceActivity.this, MyStoreListActivity.class);
                 Bundle bundle1 = new Bundle();
@@ -104,7 +104,7 @@ public class InstallDeviceActivity extends BaseActivity {
                 bundle1.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
                 intent1.putExtras(bundle1);
                 startActivityForResult(intent1, Constant.SELECT_STORE, bundle1);
-                break;
+                break;*/
             case R.id.tv_xuanzefanghao:
                 //选择房号
 //                Bundle bundle= new Bundle();

@@ -100,6 +100,12 @@ public class OnlineServiceAdapter extends BaseAdapter {
                 holder.imageView2_1.setImageResource(R.mipmap.headimg);
             //内容
             if (list.get(position).getType() == 1) {
+                //文字消息
+                holder.imageView1_1.setVisibility(View.GONE);
+                holder.linearLayout1_1.setVisibility(View.VISIBLE);
+                holder.textView1_2.setText(list.get(position).getMessage());
+
+            } else {
                 //图片消息
                 holder.imageView1_1.setVisibility(View.VISIBLE);
                 holder.linearLayout1_1.setVisibility(View.GONE);
@@ -117,11 +123,6 @@ public class OnlineServiceAdapter extends BaseAdapter {
                         popupwindow.showAtLocation(finalHolder.imageView1_2, Gravity.CENTER, 0, 0);
                     }
                 });
-            } else {
-                //文字消息
-                holder.imageView1_1.setVisibility(View.GONE);
-                holder.linearLayout1_1.setVisibility(View.VISIBLE);
-                holder.textView1_2.setText(list.get(position).getMessage());
 
             }
         }

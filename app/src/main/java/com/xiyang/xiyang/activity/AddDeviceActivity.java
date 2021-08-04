@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
@@ -105,7 +106,7 @@ public class AddDeviceActivity extends BaseActivity {
                     }
                     params.clear();
                     params.put("storesId", storeId);
-                    params.put("deviceIds", String.valueOf(deviceIds));
+                    params.put("deviceIds", deviceIds);
                     if (type == 2)
                         requestUpData(params, URLs.AddDevice_4G);
                     else requestUpData(params, URLs.AddDevice_GuoLv);
@@ -170,7 +171,7 @@ public class AddDeviceActivity extends BaseActivity {
     }
 
     private void requestUpData(Map<String, String> params, String url) {
-        OkhttpUtil.okHttpPost(url, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(url, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

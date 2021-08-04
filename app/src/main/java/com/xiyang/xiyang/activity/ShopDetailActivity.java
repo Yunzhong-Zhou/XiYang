@@ -466,6 +466,11 @@ public class ShopDetailActivity extends BaseActivity {
                 /**
                  * 商户信息-未审核
                  */
+                industryId = response.getBase().getIndustryId();
+                provinceId = response.getBase().getProvinceId();
+                cityId = response.getBase().getCityId();
+                areaId = response.getBase().getAreaId();
+
                 editText1.setText(response.getBase().getName());//商户名称
                 editText2.setText(response.getBase().getAccount());//商户账号
                 editText3.setText(response.getBase().getContactName());//商户联系人

@@ -252,7 +252,7 @@ public class WorkListDetailActivity extends BaseActivity {
                         .placeholder(R.mipmap.loading)//加载站位图
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
-                switch (model.getType()) {
+                switch (model.getType()) {//类型 1-设备工单,2-订单工单,3-任务工单,4-其它,、
                     case 1:
                         //设备故障
                         textView1.setText("设备故障");
@@ -262,6 +262,10 @@ public class WorkListDetailActivity extends BaseActivity {
                         textView1.setText("订单故障");
                         break;
                     case 3:
+                        //任务工单
+                        textView1.setText("任务工单");
+                        break;
+                    case 4:
                         //其他故障
                         textView1.setText("其他故障");
                         break;
@@ -298,7 +302,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 list_info.clear();
                 list_info.add(new KeyValueModel("工单ID", response.getId()));
                 list_info.add(new KeyValueModel("门店名称", response.getStoreName()));
-                switch (model.getType()) {
+                switch (model.getType()) {//类型 1-设备工单,2-订单工单,3-任务工单,4-其它,、
                     case 1:
                         //设备故障
                         list_info.add(new KeyValueModel("工单类型", "设备故障"));
@@ -308,6 +312,10 @@ public class WorkListDetailActivity extends BaseActivity {
                         list_info.add(new KeyValueModel("工单类型", "订单故障"));
                         break;
                     case 3:
+                        //任务工单
+                        list_info.add(new KeyValueModel("工单类型", "任务工单"));
+                        break;
+                    case 4:
                         //其他故障
                         list_info.add(new KeyValueModel("工单类型", "其他故障"));
                         break;
@@ -425,19 +433,19 @@ public class WorkListDetailActivity extends BaseActivity {
                                 if (model.getStatus()!=null){
                                     switch (model.getStatus()) {
                                         case "1":
+                                            tv_type.setText("上报");
+                                            tv_type.setTextColor(getResources().getColor(R.color.red));
+                                            iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
+                                            break;
+                                        case "2":
                                             tv_type.setText("已完成");
                                             tv_type.setTextColor(getResources().getColor(R.color.green));
                                             iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
                                             break;
-                                        case "2":
-                                            tv_type.setText("处理中");
+                                        case "3":
+                                            tv_type.setText("指派");
                                             tv_type.setTextColor(getResources().getColor(R.color.black3));
                                             iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_1);
-                                            break;
-                                        case "3":
-                                            tv_type.setText("驳回");
-                                            tv_type.setTextColor(getResources().getColor(R.color.red));
-                                            iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_3);
                                             break;
                                         default:
                                             tv_type.setText("处理中");
@@ -458,7 +466,7 @@ public class WorkListDetailActivity extends BaseActivity {
     }
 
     private void requestJieShou(Map<String, String> params, String id) {
-        OkhttpUtil.okHttpGet(URLs.WorkList_JieShou + id, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.WorkList_JieShou + id, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

@@ -241,7 +241,7 @@ public class RoomNoManagementActivity extends BaseActivity {
                             holder.getView(R.id.iv_edit).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    dialog_edit("编辑", list.get(position).getName(), list.get(position).getId(), list.get(position).getParentId());
+                                    dialog_edit("编辑", list.get(position).getName(), list.get(position).getId(), model_sdm.getStoreInfo().getId());
                                 }
                             });
                             //删除
@@ -443,7 +443,7 @@ public class RoomNoManagementActivity extends BaseActivity {
     }
 
     //编辑
-    private void dialog_edit(String txt, String hint, String id, String parentId) {
+    private void dialog_edit(String txt, String hint, String id, String storeId) {
         dialog.contentView(R.layout.dialog_edit)
                 .layoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -471,7 +471,7 @@ public class RoomNoManagementActivity extends BaseActivity {
                     params.put("storeRoomId", id);
                     params.put("name", textView2.getText().toString().trim());
 //                    params.put("parentId", parentId);
-//                    params.put("storeId", model_sdm.getId());
+                    params.put("storeId", storeId);
                     requestChange(params, URLs.ChageRoom, 1);//修改
                 } else {
                     myToast(hint);

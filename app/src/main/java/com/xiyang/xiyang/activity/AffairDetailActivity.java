@@ -96,7 +96,7 @@ public class AffairDetailActivity extends BaseActivity {
     private RecyclerView rv_wuliu;
     List<AffairDetailModel.LogisticBean.ExpressInfoBean> list_wuliu = new ArrayList<>();
     CommonAdapter<AffairDetailModel.LogisticBean.ExpressInfoBean> mAdapter_wuliu;
-    int expressWay = 1;//邮寄方式 1-自取，2-邮寄
+    String expressWay = "1";//邮寄方式 1-自取，2-邮寄
     List<String> list_fangshi = new ArrayList<>();
     int itme_fangshi = 0;
     File imgfile = null;
@@ -355,7 +355,7 @@ public class AffairDetailActivity extends BaseActivity {
                 if (match()) {
                     showProgress(true, getString(R.string.app_loading1));
                     switch (expressWay) {
-                        case 1:
+                        case "1":
                             //自取
                             Map<String, File> fileMap = new HashMap<>();
                             fileMap.put("file", imgfile);
@@ -376,44 +376,34 @@ public class AffairDetailActivity extends BaseActivity {
                                 public void onResponse(String response) {
                                     params.put("relationId", model.getRelationId());
                                     params.put("expressWay", expressWay + "");//1-自取，2-邮寄
-                                    params.put("relationType",apply_Type);
+                                    params.put("relationType", apply_Type);
                                     params.put("voucher", response);
-                                        /*params.put("expressNo", "");
-                                        params.put("expressCompany", "");
-                                        params.put("receiveName", "");
-                                        params.put("phone", "");
-                                        params.put("areaId", "");
-                                        params.put("address", "");*/
-//                                        params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
                                     requestUpData(params, URLs.AffairDetail_ShenLing);
                                 }
                             });
 
                             break;
-                        case 2:
+                        case "2":
                             //邮寄
                             params.clear();
-                            if (apply_Type.equals("4")) {
+                            if (apply_Type.equals("4")) {//回收
                                 params.put("relationId", model.getRelationId());
                                 params.put("logisticId", model.getLogistic().getId());
                                 params.put("warehouseId", model.getContract().getWarehouseId());
                                 params.put("transportId", transportId);
                                 params.put("transportCompany", transportCompany);
-                                params.put("relationType",apply_Type);
+                                params.put("relationType", apply_Type);
                                 requestUpData(params, URLs.AffairDetail_FaHuo);
                             } else {
                                 params.put("relationId", model.getRelationId());
                                 params.put("expressWay", expressWay + "");//1-自取，2-邮寄
-                                params.put("relationType",apply_Type);
-//                            params.put("expressNo", "");
-//                            params.put("expressCompany", "");
+                                params.put("relationType", apply_Type);
                                 params.put("receiveName", receiveName);//收货人
                                 params.put("phone", phone);//收货人联系方式
                                 params.put("provinceId", provinceId);//省
                                 params.put("cityId", cityId);//市
                                 params.put("areaId", areaId);//区
                                 params.put("address", address);
-//                            params.put("scene", "chooseExpressWay");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货
                                 requestUpData(params, URLs.AffairDetail_ShenLing);
                             }
                             break;
@@ -572,7 +562,7 @@ public class AffairDetailActivity extends BaseActivity {
                             holder.setText(R.id.textView2, model.getDeviceHostName());
                             holder.setText(R.id.textView4, model.getInstallTime() + "");
 
-                            if (response.getType().equals("2") || response.getType().equals("3")){
+                            if (response.getType().equals("2") || response.getType().equals("3")) {
                                 holder.setText(R.id.textView3, "已安装");
                             }
 
@@ -620,14 +610,14 @@ public class AffairDetailActivity extends BaseActivity {
 
     private boolean match() {
         switch (expressWay) {
-            case 1:
+            case "1":
                 //自取
                 if (imgfile == null) {
                     myToast("请选择上传照片");
                     return false;
                 }
                 break;
-            case 2:
+            case "2":
                 //邮寄
                 if (apply_Type.equals("4")) {//回收
                     if (TextUtils.isEmpty(transportCompany)) {
@@ -743,6 +733,7 @@ public class AffairDetailActivity extends BaseActivity {
 
         if (model.getLogistic() != null && model.getLogistic().getExpressWay() != null) {
             //TODO 已经设置了邮寄方式
+            expressWay = model.getLogistic().getExpressWay();
             switch (model.getLogistic().getExpressWay()) {
                 case "1":
                     //自取
@@ -806,10 +797,10 @@ public class AffairDetailActivity extends BaseActivity {
                         mAdapter_wuliu = new CommonAdapter<AffairDetailModel.LogisticBean.ExpressInfoBean>
                                 (AffairDetailActivity.this, R.layout.item_wuliu, list_wuliu) {
                             @Override
-                            protected void convert(ViewHolder holder, AffairDetailModel.LogisticBean.ExpressInfoBean model, int position) {
-                                holder.setText(R.id.tv1, model.getTransportCompany());
-                                holder.setText(R.id.tv2, model.getTransportId());
-                                if (model.getSignTime() != null) {
+                            protected void convert(ViewHolder holder, AffairDetailModel.LogisticBean.ExpressInfoBean bean, int position) {
+                                holder.setText(R.id.tv1, bean.getTransportCompany());
+                                holder.setText(R.id.tv2, bean.getTransportId());
+                                if (bean.getSignTime() != null) {
                                     //已签收
                                     holder.setText(R.id.tv3, "已签收");
                                     holder.getView(R.id.tv_quedingqianshou).setVisibility(View.GONE);
@@ -818,7 +809,7 @@ public class AffairDetailActivity extends BaseActivity {
                                     holder.setText(R.id.tv3, "待签收");
                                     if (apply_Type.equals("4")) {//回收
                                         holder.getView(R.id.tv_quedingqianshou).setVisibility(View.GONE);
-                                    }else {
+                                    } else {
                                         holder.getView(R.id.tv_quedingqianshou).setVisibility(View.VISIBLE);
                                     }
                                 }
@@ -832,7 +823,7 @@ public class AffairDetailActivity extends BaseActivity {
                                     params.put("expressNo", "");
                                     params.put("expressCompany", "");
                                     params.put("scene", "confirm");//修改类别 chooseExpressWay-选择邮寄方式，confirm-确认收货*/
-                                    requestQiansShou(params, model.getApplyId() + "/" + model.getTransportId());
+                                    requestQiansShou(params, bean.getLogisticId() + "/" + bean.getTransportId());
                                 });
                             }
                         };
@@ -853,14 +844,14 @@ public class AffairDetailActivity extends BaseActivity {
             //TODO 未选择邮寄方式
             if (apply_Type.equals("4")) {//回收
                 switch (expressWay) {
-                    case 1:
+                    case "1":
                         //自取
                         tv_shenlingxinxi.setText("物流信息");
                         tv_shenlingfangshi.setText("自取");
                         tv_shangchuanzhaopian.setVisibility(View.VISIBLE);
                         iv_shangchuanzhaopian.setVisibility(View.VISIBLE);
                         break;
-                    case 2:
+                    case "2":
                         //邮寄
                         tv_shenlingxinxi.setText("物流信息");
                         tv_shenlingfangshi.setText("邮寄");
@@ -882,14 +873,14 @@ public class AffairDetailActivity extends BaseActivity {
                 }
             } else {
                 switch (expressWay) {
-                    case 1:
+                    case "1":
                         //自取
                         tv_shenlingxinxi.setText("申领信息");
                         tv_shenlingfangshi.setText("自取");
                         tv_shangchuanzhaopian.setVisibility(View.VISIBLE);
                         iv_shangchuanzhaopian.setVisibility(View.VISIBLE);
                         break;
-                    case 2:
+                    case "2":
                         //邮寄
                         tv_shenlingxinxi.setText("收件信息");
                         tv_shenlingfangshi.setText("邮寄");
@@ -1124,7 +1115,7 @@ public class AffairDetailActivity extends BaseActivity {
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 itme_fangshi = position;
 
-                expressWay = position + 1;//邮寄方式 1-自取，2-邮寄
+                expressWay = position + 1 + "";//邮寄方式 1-自取，2-邮寄
                 changeShenLingUI();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();

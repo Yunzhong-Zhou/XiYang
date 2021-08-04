@@ -115,10 +115,10 @@ public class OnlineServiceActivity extends BaseActivity {
                 //刷新
                 page = page + 1;
                 params.clear();
-                params.put("orderType", "ASC");
-                params.put("orderField", "updateDataTime");
+                params.put("type", "");
+                params.put("keyword", "");
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 RequestOnlineServiceMore(params);
             }
 
@@ -127,10 +127,10 @@ public class OnlineServiceActivity extends BaseActivity {
                 //加载更多
                 page = 1;
                 params.clear();
-                params.put("orderType", "ASC");
-                params.put("orderField", "updateDataTime");
+                params.put("type", "");
+                params.put("keyword", "");
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 RequestOnlineService(params);
             }
         });
@@ -304,10 +304,10 @@ public class OnlineServiceActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         page = 1;
         params.clear();
-        params.put("orderType", "ASC");
-        params.put("orderField", "updateDataTime");
+        params.put("type", "");
+        params.put("keyword", "");
         params.put("page", page + "");
-        params.put("size", "10");
+        params.put("pageSize", "10");
         RequestOnlineService(params);
     }
 

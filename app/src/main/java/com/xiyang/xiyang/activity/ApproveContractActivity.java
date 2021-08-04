@@ -137,13 +137,13 @@ public class ApproveContractActivity extends BaseActivity {
         type = getIntent().getStringExtra("type");
         type_shenhe = getIntent().getStringExtra("type_shenhe");
         rl_shuliang.setVisibility(View.GONE);
-        switch (type_shenhe){
+        switch (type_shenhe) {
             case "0":
                 titleView.setTitle("审批合同");
-                if (type.equals("device_add")){
+                if (type.equals("device_add")) {
                     //添加设备
                     rl_shuliang.setVisibility(View.VISIBLE);
-                    tv_shuliang.setText(getIntent().getStringExtra("num"));
+                    tv_shuliang.setHint(getIntent().getStringExtra("num"));
                 }
                 break;
             case "1":
@@ -157,11 +157,9 @@ public class ApproveContractActivity extends BaseActivity {
                 break;
             case "4":
                 titleView.setTitle("审批采购审核");
-                if (type.equals("device_add")){
-                    //添加设备
-                    rl_shuliang.setVisibility(View.VISIBLE);
-                    tv_shuliang.setText(getIntent().getStringExtra("num"));
-                }
+                //添加设备
+                rl_shuliang.setVisibility(View.VISIBLE);
+                tv_shuliang.setHint(getIntent().getStringExtra("num"));
                 break;
         }
 
@@ -213,7 +211,7 @@ public class ApproveContractActivity extends BaseActivity {
                                         images = images.substring(0, images.length() - 1);
                                     }
                                     params.clear();
-                                    switch (type_shenhe){
+                                    switch (type_shenhe) {
                                         case "0":
                                             //合同审批
                                             params.put("reason", remark);

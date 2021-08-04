@@ -258,12 +258,17 @@ public class PersonnelListActivity extends BaseActivity {
                                 case 2:
                                     //调整市场
                                     String oldcity = "";
-                                    for (PersonnelListModel.RecordsBean.OldRegionsBean bean : model.getOldRegions()) {
-                                        oldcity = oldcity + bean.getNameX() + "、";
+                                    if (model.getOldRegions() !=null){
+                                        for (PersonnelListModel.RecordsBean.OldRegionsBean bean : model.getOldRegions()) {
+                                            oldcity = oldcity + bean.getNameX() + "、";
+                                        }
                                     }
+
                                     String newcity = "";
-                                    for (PersonnelListModel.RecordsBean.NewRegionsBean bean : model.getNewRegions()) {
-                                        newcity = newcity + bean.getNameX() + "、";
+                                    if (model.getNewRegions() !=null) {
+                                        for (PersonnelListModel.RecordsBean.NewRegionsBean bean : model.getNewRegions()) {
+                                            newcity = newcity + bean.getNameX() + "、";
+                                        }
                                     }
                                     if (!oldcity.equals("")) {
                                         oldcity = oldcity.substring(0, oldcity.length() - 1);

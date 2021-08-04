@@ -479,7 +479,7 @@ public class AffairDetailModel implements Serializable {
              * signAdminScopeOrganId : 1415128701016973313
              */
 
-            private String applyId;
+            private String logisticId;
             private String transportId;
             private String transportCompany;
             private String sendTime;
@@ -489,12 +489,12 @@ public class AffairDetailModel implements Serializable {
             private String signAdminId;
             private String signAdminScopeOrganId;
 
-            public String getApplyId() {
-                return applyId;
+            public String getLogisticId() {
+                return logisticId;
             }
 
-            public void setApplyId(String applyId) {
-                this.applyId = applyId;
+            public void setLogisticId(String logisticId) {
+                this.logisticId = logisticId;
             }
 
             public String getTransportId() {

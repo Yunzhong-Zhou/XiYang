@@ -1088,7 +1088,7 @@ public class AddContractActivity extends BaseActivity {
                 rl_jianshaoyuanyin.setVisibility(View.VISIBLE);
                 rl_hetongwenjian.setVisibility(View.VISIBLE);
 
-                requestChangKu(params);
+//                requestChangKu(params);
 //                params.put("type", "merchantRecoverReason");
                 request(URLs.Common + "CONTRACT_DEVICE_RECOVER_REASON", params);//减少原因
 

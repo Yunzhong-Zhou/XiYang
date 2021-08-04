@@ -185,14 +185,14 @@ public class ChangeTieDeviceActivity extends BaseActivity {
                     //选择门店
                     if (data != null) {
                         Bundle bundle = data.getExtras();
-                        oldStoreId = bundle.getString("storeId");
+                        newStoreId = bundle.getString("storeId");
                         tv_anzhuangmendian.setText(bundle.getString("storeName"));
 
-                        //获取门店详情
+                        //获取新门店详情
                         showProgress(true, getString(R.string.app_loading2));
                         params.clear();
 //                        params.put("id", storeId);
-                        requestStoreDetail(params, oldStoreId);
+                        requestStoreDetail(params, newStoreId);
                     }
                     break;
                 case Constant.SELECT_ROOMNO:
@@ -236,7 +236,7 @@ public class ChangeTieDeviceActivity extends BaseActivity {
     }
 
     /**
-     * 获取门店详情
+     * 获取新门店详情
      *
      * @param params
      */

@@ -150,7 +150,7 @@ public class MyWorkListActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, MyWorkListModel.RecordsBean model, int position) {
 //                            holder.setText(R.id.tv_title, model.getStoreName());//标题
-                            switch (model.getType()) {
+                            switch (model.getType()) {//类型 1-设备工单,2-订单工单,3-任务工单,4-其它,、
                                 case 1:
                                     //设备故障
                                     holder.setText(R.id.tv_title, "设备故障");//标题
@@ -160,6 +160,10 @@ public class MyWorkListActivity extends BaseActivity {
                                     holder.setText(R.id.tv_title, "订单故障");//标题
                                     break;
                                 case 3:
+                                    //任务工单
+                                    holder.setText(R.id.tv_title, "任务工单");//标题
+                                    break;
+                                case 4:
                                     //其他故障
                                     holder.setText(R.id.tv_title, "其他故障");//标题
                                     break;
