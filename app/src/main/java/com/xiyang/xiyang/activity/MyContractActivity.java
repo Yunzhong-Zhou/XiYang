@@ -154,22 +154,25 @@ public class MyContractActivity extends BaseActivity {
                             holder.setText(R.id.tv_shop, "《" + model.getTypeTitle() + "》");
                             TextView tv_num = holder.getView(R.id.tv_num);
                             tv_num.setText(model.getStatusTitle());
-                            switch (model.getStatus()) {
+                            switch (model.getStatus()) {//1:待处理; 2:处理中; 3:通过; 4:驳回;
                                 case "0":
-                                    //已提交
+                                    //待处理
                                     tv_num.setTextColor(getResources().getColor(R.color.black3));
                                     break;
-                                case "1":
+                                case "2":
+                                    //处理中
+                                    tv_num.setTextColor(getResources().getColor(R.color.black3));
+                                    break;
+                                case "3":
                                     //已通过
                                     tv_num.setTextColor(getResources().getColor(R.color.green));
                                     break;
-                                case "2":
-                                    //失败
+                                case "4":
+                                    //驳回
                                     tv_num.setTextColor(getResources().getColor(R.color.red));
                                     break;
                                 default:
                                     break;
-
                             }
                             holder.setText(R.id.tv_addr, model.getCreatedAt());
 

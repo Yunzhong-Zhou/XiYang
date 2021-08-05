@@ -18,6 +18,7 @@ import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.popupwindow.PhotoShowDialog;
+import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -141,7 +142,7 @@ public class ContractDetailActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.tv_liulan:
-                //查看图片
+                //查看PDF
                 /*PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ContractDetailActivity.this,
                         URLs.IMGHOST + "");
                 photoShowDialog.show();*/
@@ -149,6 +150,14 @@ public class ContractDetailActivity extends BaseActivity {
                     bundle.putString("url", model.getContractUrl());
                     CommonUtil.gotoActivityWithData(ContractDetailActivity.this, ShowPDFActivity.class, bundle, false);
                 }else myToast("暂无文件");
+                break;
+            case R.id.iv_contract:
+                if (model.getQualificationsImageUrl() !=null && !model.getQualificationsImageUrl().equals("")){
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ContractDetailActivity.this,
+                            model.getQualificationsImageUrl());
+                    photoShowDialog.show();
+                }
+
                 break;
             /*case R.id.tv_shenpi:
                 //立即审批
@@ -226,15 +235,19 @@ public class ContractDetailActivity extends BaseActivity {
                 tv_shop.setText("《" + response.getTypeName() + "》");
                 switch (response.getStatus()){//1:待处理; 2:处理中; 3:通过; 4:驳回;
                     case "1":
+                        tv_num.setTextColor(getResources().getColor(R.color.black3));
                         tv_num.setText("待审核");
                         break;
                     case "2":
+                        tv_num.setTextColor(getResources().getColor(R.color.black3));
                         tv_num.setText("审核中");
                         break;
                     case "3":
+                        tv_num.setTextColor(getResources().getColor(R.color.green));
                         tv_num.setText("已通过");
                         break;
                     case "4":
+                        tv_num.setTextColor(getResources().getColor(R.color.red));
                         tv_num.setText("已驳回");
                         break;
                 }
@@ -297,7 +310,7 @@ public class ContractDetailActivity extends BaseActivity {
                         tv_contract.setVisibility(View.VISIBLE);
                         iv_contract.setVisibility(View.VISIBLE);
                         Glide.with(ContractDetailActivity.this)
-                                .load(response.getMerchantLogoUrl())
+                                .load(response.getQualificationsImageUrl())
                                 .fitCenter()
                                 .apply(RequestOptions.bitmapTransform(new
                                         RoundedCorners(CommonUtil.dip2px(ContractDetailActivity.this, 10))))
@@ -466,7 +479,7 @@ public class ContractDetailActivity extends BaseActivity {
                             TextView tv_type = holder.getView(R.id.tv_type);
                             switch (model.getAuditStat()) {
                                 case "1":
-                                    tv_type.setText("已完成");
+                                    tv_type.setText("已通过");
                                     tv_type.setTextColor(getResources().getColor(R.color.green));
                                     iv_zhuangtai.setImageResource(R.mipmap.ic_shenhe_2);
                                     break;

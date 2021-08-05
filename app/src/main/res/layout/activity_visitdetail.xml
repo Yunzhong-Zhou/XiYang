@@ -61,11 +61,12 @@
                         <ImageView
                             android:id="@+id/iv_info"
                             android:layout_width="107dp"
-                            android:layout_height="107dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="40dp"
                             android:layout_marginTop="10dp"
+                            android:adjustViewBounds="true"
                             android:background="@mipmap/ic_add_gray"
-                            android:scaleType="fitXY" />
+                            android:onClick="onClick" />
 
 
                     </LinearLayout>

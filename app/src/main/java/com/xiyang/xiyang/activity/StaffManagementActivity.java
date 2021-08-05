@@ -169,7 +169,7 @@ public class StaffManagementActivity extends BaseActivity {
                                             dialog.dismiss();
                                             showProgress(true, getString(R.string.app_loading1));
                                             params.clear();
-                                            params.put("workerId", list.get(position).getUserId());
+                                            params.put("userId", model.getUserId());
                                             params.put("storeId", storeId);
                                             requestDelete(params);//删除
                                         }
@@ -260,7 +260,7 @@ public class StaffManagementActivity extends BaseActivity {
     }
     //删除
     private void requestDelete(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.DeleteStaff, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpGet(URLs.DeleteStaff, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

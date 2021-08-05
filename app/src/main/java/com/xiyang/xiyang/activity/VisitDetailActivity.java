@@ -15,6 +15,7 @@ import com.xiyang.xiyang.model.VisitDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -34,6 +35,7 @@ import okhttp3.Response;
  */
 public class VisitDetailActivity extends BaseActivity {
     String id = "";
+    VisitDetailModel model;
     private RecyclerView rv_info;
     List<KeyValueModel> list_info = new ArrayList<>();
     CommonAdapter<KeyValueModel> mAdapter_info;
@@ -71,7 +73,14 @@ public class VisitDetailActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.iv_info:
+                if (model.getImages() !=null && !model.getImages().equals("")){
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(VisitDetailActivity.this,
+                            model.getImages());
+                    photoShowDialog.show();
+                }
 
+                break;
         }
     }
 
@@ -107,7 +116,7 @@ public class VisitDetailActivity extends BaseActivity {
             @Override
             public void onResponse(VisitDetailModel response) {
                 hideProgress();
-//                model = response;
+                model = response;
                 list_info.clear();
                 if (response.getType().equals("3")) {
                     //陌生拜访

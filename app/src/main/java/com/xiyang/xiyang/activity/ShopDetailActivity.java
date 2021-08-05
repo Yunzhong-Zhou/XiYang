@@ -25,6 +25,7 @@ import com.xiyang.xiyang.model.ShopDetailModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -255,6 +256,15 @@ public class ShopDetailActivity extends BaseActivity {
                     params.put("industryId", industryId);
                     requestUpData(params);
                 }
+                break;
+            case R.id.iv_info:
+                if (model.getBase().getLogoUrl() !=null
+                        && !model.getBase().getLogoUrl().equals("")){
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ShopDetailActivity.this,
+                            model.getBase().getLogoUrl());
+                    photoShowDialog.show();
+                }
+
                 break;
             case R.id.editText7:
                 //商户行业

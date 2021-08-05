@@ -366,10 +366,10 @@ public class StoreDetailActivity extends BaseActivity {
                 list_shoufei.add(new KeyValueModel("免费时长", response.getStoreInfo().getFreeTime()));
                 list_shoufei.add(new KeyValueModel("自定义单价", response.getStoreInfo().getUnitPrice()));
                 list_shoufei.add(new KeyValueModel("自定义封顶", response.getStoreInfo().getMaxPriceDay()));
-                list_shoufei.add(new KeyValueModel("门店分成比例", response.getStoreInfo().getStoreShareRate()));
-                list_shoufei.add(new KeyValueModel("员工分成比例", response.getStoreInfo().getWorkerShareRate()));
-                list_shoufei.add(new KeyValueModel("设备分成比例", response.getStoreInfo().getDeviceShareRate()));
-                list_shoufei.add(new KeyValueModel("商户分成比例", response.getStoreInfo().getMerchantShareRate()));
+                list_shoufei.add(new KeyValueModel("门店分成比例", response.getStoreInfo().getStoreShareRate()+"%"));
+                list_shoufei.add(new KeyValueModel("员工分成比例", response.getStoreInfo().getWorkerShareRate()+"%"));
+                list_shoufei.add(new KeyValueModel("设备分成比例", response.getStoreInfo().getDeviceShareRate()+"%"));
+                list_shoufei.add(new KeyValueModel("商户分成比例", response.getStoreInfo().getMerchantShareRate()+"%"));
 
                 mAdapter_shoufei = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_shoufei) {

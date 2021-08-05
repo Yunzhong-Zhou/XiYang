@@ -560,7 +560,7 @@ public class AffairDetailActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, AffairDetailModel.ListBean model, int position) {
                             holder.setText(R.id.textView1, model.getRoomFullName());
                             holder.setText(R.id.textView2, model.getDeviceHostName());
-                            holder.setText(R.id.textView4, model.getInstallTime() + "");
+                            holder.setText(R.id.textView4, model.getCreateTime() + "");
 
                             if (response.getType().equals("2") || response.getType().equals("3")) {
                                 holder.setText(R.id.textView3, "已安装");

@@ -52,5 +52,8 @@ public class SelectVisitActivity extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("选择拜访");
+        titleView.showRightTextview("拜访列表",v -> {
+            CommonUtil.gotoActivity(SelectVisitActivity.this, MyVisitListActivity.class);
+        });
     }
 }

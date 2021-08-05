@@ -47,7 +47,7 @@ public class ApproveContractListModel implements Serializable {
         private String type;
         private String typeTitle;
         private String image;
-        private int status;
+        private String status;
         private String statusTitle;
         private String createTime;
         private String name;
@@ -84,11 +84,11 @@ public class ApproveContractListModel implements Serializable {
             this.image = image;
         }
 
-        public int getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 

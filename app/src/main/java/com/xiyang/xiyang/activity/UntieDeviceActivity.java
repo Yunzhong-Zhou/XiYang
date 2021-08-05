@@ -40,7 +40,7 @@ public class UntieDeviceActivity extends BaseActivity {
     EditText tv_anzhuangmendian, tv_dangqianfanghao;
     ImageView iv_shi, iv_fou;
 
-    String deviceName = "", roomId = "", faultFlag = "0",transactionsId="";
+    String deviceName = "", roomId = "", faultFlag = "1",transactionsId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +80,13 @@ public class UntieDeviceActivity extends BaseActivity {
                 break;
             case R.id.iv_shi:
                 //是
-                faultFlag = "1";//0:正常; 1:故障
+                faultFlag = "2";//1:正常; 2:故障
                 iv_shi.setImageResource(R.mipmap.ic_xuanzhong);
                 iv_fou.setImageResource(R.mipmap.ic_weixuanzhong);
                 break;
             case R.id.iv_fou:
                 //否
-                faultFlag = "0";//0:正常; 1:故障
+                faultFlag = "1";//1:正常; 2:故障
                 iv_shi.setImageResource(R.mipmap.ic_weixuanzhong);
                 iv_fou.setImageResource(R.mipmap.ic_xuanzhong);
                 break;
