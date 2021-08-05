@@ -133,10 +133,10 @@ public class WorkListDetailActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_liulan:
+            case R.id.iv_info:
                 //查看图片
                 PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(WorkListDetailActivity.this,
-                        URLs.IMGHOST + "");
+                        model.getImages());
                 photoShowDialog.show();
                 break;
             case R.id.tv_jieshou:
@@ -159,6 +159,7 @@ public class WorkListDetailActivity extends BaseActivity {
                                 }
                             });
                 } else {
+                    //处理工单（上报、已处理）
                     Bundle bundle = new Bundle();
                     bundle.putString("id", id);
                     CommonUtil.gotoActivityWithData(WorkListDetailActivity.this, ChangeWorkListActivity.class, bundle, false);
@@ -245,7 +246,7 @@ public class WorkListDetailActivity extends BaseActivity {
                 }
 
                 Glide.with(WorkListDetailActivity.this)
-                        .load(response.getImages())
+                        .load(response.getStoreImage())
                         .fitCenter()
                         .apply(RequestOptions.bitmapTransform(new
                                 RoundedCorners(CommonUtil.dip2px(WorkListDetailActivity.this, 10))))
@@ -277,6 +278,7 @@ public class WorkListDetailActivity extends BaseActivity {
                     case 1:
                         //待处理
                         textView4.setText("待处理");
+                        textView4.setTextColor(getResources().getColor(R.color.black3));
                         if (!localUserInfo.getUserJob().equals("BD")) {
                             titleView.showRightTxtBtn("立即指派", v -> {
                                 Bundle bundle = new Bundle();
@@ -292,10 +294,12 @@ public class WorkListDetailActivity extends BaseActivity {
                     case 2:
                         //处理中
                         textView4.setText("处理中");
+                        textView4.setTextColor(getResources().getColor(R.color.black3));
                         break;
                     case 3:
                         //完成
                         textView4.setText("完成");
+                        textView4.setTextColor(getResources().getColor(R.color.green));
                         break;
                 }
 
@@ -320,13 +324,13 @@ public class WorkListDetailActivity extends BaseActivity {
                         list_info.add(new KeyValueModel("工单类型", "其他故障"));
                         break;
                 }
-
-//                list_info.add(new KeyValueModel("反馈渠道", response.getChannel()));
-//                list_info.add(new KeyValueModel("工单创建人", response.getCreatedUser()));
+                list_info.add(new KeyValueModel("工单原因", response.getFailureReason()));
+//                list_info.add(new KeyValueModel("反馈渠道", response.get()));
+                list_info.add(new KeyValueModel("工单创建人", response.getCreateName()));
                 list_info.add(new KeyValueModel("创建人类型", response.getUserTypeName()));
 //                list_info.add(new KeyValueModel("所属城市", response.getCreatedUserCity()));
                 list_info.add(new KeyValueModel("创建时间", response.getCreateTime()));
-                list_info.add(new KeyValueModel("工单内容", response.getFailureReason()));
+                list_info.add(new KeyValueModel("工单内容", response.getRemark()));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (WorkListDetailActivity.this, R.layout.item_keyvalue, list_info) {
                     @Override
@@ -349,7 +353,7 @@ public class WorkListDetailActivity extends BaseActivity {
                  * 处理记录
                  */
                 showEmptyPage();
-                if (response.getDealList() !=null){
+                if (response.getDealList() != null) {
                     list_shenhe = response.getDealList();
                     if (list_shenhe.size() > 0) {
                         showContentPage();
@@ -373,7 +377,7 @@ public class WorkListDetailActivity extends BaseActivity {
 
                                 //横向图片
                                 List<String> list_img = new ArrayList<>();
-                                if (model.getImages()!=null){
+                                if (model.getImages() != null) {
                                     String[] strArr = model.getImages().split(",");//拆分
                                     for (String s : strArr) {
                                         list_img.add(s);
@@ -430,7 +434,7 @@ public class WorkListDetailActivity extends BaseActivity {
                                 //状态图片
                                 ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
                                 TextView tv_type = holder.getView(R.id.tv_type);
-                                if (model.getStatus()!=null){
+                                if (model.getStatus() != null) {
                                     switch (model.getStatus()) {
                                         case "1":
                                             tv_type.setText("上报");

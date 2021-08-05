@@ -583,7 +583,7 @@ public class AffairDetailModel implements Serializable {
         private String type;
         private String storeId;
         private String deviceId;
-        private String deviceHostName;
+        private String hostname;
         private String roomId;
         private String roomFullName;
         private String deviceApplyId;
@@ -591,6 +591,14 @@ public class AffairDetailModel implements Serializable {
         private String deviceModuleId;
         private String installTime;
         private String createTime;
+
+        public String getHostname() {
+            return hostname;
+        }
+
+        public void setHostname(String hostname) {
+            this.hostname = hostname;
+        }
 
         public String getId() {
             return id;
@@ -622,14 +630,6 @@ public class AffairDetailModel implements Serializable {
 
         public void setDeviceId(String deviceId) {
             this.deviceId = deviceId;
-        }
-
-        public String getDeviceHostName() {
-            return deviceHostName;
-        }
-
-        public void setDeviceHostName(String deviceHostName) {
-            this.deviceHostName = deviceHostName;
         }
 
         public String getRoomId() {
@@ -706,8 +706,35 @@ public class AffairDetailModel implements Serializable {
         private String storeIdX;
         private String inStoreId;
         private String outStoreId;
+        private String outStoreName;
+        private String inStoreName;
         private String reasonId;
         private String warehouseId;
+        private String reasonName;
+
+        public String getOutStoreName() {
+            return outStoreName;
+        }
+
+        public void setOutStoreName(String outStoreName) {
+            this.outStoreName = outStoreName;
+        }
+
+        public String getInStoreName() {
+            return inStoreName;
+        }
+
+        public void setInStoreName(String inStoreName) {
+            this.inStoreName = inStoreName;
+        }
+
+        public String getReasonName() {
+            return reasonName;
+        }
+
+        public void setReasonName(String reasonName) {
+            this.reasonName = reasonName;
+        }
 
         public String getWarehouseId() {
             return warehouseId;

@@ -43,12 +43,12 @@ public class AffairListModel implements Serializable {
 
         private String id;
         private String name;
-        private int type;
+        private String type;
         private String typeTitle;
         private String image;
-        private int status;
+        private String status;
         private String statusTitle;
-        private int deviceNum;
+        private String deviceNum;
 
         public String getId() {
             return id;
@@ -66,11 +66,11 @@ public class AffairListModel implements Serializable {
             this.name = name;
         }
 
-        public int getType() {
+        public String getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(String type) {
             this.type = type;
         }
 
@@ -90,11 +90,11 @@ public class AffairListModel implements Serializable {
             this.image = image;
         }
 
-        public int getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 
@@ -106,11 +106,11 @@ public class AffairListModel implements Serializable {
             this.statusTitle = statusTitle;
         }
 
-        public int getDeviceNum() {
+        public String getDeviceNum() {
             return deviceNum;
         }
 
-        public void setDeviceNum(int deviceNum) {
+        public void setDeviceNum(String deviceNum) {
             this.deviceNum = deviceNum;
         }
     }

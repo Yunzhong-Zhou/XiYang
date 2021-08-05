@@ -92,7 +92,7 @@ public class TransferShopActivity extends BaseActivity {
                 Intent intent2 = new Intent(TransferShopActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
-                bundle2.putString("status", "");
+                bundle2.putString("status", "4");
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;

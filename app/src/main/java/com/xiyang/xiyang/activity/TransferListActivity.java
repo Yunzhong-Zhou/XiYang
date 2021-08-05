@@ -149,7 +149,7 @@ public class TransferListActivity extends BaseActivity {
                             if (type == 1)
                                 holder.setText(R.id.tv1, model.getMerchantName());//标题
                             else holder.setText(R.id.tv1, model.getStoreName());//标题
-                            holder.setText(R.id.tv2, model.getStatus());
+                            holder.setText(R.id.tv2, model.getStatusName());
                             holder.setText(R.id.tv3, model.getTransferReason());
                             holder.setText(R.id.tv4, model.getSn());
                             holder.setText(R.id.tv5, model.getCreateTime());

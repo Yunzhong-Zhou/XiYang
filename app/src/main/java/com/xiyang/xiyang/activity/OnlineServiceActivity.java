@@ -54,7 +54,7 @@ public class OnlineServiceActivity extends BaseActivity {
     OnlineServiceAdapter adapter;
     EditText editText;
     ImageView imageView;
-    int page = 1;
+    int page = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class OnlineServiceActivity extends BaseActivity {
             @Override
             public void onLoadmore() {
                 //加载更多
-                page = 1;
+                page = 0;
                 params.clear();
                 params.put("type", "");
                 params.put("keyword", "");
@@ -302,7 +302,7 @@ public class OnlineServiceActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
-        page = 1;
+        page = 0;
         params.clear();
         params.put("type", "");
         params.put("keyword", "");

@@ -241,19 +241,6 @@ public class AddWorkListActivity extends BaseActivity {
                             }
                         }
                     });
-                    /*new UpFileToQiNiuUtil(AddWorkListActivity.this, imgfile, FileUtils.getFileExtension(imgfile)) {
-                        @Override
-                        public void complete(boolean isok, String result, String url) {
-                            if (isok) {
-                                MyLogger.i(">>>>上传文件路径：" + url);
-
-
-                            } else {
-                                hideProgress();
-                                myToast("图片上传失败");
-                            }
-                        }
-                    };*/
 
                 }
                 break;
@@ -457,7 +444,7 @@ public class AddWorkListActivity extends BaseActivity {
                 hideProgress();
                 Bundle bundle = new Bundle();
                 bundle.putString("fetch", "1");//1待接工单2我的工单
-                CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class, bundle, false);
+                CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class, bundle, true);
             }
         });
     }

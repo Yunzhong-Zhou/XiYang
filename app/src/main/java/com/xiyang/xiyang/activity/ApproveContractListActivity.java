@@ -171,24 +171,19 @@ public class ApproveContractListActivity extends BaseActivity {
                             holder.setText(R.id.tv_time, model.getCreateTime());
                             TextView tv_type = holder.getView(R.id.tv_type);
                             tv_type.setText(model.getStatusTitle());
-                            switch (model.getStatus()) {//1:待处理; 2:处理中; 3:通过; 4:驳回;
-                                case "0":
-                                    //待处理
-                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
-                                    break;
+                            switch (model.getStatus()) {//0:需要审核  1:审核通过; 2:驳回; 3:通过;
                                 case "2":
-                                    //处理中
-                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    //驳回
+                                    tv_type.setTextColor(getResources().getColor(R.color.red));
                                     break;
+                                case "1":
                                 case "3":
                                     //已通过
                                     tv_type.setTextColor(getResources().getColor(R.color.green));
                                     break;
-                                case "4":
-                                    //驳回
-                                    tv_type.setTextColor(getResources().getColor(R.color.red));
-                                    break;
+
                                 default:
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
                                     break;
 
                             }

@@ -233,7 +233,7 @@ public class DispatchListActivity extends BaseActivity {
                                     iv_img1.setVisibility(View.GONE);
                                     iv_img2.setVisibility(View.GONE);
                                     tv_num.setVisibility(View.GONE);
-                                    switch (model.getType()) {// 1-设备故障，2-订单故障，4-其他故障
+                                    switch (model.getType()) {//类型 1-设备工单,2-订单工单,3-任务工单,4-其它,
                                         case "1":
                                             tv_name.setText("设备故障");
                                             break;
@@ -241,6 +241,9 @@ public class DispatchListActivity extends BaseActivity {
                                             tv_name.setText("订单故障");
                                             break;
                                         case "3":
+                                            tv_name.setText("任务工单");
+                                            break;
+                                        case "4":
                                             tv_name.setText("其他故障");
                                             break;
                                     }

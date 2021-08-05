@@ -170,19 +170,23 @@ public class MyWorkListActivity extends BaseActivity {
                             }
                             holder.setText(R.id.tv_addr, model.getStoreName());
                             holder.setText(R.id.tv_time, model.getCreateTime());
+                            TextView tv_type = holder.getView(R.id.tv_type);
 //                            holder.setText(R.id.tv_type, model.getStatusTitle());
                             switch (model.getStatus()) {
                                 case 1:
                                     //待处理
-                                    holder.setText(R.id.tv_type, "待处理");
+                                    tv_type.setText("待处理");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
                                     break;
                                 case 2:
                                     //处理中
-                                    holder.setText(R.id.tv_type, "处理中");
+                                    tv_type.setText("处理中");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
                                     break;
                                 case 3:
                                     //完成
-                                    holder.setText(R.id.tv_type, "完成");
+                                    tv_type.setText("完成");
+                                    tv_type.setTextColor(getResources().getColor(R.color.green));
                                     break;
                             }
 

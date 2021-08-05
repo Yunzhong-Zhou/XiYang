@@ -149,7 +149,6 @@ public class AffairListActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, AffairListModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_name, model.getName());//标题
                             holder.setText(R.id.tv_shop, model.getTypeTitle());
-                            holder.setText(R.id.tv_num, model.getStatusTitle());//money
                             holder.setText(R.id.tv_addr, model.getDeviceNum() + "台");
 
                             ImageView imageView1 = holder.getView(R.id.imageView1);
@@ -161,6 +160,32 @@ public class AffairListActivity extends BaseActivity {
                                     .placeholder(R.mipmap.loading)//加载站位图
                                     .error(R.mipmap.zanwutupian)//加载失败
                                     .into(imageView1);//加载图片
+
+                            TextView tv_type = holder.getView(R.id.tv_num);
+                            tv_type.setText(model.getStatusTitle());
+                            switch (model.getStatus()) {//1:待处理; 2:处理中; 3:通过; 4:驳回;
+                                /*case "0":
+                                    //待处理
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    break;
+                                case "2":
+                                    //处理中
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    break;*/
+                                case "3":
+                                    //已通过
+                                    tv_type.setTextColor(getResources().getColor(R.color.green));
+                                    break;
+                                case "4":
+                                    //驳回
+                                    tv_type.setTextColor(getResources().getColor(R.color.red));
+                                    break;
+                                default:
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    break;
+
+                            }
+
                             /*ImageView imageView2 = holder.getView(R.id.imageView2);
                             if (model.getStatus().equals("1")) {
                                 //待签约

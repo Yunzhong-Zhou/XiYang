@@ -125,13 +125,13 @@ public class VisitDetailActivity extends BaseActivity {
                     list_info.add(new KeyValueModel("联系电话", response.getContractMobile()));
                     list_info.add(new KeyValueModel("拜访时间", response.getVisitTime()));
                     list_info.add(new KeyValueModel("门店地址", response.getAddress()));
-                    list_info.add(new KeyValueModel("拜访方式", response.getWay()));
+                    list_info.add(new KeyValueModel("拜访方式", response.getTypeStr()));
                     list_info.add(new KeyValueModel("是否意向", response.getIsIntention()));
                     list_info.add(new KeyValueModel("补充说明", response.getRemark()));
                 } else {
                     list_info.add(new KeyValueModel("记录ID", response.getId()));
                     list_info.add(new KeyValueModel("拜访门店", response.getStoreName()));
-                    list_info.add(new KeyValueModel("拜访方式", response.getWay()));
+                    list_info.add(new KeyValueModel("拜访方式", response.getTypeStr()));
                     list_info.add(new KeyValueModel("营业情况", response.getBusinessStr()));
                     list_info.add(new KeyValueModel("拜访联系人", response.getContractName()));
                     list_info.add(new KeyValueModel("是否竞对", response.getIsAdverStr()));

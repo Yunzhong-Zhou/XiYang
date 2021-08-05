@@ -155,14 +155,14 @@ public class MyContractActivity extends BaseActivity {
                             TextView tv_num = holder.getView(R.id.tv_num);
                             tv_num.setText(model.getStatusTitle());
                             switch (model.getStatus()) {//1:待处理; 2:处理中; 3:通过; 4:驳回;
-                                case "0":
+                               /* case "1":
                                     //待处理
                                     tv_num.setTextColor(getResources().getColor(R.color.black3));
                                     break;
                                 case "2":
                                     //处理中
                                     tv_num.setTextColor(getResources().getColor(R.color.black3));
-                                    break;
+                                    break;*/
                                 case "3":
                                     //已通过
                                     tv_num.setTextColor(getResources().getColor(R.color.green));
@@ -172,6 +172,7 @@ public class MyContractActivity extends BaseActivity {
                                     tv_num.setTextColor(getResources().getColor(R.color.red));
                                     break;
                                 default:
+                                    tv_num.setTextColor(getResources().getColor(R.color.black3));
                                     break;
                             }
                             holder.setText(R.id.tv_addr, model.getCreatedAt());

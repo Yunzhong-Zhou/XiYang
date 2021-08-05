@@ -36,6 +36,7 @@ public class TransferListModel implements Serializable {
         private String merchantName;
         private String merchantAddress;
         private String status;
+        private String statusName;
         private String reasonId;
         private String transferReason;
         private String sn;
@@ -51,6 +52,13 @@ public class TransferListModel implements Serializable {
         private String storeName;
         private String storeAddress;
 
+        public String getStatusName() {
+            return statusName;
+        }
+
+        public void setStatusName(String statusName) {
+            this.statusName = statusName;
+        }
 
         public String getId() {
             return id;

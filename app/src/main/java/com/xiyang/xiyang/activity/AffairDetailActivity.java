@@ -516,7 +516,7 @@ public class AffairDetailActivity extends BaseActivity {
                         //回收
                         list_shiwu.add(new KeyValueModel("门店名称", response.getStoreName()));
                         list_shiwu.add(new KeyValueModel("选择数量", response.getContract().getDeviceNum() + "台"));
-                        list_shiwu.add(new KeyValueModel("减少原因", response.getContract().getReasonId()));
+                        list_shiwu.add(new KeyValueModel("减少原因", response.getContract().getReasonName()));
                         list_shiwu.add(new KeyValueModel("返回仓库", response.getContract().getWarehouseId()));
                         list_shiwu.add(new KeyValueModel("审核时间", response.getCreateTime()));
                         list_shiwu.add(new KeyValueModel("创建时间", response.getCreateTime()));
@@ -524,8 +524,8 @@ public class AffairDetailActivity extends BaseActivity {
                         break;
                     case "5":
                         //换绑
-                        list_shiwu.add(new KeyValueModel("转出门店", response.getContract().getOutStoreId()));
-                        list_shiwu.add(new KeyValueModel("转入门店", response.getContract().getInStoreId()));
+                        list_shiwu.add(new KeyValueModel("转出门店", response.getContract().getOutStoreName()));
+                        list_shiwu.add(new KeyValueModel("转入门店", response.getContract().getInStoreName()));
                         list_shiwu.add(new KeyValueModel("换绑台数", response.getContract().getDeviceNum() + "台"));
                         list_shiwu.add(new KeyValueModel("创建时间", response.getCreateTime()));
                         list_shiwu.add(new KeyValueModel("事务ID", response.getId()));
@@ -559,11 +559,14 @@ public class AffairDetailActivity extends BaseActivity {
                         @Override
                         protected void convert(ViewHolder holder, AffairDetailModel.ListBean model, int position) {
                             holder.setText(R.id.textView1, model.getRoomFullName());
-                            holder.setText(R.id.textView2, model.getDeviceHostName());
+                            holder.setText(R.id.textView2, model.getHostname());
                             holder.setText(R.id.textView4, model.getCreateTime() + "");
 
                             if (response.getType().equals("2") || response.getType().equals("3")) {
-                                holder.setText(R.id.textView3, "已安装");
+                                if (model.getStatus().equals("0"))
+                                    holder.setText(R.id.textView3, "待安装");
+                                else
+                                    holder.setText(R.id.textView3, "已安装");
                             }
 
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
@@ -579,7 +582,7 @@ public class AffairDetailActivity extends BaseActivity {
                                             break;
                                         case "2":
                                             //4G模块
-                                            bundle.putString("deviceName", model.getDeviceHostName());
+                                            bundle.putString("deviceName", model.getHostname());
                                             bundle.putString("4GModule", model.getDeviceModuleId());
                                             CommonUtil.gotoActivityWithData(AffairDetailActivity.this, Change4GModuleActivity.class, bundle, false);
                                             break;
