@@ -2,11 +2,13 @@ package com.xiyang.xiyang.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -39,9 +41,13 @@ public class DispatchListActivity extends BaseActivity {
     private RecyclerView recyclerView;
     List<DispatchListModel.RecordsBean> list = new ArrayList<>();
     CommonAdapter<DispatchListModel.RecordsBean> mAdapter;
-    TextView tv_tab1, tv_tab2, tv_tab3;
+    TextView tv_tab1, tv_tab2, tv_tab3,tv_confirm;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
+
+    EditText editText1;
+    TextView tv_search;
+    String keyword = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +74,7 @@ public class DispatchListActivity extends BaseActivity {
                 params.put("page", page + "");
                 params.put("size", "10");
                 params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
-
+                params.put("keyword", keyword);
                 switch (type_m) {
                     case 1:
                         //商户
@@ -92,6 +98,7 @@ public class DispatchListActivity extends BaseActivity {
                 params.put("page", page + "");
                 params.put("size", "10");
                 params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
+                params.put("keyword", keyword);
                 switch (type_m) {
                     case 1:
                         //商户
@@ -112,7 +119,7 @@ public class DispatchListActivity extends BaseActivity {
         recyclerView = findViewByID_My(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        tv_confirm = findViewByID_My(R.id.tv_confirm);
         ll_tab1 = findViewByID_My(R.id.ll_tab1);
         ll_tab2 = findViewByID_My(R.id.ll_tab2);
         ll_tab3 = findViewByID_My(R.id.ll_tab3);
@@ -125,11 +132,26 @@ public class DispatchListActivity extends BaseActivity {
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
+
+        editText1 = findViewByID_My(R.id.editText1);
     }
 
     @Override
     protected void initData() {
         type_m = getIntent().getIntExtra("type_m", 1);
+        tv_confirm.setVisibility(View.GONE);
+        switch (type_m) {
+            case 1:
+                //商户
+                break;
+            case 2:
+                //门店
+                break;
+            case 3:
+                //工单
+                tv_confirm.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     @Override
@@ -141,7 +163,7 @@ public class DispatchListActivity extends BaseActivity {
         params.put("page", page + "");
         params.put("size", "10");
         params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
-
+        params.put("keyword", keyword);
         switch (type_m) {
             case 1:
                 //商户
@@ -332,17 +354,17 @@ public class DispatchListActivity extends BaseActivity {
                                         case 1:
                                             //商户
                                             bundle.putString("name", model.getMerchantName());
-                                            bundle.putString("userName", model.getMerchantName());
+                                            bundle.putString("userName", model.getCurrentName());
                                             break;
                                         case 2:
                                             //门店
                                             bundle.putString("name", model.getStoreName());
-                                            bundle.putString("userName", model.getMerchantName());
+                                            bundle.putString("userName", model.getCurrentName());
                                             break;
                                         case 3:
                                             //工单
                                             bundle.putString("name", tv_name.getText().toString() + "-" + model.getStoreName());
-                                            bundle.putString("userName", model.getMerchantName());
+                                            bundle.putString("userName", model.getCurrentName());
                                             break;
                                     }
                                     CommonUtil.gotoActivityWithData(DispatchListActivity.this, AssignActivity.class, bundle, false);
@@ -438,7 +460,17 @@ public class DispatchListActivity extends BaseActivity {
             case R.id.left_btn:
                 finish();
                 break;
-
+            case R.id.tv_search:
+                //搜索
+                //关闭软键盘
+                KeyboardUtils.hideSoftInput(editText1);
+                if (!editText1.getText().toString().trim().equals("")) {
+                    keyword = editText1.getText().toString().trim();
+                    requestServer();
+                } else {
+                    myToast("请输入需要搜索的内容");
+                }
+                break;
             case R.id.ll_tab1:
                 //待处理
                 type = 1;
@@ -454,7 +486,11 @@ public class DispatchListActivity extends BaseActivity {
                 type = 2;
                 changeUI();
                 break;
-
+            case R.id.tv_confirm:
+                //创建工单
+                bundle.putInt("type", 1);
+                CommonUtil.gotoActivityWithData(DispatchListActivity.this, AddWorkListActivity.class, bundle);
+                break;
         }
     }
 

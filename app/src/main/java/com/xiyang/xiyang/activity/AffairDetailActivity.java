@@ -568,6 +568,9 @@ public class AffairDetailActivity extends BaseActivity {
                                 else
                                     holder.setText(R.id.textView3, "已安装");
                             }
+                            if (response.getType().equals("5")){
+                                holder.setText(R.id.textView3, model.getTypeName());
+                            }
 
                             holder.getView(R.id.linearLayout).setOnClickListener(new View.OnClickListener() {
                                 @Override

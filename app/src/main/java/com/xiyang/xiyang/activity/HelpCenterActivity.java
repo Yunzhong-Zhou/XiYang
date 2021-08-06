@@ -100,17 +100,17 @@ public class HelpCenterActivity extends BaseActivity {
                 break;
             case R.id.linearLayout1:
                 //无法启动
-                bundle.putInt("type", 2);
+                /*bundle.putInt("type", 1);
                 CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
-                break;
+                break;*/
             case R.id.linearLayout2:
                 //无法关闭
-                bundle.putInt("type", 2);
+               /* bundle.putInt("type", 1);
                 CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
-                break;
+                break;*/
             case R.id.linearLayout3:
                 //设备断网
-                bundle.putInt("type", 2);
+                bundle.putInt("type", 1);
                 CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
                 break;
         }

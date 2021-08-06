@@ -591,6 +591,15 @@ public class AffairDetailModel implements Serializable {
         private String deviceModuleId;
         private String installTime;
         private String createTime;
+        private String typeName;
+
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public void setTypeName(String typeName) {
+            this.typeName = typeName;
+        }
 
         public String getHostname() {
             return hostname;

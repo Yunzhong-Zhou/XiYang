@@ -107,12 +107,15 @@ public class AddWorkListActivity extends BaseActivity {
     @Override
     protected void initData() {
         list_work.add("设备工单");
-        list_work.add("订单工单");
+//        list_work.add("订单工单");
         list_work.add("其他工单");
 
         type = getIntent().getIntExtra("type", 0);
         tv_gongdanleixing.setText(list_work.get(type));
         titleView.setTitle(list_work.get(type));
+        if (type == 1){
+            type = 2;
+        }
         changeUI();
 
     }
@@ -442,13 +445,15 @@ public class AddWorkListActivity extends BaseActivity {
             public void onResponse(String response) {
                 myToast("提交成功");
                 hideProgress();
-                Bundle bundle = new Bundle();
-                bundle.putString("fetch", "1");//1待接工单2我的工单
-                CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class, bundle, true);
+                if (localUserInfo.getUserJob().equals("BD")){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("fetch", "1");//1待接工单2我的工单
+                    CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class, bundle, true);
+                }else finish();
+
             }
         });
     }
-
 
     /**
      * 修改布局
@@ -471,10 +476,10 @@ public class AddWorkListActivity extends BaseActivity {
                 break;
             case 1:
                 //订单工单
-                rl_xuanzedingdan.setVisibility(View.VISIBLE);
+                /*rl_xuanzedingdan.setVisibility(View.VISIBLE);
                 rl_dingdanwenti.setVisibility(View.VISIBLE);
                 request(params, URLs.AddWorkList_GuZhang + 2);
-                break;
+                break;*/
             case 2:
                 //其他工单
 //                request(params, URLs.AddOtherList);
@@ -512,7 +517,11 @@ public class AddWorkListActivity extends BaseActivity {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                type = position;
+                if (position == 1) {
+                    type = 2;
+                }else {
+                    type = position;
+                }
                 tv_gongdanleixing.setText(list_work.get(position));
                 titleView.setTitle(list_work.get(position));
                 adapter.notifyDataSetChanged();
