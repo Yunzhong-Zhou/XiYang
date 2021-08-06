@@ -35,7 +35,34 @@ public class WorkListDetailModel implements Serializable {
     private String remark;
     private String images;
     private String createTime;
+    private String reportUserName;
+    private String reportUserOrganCode;
     private List<DealListBean> dealList;
+    private boolean currentUser;
+
+    public boolean isCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(boolean currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public String getReportUserOrganCode() {
+        return reportUserOrganCode;
+    }
+
+    public void setReportUserOrganCode(String reportUserOrganCode) {
+        this.reportUserOrganCode = reportUserOrganCode;
+    }
+
+    public String getReportUserName() {
+        return reportUserName;
+    }
+
+    public void setReportUserName(String reportUserName) {
+        this.reportUserName = reportUserName;
+    }
 
     public String getId() {
         return id;

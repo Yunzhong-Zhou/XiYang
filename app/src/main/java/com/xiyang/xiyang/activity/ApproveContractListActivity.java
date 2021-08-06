@@ -17,6 +17,7 @@ import com.xiyang.xiyang.model.ApproveContractListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.popupwindow.PopupWindow_List3;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -44,10 +45,13 @@ public class ApproveContractListActivity extends BaseActivity {
     TextView tv_tab1, tv_tab2, tv_tab3;
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
+    private LinearLayout pop_view;
+    List<String> list_status = new ArrayList<>();
 
     int page = 1;
     String status = "", title = "", startTime = "", endTIme = "";
-
+    int i1 = 0;
+    int i2 = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,11 +112,19 @@ public class ApproveContractListActivity extends BaseActivity {
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
+        pop_view = findViewByID_My(R.id.pop_view);
     }
 
     @Override
     protected void initData() {
-
+        //签约状态 1正常2待签约3待审核4签约成功5签约失败
+        list_status.clear();
+        list_status.add("全部");
+        list_status.add("正常");
+        list_status.add("待签约");
+        list_status.add("待审核");
+        list_status.add("签约成功");
+        list_status.add("签约失败");
     }
 
     @Override
@@ -281,13 +293,13 @@ public class ApproveContractListActivity extends BaseActivity {
 //                view1.setVisibility(View.VISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                /*if (list1.size() > 0) {
-                    showContentPage();
-                    recyclerView1.setAdapter(mAdapter1);
-//                mAdapter1.notifyDataSetChanged();
-                } else {
-                    showEmptyPage();
-                }*/
+                new PopupWindow_List3(ApproveContractListActivity.this, 0, list_status, i1, pop_view) {
+                    @Override
+                    public void onFailure(String keys, int item) {
+                        status = item + "";
+                        requestServer();
+                    }
+                };
                 break;
             case 2:
                 tv_tab1.setTextColor(getResources().getColor(R.color.white));
@@ -299,7 +311,13 @@ public class ApproveContractListActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-
+                new PopupWindow_List3(ApproveContractListActivity.this, 1, list_status, i2, pop_view) {
+                    @Override
+                    public void onFailure(String keys, int item) {
+                        status = item + "";
+                        requestServer();
+                    }
+                };
                 break;
             case 3:
                 tv_tab1.setTextColor(getResources().getColor(R.color.white));
@@ -311,7 +329,13 @@ public class ApproveContractListActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                view3.setVisibility(View.VISIBLE);
-
+                new PopupWindow_List3(ApproveContractListActivity.this, 2, list_status, i2, pop_view) {
+                    @Override
+                    public void onFailure(String keys, int item) {
+                        status = item + "";
+                        requestServer();
+                    }
+                };
                 break;
 
         }
@@ -320,141 +344,4 @@ public class ApproveContractListActivity extends BaseActivity {
     protected void updateView() {
         titleView.setVisibility(View.GONE);
     }
-
-
-    /*private void showPopupWindow1(View v) {
-        // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(ApproveContractListActivity.this).inflate(
-                R.layout.pop_list2, null);
-        final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-        contentView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                int height = contentView.findViewById(R.id.pop_listView).getTop();
-                int height1 = contentView.findViewById(R.id.pop_listView).getBottom();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height) {
-                        popupWindow.dismiss();
-                    }
-                    if (y > height1) {
-                        popupWindow.dismiss();
-                    }
-                }
-                return true;
-            }
-        });
-        // 设置按钮的点击事件
-        ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView1);
-        contentView.findViewById(R.id.pop_listView2).setVisibility(View.INVISIBLE);
-        final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_jiangxu));
-        list.add(getString(R.string.app_type_shengxu));
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(ApproveContractListActivity.this, list);
-        adapter.setSelectItem(i1);
-        pop_listView.setAdapter(adapter);
-        pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                adapter.setSelectItem(i);
-                adapter.notifyDataSetChanged();
-                i1 = i;
-                if (i == 0) {
-                    sort = "desc";
-                } else {
-                    sort = "asc";
-                }
-//                textView1.setText(list.get(i));
-                requestServer();
-                popupWindow.dismiss();
-            }
-        });
-
-        popupWindow.setTouchable(true);
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-                // 这里如果返回true的话，touch事件将被拦截
-                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-            }
-        });
-
-        ColorDrawable dw = new ColorDrawable(this.getResources().getColor(R.color.transparentblack2));
-        // 设置弹出窗体的背景
-        popupWindow.setBackgroundDrawable(dw);
-        // 设置好参数之后再show
-        popupWindow.showAsDropDown(v);
-    }
-
-    private void showPopupWindow2(View v) {
-        // 一个自定义的布局，作为显示的内容
-        final View contentView = LayoutInflater.from(ApproveContractListActivity.this).inflate(
-                R.layout.pop_list2, null);
-        final FixedPopupWindow popupWindow = new FixedPopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-        contentView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                int height = contentView.findViewById(R.id.pop_listView).getTop();
-                int height1 = contentView.findViewById(R.id.pop_listView).getBottom();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height) {
-                        popupWindow.dismiss();
-                    }
-                    if (y > height1) {
-                        popupWindow.dismiss();
-                    }
-                }
-                return true;
-            }
-        });
-        // 设置按钮的点击事件
-        contentView.findViewById(R.id.pop_listView1).setVisibility(View.INVISIBLE);
-        ListView pop_listView = (ListView) contentView.findViewById(R.id.pop_listView2);
-        final List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.app_type_quanbu));
-        list.add(getString(R.string.app_type_daishenhe));
-        list.add(getString(R.string.app_type_yitongguo));
-        list.add(getString(R.string.app_type_weitongguo));
-
-        final Pop_ListAdapter adapter = new Pop_ListAdapter(ApproveContractListActivity.this, list);
-        adapter.setSelectItem(i2);
-        pop_listView.setAdapter(adapter);
-        pop_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                adapter.setSelectItem(i);
-                i2 = i;
-                adapter.notifyDataSetChanged();
-
-                if (i == 0) {
-                    status = "";
-                } else {
-                    status = i + "";
-                }
-//                textView2.setText(list.get(i));
-                requestServer();
-                popupWindow.dismiss();
-            }
-        });
-
-        popupWindow.setTouchable(true);
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-                // 这里如果返回true的话，touch事件将被拦截
-                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-            }
-        });
-
-        ColorDrawable dw = new ColorDrawable(this.getResources().getColor(R.color.transparentblack1));
-        // 设置弹出窗体的背景
-        popupWindow.setBackgroundDrawable(dw);
-        // 设置好参数之后再show
-        popupWindow.showAsDropDown(v);
-    }*/
 }

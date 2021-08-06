@@ -75,6 +75,25 @@ public class DispatchListModel implements Serializable {
         private String currentOrganCode;
         private String currentName;
 
+        private String transferCreateUserOrganCode;
+        private String transferCreateUserName;
+
+        public String getTransferCreateUserOrganCode() {
+            return transferCreateUserOrganCode;
+        }
+
+        public void setTransferCreateUserOrganCode(String transferCreateUserOrganCode) {
+            this.transferCreateUserOrganCode = transferCreateUserOrganCode;
+        }
+
+        public String getTransferCreateUserName() {
+            return transferCreateUserName;
+        }
+
+        public void setTransferCreateUserName(String transferCreateUserName) {
+            this.transferCreateUserName = transferCreateUserName;
+        }
+
         public String getStoreAddress() {
             return storeAddress;
         }

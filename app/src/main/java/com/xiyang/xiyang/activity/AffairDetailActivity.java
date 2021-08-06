@@ -108,7 +108,7 @@ public class AffairDetailActivity extends BaseActivity {
      * 安装记录
      */
     ShadowLayout sl_scan;
-    LinearLayout ll_shenhe;
+    LinearLayout ll_shenhe, ll_anzhuangshuliang;
     RecyclerView rv_anzhuang;
     List<AffairDetailModel.ListBean> list_anzhuang = new ArrayList<>();
     CommonAdapter<AffairDetailModel.ListBean> mAdapter_anzhuang;
@@ -261,6 +261,7 @@ public class AffairDetailActivity extends BaseActivity {
         /**
          * 安装记录
          */
+        ll_anzhuangshuliang = findViewByID_My(R.id.ll_anzhuangshuliang);
         sl_scan = findViewByID_My(R.id.sl_scan);
         ll_shenhe = findViewByID_My(R.id.ll_shenhe);
         rv_anzhuang = findViewByID_My(R.id.rv_anzhuang);
@@ -517,7 +518,7 @@ public class AffairDetailActivity extends BaseActivity {
                         list_shiwu.add(new KeyValueModel("门店名称", response.getStoreName()));
                         list_shiwu.add(new KeyValueModel("选择数量", response.getContract().getDeviceNum() + "台"));
                         list_shiwu.add(new KeyValueModel("减少原因", response.getContract().getReasonName()));
-                        list_shiwu.add(new KeyValueModel("返回仓库", response.getContract().getWarehouseId()));
+                        list_shiwu.add(new KeyValueModel("返回仓库", response.getLogistic().getWarehouseName()));
                         list_shiwu.add(new KeyValueModel("审核时间", response.getCreateTime()));
                         list_shiwu.add(new KeyValueModel("创建时间", response.getCreateTime()));
 
@@ -550,8 +551,15 @@ public class AffairDetailActivity extends BaseActivity {
                 /**
                  * 安装记录
                  */
-                tv_allnum.setText(response.getInstallNum());
-                tv_innum.setText(response.getInstalledNum());
+                //底部安装数量
+                ll_anzhuangshuliang.setVisibility(View.GONE);
+                if (response.getType().equals("2") || response.getType().equals("3")) {
+                    ll_anzhuangshuliang.setVisibility(View.VISIBLE);
+                    tv_allnum.setText(response.getInstallNum());
+                    tv_innum.setText(response.getInstalledNum());
+                }
+
+                //记录
                 if (response.getList() != null) {
                     list_anzhuang = response.getList();
                     mAdapter_anzhuang = new CommonAdapter<AffairDetailModel.ListBean>
@@ -568,7 +576,7 @@ public class AffairDetailActivity extends BaseActivity {
                                 else
                                     holder.setText(R.id.textView3, "已安装");
                             }
-                            if (response.getType().equals("5")){
+                            if (response.getType().equals("5")) {
                                 holder.setText(R.id.textView3, model.getTypeName());
                             }
 

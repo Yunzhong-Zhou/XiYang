@@ -123,6 +123,7 @@ public class TitleView extends FrameLayout {
      * 隐藏右按钮
      */
     public void hideRightBtn_invisible() {
+        right_txt_btn.setVisibility(View.INVISIBLE);
         btn_right.setVisibility(View.INVISIBLE);
         btn_right.setOnClickListener(null);
     }

@@ -231,17 +231,31 @@ public class WorkListDetailActivity extends BaseActivity {
                 /**
                  * 基本信息
                  */
+
+                tv_jieshou.setVisibility(View.GONE);
                 if (response.getTakeOverFlag() == 0) {//未接工单
                     sl_tab.setVisibility(View.GONE);
                     tv_jieshou.setText("接手");
                     tv_jieshou.setVisibility(View.VISIBLE);
                 } else {
                     sl_tab.setVisibility(View.VISIBLE);
-                    if (response.getStatus() == 1 && localUserInfo.getUserJob().equals("BD")) {
+                    if (response.getStatus() == 1 && localUserInfo.getUserJob().equals("BD") && response.isCurrentUser()) {
                         tv_jieshou.setText("处理工单");
                         tv_jieshou.setVisibility(View.VISIBLE);
-                    } else {
-                        tv_jieshou.setVisibility(View.GONE);
+                    }
+
+                    if (response.getStatus() == 1 && !localUserInfo.getUserJob().equals("BD") && response.isCurrentUser()) {
+                        titleView.showRightTxtBtn("立即指派", v -> {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("id", model.getId());
+                            bundle.putInt("type_m", type_m);
+                            bundle.putString("name", textView1.getText().toString() + "-" + model.getStoreName());
+                            bundle.putString("userName", model.getReportUserName());
+                            CommonUtil.gotoActivityWithData(WorkListDetailActivity.this, AssignActivity.class, bundle, false);
+
+                        });
+                    }else {
+                        titleView.hideRightBtn_invisible();
                     }
                 }
 
@@ -257,6 +271,7 @@ public class WorkListDetailActivity extends BaseActivity {
                     case 1:
                         //设备故障
                         textView1.setText("设备故障");
+
                         break;
                     case 2:
                         //订单故障
@@ -279,17 +294,6 @@ public class WorkListDetailActivity extends BaseActivity {
                         //待处理
                         textView4.setText("待处理");
                         textView4.setTextColor(getResources().getColor(R.color.black3));
-                        if (!localUserInfo.getUserJob().equals("BD")) {
-                            titleView.showRightTxtBtn("立即指派", v -> {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("id", model.getId());
-                                bundle.putInt("type_m", type_m);
-                                bundle.putString("name", textView1.getText().toString() + "-" + model.getStoreName());
-                                bundle.putString("userName", "");
-                                CommonUtil.gotoActivityWithData(WorkListDetailActivity.this, AssignActivity.class, bundle, false);
-
-                            });
-                        }
                         break;
                     case 2:
                         //处理中

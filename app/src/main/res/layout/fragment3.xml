@@ -516,6 +516,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:padding="10dp"
+                            android:onClick="onClick"
                             android:text="More>>"
                             android:textColor="@color/green"
                             android:textSize="12sp" />

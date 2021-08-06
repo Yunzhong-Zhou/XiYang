@@ -354,17 +354,17 @@ public class DispatchListActivity extends BaseActivity {
                                         case 1:
                                             //商户
                                             bundle.putString("name", model.getMerchantName());
-                                            bundle.putString("userName", model.getCurrentName());
+                                            bundle.putString("userName", model.getTransferCreateUserName());
                                             break;
                                         case 2:
                                             //门店
                                             bundle.putString("name", model.getStoreName());
-                                            bundle.putString("userName", model.getCurrentName());
+                                            bundle.putString("userName", model.getTransferCreateUserName());
                                             break;
                                         case 3:
                                             //工单
                                             bundle.putString("name", tv_name.getText().toString() + "-" + model.getStoreName());
-                                            bundle.putString("userName", model.getCurrentName());
+                                            bundle.putString("userName", model.getTransferCreateUserName());
                                             break;
                                     }
                                     CommonUtil.gotoActivityWithData(DispatchListActivity.this, AssignActivity.class, bundle, false);

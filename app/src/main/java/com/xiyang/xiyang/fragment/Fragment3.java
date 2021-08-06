@@ -364,7 +364,21 @@ public class Fragment3 extends BaseFragment {
                 CommonUtil.gotoActivity(getActivity(), DeviceListActivity_Position.class);
 
                 break;
-
+            case R.id.tv_more:
+                switch (type) {
+                    case 1://待安装
+                        bundle.putInt("type", 1);//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                        CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
+                        break;
+                    case 2://待回收
+                        bundle.putInt("type", 4);//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                        CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
+                        break;
+                    case 3://待换绑
+                        bundle.putInt("type", 5);//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
+                        CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
+                        break;
+                }
             case R.id.ll_tab1:
                 //待安装
                 type = 1;
@@ -380,6 +394,7 @@ public class Fragment3 extends BaseFragment {
                 type = 3;
                 changeUI();
                 break;
+
         }
     }
 

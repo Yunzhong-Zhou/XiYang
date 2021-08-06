@@ -280,7 +280,7 @@ public class MyShopListActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyShopListActivity.this,1,list_status,i1,pop_view) {
+                new PopupWindow_List4(MyShopListActivity.this,1,list_status,i2,pop_view) {
                     @Override
                     public void onFailure(String keys, int item) {
                         status = item+"";
