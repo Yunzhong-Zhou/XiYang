@@ -172,7 +172,8 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.linearLayout1:
                 //设备
-                CommonUtil.gotoActivity(StoreDetailActivity.this, MyDeviceListActivity.class);
+                bundle.putString("storeId",id);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, MyDeviceListActivity.class,bundle);
                 break;
             case R.id.linearLayout2:
                 //房号

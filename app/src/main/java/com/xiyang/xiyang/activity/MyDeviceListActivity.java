@@ -81,7 +81,6 @@ public class MyDeviceListActivity extends BaseActivity {
                 params.put("keyword", keyword);
                 params.put("status", status);
                 params.put("regionId", postionId);
-                params.put("keyword", sort);
                 params.put("storeId", storeId);
                 params.put("industryId", instudy);
                 requestList(params);
@@ -96,7 +95,6 @@ public class MyDeviceListActivity extends BaseActivity {
                 params.put("keyword", keyword);
                 params.put("status", status);
                 params.put("regionId", postionId);
-                params.put("keyword", sort);
                 params.put("storeId", storeId);
                 params.put("industryId", instudy);
                 requestListMore(params);
@@ -119,6 +117,7 @@ public class MyDeviceListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        storeId = getIntent().getStringExtra("storeId");
         //签约状态 1正常2待签约3待审核4签约成功5签约失败
         list_status.clear();
         list_status.add("全部");
@@ -322,7 +321,6 @@ public class MyDeviceListActivity extends BaseActivity {
         params.put("keyword", keyword);
         params.put("status", status);
         params.put("regionId", postionId);
-        params.put("keyword", sort);
         params.put("storeId", storeId);
         params.put("industryId", instudy);
         requestList(params);

@@ -48,7 +48,7 @@ public class MyContractActivity extends BaseActivity {
     private LinearLayout pop_view;
     int page = 1;
     List<String> list_status = new ArrayList<>();
-    String sort = "desc", status = "", cityId = "", instudyId = "",keyword = "";
+    String sort = "desc", status = "", cityId = "", instudyId = "", keyword = "", shopId = "";
     int i1 = 0;
     int i2 = 0;
 
@@ -113,6 +113,7 @@ public class MyContractActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        shopId = getIntent().getStringExtra("shopId");
         requestServer();//获取数据
         //签约状态 1正常2待签约3待审核4签约成功5签约失败
         list_status.clear();
@@ -284,10 +285,10 @@ public class MyContractActivity extends BaseActivity {
 //                view1.setVisibility(View.VISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyContractActivity.this,0,list_status,i1,pop_view) {
+                new PopupWindow_List4(MyContractActivity.this, 0, list_status, i1, pop_view) {
                     @Override
                     public void onReturn(String keys, int item) {
-                        status = item+"";
+                        status = item + "";
                         requestServer();
                     }
                 };
@@ -302,10 +303,10 @@ public class MyContractActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyContractActivity.this,1,list_status,i1,pop_view) {
+                new PopupWindow_List4(MyContractActivity.this, 1, list_status, i1, pop_view) {
                     @Override
                     public void onReturn(String keys, int item) {
-                        status = item+"";
+                        status = item + "";
                         requestServer();
                     }
                 };
@@ -320,10 +321,10 @@ public class MyContractActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyContractActivity.this,2,list_status,i1,pop_view) {
+                new PopupWindow_List4(MyContractActivity.this, 2, list_status, i1, pop_view) {
                     @Override
                     public void onReturn(String keys, int item) {
-                        status = item+"";
+                        status = item + "";
                         requestServer();
                     }
                 };

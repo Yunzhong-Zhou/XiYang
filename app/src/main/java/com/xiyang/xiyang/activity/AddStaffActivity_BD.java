@@ -121,7 +121,7 @@ public class AddStaffActivity_BD extends BaseActivity {
                     textView1.setClickable(false);
 
                     params.clear();
-//                    params.put("mobile", localUserInfo.getPhonenumber());
+                    params.put("mobile", localUserInfo.getPhonenumber());
 //                    params.put("type", "31");
 //                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                     RequestCode(params);//获取验证码

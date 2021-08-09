@@ -182,7 +182,7 @@ public class AdjustMarketActivity extends BaseActivity {
                 tv_code.setClickable(false);
                 HashMap<String, String> params1 = new HashMap<>();
                 params1.put("mobile", localUserInfo.getPhonenumber());
-                params1.put("type", "37");
+//                params1.put("type", "37");
                 RequestCode(params1);//获取验证码
                 break;
             case R.id.tv_confirm:

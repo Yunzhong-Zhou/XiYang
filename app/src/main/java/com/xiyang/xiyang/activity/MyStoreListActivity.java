@@ -54,7 +54,7 @@ public class MyStoreListActivity extends BaseActivity {
     int page = 1;
 
     List<String> list_status = new ArrayList<>();
-    String status = "",keyword="";
+    String status = "",keyword="",shopId="";
     int i1 = 0;
     int i2 = 0;
 
@@ -111,6 +111,7 @@ public class MyStoreListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        shopId = getIntent().getStringExtra("shopId");
         requestCode = getIntent().getIntExtra("requestCode", 0);
         status = getIntent().getStringExtra("status");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
         if (status == null) status = "";

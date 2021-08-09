@@ -354,7 +354,7 @@ public class TakeCashActivity extends BaseActivity {
     }
 
     private void RequestCode(HashMap<String, String> params, final TextView tv, final TextView tv3) {
-        OkhttpUtil.okHttpPostJson(URLs.Code_tixian, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_tixian, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

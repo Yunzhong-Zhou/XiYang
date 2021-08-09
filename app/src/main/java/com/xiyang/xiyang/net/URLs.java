@@ -31,13 +31,15 @@ public class URLs {
     //发送验证码-登录
     public static final String Code_denglu = HOST + "/user/sendSms";
     //发送验证码-个人中心
-    public static final String Code_yonghu = HOST + "/user/sms/verificationCode/issue";
+    public static final String Code_yonghu = HOST + "/aliyunsms/sms/verificationCode/issue";
+    //发送验证码-修改密码
+    public static final String Code_xiugai = HOST + "/user/sms/verificationCode/issue";
     //发送验证码-交易密码
-    public static final String Code_jiaoyi = HOST + "/user/tradePassword/verificationCode/issue";
+    public static final String Code_jiaoyi = HOST + "/finace/user/tradePassword/verificationCode/issue";
     //发送验证码-银行卡
-    public static final String Code_yinhangka = HOST + "/user/bank/verificationCode/issue";
+    public static final String Code_yinhangka = HOST + "/finace/user/bank/verificationCode/issue";
     //发送验证码-提现
-    public static final String Code_tixian = HOST + "/sms/manage/verificationCode/issue";
+    public static final String Code_tixian = HOST + "/finace/sms/manage/verificationCode/issue";
     //发送验证码-添加员工
     public static final String Code_Staff = HOST + "/applet/user/sendCode";
     //验证码登录

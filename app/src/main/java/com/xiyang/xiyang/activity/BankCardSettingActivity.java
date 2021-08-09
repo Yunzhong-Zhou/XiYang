@@ -267,7 +267,7 @@ public class BankCardSettingActivity extends BaseActivity {
 
     //发送验证码
     private void RequestCode(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.Code_yinhangka, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_yinhangka, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

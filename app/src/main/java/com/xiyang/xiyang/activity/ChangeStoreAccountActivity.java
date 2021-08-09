@@ -91,7 +91,7 @@ public class ChangeStoreAccountActivity extends BaseActivity {
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
                     params.put("mobile", storeAccount);
-                    params.put("type", "8");
+//                    params.put("type", "8");
                     RequestCode(params);//获取验证码
                 }
             }

@@ -234,6 +234,7 @@ public class ShopDetailActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.tv_xiugai:
                 //修改商户信息
@@ -258,8 +259,8 @@ public class ShopDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.iv_info:
-                if (model.getBase().getLogoUrl() !=null
-                        && !model.getBase().getLogoUrl().equals("")){
+                if (model.getBase().getLogoUrl() != null
+                        && !model.getBase().getLogoUrl().equals("")) {
                     PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ShopDetailActivity.this,
                             model.getBase().getLogoUrl());
                     photoShowDialog.show();
@@ -276,7 +277,6 @@ public class ShopDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_addcontract:
                 //添加合同
-                Bundle bundle = new Bundle();
                 bundle.putInt("item_hetong", 0);
                 bundle.putString("shopId", model.getBase().getId());
                 bundle.putString("shopName", model.getBase().getName());
@@ -284,18 +284,19 @@ public class ShopDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_morecontract:
                 //合同-查看更多
-                CommonUtil.gotoActivity(ShopDetailActivity.this, MyContractActivity.class);
+                bundle.putString("shopId", model.getBase().getId());
+                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, MyContractActivity.class, bundle);
                 break;
             case R.id.tv_addstore:
                 //添加门店
-                Bundle bundle2 = new Bundle();
-                bundle2.putString("shopId", model.getBase().getId());
-                bundle2.putString("shopName", model.getBase().getName());
-                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, SelectAddressActivity.class, bundle2);
+                bundle.putString("shopId", model.getBase().getId());
+                bundle.putString("shopName", model.getBase().getName());
+                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, SelectAddressActivity.class, bundle);
                 break;
             case R.id.tv_morestore:
                 //门店-查看更多
-                CommonUtil.gotoActivity(ShopDetailActivity.this, MyStoreListActivity.class);
+                bundle.putString("shopId", model.getBase().getId());
+                CommonUtil.gotoActivityWithData(ShopDetailActivity.this, MyStoreListActivity.class, bundle);
                 break;
             case R.id.ll_tab1:
                 //待拜访
@@ -387,7 +388,7 @@ public class ShopDetailActivity extends BaseActivity {
                 list_info.add(new KeyValueModel("商户等级", response.getBase().getLevel()));
                 list_info.add(new KeyValueModel("商户标识", response.getBase().getTag()));
                 list_info.add(new KeyValueModel("商户来源", response.getBase().getSources()));
-                switch (response.getBase().getIsPublic()){//是否对公0未填写1是2否
+                switch (response.getBase().getIsPublic()) {//是否对公0未填写1是2否
                     case "0":
                         list_info.add(new KeyValueModel("是否对公", "未填写"));
                         break;
@@ -398,7 +399,7 @@ public class ShopDetailActivity extends BaseActivity {
                         list_info.add(new KeyValueModel("是否对公", "否"));
                         break;
                 }
-                switch (response.getBase().getIsBindBank()){//是否绑卡0未填写1是2否
+                switch (response.getBase().getIsBindBank()) {//是否绑卡0未填写1是2否
                     case "0":
                         list_info.add(new KeyValueModel("是否绑卡", "未填写"));
                         break;
@@ -464,7 +465,7 @@ public class ShopDetailActivity extends BaseActivity {
                 list_qianyue.clear();
                 if (response.getSignData() != null) {
                     list_qianyue.add(new KeyValueModel("签约合同", response.getSignData().getContract()));
-                    switch (response.getSignData().getSole()){//是否独家Sole 0独家1非独家
+                    switch (response.getSignData().getSole()) {//是否独家Sole 0独家1非独家
                         case "0":
                             list_qianyue.add(new KeyValueModel("是否独家", "独家"));
                             break;

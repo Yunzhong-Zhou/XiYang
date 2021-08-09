@@ -92,7 +92,7 @@ public class ForgetPasswordActivity extends BaseActivity {
     }
 
     private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.Code_yonghu, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPost(URLs.Code_xiugai, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

@@ -155,8 +155,8 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 showProgress(true, getString(R.string.app_sendcode_hint1));
                 tv_code.setClickable(false);
                 params.clear();
-                /*params1.put("mobile", localUserInfo.getPhonenumber());
-                params1.put("type", "37");*/
+                params.put("mobile", localUserInfo.getPhonenumber());
+//                params.put("type", "37");
                 RequestCode(params);//获取验证码
                 break;
             case R.id.tv_confirm:
