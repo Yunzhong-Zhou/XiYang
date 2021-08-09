@@ -112,6 +112,7 @@
                                 android:background="@drawable/edittext_bg"
                                 android:gravity="center_vertical"
                                 android:hint="请输入手机号"
+                                android:maxLength="11"
                                 android:inputType="phone"
                                 android:paddingLeft="35dp"
                                 android:singleLine="true"

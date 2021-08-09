@@ -265,7 +265,8 @@ public class Fragment5 extends BaseFragment {
                 break;
             case R.id.linearLayout6:
                 //待签商户
-                CommonUtil.gotoActivity(getActivity(), MyShopListActivity.class);
+                bundle.putString("status", "2");
+                CommonUtil.gotoActivityWithData(getActivity(), MyShopListActivity.class,bundle);
                 break;
             case R.id.linearLayout7:
                 //代装门店

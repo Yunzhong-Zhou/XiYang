@@ -206,8 +206,8 @@ public class TakeCashActivity extends BaseActivity {
                 textView5.setClickable(false);
                 params.clear();
                 params.put("mobile", localUserInfo.getPhonenumber());
-                params.put("type", "8");
-                params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
+//                params.put("type", "8");
+//                params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                 RequestCode(params, textView5, textView6);//获取验证码
                 break;
         }
@@ -354,7 +354,7 @@ public class TakeCashActivity extends BaseActivity {
     }
 
     private void RequestCode(HashMap<String, String> params, final TextView tv, final TextView tv3) {
-        OkhttpUtil.okHttpPost(URLs.Code_tixian, params, headerMap, new CallBackUtil<String>() {
+        OkhttpUtil.okHttpPostJson(URLs.Code_tixian, GsonUtils.toJson(params), headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

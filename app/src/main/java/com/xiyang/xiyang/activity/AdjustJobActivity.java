@@ -190,6 +190,7 @@ public class AdjustJobActivity extends BaseActivity {
                 newAreaIds = newAreaIds.substring(0, newAreaIds.length() - 1);
             } else {
                 myToast("请选择新的负责城市");
+                return false;
             }
         }
 

@@ -671,12 +671,13 @@
                             <ImageView
                                 android:id="@+id/iv_shangchuanzhaopian"
                                 android:layout_width="107dp"
-                                android:layout_height="107dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginLeft="40dp"
                                 android:layout_marginTop="10dp"
+                                android:adjustViewBounds="true"
                                 android:background="@mipmap/ic_add_gray"
                                 android:onClick="onClick"
-                                android:scaleType="fitXY" />
+                                />
 
                             <TextView
                                 android:id="@+id/tv_confirm"

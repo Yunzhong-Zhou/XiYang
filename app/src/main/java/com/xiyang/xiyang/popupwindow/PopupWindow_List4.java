@@ -75,7 +75,7 @@ public abstract class PopupWindow_List4 {
                 adapter.setSelectItem(i);
                 adapter.notifyDataSetChanged();
 
-                onFailure(list.get(i),i);
+                onReturn(list.get(i),i);
                 popupWindow.dismiss();
             }
         });
@@ -97,5 +97,5 @@ public abstract class PopupWindow_List4 {
         popupWindow.showAsDropDown(v);
     }
 
-    public abstract void onFailure(String keys, int item);
+    public abstract void onReturn(String keys, int item);
 }

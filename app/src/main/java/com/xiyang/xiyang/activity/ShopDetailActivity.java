@@ -277,7 +277,9 @@ public class ShopDetailActivity extends BaseActivity {
             case R.id.tv_addcontract:
                 //添加合同
                 Bundle bundle = new Bundle();
-                bundle.putInt("item_hetong", 1);
+                bundle.putInt("item_hetong", 0);
+                bundle.putString("shopId", model.getBase().getId());
+                bundle.putString("shopName", model.getBase().getName());
                 CommonUtil.gotoActivityWithData(ShopDetailActivity.this, AddContractActivity.class, bundle);
                 break;
             case R.id.tv_morecontract:
@@ -385,8 +387,28 @@ public class ShopDetailActivity extends BaseActivity {
                 list_info.add(new KeyValueModel("商户等级", response.getBase().getLevel()));
                 list_info.add(new KeyValueModel("商户标识", response.getBase().getTag()));
                 list_info.add(new KeyValueModel("商户来源", response.getBase().getSources()));
-                list_info.add(new KeyValueModel("是否对公", response.getBase().getIsPublic()));
-                list_info.add(new KeyValueModel("是否绑卡", response.getBase().getIsBindBank()));
+                switch (response.getBase().getIsPublic()){//是否对公0未填写1是2否
+                    case "0":
+                        list_info.add(new KeyValueModel("是否对公", "未填写"));
+                        break;
+                    case "1":
+                        list_info.add(new KeyValueModel("是否对公", "是"));
+                        break;
+                    case "2":
+                        list_info.add(new KeyValueModel("是否对公", "否"));
+                        break;
+                }
+                switch (response.getBase().getIsBindBank()){//是否绑卡0未填写1是2否
+                    case "0":
+                        list_info.add(new KeyValueModel("是否绑卡", "未填写"));
+                        break;
+                    case "1":
+                        list_info.add(new KeyValueModel("是否绑卡", "是"));
+                        break;
+                    case "2":
+                        list_info.add(new KeyValueModel("是否绑卡", "否"));
+                        break;
+                }
                 list_info.add(new KeyValueModel("执照图片", ""));
                 mAdapter_info = new CommonAdapter<KeyValueModel>
                         (ShopDetailActivity.this, R.layout.item_keyvalue, list_info) {
@@ -442,7 +464,14 @@ public class ShopDetailActivity extends BaseActivity {
                 list_qianyue.clear();
                 if (response.getSignData() != null) {
                     list_qianyue.add(new KeyValueModel("签约合同", response.getSignData().getContract()));
-                    list_qianyue.add(new KeyValueModel("是否独家", response.getSignData().getSole()));
+                    switch (response.getSignData().getSole()){//是否独家Sole 0独家1非独家
+                        case "0":
+                            list_qianyue.add(new KeyValueModel("是否独家", "独家"));
+                            break;
+                        case "1":
+                            list_qianyue.add(new KeyValueModel("是否独家", "非独家"));
+                            break;
+                    }
                     list_qianyue.add(new KeyValueModel("签约时间", response.getSignData().getRenewalTime()));
                     list_qianyue.add(new KeyValueModel("签约年限", response.getSignData().getRenewalPeriod()));
                     list_qianyue.add(new KeyValueModel("签约人", response.getSignData().getUserName()));

@@ -182,7 +182,6 @@ public class MyShopListActivity extends BaseActivity {
                             }
 
 
-
                             RelativeLayout relativeLayout = holder.getView(R.id.relativeLayout);
                             if (selectItem == position) {
                                 relativeLayout.setVisibility(View.VISIBLE);
@@ -262,10 +261,12 @@ public class MyShopListActivity extends BaseActivity {
 //                view1.setVisibility(View.VISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-               new PopupWindow_List4(MyShopListActivity.this,0,list_status,i1,pop_view) {
+                new PopupWindow_List4(MyShopListActivity.this, 0, list_status, i1, pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
-                        status = item+"";
+                    public void onReturn(String keys, int item) {
+                        if (item == 0) status = "";
+                        else status = item + "";
+
                         requestServer();
                     }
                 };
@@ -280,10 +281,10 @@ public class MyShopListActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyShopListActivity.this,1,list_status,i2,pop_view) {
+                new PopupWindow_List4(MyShopListActivity.this, 1, list_status, i2, pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
-                        status = item+"";
+                    public void onReturn(String keys, int item) {
+                        status = item + "";
                         requestServer();
                     }
                 };
@@ -298,10 +299,10 @@ public class MyShopListActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyShopListActivity.this,2,list_status,i1,pop_view) {
+                new PopupWindow_List4(MyShopListActivity.this, 2, list_status, i1, pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
-                        status = item+"";
+                    public void onReturn(String keys, int item) {
+                        status = item + "";
                         requestServer();
                     }
                 };

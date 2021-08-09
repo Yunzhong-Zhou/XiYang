@@ -9,10 +9,12 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.liaoinstan.springview.widget.SpringView;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.base.BaseActivity;
 import com.xiyang.xiyang.model.DeviceModel;
+import com.xiyang.xiyang.model.DeviceRoomModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
@@ -31,7 +33,7 @@ import okhttp3.Response;
  */
 public class DebugDeviceActivity extends BaseActivity {
     DeviceModel model;
-    String deviceName = "";
+    String deviceName = "",moduleName = "";
     int i_dangwei = 1;
     ImageView iv_zhizhen;
     float fromDegrees = -90f;//开始角度
@@ -62,7 +64,7 @@ public class DebugDeviceActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 params.clear();
-                params.put("deviceName", deviceName);
+                params.put("deviceName", moduleName);
                 request(params);
             }
 
@@ -106,12 +108,71 @@ public class DebugDeviceActivity extends BaseActivity {
 //        this.showLoadingPage();
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
-        params.put("deviceName", deviceName);
-        request(params);
+        params.put("hostname", deviceName);
+        requestStart(params);
     }
 
+    /**
+     * 能否开启设备
+     */
+    private void requestStart(Map<String, String> params) {
+        OkhttpUtil.okHttpGet(URLs.Device, params, headerMap, new CallBackUtil<String>() {
+            @Override
+            public String onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+                finish();
+            }
+
+            @Override
+            public void onResponse(String response) {
+//                hideProgress();
+                params.clear();
+                //获取4G模组信息
+                requestDevice4G(params, deviceName);
+            }
+        });
+    }
+    /**
+     * 获取设备房号、4G模组
+     *
+     * @param params
+     */
+    private void requestDevice4G(Map<String, String> params, String deviceName) {
+        OkhttpUtil.okHttpGet(URLs.Device4G + deviceName, params, headerMap, new CallBackUtil<DeviceRoomModel>() {
+            @Override
+            public DeviceRoomModel onParseResponse(Call call, Response response) {
+                return null;
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e, String err) {
+                hideProgress();
+                myToast(err);
+            }
+
+            @Override
+            public void onResponse(DeviceRoomModel response) {
+                hideProgress();
+                moduleName = response.getModuleName();
+                params.clear();
+                params.put("deviceName", moduleName);
+                request(params);
+            }
+        });
+    }
+
+    /**
+     * 获取设备信息
+     * @param params
+     */
     private void request(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.DebugDevice, params, headerMap, new CallBackUtil<DeviceModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.DebugDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<DeviceModel>() {
             @Override
             public DeviceModel onParseResponse(Call call, Response response) {
                 return null;
@@ -127,6 +188,7 @@ public class DebugDeviceActivity extends BaseActivity {
             @Override
             public void onResponse(DeviceModel response) {
                 hideProgress();
+
                 model = response;
                 //档位
                 if (response.getIotDeviceCurrentData().getWindSpeed().equals("0")) {
@@ -303,7 +365,7 @@ public class DebugDeviceActivity extends BaseActivity {
         }
 
         showProgress(true, getString(R.string.app_loading1));
-        params.put("deviceName", deviceName);
+        params.put("deviceName", moduleName);
 //            params1.put("properties", object.toString());
         RequestSetUp(params);
 //        request(params);
@@ -342,7 +404,7 @@ public class DebugDeviceActivity extends BaseActivity {
      * @param params
      */
     private void RequestSetUp(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.DebugDevice, params, headerMap, new CallBackUtil<Object>() {
+        OkhttpUtil.okHttpPostJson(URLs.DebugDevice, GsonUtils.toJson(params), headerMap, new CallBackUtil<Object>() {
             @Override
             public Object onParseResponse(Call call, Response response) {
                 return null;
@@ -361,12 +423,12 @@ public class DebugDeviceActivity extends BaseActivity {
                     public void run() {
                         //这里写延时后执行的操作
                         params.clear();
-                        params.put("deviceName", deviceName);
+                        params.put("deviceName", moduleName);
                         request(params);
 //                        hideProgress();
                     }
 
-                }, 1 * 1000);
+                }, 2 * 1000);
             }
         });
     }

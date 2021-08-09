@@ -38,6 +38,7 @@ import com.xiyang.xiyang.model.KeyValueModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
+import com.xiyang.xiyang.popupwindow.PhotoShowDialog_1;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.FileUtil;
 import com.xiyang.xiyang.utils.MyChooseImages;
@@ -336,7 +337,12 @@ public class AffairDetailActivity extends BaseActivity {
                 break;
             case R.id.iv_shangchuanzhaopian:
                 //上传图片
-                MyChooseImages.showPhotoDialog(AffairDetailActivity.this);
+                if (model.getLogistic() != null && model.getLogistic().getExpressWay() != null) {
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(AffairDetailActivity.this,
+                            model.getLogistic().getVoucher());
+                    photoShowDialog.show();
+                }else
+                    MyChooseImages.showPhotoDialog(AffairDetailActivity.this);
                 break;
             case R.id.tv_shenlingfangshi:
                 //选择申领方式
@@ -736,7 +742,7 @@ public class AffairDetailActivity extends BaseActivity {
 
         tv_confirm.setVisibility(View.GONE);
         tv_shenlingfangshi.setClickable(false);
-        iv_shangchuanzhaopian.setClickable(false);
+//        iv_shangchuanzhaopian.setClickable(false);
 
         ll_wuliugongsi.setVisibility(View.GONE);
         ll_kuaididanhao.setVisibility(View.GONE);
@@ -745,7 +751,7 @@ public class AffairDetailActivity extends BaseActivity {
         ll_qianshourendianhua.setVisibility(View.GONE);
         ll_qianshoudizhi.setVisibility(View.GONE);
 
-        if (model.getLogistic() != null && model.getLogistic().getExpressWay() != null) {
+        if (model.getLogistic() != null && model.getLogistic().getExpressWay() != null && !model.getLogistic().getExpressWay().equals("0")) {
             //TODO 已经设置了邮寄方式
             expressWay = model.getLogistic().getExpressWay();
             switch (model.getLogistic().getExpressWay()) {
@@ -853,7 +859,7 @@ public class AffairDetailActivity extends BaseActivity {
         } else {
             tv_confirm.setVisibility(View.VISIBLE);
             tv_shenlingfangshi.setClickable(true);
-            iv_shangchuanzhaopian.setClickable(true);
+//            iv_shangchuanzhaopian.setClickable(true);
             et_lianxifangshi.setText(localUserInfo.getPhonenumber());
             //TODO 未选择邮寄方式
             if (apply_Type.equals("4")) {//回收

@@ -133,8 +133,8 @@
     <!--提示框-->
     <string name="password_h1">交易密码</string>
     <string name="password_h2">交易密码错误或未设置，是否前往设置？</string>
-    <string name="password_h3">币地址</string>
-    <string name="password_h4">币地址暂未设置，是否前往设置？</string>
+    <string name="password_h3"></string>
+    <string name="password_h4"></string>
     <string name="password_h5">确认</string>
     <string name="password_h6">取消</string>
     <string name="password_h7">实名认证</string>

@@ -155,12 +155,13 @@ public class BankCardSettingActivity extends BaseActivity {
 
 //        qk = getIntent().getStringExtra("qk");
         model = (BankCardModel) getIntent().getSerializableExtra("BankCardModel");
-        if (model!=null && model.getBankCardNumber()!=null) {
-            bankId = model.getBankId();
-            textView1.setText(model.getBankName());//开户行
-            editText1.setText(model.getBankUserName());//开户名
-            editText2.setText(model.getBankCardNumber());//银行卡号
-
+        if (model != null) {
+            if (model.getBankCardNumber() != null && !model.getBankCardNumber().equals("")) {
+                bankId = model.getBankId();
+                textView1.setText(model.getBankName());//开户行
+                editText1.setText(model.getBankUserName());//开户名
+                editText2.setText(model.getBankCardNumber());//银行卡号
+            }
             if (!model.isTradePasswordFlag()) {
                 showToast(getString(R.string.password_h2),
                         getString(R.string.password_h5), getString(R.string.password_h6),
@@ -235,7 +236,7 @@ public class BankCardSettingActivity extends BaseActivity {
                 showProgress(true, getString(R.string.app_sendcode_hint1));
                 textView4.setClickable(false);
                 HashMap<String, String> params1 = new HashMap<>();
-//                params1.put("mobile", localUserInfo.getPhonenumber());
+                params1.put("mobile", localUserInfo.getPhonenumber());
 //                params1.put("type", "33");
 //                params1.put("mobile_state_code", localUserInfo.getMobile_State_Code());
                 RequestCode(params1);//获取验证码
@@ -293,9 +294,9 @@ public class BankCardSettingActivity extends BaseActivity {
 
     //收款设置
     private void RequestSetting(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPostJson(URLs.BankCardSet, GsonUtils.toJson(params), headerMap, new CallBackUtil<BankListModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.BankCardSet, GsonUtils.toJson(params), headerMap, new CallBackUtil<BankCardModel>() {
             @Override
-            public BankListModel onParseResponse(Call call, Response response) {
+            public BankCardModel onParseResponse(Call call, Response response) {
                 return null;
             }
 
@@ -323,9 +324,9 @@ public class BankCardSettingActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(BankListModel response) {
+            public void onResponse(BankCardModel response) {
 //                hideProgress();
-                /*if (response != null && response.getCode() == 1) {
+                if (response != null && response.getResultCode().equals("2")) {
                     showToast(getString(R.string.password_h2),
                             getString(R.string.password_h5), getString(R.string.password_h6),
                             new View.OnClickListener() {
@@ -341,13 +342,13 @@ public class BankCardSettingActivity extends BaseActivity {
                                     finish();
                                 }
                             });
-                } else {*/
-                myToast("绑定银行卡成功");
-                finish();
+                } else {
+                    myToast("绑定银行卡成功");
+                    finish();
                     /*Bundle bundle = new Bundle();
                     bundle.putInt("type", 1);
                     CommonUtil.gotoActivityWithData(BankCardSettingActivity.this, TakeCashActivity.class, bundle, true);*/
-//                }
+                }
             }
         });
 

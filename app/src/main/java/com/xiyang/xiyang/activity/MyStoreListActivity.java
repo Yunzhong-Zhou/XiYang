@@ -254,7 +254,7 @@ public class MyStoreListActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyStoreListActivity.this,0,list_status,i1,pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item+"";
                         requestServer();
                     }
@@ -272,7 +272,7 @@ public class MyStoreListActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyStoreListActivity.this,1,list_status,i2,pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item+"";
                         requestServer();
                     }
@@ -290,7 +290,7 @@ public class MyStoreListActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyStoreListActivity.this,2,list_status,i1,pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item+"";
                         requestServer();
                     }

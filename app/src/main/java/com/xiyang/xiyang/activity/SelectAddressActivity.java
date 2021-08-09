@@ -56,7 +56,8 @@ public class SelectAddressActivity extends BaseActivity {
     LatLonPoint point = null;
     Marker marker = null;
 
-    String province = "", city = "", cityCode = "", district = "", addr = "", lat = "", lng = "", name = "";
+    String province = "", city = "", cityCode = "", district = "", addr = "", lat = "", lng = "",
+            name = "",shopId="",shopName="";
 
     //顶部 中部
     EditText et_addr;
@@ -221,6 +222,8 @@ public class SelectAddressActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        shopId = getIntent().getStringExtra("shopId");
+        shopName = getIntent().getStringExtra("shopName");
     }
 
     private void request(String keyWord) {
@@ -376,6 +379,8 @@ public class SelectAddressActivity extends BaseActivity {
                     bundle.putString("longitude",lng);
                     bundle.putString("latitude",lat);
                     bundle.putString("addr",addr);
+                    bundle.putString("shopId", shopId);
+                    bundle.putString("shopName", shopName);
                     CommonUtil.gotoActivityWithData(SelectAddressActivity.this,AddStoreActivity.class,bundle,true);
                 }else {
                     myToast("请选择地址");

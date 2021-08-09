@@ -25,6 +25,15 @@ public class BankCardModel implements Serializable {
     private String bankUserName;
     private String bankCardNumber;
     private boolean tradePasswordFlag = false;
+    private String resultCode;
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(String resultCode) {
+        this.resultCode = resultCode;
+    }
 
     public String getId() {
         return id;

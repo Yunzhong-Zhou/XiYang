@@ -293,7 +293,7 @@ public class DispatchListActivity extends BaseActivity {
                                     tv_shangbao.setVisibility(View.GONE);
                                     tv_zhipai.setVisibility(View.GONE);
                                     tv_bdname.setVisibility(View.VISIBLE);
-                                    tv_bdname.setText(model.getCurrentName());
+                                    tv_bdname.setText(model.getTransferCreateUserName());
                                     tv_type.setVisibility(View.VISIBLE);
                                     tv_type.setTextColor(getResources().getColor(R.color.gray));
                                     tv_type.setText("已完成");

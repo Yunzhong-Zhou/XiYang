@@ -230,6 +230,9 @@ public class AddContractActivity extends BaseActivity {
         tv_hetongleixing.setText(list_hetong.get(item_hetong));
         titleView.setTitle(list_hetong.get(item_hetong));
         changeUI();
+
+        shopId = getIntent().getStringExtra("shopId");
+        tv_xuanzeshanghu.setText(getIntent().getStringExtra("shopName"));
     }
 
 
@@ -266,7 +269,15 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent2 = new Intent(AddContractActivity.this, MyShopListActivity.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("requestCode", Constant.SELECT_SHOP);
-                bundle2.putString("status", "");
+                switch (item_hetong){
+                    case 0://签约合同
+                        bundle2.putString("status", "2");
+                        break;
+                    default:
+                        bundle2.putString("status", "");
+                        break;
+                }
+
                 intent2.putExtras(bundle2);
                 startActivityForResult(intent2, Constant.SELECT_SHOP, bundle2);
                 break;
@@ -276,7 +287,7 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent3 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
                 Bundle bundle3 = new Bundle();
                 bundle3.putInt("requestCode", Constant.SELECT_STORE);
-                bundle3.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                bundle3.putString("status", "");
                 intent3.putExtras(bundle3);
                 startActivityForResult(intent3, Constant.SELECT_STORE, bundle3);
                 break;
@@ -286,7 +297,7 @@ public class AddContractActivity extends BaseActivity {
                 Intent intent4 = new Intent(AddContractActivity.this, MyStoreListActivity.class);
                 Bundle bundle4 = new Bundle();
                 bundle4.putInt("requestCode", Constant.SELECT_STORE);
-                bundle4.putString("status", "");//状态 0 => '待指派',1 => '待签约',2 => '待审核',3 => '正常',4 => '待续约'
+                bundle4.putString("status", "");
                 intent4.putExtras(bundle4);
                 startActivityForResult(intent4, Constant.SELECT_STORE, bundle4);
                 break;

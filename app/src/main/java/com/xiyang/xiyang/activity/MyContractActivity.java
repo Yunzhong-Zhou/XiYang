@@ -286,7 +286,7 @@ public class MyContractActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyContractActivity.this,0,list_status,i1,pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item+"";
                         requestServer();
                     }
@@ -304,7 +304,7 @@ public class MyContractActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyContractActivity.this,1,list_status,i1,pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item+"";
                         requestServer();
                     }
@@ -322,7 +322,7 @@ public class MyContractActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyContractActivity.this,2,list_status,i1,pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item+"";
                         requestServer();
                     }

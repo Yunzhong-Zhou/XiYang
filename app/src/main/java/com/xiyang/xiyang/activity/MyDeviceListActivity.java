@@ -247,7 +247,7 @@ public class MyDeviceListActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyDeviceListActivity.this, 0, list_status, i1, pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item + "";
                         requestServer();
                     }
@@ -265,7 +265,7 @@ public class MyDeviceListActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyDeviceListActivity.this, 1, list_status, i2, pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item + "";
                         requestServer();
                     }
@@ -283,7 +283,7 @@ public class MyDeviceListActivity extends BaseActivity {
 //                view3.setVisibility(View.INVISIBLE);
                 new PopupWindow_List4(MyDeviceListActivity.this, 2, list_status, i1, pop_view) {
                     @Override
-                    public void onFailure(String keys, int item) {
+                    public void onReturn(String keys, int item) {
                         status = item + "";
                         requestServer();
                     }

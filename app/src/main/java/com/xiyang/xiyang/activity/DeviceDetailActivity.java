@@ -132,6 +132,7 @@ public class DeviceDetailActivity extends BaseActivity {
         params.clear();
 //        params.put("deviceName", deviceName);
         requestDeviceDetail(params);
+
     }
 
     private void requestDeviceDetail(HashMap<String, String> params) {

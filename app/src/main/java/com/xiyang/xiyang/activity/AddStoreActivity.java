@@ -61,9 +61,10 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
 public class AddStoreActivity extends BaseActivity {
     EditText textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8,
             textView9, textView10, textView11, textView12, textView13, textView14,textView15;
+    TextView tv_max1,tv_max2,tv_max3,tv_max4;
     ImageView imageView1;
     String merchantId = "", name = "", childName = "", account = "", contactName = "", contactPhone = "", industryId = "",
-            address = "", businessHours = "", isTrsanfter = "1",merchantShareRate="", storeScale = "", workerScale = "", deviceScale = "",
+            address = "", businessHours = "", isTrsanfter = "1",merchantShareRate="0", storeScale = "0", workerScale = "0", deviceScale = "0",
             image = "", latitude = "", longitude = "",provinceId="",cityId="",areaId="";
     List<String> list_truefalse = new ArrayList<>();
     int itme_truefalse = 1;
@@ -73,6 +74,7 @@ public class AddStoreActivity extends BaseActivity {
 //    private AMapLocationClient mLocationClient = null;
 
     File imgfile = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +100,95 @@ public class AddStoreActivity extends BaseActivity {
         textView14 = findViewByID_My(R.id.textView14);
         textView15 = findViewByID_My(R.id.textView15);
 
+        tv_max1 = findViewByID_My(R.id.tv_max1);
+        tv_max2 = findViewByID_My(R.id.tv_max2);
+        tv_max3 = findViewByID_My(R.id.tv_max3);
+        tv_max4 = findViewByID_My(R.id.tv_max4);
+
+        //商户分成
+        textView15.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().trim().equals("")) {
+                    merchantShareRate = s.toString().trim();
+                    calculateFenCheng();
+                }
+            }
+        });
+        //门店分成
+        textView12.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().trim().equals("")) {
+                    storeScale = s.toString().trim();
+                    calculateFenCheng();
+                }
+            }
+        });
+        //员工分成
+        textView13.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().trim().equals("")) {
+                    workerScale = s.toString().trim();
+                    calculateFenCheng();
+                }
+            }
+        });
+        //设备分成
+        textView14.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().trim().equals("")) {
+                    deviceScale = s.toString().trim();
+                    calculateFenCheng();
+                }
+            }
+        });
+
         imageView1 = findViewByID_My(R.id.imageView1);
 
+        //门店账号
         textView4.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -120,7 +209,10 @@ public class AddStoreActivity extends BaseActivity {
                 }
             }
         });
+
     }
+
+
 
     @Override
     protected void initData() {
@@ -345,7 +437,6 @@ public class AddStoreActivity extends BaseActivity {
             myToast("请输入商户分成");
             return false;
         }
-
         storeScale = textView12.getText().toString().trim();
         if (TextUtils.isEmpty(storeScale)) {
             myToast("请输入门店分成");
@@ -361,10 +452,14 @@ public class AddStoreActivity extends BaseActivity {
             myToast("请输入设备分成");
             return false;
         }
+
         if (imgfile == null) {
             myToast("请选择门头照片");
             return false;
         }
+
+
+
         /*if (TextUtils.isEmpty(longitude)) {
             showToast("暂未获取到经纬度,点击确定重新获取", new View.OnClickListener() {
                 @Override
@@ -377,7 +472,33 @@ public class AddStoreActivity extends BaseActivity {
 
         return true;
     }
+    /**
+     * 计算分成
+     */
+    private void calculateFenCheng() {
+        if ((Integer.valueOf(merchantShareRate)+Integer.valueOf(storeScale)
+                +Integer.valueOf(workerScale)+Integer.valueOf(deviceScale)) > 90){
+            if (!merchantShareRate.equals("0")) {
+                tv_max1.setVisibility(View.VISIBLE);
+            }
+            if (!storeScale.equals("0")) {
+                tv_max2.setVisibility(View.VISIBLE);
+            }
+            if (!workerScale.equals("0")) {
+                tv_max3.setVisibility(View.VISIBLE);
+            }
+            if (!deviceScale.equals("0")) {
+                tv_max4.setVisibility(View.VISIBLE);
+            }
+        }else {
+            tv_max1.setVisibility(View.GONE);
+            tv_max2.setVisibility(View.GONE);
+            tv_max3.setVisibility(View.GONE);
+            tv_max4.setVisibility(View.GONE);
+        }
 
+
+    }
     @Override
     protected void updateView() {
         titleView.setTitle("添加门店");
