@@ -264,6 +264,8 @@ public class MyShopListActivity extends BaseActivity {
                 new PopupWindow_List4(MyShopListActivity.this, 0, list_status, i1, pop_view) {
                     @Override
                     public void onReturn(String keys, int item) {
+                        i1 = item;
+
                         if (item == 0) status = "";
                         else status = item + "";
 

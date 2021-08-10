@@ -348,10 +348,11 @@
 
             <ImageView
                 android:id="@+id/imageView1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="107dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="28dp"
                 android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
                 android:background="@mipmap/ic_add_gray"
                 android:onClick="onClick" />
 

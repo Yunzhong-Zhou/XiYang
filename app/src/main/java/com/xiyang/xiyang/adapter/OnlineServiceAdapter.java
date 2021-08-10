@@ -126,6 +126,7 @@ public class OnlineServiceAdapter extends BaseAdapter {
 
             }
         }
+
         /*if (list.get(position).getStatus() == 2) {
             //已回复
             holder.linearLayout1.setVisibility(View.VISIBLE);

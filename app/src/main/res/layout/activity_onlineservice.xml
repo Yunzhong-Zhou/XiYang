@@ -17,6 +17,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
+<!--     //stackFromBottom设置为true，表示列表内容从下面开始显示-->
+<!--     //transcriptMode设置为alwaysScroll的话，当内容满屏的时候自动滚动显示最后一条。-->
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
@@ -26,6 +28,8 @@
                 android:dividerHeight="0dp"
                 android:listSelector="@color/transparent"
                 android:paddingBottom="10dp"
+                android:stackFromBottom="true"
+                android:transcriptMode="alwaysScroll"
                 android:scrollbars="none"></ListView>
 
         </com.liaoinstan.springview.widget.SpringView>
@@ -36,8 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <EditText
@@ -50,8 +54,8 @@
             android:background="@drawable/yuanjiao_5_baise"
             android:hint="@string/onlineservice_hint"
             android:imeOptions="actionSend"
-            android:singleLine="true"
             android:paddingLeft="10dp"
+            android:singleLine="true"
             android:textColor="@color/black1"
             android:textColorHint="@color/black3"
             android:textSize="14sp" />

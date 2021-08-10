@@ -394,7 +394,10 @@ public class PersonnelDetailActivity extends BaseActivity {
                             .error(R.mipmap.headimg)//加载失败
                             .into(imageView1);//加载图片
                     list_info.add(new KeyValueModel("ID", response.getSn()));
-                    list_info.add(new KeyValueModel("是否跨区", response.getCrossRegional()));
+                    if (response.getCrossRegional().equals("1"))
+                        list_info.add(new KeyValueModel("是否跨区", "是"));
+                    else list_info.add(new KeyValueModel("是否跨区", "否"));
+
                     list_info.add(new KeyValueModel("调整人", response.getAdminName()));
                     list_info.add(new KeyValueModel("职位", response.getAdminOrganCode()));
 
@@ -407,13 +410,13 @@ public class PersonnelDetailActivity extends BaseActivity {
                         case 2:
                             //调整市场
                             String oldcity = "";
-                            if (model.getOldRegions() !=null) {
+                            if (model.getOldRegions() != null) {
                                 for (PersonnelDetailModel.OldRegionsBean bean : model.getOldRegions()) {
                                     oldcity = oldcity + bean.getName() + "、";
                                 }
                             }
                             String newcity = "";
-                            if (model.getNewRegions() !=null) {
+                            if (model.getNewRegions() != null) {
                                 for (PersonnelDetailModel.OldRegionsBean bean : model.getNewRegions()) {
                                     newcity = newcity + bean.getName() + "、";
                                 }
@@ -517,7 +520,7 @@ public class PersonnelDetailActivity extends BaseActivity {
                                 //状态图片
                                 ImageView iv_zhuangtai = holder.getView(R.id.iv_zhuangtai);
                                 TextView tv_type = holder.getView(R.id.tv_type);
-                                if (model.getStatus()!=null){
+                                if (model.getStatus() != null) {
                                     switch (model.getStatus()) {//1待处理2已处理3驳回
                                         case "1":
                                             tv_type.setText("待审核");

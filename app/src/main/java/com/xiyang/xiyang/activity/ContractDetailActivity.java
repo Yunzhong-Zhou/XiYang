@@ -151,6 +151,14 @@ public class ContractDetailActivity extends BaseActivity {
                     CommonUtil.gotoActivityWithData(ContractDetailActivity.this, ShowPDFActivity.class, bundle, false);
                 }else myToast("暂无文件");
                 break;
+            case R.id.iv_info:
+                if (model.getMerchantLogoUrl() !=null && !model.getMerchantLogoUrl().equals("")){
+                    PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ContractDetailActivity.this,
+                            model.getMerchantLogoUrl());
+                    photoShowDialog.show();
+                }
+
+                break;
             case R.id.iv_contract:
                 if (model.getQualificationsImageUrl() !=null && !model.getQualificationsImageUrl().equals("")){
                     PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(ContractDetailActivity.this,
@@ -159,6 +167,7 @@ public class ContractDetailActivity extends BaseActivity {
                 }
 
                 break;
+
             /*case R.id.tv_shenpi:
                 //立即审批
                 bundle.putString("id", "");

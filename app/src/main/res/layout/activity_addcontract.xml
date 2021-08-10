@@ -1250,10 +1250,10 @@
             <ImageView
                 android:id="@+id/iv_add"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="28dp"
-                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:background="@mipmap/ic_add_gray"
                 android:onClick="onClick" />
 

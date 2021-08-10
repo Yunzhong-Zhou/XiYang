@@ -116,7 +116,7 @@ public class TakeCashActivity extends BaseActivity {
                     input_money = editText1.getText().toString().trim();
                     MyLogger.i(">>>>>输入币数>>>>>" + input_money);
                     //手续费 = 输入币数 * 手续费率 /100
-                    double service_money = Double.valueOf(model.getTaxRate()) * Double.valueOf(input_money);
+                    double service_money = Double.valueOf(model.getTaxRate()) * Double.valueOf(input_money)/100;
                     MyLogger.i(">>>>>手续费>>>>>" + service_money);
                     textView4.setText("¥ " + String.format("%.2f", service_money));//手续费
 

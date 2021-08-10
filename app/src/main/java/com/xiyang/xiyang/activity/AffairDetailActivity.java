@@ -337,11 +337,12 @@ public class AffairDetailActivity extends BaseActivity {
                 break;
             case R.id.iv_shangchuanzhaopian:
                 //上传图片
-                if (model.getLogistic() != null && model.getLogistic().getExpressWay() != null) {
+                if (model.getLogistic() != null && model.getLogistic().getExpressWay() != null && !model.getLogistic().getExpressWay().equals("0")
+                        && model.getLogistic().getVoucher() != null && !model.getLogistic().getVoucher().equals("")) {
                     PhotoShowDialog_1 photoShowDialog = new PhotoShowDialog_1(AffairDetailActivity.this,
                             model.getLogistic().getVoucher());
                     photoShowDialog.show();
-                }else
+                } else
                     MyChooseImages.showPhotoDialog(AffairDetailActivity.this);
                 break;
             case R.id.tv_shenlingfangshi:
@@ -400,6 +401,7 @@ public class AffairDetailActivity extends BaseActivity {
                                 params.put("transportId", transportId);
                                 params.put("transportCompany", transportCompany);
                                 params.put("relationType", apply_Type);
+                                params.put("expressWay", expressWay + "");//1-自取，2-邮寄
                                 requestUpData(params, URLs.AffairDetail_FaHuo);
                             } else {
                                 params.put("relationId", model.getRelationId());
@@ -433,20 +435,24 @@ public class AffairDetailActivity extends BaseActivity {
         switch (apply_Type) {//1、主机、2、4g模块 3、过滤网  4、回收  5、换绑
             case "1":
                 //主机
+                titleView.setTitle("申领主机事务详情");
                 iv_scan.setText("安装设备");
                 tv_tab3.setText("安装记录");
                 break;
             case "2":
                 //4G模块
+                titleView.setTitle("申领4G模块事务详情");
                 iv_scan.setText("更换4G模组");
                 tv_tab3.setText("更换记录");
                 break;
             case "3":
                 //过滤网
+                titleView.setTitle("申领过滤网事务详情");
                 sl_scan.setVisibility(View.GONE);
                 break;
             case "4":
                 //回收
+                titleView.setTitle("回收事务详情");
                 iv_scan.setText("回收设备");
                 tv_tab3.setText("回收记录");
                 tv_fangshi.setText("退回方式");
@@ -454,6 +460,7 @@ public class AffairDetailActivity extends BaseActivity {
                 break;
             case "5":
                 //换绑
+                titleView.setTitle("换绑事务详情");
                 ll_tab2.setVisibility(View.GONE);
                 iv_scan.setText("换绑设备");
                 tv_tab3.setText("换绑记录");
@@ -680,7 +687,7 @@ public class AffairDetailActivity extends BaseActivity {
 
     @Override
     protected void updateView() {
-        titleView.setTitle("事务详情");
+
     }
 
     private void changeUI() {

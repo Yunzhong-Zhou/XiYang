@@ -136,9 +136,6 @@
         <activity
             android:name=".activity.TransferShopActivity"
             android:label="划转商户-申请商户划转" />
-        <activity
-            android:name=".activity.RenewContractActivity"
-            android:label="续签合同" />
         <!--管理-->
         <activity
             android:name=".activity.AddStaffActivity"
@@ -216,9 +213,6 @@
         <activity
             android:name=".activity.VisitDetailActivity"
             android:label="拜访详情" />
-        <activity
-            android:name=".activity.ChangeContractActivity"
-            android:label="调价合同" />
         <activity
             android:name=".activity.TransferStoreActivity"
             android:label="划转门店-申请门店划转" />

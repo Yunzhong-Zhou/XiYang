@@ -7,18 +7,36 @@ import java.io.Serializable;
  */
 public class StoreDetailModel implements Serializable {
     /**
-     * deviceNumber : 0
+     * showPointBtn : null
+     * deviceNumber : 2
      * runDeviceNumber : 0
-     * offLineDeviceNumber : 0
-     * revenue : 1500
-     * storeInfo : {"id":"1412691587682668544","storeSn":"10e5cc8fd18b43a886e0e1025cc236ce","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/07/07/16256468952971625646708054.png","name":"门店名称","childName":"分店名称","contactName":"阿斯顿马丁","contactPhone":"157885855788","account":"23432234566","provinceId":140000,"cityId":140500,"cityName":"晋城市","areaId":140521,"address":"北新区洪湖西路51号","industryId":"1409756530408034304","userId":"1412691587779137536","userTypeId":"1412691587792859138","merchantId":"1411240609229967360","merchantName":"商户名称","businessHours":"06:30~24:00","latitude":29.607459,"longitude":106.502774,"bdAdminScopeOrganId":"1410143973256732673","bdAdminId":"1410143973189623809","addBdAdminScopeOrganId":"1410143973256732673","addBdAdminId":"1410143973189623809","storeShareRate":10,"workerShareRate":10,"deviceShareRate":20,"status":0,"needInstallDeviceNum":0,"isLoss":0,"type":1,"visitStatus":1,"createTime":"2021-07-07 16:34:56","updateTime":"2021-07-07 16:34:56","delFlag":0,"transferStatus":1}
+     * offLineDeviceNumber : 2
+     * revenue : 0
+     * profitSharing : null
+     * storeInfo : {"id":"1424543238064443392","storeSn":"572c9fa2ee534184923091e3c897e53f","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/08/09/16284725490311628472329941.png","name":"门店1","childName":"分店1","contactName":"阿斯顿马丁","contactPhone":"18354645445","account":"15277262372828","provinceId":130000,"provinceName":"河北省","cityId":130800,"cityName":"承德市","areaName":"承德县","areaId":130821,"address":"北新区洪湖西路51号","industryId":"1410880790564311040","industryName":"水上娱乐","level":0,"userId":"1424543238097866752","userTypeId":"1424543238094807041","merchantId":"1424540989594406912","merchantName":"商户1","businessHours":"00:00~24:00","latitude":29.607459,"longitude":106.502774,"bdAdminScopeOrganId":"1422085020760354817","bdAdminId":"1422085020756160513","bdAdminName":"bd001","addBdAdminScopeOrganId":"1422085020760354817","addBdAdminId":"1422085020756160513","storeShareRate":20,"workerShareRate":30,"deviceShareRate":40,"merchantShareRate":10,"status":0,"statusStr":"合作中","needInstallDeviceNum":0,"isLoss":0,"type":1,"arrearsMoney":0,"visitStatus":1,"visitStatusStr":"待拜访","contractStatus":1,"maxOrderNum":0,"createTime":"2021-08-09 09:29:09","updateTime":"2021-08-09 09:29:09","delFlag":0,"transferStatus":1,"installStatusStr":"无划转信息","installStatus":2}
+     * storeDeviceStatistic : null
+     * revenueInfo : null
+     * chargesInfo : null
      */
 
+    private String showPointBtn;
     private String deviceNumber;
     private String runDeviceNumber;
     private String offLineDeviceNumber;
     private String revenue;
+    private String profitSharing;
     private StoreInfoBean storeInfo;
+    private String storeDeviceStatistic;
+    private String revenueInfo;
+    private String chargesInfo;
+
+    public String getShowPointBtn() {
+        return showPointBtn;
+    }
+
+    public void setShowPointBtn(String showPointBtn) {
+        this.showPointBtn = showPointBtn;
+    }
 
     public String getDeviceNumber() {
         return deviceNumber;
@@ -52,6 +70,14 @@ public class StoreDetailModel implements Serializable {
         this.revenue = revenue;
     }
 
+    public String getProfitSharing() {
+        return profitSharing;
+    }
+
+    public void setProfitSharing(String profitSharing) {
+        this.profitSharing = profitSharing;
+    }
+
     public StoreInfoBean getStoreInfo() {
         return storeInfo;
     }
@@ -60,63 +86,82 @@ public class StoreDetailModel implements Serializable {
         this.storeInfo = storeInfo;
     }
 
-    public static class StoreInfoBean implements Serializable{
+    public String getStoreDeviceStatistic() {
+        return storeDeviceStatistic;
+    }
 
+    public void setStoreDeviceStatistic(String storeDeviceStatistic) {
+        this.storeDeviceStatistic = storeDeviceStatistic;
+    }
+
+    public String getRevenueInfo() {
+        return revenueInfo;
+    }
+
+    public void setRevenueInfo(String revenueInfo) {
+        this.revenueInfo = revenueInfo;
+    }
+
+    public String getChargesInfo() {
+        return chargesInfo;
+    }
+
+    public void setChargesInfo(String chargesInfo) {
+        this.chargesInfo = chargesInfo;
+    }
+
+    public static class StoreInfoBean implements Serializable{
         /**
-         * id : string
-         * storeSn : string
-         * image : string
-         * name : string
-         * childName : string
-         * contactName : string
-         * contactPhone : string
-         * account : string
-         * provinceId : 0
-         * cityId : 0
-         * cityName : string
-         * areaId : 0
-         * address : string
-         * industryId : string
+         * id : 1424543238064443392
+         * storeSn : 572c9fa2ee534184923091e3c897e53f
+         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/08/09/16284725490311628472329941.png
+         * name : 门店1
+         * childName : 分店1
+         * contactName : 阿斯顿马丁
+         * contactPhone : 18354645445
+         * account : 15277262372828
+         * provinceId : 130000
+         * provinceName : 河北省
+         * cityId : 130800
+         * cityName : 承德市
+         * areaName : 承德县
+         * areaId : 130821
+         * address : 北新区洪湖西路51号
+         * industryId : 1410880790564311040
+         * industryName : 水上娱乐
          * level : 0
-         * userId : string
-         * userTypeId : string
-         * merchantId : string
-         * merchantName : string
-         * businessHours : string
-         * overTimeUnit : 0
-         * freeTime : 0
-         * unitPrice : 0
-         * maxPriceDay : 0
-         * installTime : 2021-07-30T08:05:03.052Z
-         * latitude : 0
-         * longitude : 0
-         * bdAdminScopeOrganId : string
-         * bdAdminId : string
-         * bdAdminName : string
-         * addBdAdminScopeOrganId : string
-         * addBdAdminId : string
-         * lastBindTime : 0
-         * lastVisitTime : 0
-         * storeShareRate : 0
-         * workerShareRate : 0
-         * deviceShareRate : 0
-         * merchantShareRate : 0
+         * userId : 1424543238097866752
+         * userTypeId : 1424543238094807041
+         * merchantId : 1424540989594406912
+         * merchantName : 商户1
+         * businessHours : 00:00~24:00
+         * latitude : 29.607459
+         * longitude : 106.502774
+         * bdAdminScopeOrganId : 1422085020760354817
+         * bdAdminId : 1422085020756160513
+         * bdAdminName : bd001
+         * addBdAdminScopeOrganId : 1422085020760354817
+         * addBdAdminId : 1422085020756160513
+         * storeShareRate : 20
+         * workerShareRate : 30
+         * deviceShareRate : 40
+         * merchantShareRate : 10
          * status : 0
-         * isBusiness : 0
+         * statusStr : 合作中
          * needInstallDeviceNum : 0
          * isLoss : 0
-         * type : 0
-         * deviceAutoCloseTime : 0
-         * freeMoney : 0
-         * visitStatus : 0
-         * contractStatus : 0
-         * categoryId : 0
-         * createTime : 2021-07-30T08:05:03.052Z
-         * updateTime : 2021-07-30T08:05:03.052Z
+         * type : 1
+         * arrearsMoney : 0
+         * visitStatus : 1
+         * visitStatusStr : 待拜访
+         * contractStatus : 1
+         * maxOrderNum : 0
+         * createTime : 2021-08-09 09:29:09
+         * updateTime : 2021-08-09 09:29:09
          * delFlag : 0
-         * transferStatus : 0
-         * totalRevenue : 0
-         * deviceNumber : 0
+         * transferStatus : 1
+         * installStatusStr : 无划转信息
+         * installStatus : 2
          */
 
         private String id;
@@ -128,22 +173,20 @@ public class StoreDetailModel implements Serializable {
         private String contactPhone;
         private String account;
         private String provinceId;
+        private String provinceName;
         private String cityId;
         private String cityName;
+        private String areaName;
         private String areaId;
         private String address;
         private String industryId;
+        private String industryName;
         private String level;
         private String userId;
         private String userTypeId;
         private String merchantId;
         private String merchantName;
         private String businessHours;
-        private String overTimeUnit;
-        private String freeTime;
-        private String unitPrice;
-        private String maxPriceDay;
-        private String installTime;
         private String latitude;
         private String longitude;
         private String bdAdminScopeOrganId;
@@ -151,36 +194,43 @@ public class StoreDetailModel implements Serializable {
         private String bdAdminName;
         private String addBdAdminScopeOrganId;
         private String addBdAdminId;
-        private String lastBindTime;
-        private String lastVisitTime;
         private String storeShareRate;
         private String workerShareRate;
         private String deviceShareRate;
         private String merchantShareRate;
         private String status;
-        private String isBusiness;
+        private String statusStr;
         private String needInstallDeviceNum;
         private String isLoss;
         private String type;
-        private String deviceAutoCloseTime;
-        private String freeMoney;
+        private String arrearsMoney;
         private String visitStatus;
+        private String visitStatusStr;
+        private String lastVisitTime;
         private String contractStatus;
-        private String categoryId;
+        private String maxOrderNum;
         private String createTime;
         private String updateTime;
         private String delFlag;
         private String transferStatus;
-        private String totalRevenue;
-        private String deviceNumber;
-        private String showPointBtn;
+        private String transferStatusStr;
+        private String installStatusStr;
+        private String installStatus;
 
-        public String getShowPointBtn() {
-            return showPointBtn;
+        public String getTransferStatusStr() {
+            return transferStatusStr;
         }
 
-        public void setShowPointBtn(String showPointBtn) {
-            this.showPointBtn = showPointBtn;
+        public void setTransferStatusStr(String transferStatusStr) {
+            this.transferStatusStr = transferStatusStr;
+        }
+
+        public String getLastVisitTime() {
+            return lastVisitTime;
+        }
+
+        public void setLastVisitTime(String lastVisitTime) {
+            this.lastVisitTime = lastVisitTime;
         }
 
         public String getId() {
@@ -255,6 +305,14 @@ public class StoreDetailModel implements Serializable {
             this.provinceId = provinceId;
         }
 
+        public String getProvinceName() {
+            return provinceName;
+        }
+
+        public void setProvinceName(String provinceName) {
+            this.provinceName = provinceName;
+        }
+
         public String getCityId() {
             return cityId;
         }
@@ -269,6 +327,14 @@ public class StoreDetailModel implements Serializable {
 
         public void setCityName(String cityName) {
             this.cityName = cityName;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public void setAreaName(String areaName) {
+            this.areaName = areaName;
         }
 
         public String getAreaId() {
@@ -293,6 +359,14 @@ public class StoreDetailModel implements Serializable {
 
         public void setIndustryId(String industryId) {
             this.industryId = industryId;
+        }
+
+        public String getIndustryName() {
+            return industryName;
+        }
+
+        public void setIndustryName(String industryName) {
+            this.industryName = industryName;
         }
 
         public String getLevel() {
@@ -341,46 +415,6 @@ public class StoreDetailModel implements Serializable {
 
         public void setBusinessHours(String businessHours) {
             this.businessHours = businessHours;
-        }
-
-        public String getOverTimeUnit() {
-            return overTimeUnit;
-        }
-
-        public void setOverTimeUnit(String overTimeUnit) {
-            this.overTimeUnit = overTimeUnit;
-        }
-
-        public String getFreeTime() {
-            return freeTime;
-        }
-
-        public void setFreeTime(String freeTime) {
-            this.freeTime = freeTime;
-        }
-
-        public String getUnitPrice() {
-            return unitPrice;
-        }
-
-        public void setUnitPrice(String unitPrice) {
-            this.unitPrice = unitPrice;
-        }
-
-        public String getMaxPriceDay() {
-            return maxPriceDay;
-        }
-
-        public void setMaxPriceDay(String maxPriceDay) {
-            this.maxPriceDay = maxPriceDay;
-        }
-
-        public String getInstallTime() {
-            return installTime;
-        }
-
-        public void setInstallTime(String installTime) {
-            this.installTime = installTime;
         }
 
         public String getLatitude() {
@@ -439,22 +473,6 @@ public class StoreDetailModel implements Serializable {
             this.addBdAdminId = addBdAdminId;
         }
 
-        public String getLastBindTime() {
-            return lastBindTime;
-        }
-
-        public void setLastBindTime(String lastBindTime) {
-            this.lastBindTime = lastBindTime;
-        }
-
-        public String getLastVisitTime() {
-            return lastVisitTime;
-        }
-
-        public void setLastVisitTime(String lastVisitTime) {
-            this.lastVisitTime = lastVisitTime;
-        }
-
         public String getStoreShareRate() {
             return storeShareRate;
         }
@@ -495,12 +513,12 @@ public class StoreDetailModel implements Serializable {
             this.status = status;
         }
 
-        public String getIsBusiness() {
-            return isBusiness;
+        public String getStatusStr() {
+            return statusStr;
         }
 
-        public void setIsBusiness(String isBusiness) {
-            this.isBusiness = isBusiness;
+        public void setStatusStr(String statusStr) {
+            this.statusStr = statusStr;
         }
 
         public String getNeedInstallDeviceNum() {
@@ -527,20 +545,12 @@ public class StoreDetailModel implements Serializable {
             this.type = type;
         }
 
-        public String getDeviceAutoCloseTime() {
-            return deviceAutoCloseTime;
+        public String getArrearsMoney() {
+            return arrearsMoney;
         }
 
-        public void setDeviceAutoCloseTime(String deviceAutoCloseTime) {
-            this.deviceAutoCloseTime = deviceAutoCloseTime;
-        }
-
-        public String getFreeMoney() {
-            return freeMoney;
-        }
-
-        public void setFreeMoney(String freeMoney) {
-            this.freeMoney = freeMoney;
+        public void setArrearsMoney(String arrearsMoney) {
+            this.arrearsMoney = arrearsMoney;
         }
 
         public String getVisitStatus() {
@@ -551,6 +561,14 @@ public class StoreDetailModel implements Serializable {
             this.visitStatus = visitStatus;
         }
 
+        public String getVisitStatusStr() {
+            return visitStatusStr;
+        }
+
+        public void setVisitStatusStr(String visitStatusStr) {
+            this.visitStatusStr = visitStatusStr;
+        }
+
         public String getContractStatus() {
             return contractStatus;
         }
@@ -559,12 +577,12 @@ public class StoreDetailModel implements Serializable {
             this.contractStatus = contractStatus;
         }
 
-        public String getCategoryId() {
-            return categoryId;
+        public String getMaxOrderNum() {
+            return maxOrderNum;
         }
 
-        public void setCategoryId(String categoryId) {
-            this.categoryId = categoryId;
+        public void setMaxOrderNum(String maxOrderNum) {
+            this.maxOrderNum = maxOrderNum;
         }
 
         public String getCreateTime() {
@@ -599,20 +617,20 @@ public class StoreDetailModel implements Serializable {
             this.transferStatus = transferStatus;
         }
 
-        public String getTotalRevenue() {
-            return totalRevenue;
+        public String getInstallStatusStr() {
+            return installStatusStr;
         }
 
-        public void setTotalRevenue(String totalRevenue) {
-            this.totalRevenue = totalRevenue;
+        public void setInstallStatusStr(String installStatusStr) {
+            this.installStatusStr = installStatusStr;
         }
 
-        public String getDeviceNumber() {
-            return deviceNumber;
+        public String getInstallStatus() {
+            return installStatus;
         }
 
-        public void setDeviceNumber(String deviceNumber) {
-            this.deviceNumber = deviceNumber;
+        public void setInstallStatus(String installStatus) {
+            this.installStatus = installStatus;
         }
     }
 }

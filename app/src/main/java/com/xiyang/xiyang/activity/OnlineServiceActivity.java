@@ -238,20 +238,24 @@ public class OnlineServiceActivity extends BaseActivity {
 //                    Collections.reverse(list);
                     adapter = new OnlineServiceAdapter(OnlineServiceActivity.this, list);
                     listView.setAdapter(adapter);
-                    listView.post(new Runnable() {
+
+                    //stackFromBottom设置为true，表示列表内容从下面开始显示
+                    //transcriptMode设置为alwaysScroll的话，当内容满屏的时候自动滚动显示最后一条。
+
+                    /*listView.post(new Runnable() {
                         @Override
                         public void run() {
-                            // Select the last row so it will scroll into view...
+                            //将列表滚动到列表最底部
                             listView.setSelection(adapter.getCount() - 1);
                         }
-                    });
+                    });*/
                 }
             }
         });
     }
 
     private void RequestOnlineServiceMore(Map<String, String> params) {
-        OkhttpUtil.okHttpGet(URLs.OnlineService, params, headerMap, new CallBackUtil<OnlineServiceModel>() {
+        OkhttpUtil.okHttpPostJson(URLs.OnlineService, GsonUtils.toJson(params), headerMap, new CallBackUtil<OnlineServiceModel>() {
             @Override
             public OnlineServiceModel onParseResponse(Call call, Response response) {
                 return null;
@@ -267,8 +271,8 @@ public class OnlineServiceActivity extends BaseActivity {
 
             @Override
             public void onResponse(OnlineServiceModel response) {
-//                hideProgress();
-                showContentPage();
+                hideProgress();
+//                showContentPage();
                 List<OnlineServiceModel.RecordsBean> list1 = new ArrayList<>();
                 list1 = response.getRecords();
                 if (list1.size() == 0) {

@@ -102,11 +102,19 @@ public class ChangeStoreActivity extends BaseActivity {
         textView3.setHint(model_sdm.getStoreInfo().getAccount());
         textView4.setText(model_sdm.getStoreInfo().getContactName());
         textView5.setText(model_sdm.getStoreInfo().getContactPhone());
-//        textView6.setHint(model_sdm.getStoreInfo().get);
-//        textView7.setText(model_sdm.getStoreInfo().get);
+
+        industryId = model_sdm.getStoreInfo().getIndustryId();
+        textView6.setText(model_sdm.getStoreInfo().getIndustryName());
+        provinceId = model_sdm.getStoreInfo().getProvinceId();
+        cityId = model_sdm.getStoreInfo().getCityId();
+        areaId = model_sdm.getStoreInfo().getAreaId();
+        textView7.setText(model_sdm.getStoreInfo().getProvinceName()+model_sdm.getStoreInfo().getCityName()+model_sdm.getStoreInfo().getAreaName());
+
         textView8.setText(model_sdm.getStoreInfo().getAddress());
         textView9.setText(model_sdm.getStoreInfo().getBusinessHours());
-        textView10.setText(model_sdm.getStoreInfo().getIsLoss());
+
+        isTrsanfter = model_sdm.getStoreInfo().getTransferStatus();
+        textView10.setText(model_sdm.getStoreInfo().getTransferStatusStr());
 
         Glide.with(ChangeStoreActivity.this)
                 .load(model_sdm.getStoreInfo().getImage())
