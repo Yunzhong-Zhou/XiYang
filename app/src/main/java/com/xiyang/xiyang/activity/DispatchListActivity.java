@@ -489,6 +489,7 @@ public class DispatchListActivity extends BaseActivity {
             case R.id.tv_confirm:
                 //创建工单
                 bundle.putInt("type", 1);
+                bundle.putInt("guzhang",-1);
                 CommonUtil.gotoActivityWithData(DispatchListActivity.this, AddWorkListActivity.class, bundle);
                 break;
         }

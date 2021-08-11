@@ -101,9 +101,9 @@ public class StaffDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_gangwei:
                 //升职降职
-                if (localUserInfo.getUserJob().equals("BDM"))
+               /* if (localUserInfo.getUserJob().equals("BDM"))
                     myToast("调整岗位需CM及以上");
-                else
+                else*/
                     CommonUtil.gotoActivityWithData(StaffDetailActivity.this, AdjustJobActivity.class, bundle);
                 break;
         }

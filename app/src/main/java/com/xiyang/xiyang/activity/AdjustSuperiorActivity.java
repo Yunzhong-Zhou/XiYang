@@ -157,7 +157,7 @@ public class AdjustSuperiorActivity extends BaseActivity {
                 params.clear();
                 params.put("mobile", localUserInfo.getPhonenumber());
 //                params.put("type", "37");
-                RequestCode(params);//获取验证码
+                RequestCode(params,"");//获取验证码
                 break;
             case R.id.tv_confirm:
                 //提交
@@ -241,8 +241,8 @@ public class AdjustSuperiorActivity extends BaseActivity {
     /**
      * 发送验证码
      */
-    private void RequestCode(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
+    private void RequestCode(HashMap<String, String> params,String type) {
+        OkhttpUtil.okHttpPost(URLs.Code_yonghu+type, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

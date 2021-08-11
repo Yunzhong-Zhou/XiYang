@@ -19,6 +19,8 @@ public class DeviceRoomModel implements Serializable {
     private String storeId;
     private String roomName;
     private String roomId;
+    private String merchantId;
+    private String merchantName;
     /**
      * productKey : string
      * moduleName : string
@@ -29,6 +31,22 @@ public class DeviceRoomModel implements Serializable {
     private String moduleName;
     private String secret;
 
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
 
     public String getChildName() {
         return childName;

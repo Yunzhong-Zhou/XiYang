@@ -111,9 +111,16 @@ public class AddWorkListActivity extends BaseActivity {
         list_work.add("其他工单");
 
         type = getIntent().getIntExtra("type", 0);
+        i_guzhang = getIntent().getIntExtra("guzhang", -1);
+
+        deviceName = getIntent().getStringExtra("deviceName");
+        tv_shebeiguzhang.setText(deviceName);
+        storeId = getIntent().getStringExtra("storeId");
+        tv_xuanzemendian.setText(getIntent().getStringExtra("storeName"));
+
         tv_gongdanleixing.setText(list_work.get(type));
         titleView.setTitle(list_work.get(type));
-        if (type == 1){
+        if (type == 1) {
             type = 2;
         }
         changeUI();
@@ -136,9 +143,13 @@ public class AddWorkListActivity extends BaseActivity {
             @Override
             public void onResponse(CommonModel response) {
                 hideProgress();
-                i_guzhang = -1;
-                workOrderType = "";
                 list_guzhang = response.getList();
+
+                if (i_guzhang != -1 && list_guzhang.size() > i_guzhang) {
+                    workOrderType = list_guzhang.get(i_guzhang).getId();
+                    tv_guzhangleixing.setText(list_guzhang.get(i_guzhang).getName());
+                }
+
             }
         });
 
@@ -445,11 +456,11 @@ public class AddWorkListActivity extends BaseActivity {
             public void onResponse(String response) {
                 myToast("提交成功");
                 hideProgress();
-                if (localUserInfo.getUserJob().equals("BD")){
+                if (localUserInfo.getUserJob().equals("BD")) {
                     Bundle bundle = new Bundle();
                     bundle.putString("fetch", "1");//1待接工单2我的工单
                     CommonUtil.gotoActivityWithData(AddWorkListActivity.this, MyWorkListActivity.class, bundle, true);
-                }else finish();
+                } else finish();
 
             }
         });
@@ -519,7 +530,7 @@ public class AddWorkListActivity extends BaseActivity {
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
                 if (position == 1) {
                     type = 2;
-                }else {
+                } else {
                     type = position;
                 }
                 tv_gongdanleixing.setText(list_work.get(position));
@@ -558,9 +569,10 @@ public class AddWorkListActivity extends BaseActivity {
             protected void convert(ViewHolder holder, CommonModel.ListBean model, int position) {
                 TextView tv = holder.getView(R.id.textView1);
                 tv.setText(model.getName());
-                if (i_guzhang == position)
+                if (i_guzhang == position) {
+                    textView.setText(model.getName());
                     tv.setTextColor(getResources().getColor(R.color.green));
-                else
+                } else
                     tv.setTextColor(getResources().getColor(R.color.black1));
             }
         };

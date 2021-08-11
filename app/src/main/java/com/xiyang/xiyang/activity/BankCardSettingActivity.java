@@ -236,10 +236,10 @@ public class BankCardSettingActivity extends BaseActivity {
                 showProgress(true, getString(R.string.app_sendcode_hint1));
                 textView4.setClickable(false);
                 HashMap<String, String> params1 = new HashMap<>();
-                params1.put("mobile", localUserInfo.getPhonenumber());
-//                params1.put("type", "33");
+//                params1.put("mobile", localUserInfo.getPhonenumber());
+//                params1.put("type", "BIND_BANK_CARD");//忘记密码:FORGET_PASSWORD; 添加员工:ADD_EMPLOYEE;提现:WITHDRAWAL; 设置交易密码:SET_TRADE_PASSWORD; LOGIN:登录; BIND_BANK_CARD:绑定银行卡
 //                params1.put("mobile_state_code", localUserInfo.getMobile_State_Code());
-                RequestCode(params1);//获取验证码
+                RequestCode(params1,"BIND_BANK_CARD");//获取验证码
                 break;
             case R.id.textView5:
                 //提交
@@ -266,8 +266,8 @@ public class BankCardSettingActivity extends BaseActivity {
     }
 
     //发送验证码
-    private void RequestCode(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_yinhangka, params, headerMap, new CallBackUtil<String>() {
+    private void RequestCode(HashMap<String, String> params, String type) {
+        OkhttpUtil.okHttpPost(URLs.Code_yinhangka+type, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

@@ -281,7 +281,6 @@ public class AddStaffActivity_BD extends BaseActivity {
     @Override
     protected void updateView() {
         titleView.setTitle("添加新员工");
-
     }
 
     //获取验证码倒计时

@@ -44,9 +44,9 @@ public class MyWorkListActivity extends BaseActivity {
     List<MyWorkListModel.RecordsBean> list = new ArrayList<>();
     CommonAdapter<MyWorkListModel.RecordsBean> mAdapter;
     //筛选
-    private LinearLayout linearLayout1, linearLayout2, linearLayout3;
-    private TextView textView1, textView2, textView3;
-    private View view1, view2, view3;
+    private LinearLayout linearLayout1, linearLayout2;
+    private TextView textView1, textView2;
+    private View view1, view2;
     private LinearLayout pop_view;
     int page = 1;
     String type = "", sort = "desc", fetch = "1", startTime = "", endTime = "", url = "";

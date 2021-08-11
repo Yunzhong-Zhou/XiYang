@@ -477,7 +477,7 @@ public class AddStoreActivity extends BaseActivity {
      */
     private void calculateFenCheng() {
         if ((Integer.valueOf(merchantShareRate)+Integer.valueOf(storeScale)
-                +Integer.valueOf(workerScale)+Integer.valueOf(deviceScale)) > 90){
+                +Integer.valueOf(workerScale)+Integer.valueOf(deviceScale)) > 100){
             if (!merchantShareRate.equals("0")) {
                 tv_max1.setVisibility(View.VISIBLE);
             }
@@ -496,7 +496,6 @@ public class AddStoreActivity extends BaseActivity {
             tv_max3.setVisibility(View.GONE);
             tv_max4.setVisibility(View.GONE);
         }
-
 
     }
     @Override

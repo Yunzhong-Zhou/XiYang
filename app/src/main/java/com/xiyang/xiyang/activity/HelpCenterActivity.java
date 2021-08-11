@@ -68,6 +68,7 @@ public class HelpCenterActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_shangbao:
                 bundle.putInt("type", 0);
+                bundle.putInt("guzhang",-1);
                 CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
                 //拨打电话
                 /*showToast("确认拨打 " + model.getLandline_number() + " 吗？", "确认", "取消",
@@ -100,17 +101,20 @@ public class HelpCenterActivity extends BaseActivity {
                 break;
             case R.id.linearLayout1:
                 //无法启动
-                /*bundle.putInt("type", 1);
+                bundle.putInt("type", 0);
+                bundle.putInt("guzhang",1);
                 CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
-                break;*/
+                break;
             case R.id.linearLayout2:
                 //无法关闭
-               /* bundle.putInt("type", 1);
+                bundle.putInt("type", 0);
+                bundle.putInt("guzhang",0);
                 CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
-                break;*/
+                break;
             case R.id.linearLayout3:
                 //设备断网
-                bundle.putInt("type", 1);
+                bundle.putInt("type", 0);
+                bundle.putInt("guzhang",2);
                 CommonUtil.gotoActivityWithData(HelpCenterActivity.this, AddWorkListActivity.class, bundle);
                 break;
         }

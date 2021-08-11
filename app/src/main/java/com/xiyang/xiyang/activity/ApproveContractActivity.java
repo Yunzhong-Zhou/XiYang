@@ -148,12 +148,15 @@ public class ApproveContractActivity extends BaseActivity {
                 break;
             case "1":
                 titleView.setTitle("调整上级审核");
+                sn = getIntent().getStringExtra("num");
                 break;
             case "2":
                 titleView.setTitle("调整市场审核");
+                sn = getIntent().getStringExtra("num");
                 break;
             case "3":
                 titleView.setTitle("升职降职审核");
+                sn = getIntent().getStringExtra("num");
                 break;
             case "4":
                 titleView.setTitle("审批采购审核");

@@ -31,15 +31,15 @@ public class URLs {
     //发送验证码-登录
     public static final String Code_denglu = HOST + "/user/sendSms";
     //发送验证码-个人中心
-    public static final String Code_yonghu = HOST + "/aliyunsms/sms/verificationCode/issue";
+    public static final String Code_yonghu = HOST + "/aliyunsms/sms/manage/verificationCode/issue?type=";
     //发送验证码-修改密码
-    public static final String Code_xiugai = HOST + "/user/sms/verificationCode/issue";
+    public static final String Code_xiugai = HOST + "/aliyunsms/sms/manage/verificationCode/issue?type=";
     //发送验证码-交易密码
-    public static final String Code_jiaoyi = HOST + "/finace/user/tradePassword/verificationCode/issue";
+    public static final String Code_jiaoyi = HOST + "/aliyunsms/sms/manage/verificationCode/issue?type=";
     //发送验证码-银行卡
-    public static final String Code_yinhangka = HOST + "/finace/user/bank/verificationCode/issue";
+    public static final String Code_yinhangka = HOST + "/aliyunsms/sms/manage/verificationCode/issue?type=";
     //发送验证码-提现
-    public static final String Code_tixian = HOST + "/finace/sms/manage/verificationCode/issue";
+    public static final String Code_tixian = HOST + "/aliyunsms/sms/manage/verificationCode/issue?type=";
     //发送验证码-添加员工
     public static final String Code_Staff = HOST + "/applet/user/sendCode";
     //验证码登录
@@ -258,6 +258,8 @@ public class URLs {
     public static final String MyDevice = HOST + "/service-device/device/sysUser/page";
     //定位异常设备
     public static final String DeviceList_Position = HOST + "/bd/device/apply/queryLocationDeviceErrorList";
+    //丢失设备列表
+    public static final String LossDeviceList = HOST + "/device/loss/appQueryDeviceLossList";
     //禁用设备
     public static final String StopDevice= HOST + "/service-device/forbidden/autoAddForbiddenLog";
     //设备详情
@@ -282,6 +284,8 @@ public class URLs {
     public static final String DeviceSetUp = HOST + "/device/aliyuniot/controlDevice";
     //换绑设备
     public static final String ChangeTieDevice = HOST + "/service-device/device/deviceChangeBind";
+    //丢失设备
+    public static final String AddLossDevice = HOST + "/device/loss/autoAddLossLog";
     //设备移位
     public static final String ChangeRoomDevice = HOST + "/service-device/device/moveDeviceToOther";
     //设备回收

@@ -194,6 +194,7 @@ public class StoreDetailModel implements Serializable {
         private String bdAdminName;
         private String addBdAdminScopeOrganId;
         private String addBdAdminId;
+        private String addBdAdminName;
         private String storeShareRate;
         private String workerShareRate;
         private String deviceShareRate;
@@ -216,6 +217,14 @@ public class StoreDetailModel implements Serializable {
         private String transferStatusStr;
         private String installStatusStr;
         private String installStatus;
+
+        public String getAddBdAdminName() {
+            return addBdAdminName;
+        }
+
+        public void setAddBdAdminName(String addBdAdminName) {
+            this.addBdAdminName = addBdAdminName;
+        }
 
         public String getTransferStatusStr() {
             return transferStatusStr;

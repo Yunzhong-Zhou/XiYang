@@ -172,24 +172,37 @@ public class StoreDetailActivity extends BaseActivity {
                 break;
             case R.id.linearLayout1:
                 //设备
-                bundle.putString("storeId",id);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, MyDeviceListActivity.class,bundle);
+                bundle.putString("storeId", id);
+                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, MyDeviceListActivity.class, bundle);
                 break;
             case R.id.linearLayout2:
                 //房号
-//                bundle.putString("storeId",model.getId());
-                bundle.putSerializable("StoreDetailModel", model);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, RoomNoManagementActivity.class, bundle);
+                if (localUserInfo.getUserJob().equals("BD")) {
+                    //                bundle.putString("storeId",model.getId());
+                    bundle.putSerializable("StoreDetailModel", model);
+                    CommonUtil.gotoActivityWithData(StoreDetailActivity.this, RoomNoManagementActivity.class, bundle);
+
+                } else {
+                    myToast("您不是BD");
+                }
                 break;
             case R.id.linearLayout3:
                 //员工
-                bundle.putString("storeId", id);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, StaffManagementActivity.class, bundle);
+                if (localUserInfo.getUserJob().equals("BD")) {
+                    bundle.putString("storeId", id);
+                    CommonUtil.gotoActivityWithData(StoreDetailActivity.this, StaffManagementActivity.class, bundle);
+                } else {
+                    myToast("您不是BD");
+                }
                 break;
             case R.id.linearLayout4:
                 //移位
-                bundle.putSerializable("StoreDetailModel", model);
-                CommonUtil.gotoActivityWithData(StoreDetailActivity.this, MoveDeviceActivity.class, bundle);
+                if (localUserInfo.getUserJob().equals("BD")) {
+                    bundle.putSerializable("StoreDetailModel", model);
+                    CommonUtil.gotoActivityWithData(StoreDetailActivity.this, MoveDeviceActivity.class, bundle);
+                } else {
+                    myToast("您不是BD");
+                }
                 break;
             case R.id.tv_change1:
                 //修改账号
@@ -275,7 +288,7 @@ public class StoreDetailActivity extends BaseActivity {
                 list_mendian.add(new KeyValueModel("门店名称", response.getStoreInfo().getName()));
                 list_mendian.add(new KeyValueModel("门店联系人", response.getStoreInfo().getContactName()));
                 list_mendian.add(new KeyValueModel("门店联系电话", response.getStoreInfo().getContactPhone()));
-                list_mendian.add(new KeyValueModel("门店区域", response.getStoreInfo().getProvinceName()+response.getStoreInfo().getCityName()+response.getStoreInfo().getAreaName()));
+                list_mendian.add(new KeyValueModel("门店区域", response.getStoreInfo().getProvinceName() + response.getStoreInfo().getCityName() + response.getStoreInfo().getAreaName()));
                 list_mendian.add(new KeyValueModel("详细地址", response.getStoreInfo().getAddress()));
                 list_mendian.add(new KeyValueModel("门店等级", response.getStoreInfo().getLevel()));
                 list_mendian.add(new KeyValueModel("门店标识", response.getStoreInfo().getType()));
@@ -284,7 +297,7 @@ public class StoreDetailActivity extends BaseActivity {
                 list_mendian.add(new KeyValueModel("所在行业", response.getStoreInfo().getIndustryName()));
                 list_mendian.add(new KeyValueModel("营业时间", response.getStoreInfo().getBusinessHours()));
                 list_mendian.add(new KeyValueModel("所属大区", response.getStoreInfo().getProvinceName()));
-                list_mendian.add(new KeyValueModel("签约人", response.getStoreInfo().getBdAdminName()));
+                list_mendian.add(new KeyValueModel("签约人", response.getStoreInfo().getAddBdAdminName()));
 //                list_mendian.add(new KeyValueModel("签约类型", response.getStoreInfo().get));
                 list_mendian.add(new KeyValueModel("运维类型", "BD"));
                 list_mendian.add(new KeyValueModel("当前运维人", response.getStoreInfo().getBdAdminName()));
@@ -367,10 +380,10 @@ public class StoreDetailActivity extends BaseActivity {
 //                list_shoufei.add(new KeyValueModel("免费时长", response.getStoreInfo().get));
 //                list_shoufei.add(new KeyValueModel("自定义单价", response.getStoreInfo().get));
                 list_shoufei.add(new KeyValueModel("自定义封顶", response.getStoreInfo().getMaxOrderNum()));
-                list_shoufei.add(new KeyValueModel("门店分成比例", response.getStoreInfo().getStoreShareRate()+"%"));
-                list_shoufei.add(new KeyValueModel("员工分成比例", response.getStoreInfo().getWorkerShareRate()+"%"));
-                list_shoufei.add(new KeyValueModel("设备分成比例", response.getStoreInfo().getDeviceShareRate()+"%"));
-                list_shoufei.add(new KeyValueModel("商户分成比例", response.getStoreInfo().getMerchantShareRate()+"%"));
+                list_shoufei.add(new KeyValueModel("门店分成比例", response.getStoreInfo().getStoreShareRate() + "%"));
+                list_shoufei.add(new KeyValueModel("员工分成比例", response.getStoreInfo().getWorkerShareRate() + "%"));
+                list_shoufei.add(new KeyValueModel("设备分成比例", response.getStoreInfo().getDeviceShareRate() + "%"));
+                list_shoufei.add(new KeyValueModel("商户分成比例", response.getStoreInfo().getMerchantShareRate() + "%"));
 
                 mAdapter_shoufei = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_shoufei) {

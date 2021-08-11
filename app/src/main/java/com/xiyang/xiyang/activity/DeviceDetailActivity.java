@@ -108,6 +108,11 @@ public class DeviceDetailActivity extends BaseActivity {
             case R.id.tv_shangbao:
                 //上报故障
                 bundle.putInt("type", 0);
+                bundle.putInt("guzhang",-1);
+                bundle.putString("deviceName",model.getHostName());
+                bundle.putString("storeId",model.getStoreId());
+                bundle.putString("storeName",model.getStoreName());
+
                 CommonUtil.gotoActivityWithData(DeviceDetailActivity.this, AddWorkListActivity.class, bundle);
                 break;
             case R.id.tv_weixiu:
@@ -200,8 +205,8 @@ public class DeviceDetailActivity extends BaseActivity {
                 list_yingshou.clear();
                 list_yingshou.add(new KeyValueModel("订单总数", response.getTotalOrders()));
                 list_yingshou.add(new KeyValueModel("当日订单数", response.getCurrentDyOrders()));
-                list_yingshou.add(new KeyValueModel("总营收", response.getTotalRevenue()));
-                list_yingshou.add(new KeyValueModel("当日营收", response.getCurrentDyRevenue()));
+                list_yingshou.add(new KeyValueModel("总营收", "￥ "+response.getTotalRevenue()));
+                list_yingshou.add(new KeyValueModel("当日营收", "￥ "+response.getCurrentDyRevenue()));
                 list_yingshou.add(new KeyValueModel("门店标识", response.getStoreLevel()));
 
                 mAdapter_yingshou = new CommonAdapter<KeyValueModel>

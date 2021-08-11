@@ -30,7 +30,7 @@ import okhttp3.Response;
 
 public class ForgetPasswordActivity extends BaseActivity {
     EditText editText1, editText2, editText3, editText4;
-    TextView textView1,tv_confirm;
+    TextView textView1, tv_confirm;
     private TimeCount time;
     String phonenum = "", password1 = "", password2 = "", code = "";
 
@@ -48,7 +48,7 @@ public class ForgetPasswordActivity extends BaseActivity {
     @Override
     protected void initView() {
         editText1 = findViewByID_My(R.id.editText1);
-        editText1.setText(""+localUserInfo.getMobile_State_Code()+"  "+localUserInfo.getPhonenumber());
+        editText1.setText("" + localUserInfo.getMobile_State_Code() + "  " + localUserInfo.getPhonenumber());
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
         editText2 = findViewByID_My(R.id.editText2);
         editText3 = findViewByID_My(R.id.editText3);
@@ -67,10 +67,10 @@ public class ForgetPasswordActivity extends BaseActivity {
                     ForgetPasswordActivity.this.showProgress(true, getString(R.string.app_sendcode_hint1));
                     textView1.setClickable(false);
                     params.clear();
-                    params.put("mobile", localUserInfo.getPhonenumber());
-//                    params.put("type", "31");
+//                    params.put("mobile", localUserInfo.getPhonenumber());
+//                    params.put("type", "FORGET_PASSWORD");//忘记密码:FORGET_PASSWORD; 添加员工:ADD_EMPLOYEE;提现:WITHDRAWAL; 设置交易密码:SET_TRADE_PASSWORD; LOGIN:登录; BIND_BANK_CARD:绑定银行卡
 //                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
-                    RequestCode(params);//获取验证码
+                    RequestCode(params,"FORGET_PASSWORD");//获取验证码
                 }
             }
         });
@@ -91,8 +91,8 @@ public class ForgetPasswordActivity extends BaseActivity {
         });
     }
 
-    private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_xiugai, params, headerMap, new CallBackUtil<String>() {
+    private void RequestCode(Map<String, String> params, String type) {
+        OkhttpUtil.okHttpPost(URLs.Code_xiugai + type, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

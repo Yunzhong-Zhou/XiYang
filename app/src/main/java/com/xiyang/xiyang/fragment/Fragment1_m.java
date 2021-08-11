@@ -16,6 +16,7 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.lihang.ShadowLayout;
 import com.xiyang.xiyang.R;
 import com.xiyang.xiyang.activity.AddBuyActivity;
+import com.xiyang.xiyang.activity.AdjustJobActivity;
 import com.xiyang.xiyang.activity.AdjustMarketActivity;
 import com.xiyang.xiyang.activity.AdjustSuperiorActivity;
 import com.xiyang.xiyang.activity.MainActivity;
@@ -466,9 +467,9 @@ public class Fragment1_m extends BaseFragment {
             case R.id.linearLayout7:
                 //调整岗位
                 if (localUserInfo.getUserJob().equals("BDM")) {
-                    myToast("调整岗位需CM及以上");
-                    /*bundle.putString("job", "BD");
-                    CommonUtil.gotoActivityWithData(getActivity(), AdjustJobActivity.class, bundle);*/
+//                    myToast("调整岗位需CM及以上");
+                    bundle.putString("job", "BD");
+                    CommonUtil.gotoActivityWithData(getActivity(), AdjustJobActivity.class, bundle);
                 } else {
                     bundle.putInt("type", 3);
                     CommonUtil.gotoActivityWithData(getActivity(), SelectLevelActivity.class, bundle);

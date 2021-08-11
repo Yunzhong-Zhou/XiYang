@@ -7,93 +7,59 @@ import java.io.Serializable;
  */
 public class DeviceDetailModel implements Serializable {
     /**
-     * classic : 0
-     * continueNotMovingSalesDays : 0
-     * continueOfflineDays : 0
+     * id : 1410512101939744768
+     * hostName : hostTestdevice1
+     * storeId : 1424918794245246976
+     * storeName : 门店2
+     * merchantId : 1424913384423428096
+     * merchantName : 商户2
+     * installTime : 2021-08-10 10:30:24
+     * network : 1
+     * storeRegion : 河北省沧州市沧县
+     * storeAddress : 黄山大道与嵩山南路交叉路口往南约150米
+     * storeIndustry : 酒店·景点
+     * classic : -1
+     * maintainer : -
+     * lastOfflineTime : null
      * continueOnlineDays : 0
-     * currentDyOrders : 0
-     * currentDyRevenue : 0
-     * hostName : string
-     * id : string
-     * installTime : 2021-07-17T08:21:11.299Z
-     * lastOfflineTime : 2021-07-17T08:21:11.299Z
-     * maintainer : string
-     * network : 0
-     * storeAddress : string
-     * storeIndustry : string
-     * storeLevel : 0
-     * storeName : string
-     * storeRegion : string
+     * continueOfflineDays : 0
+     * continueNotMovingSalesDays : 0
      * totalOrders : 0
+     * currentDyOrders : 0
      * totalRevenue : 0
+     * currentDyRevenue : 0
+     * storeLevel : 0
      */
 
-    private String classic;
-    private String continueNotMovingSalesDays;
-    private String continueOfflineDays;
-    private String continueOnlineDays;
-    private String currentDyOrders;
-    private String currentDyRevenue;
-    private String hostName;
     private String id;
+    private String hostName;
+    private String storeId;
+    private String storeName;
+    private String merchantId;
+    private String merchantName;
     private String installTime;
-    private String lastOfflineTime;
-    private String maintainer;
     private String network;
+    private String storeRegion;
     private String storeAddress;
     private String storeIndustry;
-    private String storeLevel;
-    private String storeName;
-    private String storeRegion;
+    private String classic;
+    private String maintainer;
+    private String lastOfflineTime;
+    private String continueOnlineDays;
+    private String continueOfflineDays;
+    private String continueNotMovingSalesDays;
     private String totalOrders;
+    private String currentDyOrders;
     private String totalRevenue;
+    private String currentDyRevenue;
+    private String storeLevel;
 
-    public String getClassic() {
-        return classic;
+    public String getId() {
+        return id;
     }
 
-    public void setClassic(String classic) {
-        this.classic = classic;
-    }
-
-    public String getContinueNotMovingSalesDays() {
-        return continueNotMovingSalesDays;
-    }
-
-    public void setContinueNotMovingSalesDays(String continueNotMovingSalesDays) {
-        this.continueNotMovingSalesDays = continueNotMovingSalesDays;
-    }
-
-    public String getContinueOfflineDays() {
-        return continueOfflineDays;
-    }
-
-    public void setContinueOfflineDays(String continueOfflineDays) {
-        this.continueOfflineDays = continueOfflineDays;
-    }
-
-    public String getContinueOnlineDays() {
-        return continueOnlineDays;
-    }
-
-    public void setContinueOnlineDays(String continueOnlineDays) {
-        this.continueOnlineDays = continueOnlineDays;
-    }
-
-    public String getCurrentDyOrders() {
-        return currentDyOrders;
-    }
-
-    public void setCurrentDyOrders(String currentDyOrders) {
-        this.currentDyOrders = currentDyOrders;
-    }
-
-    public String getCurrentDyRevenue() {
-        return currentDyRevenue;
-    }
-
-    public void setCurrentDyRevenue(String currentDyRevenue) {
-        this.currentDyRevenue = currentDyRevenue;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getHostName() {
@@ -104,12 +70,36 @@ public class DeviceDetailModel implements Serializable {
         this.hostName = hostName;
     }
 
-    public String getId() {
-        return id;
+    public String getStoreId() {
+        return storeId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     public String getInstallTime() {
@@ -120,28 +110,20 @@ public class DeviceDetailModel implements Serializable {
         this.installTime = installTime;
     }
 
-    public String getLastOfflineTime() {
-        return lastOfflineTime;
-    }
-
-    public void setLastOfflineTime(String lastOfflineTime) {
-        this.lastOfflineTime = lastOfflineTime;
-    }
-
-    public String getMaintainer() {
-        return maintainer;
-    }
-
-    public void setMaintainer(String maintainer) {
-        this.maintainer = maintainer;
-    }
-
     public String getNetwork() {
         return network;
     }
 
     public void setNetwork(String network) {
         this.network = network;
+    }
+
+    public String getStoreRegion() {
+        return storeRegion;
+    }
+
+    public void setStoreRegion(String storeRegion) {
+        this.storeRegion = storeRegion;
     }
 
     public String getStoreAddress() {
@@ -160,28 +142,52 @@ public class DeviceDetailModel implements Serializable {
         this.storeIndustry = storeIndustry;
     }
 
-    public String getStoreLevel() {
-        return storeLevel;
+    public String getClassic() {
+        return classic;
     }
 
-    public void setStoreLevel(String storeLevel) {
-        this.storeLevel = storeLevel;
+    public void setClassic(String classic) {
+        this.classic = classic;
     }
 
-    public String getStoreName() {
-        return storeName;
+    public String getMaintainer() {
+        return maintainer;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
+    public void setMaintainer(String maintainer) {
+        this.maintainer = maintainer;
     }
 
-    public String getStoreRegion() {
-        return storeRegion;
+    public String getLastOfflineTime() {
+        return lastOfflineTime;
     }
 
-    public void setStoreRegion(String storeRegion) {
-        this.storeRegion = storeRegion;
+    public void setLastOfflineTime(String lastOfflineTime) {
+        this.lastOfflineTime = lastOfflineTime;
+    }
+
+    public String getContinueOnlineDays() {
+        return continueOnlineDays;
+    }
+
+    public void setContinueOnlineDays(String continueOnlineDays) {
+        this.continueOnlineDays = continueOnlineDays;
+    }
+
+    public String getContinueOfflineDays() {
+        return continueOfflineDays;
+    }
+
+    public void setContinueOfflineDays(String continueOfflineDays) {
+        this.continueOfflineDays = continueOfflineDays;
+    }
+
+    public String getContinueNotMovingSalesDays() {
+        return continueNotMovingSalesDays;
+    }
+
+    public void setContinueNotMovingSalesDays(String continueNotMovingSalesDays) {
+        this.continueNotMovingSalesDays = continueNotMovingSalesDays;
     }
 
     public String getTotalOrders() {
@@ -192,11 +198,35 @@ public class DeviceDetailModel implements Serializable {
         this.totalOrders = totalOrders;
     }
 
+    public String getCurrentDyOrders() {
+        return currentDyOrders;
+    }
+
+    public void setCurrentDyOrders(String currentDyOrders) {
+        this.currentDyOrders = currentDyOrders;
+    }
+
     public String getTotalRevenue() {
         return totalRevenue;
     }
 
     public void setTotalRevenue(String totalRevenue) {
         this.totalRevenue = totalRevenue;
+    }
+
+    public String getCurrentDyRevenue() {
+        return currentDyRevenue;
+    }
+
+    public void setCurrentDyRevenue(String currentDyRevenue) {
+        this.currentDyRevenue = currentDyRevenue;
+    }
+
+    public String getStoreLevel() {
+        return storeLevel;
+    }
+
+    public void setStoreLevel(String storeLevel) {
+        this.storeLevel = storeLevel;
     }
 }

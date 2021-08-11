@@ -67,10 +67,10 @@ public class SetTransactionPasswordActivity extends BaseActivity {
                     SetTransactionPasswordActivity.this.showProgress(true, getString(R.string.app_sendcode_hint1));
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("mobile", localUserInfo.getPhonenumber());
-//                    params.put("type", "32");
+//                    params.put("mobile", localUserInfo.getPhonenumber());
+//                    params.put("type", "SET_TRADE_PASSWORD");//忘记密码:FORGET_PASSWORD; 添加员工:ADD_EMPLOYEE;提现:WITHDRAWAL; 设置交易密码:SET_TRADE_PASSWORD; LOGIN:登录; BIND_BANK_CARD:绑定银行卡
 //                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
-                    RequestCode(params);//获取验证码
+                    RequestCode(params,"SET_TRADE_PASSWORD");//获取验证码
                 }
             }
         });
@@ -91,8 +91,8 @@ public class SetTransactionPasswordActivity extends BaseActivity {
         });
     }
 
-    private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_jiaoyi, params, headerMap, new CallBackUtil<String>() {
+    private void RequestCode(Map<String, String> params, String type) {
+        OkhttpUtil.okHttpPost(URLs.Code_jiaoyi+type, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

@@ -21,6 +21,7 @@ import com.xiyang.xiyang.activity.AffairListActivity;
 import com.xiyang.xiyang.activity.DebugDeviceActivity;
 import com.xiyang.xiyang.activity.DeviceDetailActivity;
 import com.xiyang.xiyang.activity.DeviceListActivity_Position;
+import com.xiyang.xiyang.activity.LossDeviceListActivity;
 import com.xiyang.xiyang.activity.MainActivity;
 import com.xiyang.xiyang.activity.MyDeviceListActivity;
 import com.xiyang.xiyang.activity.SelectDeviceActivity;
@@ -350,13 +351,15 @@ public class Fragment3 extends BaseFragment {
                 CommonUtil.gotoActivityWithData(getActivity(),AffairListActivity.class,bundle);
                 break;
             case R.id.linearLayout10:
-                //设备报失-工单
-                bundle.putInt("type", 1);
-                CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);
+                //设备报失
+                CommonUtil.gotoActivity(getActivity(), LossDeviceListActivity.class);
+                /*bundle.putInt("type", 1);
+                CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);*/
                 break;
             case R.id.linearLayout11:
                 //设备故障-工单
                 bundle.putInt("type", 0);
+                bundle.putInt("guzhang",-1);
                 CommonUtil.gotoActivityWithData(getActivity(), AddWorkListActivity.class, bundle);
                 break;
             case R.id.linearLayout12:

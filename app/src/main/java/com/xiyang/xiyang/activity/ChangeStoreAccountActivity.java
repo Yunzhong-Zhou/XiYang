@@ -90,9 +90,9 @@ public class ChangeStoreAccountActivity extends BaseActivity {
                     showProgress(true, getString(R.string.app_sendcode_hint1));
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("mobile", storeAccount);
+//                    params.put("mobile", storeAccount);
 //                    params.put("type", "8");
-                    RequestCode(params);//获取验证码
+                    RequestCode(params,"");//获取验证码
                 }
             }
         });
@@ -114,8 +114,8 @@ public class ChangeStoreAccountActivity extends BaseActivity {
         });
     }
 
-    private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
+    private void RequestCode(Map<String, String> params,String type) {
+        OkhttpUtil.okHttpPost(URLs.Code_yonghu+type, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

@@ -101,7 +101,11 @@ public class AdjustJobActivity extends BaseActivity {
             }
         }
 
-        list_juese.add("BDM");
+        if (localUserInfo.getUserJob().equals("CM")){
+            if (!job.equals("BDM")) {
+                list_juese.add("BDM");
+            }
+        }
         list_juese.add("BD");
         editText2.setText(list_juese.get(itme_juese));
 
@@ -148,7 +152,7 @@ public class AdjustJobActivity extends BaseActivity {
                 HashMap<String, String> params1 = new HashMap<>();
                 params1.put("mobile", localUserInfo.getPhonenumber());
 //                params1.put("type", "37");
-                RequestCode(params1);//获取验证码
+                RequestCode(params1,"");//获取验证码
                 break;
             case R.id.tv_confirm:
                 //提交
@@ -256,8 +260,8 @@ public class AdjustJobActivity extends BaseActivity {
     /**
      * 发送验证码
      */
-    private void RequestCode(HashMap<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_yonghu, params, headerMap, new CallBackUtil<String>() {
+    private void RequestCode(HashMap<String, String> params,String type) {
+        OkhttpUtil.okHttpPost(URLs.Code_yonghu+type, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

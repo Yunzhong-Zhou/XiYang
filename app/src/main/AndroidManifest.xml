@@ -272,6 +272,12 @@
             android:name=".activity.DebugDeviceActivity"
             android:label="调试设备" />
         <activity
+            android:name=".activity.LossDeviceListActivity"
+            android:label="设备报失列表" />
+        <activity
+            android:name=".activity.AddLossDeviceActivity"
+            android:label="添加设备报失" />
+        <activity
             android:name=".activity.AddWorkListActivity"
             android:label="创建工单" />
         <activity

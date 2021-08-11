@@ -38,7 +38,7 @@ import okhttp3.Response;
 
 /**
  * Created by Mr.Z on 2021/3/28.
- * 我的商户
+ * 我的门店
  */
 public class MyStoreListActivity extends BaseActivity {
     int requestCode = 0, selectItem = -1;
