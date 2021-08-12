@@ -75,7 +75,7 @@ public class MyVisitListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                params.put("current", page + "");
+                params.put("page", page + "");
                 params.put("pageSize", "10");
                 params.put("type", type);
                 params.put("createTime", createTime);
@@ -86,7 +86,7 @@ public class MyVisitListActivity extends BaseActivity {
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("current", page + "");
+                params.put("page", page + "");
                 params.put("pageSize", "10");
                 params.put("type", type);
                 params.put("createTime", createTime);
@@ -247,7 +247,7 @@ public class MyVisitListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        params.put("current", page + "");
+        params.put("page", page + "");
         params.put("pageSize", "10");
         params.put("type", type);
         params.put("createTime", createTime);

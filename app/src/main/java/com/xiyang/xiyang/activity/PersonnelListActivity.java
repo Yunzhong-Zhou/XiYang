@@ -76,7 +76,7 @@ public class PersonnelListActivity extends BaseActivity {
                     case 1:
                         //调整上级
                         params.put("type", "6");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
-                        params.put("current", page + "");
+                        params.put("page", page + "");
                         params.put("pageSize", "10");
                         params.put("keyWord", keyWord);
                         params.put("above", "");//是否越级
@@ -86,7 +86,7 @@ public class PersonnelListActivity extends BaseActivity {
                     case 2:
                         //调整市场
                         params.put("type", "7");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
-                        params.put("current", page + "");
+                        params.put("page", page + "");
                         params.put("pageSize", "10");
                         params.put("keyWord", keyWord);
                         params.put("above", "");//是否越级
@@ -96,7 +96,7 @@ public class PersonnelListActivity extends BaseActivity {
                     case 3:
                         //升职降职
                         params.put("type", "4");//类型 1-解除,2-绑定,3-换绑,4-升职,5-降职,6-调整上级,7-调整运维市场
-                        params.put("current", page + "");
+                        params.put("page", page + "");
                         params.put("pageSize", "10");
                         params.put("keyWord", keyWord);
                         params.put("above", "");//是否越级
@@ -106,7 +106,7 @@ public class PersonnelListActivity extends BaseActivity {
                     case 4:
                         //采购审批
                         params.put("page", page + "");
-                        params.put("size", "10");
+                        params.put("pageSize", "10");
                         params.put("keyWord", keyWord);
                         requestList(params, URLs.CaiGouList);
                         break;

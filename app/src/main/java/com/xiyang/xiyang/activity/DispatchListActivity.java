@@ -72,7 +72,7 @@ public class DispatchListActivity extends BaseActivity {
                 page = 1;
                 params.clear();
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
                 params.put("keyword", keyword);
                 switch (type_m) {
@@ -96,7 +96,7 @@ public class DispatchListActivity extends BaseActivity {
                 page = page + 1;
                 params.clear();
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
                 params.put("keyword", keyword);
                 switch (type_m) {
@@ -161,7 +161,7 @@ public class DispatchListActivity extends BaseActivity {
         page = 1;
         params.clear();
         params.put("page", page + "");
-        params.put("size", "10");
+        params.put("pageSize", "10");
         params.put("status", type + "");//1:待处理 2:已完成; 3:上报中
         params.put("keyword", keyword);
         switch (type_m) {

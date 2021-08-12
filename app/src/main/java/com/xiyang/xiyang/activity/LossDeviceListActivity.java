@@ -72,7 +72,7 @@ public class LossDeviceListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("keyword", keyword);
                 params.put("status", status);
                 params.put("storeId", storeId);
@@ -85,7 +85,7 @@ public class LossDeviceListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("keyword", keyword);
                 params.put("status", status);
                 params.put("storeId", storeId);
@@ -261,7 +261,7 @@ public class LossDeviceListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("size", "10");
+        params.put("pageSize", "10");
         params.put("keyword", keyword);
         params.put("status", status);
         params.put("storeId", storeId);

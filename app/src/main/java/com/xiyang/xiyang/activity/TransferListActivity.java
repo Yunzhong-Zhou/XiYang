@@ -78,7 +78,7 @@ public class TransferListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("sort", sort);
                 params.put("startTime", startTime);
                 params.put("endTime", endTime);
@@ -90,7 +90,7 @@ public class TransferListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("sort", sort);
                 params.put("startTime", startTime);
                 params.put("endTime", endTime);
@@ -259,7 +259,7 @@ public class TransferListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("size", "10");
+        params.put("pageSize", "10");
         params.put("sort", sort);
         params.put("startTime", startTime);
         params.put("endTime", endTime);

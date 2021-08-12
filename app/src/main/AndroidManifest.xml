@@ -117,9 +117,6 @@
         <activity
             android:name=".activity.ShopDetailActivity"
             android:label="商户详情" />
-        <activity
-            android:name=".activity.CancelShopActivity"
-            android:label="取消商户-添加取消合同" />
 
         <activity
             android:name=".activity.AddContractActivity"
@@ -165,20 +162,11 @@
             android:name=".activity.AdjustSuperiorActivity"
             android:label="调整上级" />
         <activity
-            android:name=".activity.AdjustSuperiorListActivity"
-            android:label="调整上级列表" />
-        <activity
             android:name=".activity.AdjustMarketActivity"
             android:label="调整市场" />
         <activity
-            android:name=".activity.AdjustMarketListActivity"
-            android:label="调整市场列表" />
-        <activity
             android:name=".activity.AdjustJobActivity"
             android:label="调整岗位" />
-        <activity
-            android:name=".activity.AdjustJobListActivity"
-            android:label="调整岗位列表" />
         <activity
             android:name=".activity.PersonnelActivity"
             android:label="人事记录" />

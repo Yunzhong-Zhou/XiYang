@@ -87,7 +87,7 @@ public class TakeCashActivity extends BaseActivity {
 
         textView6 = findViewByID_My(R.id.textView6);
         textView6.setText("验证码已发送至"
-                + "+" + localUserInfo.getMobile_State_Code() + " "
+                + "" + localUserInfo.getMobile_State_Code() + " "
                 + localUserInfo.getPhonenumber());
         textView6.setVisibility(View.INVISIBLE);
 

@@ -73,7 +73,7 @@ public class MyTakeCashActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("orderField", orderField);
                 params.put("orderType", sort);
@@ -85,7 +85,7 @@ public class MyTakeCashActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("orderField", orderField);
                 params.put("orderType", sort);
@@ -244,7 +244,7 @@ public class MyTakeCashActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("size", "10");
+        params.put("pageSize", "10");
         params.put("status", status);
         params.put("orderField", orderField);
         params.put("orderType", sort);

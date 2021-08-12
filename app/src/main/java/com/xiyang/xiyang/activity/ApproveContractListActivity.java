@@ -80,7 +80,7 @@ public class ApproveContractListActivity extends BaseActivity {
                 page = 1;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);//处理结果 1-已提交，2-进行中，3-完成
                 params.put("title", title);//搜索说明
                 params.put("startTime", startTime);
@@ -93,7 +93,7 @@ public class ApproveContractListActivity extends BaseActivity {
                 page = page + 1;
                 Map<String, String> params = new HashMap<>();
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);//处理结果 1-已提交，2-进行中，3-完成
                 params.put("title", title);//搜索说明
                 params.put("startTime", startTime);
@@ -154,7 +154,7 @@ public class ApproveContractListActivity extends BaseActivity {
         page = 1;
         Map<String, String> params = new HashMap<>();
         params.put("page", page + "");
-        params.put("count", "10");
+        params.put("pageSize", "10");
         params.put("status", status);//处理结果 1-已提交，2-进行中，3-完成
         params.put("title", title);//搜索说明
         params.put("startTime", startTime);

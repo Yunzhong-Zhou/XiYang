@@ -60,12 +60,12 @@ import static com.xiyang.xiyang.utils.MyChooseImages.REQUEST_CODE_PICK_IMAGE;
  */
 public class AddStoreActivity extends BaseActivity {
     EditText textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8,
-            textView9, textView10, textView11, textView12, textView13, textView14,textView15;
-    TextView tv_max1,tv_max2,tv_max3,tv_max4;
+            textView9, textView10, textView11, textView12, textView13, textView14, textView15;
+    TextView tv_max1, tv_max2, tv_max3, tv_max4;
     ImageView imageView1;
     String merchantId = "", name = "", childName = "", account = "", contactName = "", contactPhone = "", industryId = "",
-            address = "", businessHours = "", isTrsanfter = "1",merchantShareRate="0", storeScale = "0", workerScale = "0", deviceScale = "0",
-            image = "", latitude = "", longitude = "",provinceId="",cityId="",areaId="";
+            address = "", businessHours = "", isTrsanfter = "1", merchantShareRate = "0", storeScale = "0", workerScale = "0", deviceScale = "0",
+            image = "", latitude = "", longitude = "", provinceId = "", cityId = "", areaId = "";
     List<String> list_truefalse = new ArrayList<>();
     int itme_truefalse = 1;
     List<String> list_yingye = new ArrayList<>();
@@ -205,13 +205,12 @@ public class AddStoreActivity extends BaseActivity {
                 if (!s.toString().trim().equals("") && s.length() == 11) {
                     params.clear();
                     params.put("phone", s.toString().trim());
-                    requestDetect(params,textView4);
+                    requestDetect(params, textView4);
                 }
             }
         });
 
     }
-
 
 
     @Override
@@ -452,7 +451,11 @@ public class AddStoreActivity extends BaseActivity {
             myToast("请输入设备分成");
             return false;
         }
-
+        if ((Integer.valueOf(merchantShareRate) + Integer.valueOf(storeScale)
+                + Integer.valueOf(workerScale) + Integer.valueOf(deviceScale)) != 100) {
+            myToast("分成比例相加不是100%");
+            return false;
+        }
         if (imgfile == null) {
             myToast("请选择门头照片");
             return false;
@@ -472,12 +475,13 @@ public class AddStoreActivity extends BaseActivity {
 
         return true;
     }
+
     /**
      * 计算分成
      */
     private void calculateFenCheng() {
-        if ((Integer.valueOf(merchantShareRate)+Integer.valueOf(storeScale)
-                +Integer.valueOf(workerScale)+Integer.valueOf(deviceScale)) > 100){
+        if ((Integer.valueOf(merchantShareRate) + Integer.valueOf(storeScale)
+                + Integer.valueOf(workerScale) + Integer.valueOf(deviceScale)) > 100) {
             if (!merchantShareRate.equals("0")) {
                 tv_max1.setVisibility(View.VISIBLE);
             }
@@ -490,14 +494,14 @@ public class AddStoreActivity extends BaseActivity {
             if (!deviceScale.equals("0")) {
                 tv_max4.setVisibility(View.VISIBLE);
             }
-        }else {
+        } else {
             tv_max1.setVisibility(View.GONE);
             tv_max2.setVisibility(View.GONE);
             tv_max3.setVisibility(View.GONE);
             tv_max4.setVisibility(View.GONE);
         }
-
     }
+
     @Override
     protected void updateView() {
         titleView.setTitle("添加门店");
@@ -558,13 +562,14 @@ public class AddStoreActivity extends BaseActivity {
         }
 
     }
+
     /**
      * 检测账号是否存在
      *
      * @param params
      */
-    private void requestDetect(HashMap<String, String> params,TextView textView) {
-        OkhttpUtil.okHttpGet(URLs.AddShop_Detect,params, headerMap, new CallBackUtil<String>() {
+    private void requestDetect(HashMap<String, String> params, TextView textView) {
+        OkhttpUtil.okHttpGet(URLs.AddShop_Detect, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;
@@ -594,8 +599,10 @@ public class AddStoreActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 提交数据
+     *
      * @param params
      */
     private void requestUpData(Map<String, String> params) {
@@ -711,7 +718,7 @@ public class AddStoreActivity extends BaseActivity {
         showProgress(true, getString(R.string.app_loading2));
         params.clear();
         params.put("id", parentId);
-        params.put("level", maxIdex_chengshi+"");
+        params.put("level", maxIdex_chengshi + "");
         OkhttpUtil.okHttpPostJson(URLs.Region, GsonUtils.toJson(params), headerMap, new CallBackUtil<CommonModel>() {
             @Override
             public CommonModel onParseResponse(Call call, Response response) {

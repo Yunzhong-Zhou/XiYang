@@ -78,7 +78,7 @@ public class AffairListActivity extends BaseActivity {
             public void onRefresh() {
                 //刷新
                 page = 1;
-                params.put("current", page + "");
+                params.put("page", page + "");
                 params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("keyword", keyword);
@@ -93,7 +93,7 @@ public class AffairListActivity extends BaseActivity {
             public void onLoadmore() {
                 page = page + 1;
                 //加载更多
-                params.put("current", page + "");
+                params.put("page", page + "");
                 params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("keyword", keyword);
@@ -417,7 +417,7 @@ public class AffairListActivity extends BaseActivity {
         super.requestServer();
         this.showLoadingPage();
         page = 1;
-        params.put("current", page + "");
+        params.put("page", page + "");
         params.put("pageSize", "10");
         params.put("status", status);
         params.put("keyword", keyword);

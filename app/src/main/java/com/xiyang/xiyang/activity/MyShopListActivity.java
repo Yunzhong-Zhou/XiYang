@@ -76,7 +76,7 @@ public class MyShopListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("keyword", keyword);
                 params.put("instudyId", instudyId);
@@ -91,7 +91,7 @@ public class MyShopListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("count", "10");
+                params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("keyword", keyword);
                 params.put("instudyId", instudyId);
@@ -387,7 +387,7 @@ public class MyShopListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("count", "10");
+        params.put("pageSize", "10");
         params.put("status", status);
         params.put("keyword", keyword);
         params.put("instudyId", instudyId);

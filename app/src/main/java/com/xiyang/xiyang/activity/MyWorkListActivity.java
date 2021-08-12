@@ -77,7 +77,7 @@ public class MyWorkListActivity extends BaseActivity {
                 //刷新
                 page = 1;
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("type", type);
                 params.put("sort", sort);
                 params.put("startTime", startTime);
@@ -91,7 +91,7 @@ public class MyWorkListActivity extends BaseActivity {
                 page = page + 1;
                 //加载更多
                 params.put("page", page + "");
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("type", type);
                 params.put("sort", sort);
                 params.put("startTime", startTime);
@@ -355,7 +355,7 @@ public class MyWorkListActivity extends BaseActivity {
         this.showLoadingPage();
         page = 1;
         params.put("page", page + "");
-        params.put("size", "10");
+        params.put("pageSize", "10");
         params.put("type", type);
         params.put("sort", sort);
         params.put("startTime", startTime);

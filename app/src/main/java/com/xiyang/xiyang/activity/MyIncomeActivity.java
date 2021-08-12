@@ -88,7 +88,7 @@ public class MyIncomeActivity extends BaseActivity {
                     page2 = page2 + 1;
                     params.put("page", page2 + "");
                 }
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("changeType", type + "");
                 params.put("orderField", orderField);
                 params.put("orderType", orderType);
@@ -179,7 +179,7 @@ public class MyIncomeActivity extends BaseActivity {
                 params.clear();
                 page1 = 1;
                 page2 = 1;
-                params.put("size", "10");
+                params.put("pageSize", "10");
                 params.put("page", page1 + "");
                 params.put("changeType", type + "");
                 params.put("orderField", orderField);
@@ -320,7 +320,7 @@ public class MyIncomeActivity extends BaseActivity {
         params.clear();
         page1 = 1;
         page2 = 1;
-        params.put("size", "10");
+        params.put("pageSize", "10");
         params.put("page", page1 + "");
         params.put("changeType", type + "");
         params.put("orderField", orderField);
