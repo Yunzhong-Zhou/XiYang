@@ -121,10 +121,10 @@ public class AddStaffActivity_BD extends BaseActivity {
                     textView1.setClickable(false);
 
                     params.clear();
-                    params.put("mobile", localUserInfo.getPhonenumber());
-//                    params.put("type", "31");
+//                    params.put("mobile", localUserInfo.getPhonenumber());
+//                    params.put("type", "31");//
 //                    params.put("mobile_state_code", localUserInfo.getMobile_State_Code());
-                    RequestCode(params);//获取验证码
+                    RequestCode(params,"ADD_EMPLOYEE");//获取验证码
                 }
             }
         });
@@ -225,8 +225,8 @@ public class AddStaffActivity_BD extends BaseActivity {
         }
     }
 
-    private void RequestCode(Map<String, String> params) {
-        OkhttpUtil.okHttpPost(URLs.Code_Staff, params, headerMap, new CallBackUtil<String>() {
+    private void RequestCode(Map<String, String> params,String type) {
+        OkhttpUtil.okHttpPost(URLs.Code_Staff+type, params, headerMap, new CallBackUtil<String>() {
             @Override
             public String onParseResponse(Call call, Response response) {
                 return null;

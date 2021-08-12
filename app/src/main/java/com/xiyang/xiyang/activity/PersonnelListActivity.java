@@ -224,20 +224,23 @@ public class PersonnelListActivity extends BaseActivity {
                         protected void convert(ViewHolder holder, PersonnelListModel.RecordsBean model, int position) {
                             holder.setText(R.id.tv_id, model.getSn());
                             TextView tv_type = holder.getView(R.id.tv_type);
+
                             switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
-                                case "1":
-                                    tv_type.setText("处理中");
-                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
-                                    break;
                                 case "2":
-                                    tv_type.setText("驳回");
-                                    tv_type.setTextColor(getResources().getColor(R.color.red));
-                                    break;
-                                case "3":
                                     tv_type.setText("已完成");
                                     tv_type.setTextColor(getResources().getColor(R.color.green));
                                     break;
+                                case "3":
+                                    tv_type.setText("驳回");
+                                    tv_type.setTextColor(getResources().getColor(R.color.red));
+                                    break;
+                                default:
+                                    tv_type.setText("处理中");
+                                    tv_type.setTextColor(getResources().getColor(R.color.black3));
+                                    break;
                             }
+
+
                             TextView tv_key1 = holder.getView(R.id.tv_key1);
                             TextView tv_key2 = holder.getView(R.id.tv_key2);
                             TextView tv_key3 = holder.getView(R.id.tv_key3);
@@ -254,14 +257,14 @@ public class PersonnelListActivity extends BaseActivity {
                                 case 2:
                                     //调整市场
                                     String oldcity = "";
-                                    if (model.getOldRegions() !=null){
+                                    if (model.getOldRegions() != null) {
                                         for (PersonnelListModel.RecordsBean.OldRegionsBean bean : model.getOldRegions()) {
                                             oldcity = oldcity + bean.getNameX() + "、";
                                         }
                                     }
 
                                     String newcity = "";
-                                    if (model.getNewRegions() !=null) {
+                                    if (model.getNewRegions() != null) {
                                         for (PersonnelListModel.RecordsBean.NewRegionsBean bean : model.getNewRegions()) {
                                             newcity = newcity + bean.getNameX() + "、";
                                         }

@@ -150,9 +150,9 @@ public class AdjustJobActivity extends BaseActivity {
                 showProgress(true, getString(R.string.app_sendcode_hint1));
                 tv_code.setClickable(false);
                 HashMap<String, String> params1 = new HashMap<>();
-                params1.put("mobile", localUserInfo.getPhonenumber());
-//                params1.put("type", "37");
-                RequestCode(params1,"");//获取验证码
+//                params1.put("mobile", localUserInfo.getPhonenumber());
+//                params1.put("type", "ADJUST_POST");////ADJUST_SUPERIOR:调整上级; ADJUST_MARKET:调整市场; ADJUST_POST:调整岗位; UPDATE_STORE_USER:修改门店账号;
+                RequestCode(params1,"ADJUST_POST");//获取验证码
                 break;
             case R.id.tv_confirm:
                 //提交

@@ -41,7 +41,7 @@ public class URLs {
     //发送验证码-提现
     public static final String Code_tixian = HOST + "/aliyunsms/sms/manage/verificationCode/issue?type=";
     //发送验证码-添加员工
-    public static final String Code_Staff = HOST + "/applet/user/sendCode";
+    public static final String Code_Staff = HOST + "/aliyunsms/sms/manage/verificationCode/issue?type=";
     //验证码登录
     public static final String Login1 = HOST + "/user/login";
     //登录

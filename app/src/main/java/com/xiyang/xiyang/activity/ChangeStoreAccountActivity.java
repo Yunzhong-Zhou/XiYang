@@ -91,8 +91,8 @@ public class ChangeStoreAccountActivity extends BaseActivity {
                     textView1.setClickable(false);
                     HashMap<String, String> params = new HashMap<>();
 //                    params.put("mobile", storeAccount);
-//                    params.put("type", "8");
-                    RequestCode(params,"");//获取验证码
+//                    params.put("type", "UPDATE_STORE_USER");//ADJUST_SUPERIOR:调整上级; ADJUST_MARKET:调整市场; ADJUST_POST:调整岗位; UPDATE_STORE_USER:修改门店账号;
+                    RequestCode(params,"UPDATE_STORE_USER");//获取验证码
                 }
             }
         });

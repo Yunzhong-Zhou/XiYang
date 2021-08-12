@@ -555,18 +555,19 @@ public class PersonnelDetailActivity extends BaseActivity {
                     tv_shenpi.setVisibility(View.VISIBLE);
                 else tv_shenpi.setVisibility(View.GONE);
 
-                switch (model.getStatus()) {//1:待审核; 2:未通过; 3:已通过;
-                    case "1":
-                        tv_num.setText("处理中");
-                        tv_num.setTextColor(getResources().getColor(R.color.black3));
-                        break;
+
+                switch (model.getStatus()) {//
                     case "2":
+                        tv_num.setText("已完成");
+                        tv_num.setTextColor(getResources().getColor(R.color.green));
+                        break;
+                    case "3":
                         tv_num.setText("驳回");
                         tv_num.setTextColor(getResources().getColor(R.color.red));
                         break;
-                    case "3":
-                        tv_num.setText("已完成");
-                        tv_num.setTextColor(getResources().getColor(R.color.green));
+                    default:
+                        tv_num.setText("处理中");
+                        tv_num.setTextColor(getResources().getColor(R.color.black3));
                         break;
                 }
 
