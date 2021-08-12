@@ -14,8 +14,9 @@ import com.xiyang.xiyang.model.LossDeviceListModel;
 import com.xiyang.xiyang.net.URLs;
 import com.xiyang.xiyang.okhttp.CallBackUtil;
 import com.xiyang.xiyang.okhttp.OkhttpUtil;
-import com.xiyang.xiyang.popupwindow.PopupWindow_List4;
+import com.xiyang.xiyang.popupwindow.PopupWindow_List2;
 import com.xiyang.xiyang.utils.CommonUtil;
+import com.xiyang.xiyang.utils.SelectCityDialog;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -44,9 +45,8 @@ public class LossDeviceListActivity extends BaseActivity {
     int page = 1;
 
     List<String> list_status = new ArrayList<>();
-    String sort = "", status = "", postionId = "", storeId = "", instudy = "", keyword = "";
+    String sort = "", status = "", provinceId = "", cityId = "", areaId = "", storeId = "", instudy = "", keyword = "";
     int i1 = 0;
-    int i2 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,6 @@ public class LossDeviceListActivity extends BaseActivity {
                 params.put("size", "10");
                 params.put("keyword", keyword);
                 params.put("status", status);
-                params.put("regionId", postionId);
                 params.put("storeId", storeId);
                 params.put("industryId", instudy);
                 requestList(params);
@@ -89,7 +88,6 @@ public class LossDeviceListActivity extends BaseActivity {
                 params.put("size", "10");
                 params.put("keyword", keyword);
                 params.put("status", status);
-                params.put("regionId", postionId);
                 params.put("storeId", storeId);
                 params.put("industryId", instudy);
                 requestListMore(params);
@@ -214,10 +212,14 @@ public class LossDeviceListActivity extends BaseActivity {
                 textView2.setCompoundDrawables(null, null, drawable2, null);
 //                view1.setVisibility(View.VISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(LossDeviceListActivity.this, 0, list_status, i1, pop_view) {
+                new SelectCityDialog(LossDeviceListActivity.this, dialog) {
                     @Override
-                    public void onReturn(String keys, int item) {
-                        status = item + "";
+                    public void onCallBack(String province, String city, String district, String pId, String cId, String aId) {
+                        textView2.setText(district);
+
+                        provinceId = pId;
+                        cityId = cId;
+                        areaId = aId;
                         requestServer();
                     }
                 };
@@ -230,9 +232,10 @@ public class LossDeviceListActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(LossDeviceListActivity.this, 1, list_status, i2, pop_view) {
+                new PopupWindow_List2(LossDeviceListActivity.this, 1, list_status, i1, pop_view) {
                     @Override
-                    public void onReturn(String keys, int item) {
+                    public void onFailure(String keys, int item) {
+                        i1 = item;
                         status = item + "";
                         requestServer();
                     }
@@ -261,7 +264,6 @@ public class LossDeviceListActivity extends BaseActivity {
         params.put("size", "10");
         params.put("keyword", keyword);
         params.put("status", status);
-        params.put("regionId", postionId);
         params.put("storeId", storeId);
         params.put("industryId", instudy);
         requestList(params);

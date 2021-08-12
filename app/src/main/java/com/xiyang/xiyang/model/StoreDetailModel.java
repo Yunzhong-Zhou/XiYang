@@ -8,15 +8,15 @@ import java.io.Serializable;
 public class StoreDetailModel implements Serializable {
     /**
      * showPointBtn : null
-     * deviceNumber : 2
+     * deviceNumber : 1
      * runDeviceNumber : 0
-     * offLineDeviceNumber : 2
+     * offLineDeviceNumber : 1
      * revenue : 0
      * profitSharing : null
-     * storeInfo : {"id":"1424543238064443392","storeSn":"572c9fa2ee534184923091e3c897e53f","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/08/09/16284725490311628472329941.png","name":"门店1","childName":"分店1","contactName":"阿斯顿马丁","contactPhone":"18354645445","account":"15277262372828","provinceId":130000,"provinceName":"河北省","cityId":130800,"cityName":"承德市","areaName":"承德县","areaId":130821,"address":"北新区洪湖西路51号","industryId":"1410880790564311040","industryName":"水上娱乐","level":0,"userId":"1424543238097866752","userTypeId":"1424543238094807041","merchantId":"1424540989594406912","merchantName":"商户1","businessHours":"00:00~24:00","latitude":29.607459,"longitude":106.502774,"bdAdminScopeOrganId":"1422085020760354817","bdAdminId":"1422085020756160513","bdAdminName":"bd001","addBdAdminScopeOrganId":"1422085020760354817","addBdAdminId":"1422085020756160513","storeShareRate":20,"workerShareRate":30,"deviceShareRate":40,"merchantShareRate":10,"status":0,"statusStr":"合作中","needInstallDeviceNum":0,"isLoss":0,"type":1,"arrearsMoney":0,"visitStatus":1,"visitStatusStr":"待拜访","contractStatus":1,"maxOrderNum":0,"createTime":"2021-08-09 09:29:09","updateTime":"2021-08-09 09:29:09","delFlag":0,"transferStatus":1,"installStatusStr":"无划转信息","installStatus":2}
-     * storeDeviceStatistic : null
-     * revenueInfo : null
-     * chargesInfo : null
+     * storeInfo : {"id":"1424918321987588096","storeSn":"857cee007b6f4186903861f5d4653b19","image":"http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/08/10/16285619760451628561756228.png","name":"门店1","childName":"分店1","contactName":"阿斯顿","contactPhone":"14738684849","account":"14000000000","provinceId":140000,"provinceName":"山西省","cityId":140500,"cityName":"晋城市","areaName":"沁水县","areaId":140521,"address":"黄山大道重庆高科总部广场西南侧约220米","industryId":"1410880790564311040","industryName":"水上娱乐","level":0,"userId":"1424917244172963840","userTypeId":"1424918322005381122","merchantId":"1424911989959954432","businessHours":"00:00~24:00","latitude":29.61397,"longitude":106.49105,"bdAdminScopeOrganId":"1422085020760354817","bdAdminId":"1422085020756160513","bdAdminName":"bd001","bdOrganName":"BD","addBdAdminScopeOrganId":"1422085020760354817","addBdAdminId":"1422085020756160513","addBdAdminName":"bd001","addBdOrganName":"BD","storeShareRate":20,"workerShareRate":30,"deviceShareRate":30,"merchantShareRate":10,"status":0,"statusStr":"合作中","needInstallDeviceNum":0,"isLoss":0,"type":1,"arrearsMoney":0,"visitStatus":1,"visitStatusStr":"待拜访","contractStatus":1,"maxOrderNum":0,"createTime":"2021-08-10 10:19:36","updateTime":"2021-08-11 09:51:13","delFlag":0,"transferStatus":1,"transferStatusStr":"无划转信息","installStatusStr":"安装中","installStatus":2}
+     * storeDeviceStatistic : {"bindNumber":1,"operationNumber":0,"onLineNumber":0,"offLineNumber":1,"lostNumber":1,"lastBindTime":null,"waitAddNumber":4,"waitRecycleNumber":0,"waitSwapNumber":0}
+     * revenueInfo : {"totalRevenue":0,"totalOrderNumber":0,"todayRevenue":0,"todayOrderNumber":0,"lastMonthMovablePinNumber":0,"lastMonthOnlineNumber":0,"thisMonthMovablePinNumber":0,"thisMonthOnlineNumber":0,"thirtyDayVisitNumber":0,"thisMonthVisited":null,"thisMonthVisitTime":null,"lastMonthLogo":null,"logo":null}
+     * chargesInfo : {"firstHour":null,"systemRenewal":null,"systemDayCap":null,"pricingUnit":null,"freeTime":null,"customUnitPrice":null,"customUnitCap":null,"storeShareRatio":null,"employeeShareRatio":0,"deviceShareRatio":0,"merchantShareRatio":0}
      */
 
     private String showPointBtn;
@@ -26,9 +26,9 @@ public class StoreDetailModel implements Serializable {
     private String revenue;
     private String profitSharing;
     private StoreInfoBean storeInfo;
-    private String storeDeviceStatistic;
-    private String revenueInfo;
-    private String chargesInfo;
+    private StoreDeviceStatisticBean storeDeviceStatistic;
+    private RevenueInfoBean revenueInfo;
+    private ChargesInfoBean chargesInfo;
 
     public String getShowPointBtn() {
         return showPointBtn;
@@ -86,65 +86,67 @@ public class StoreDetailModel implements Serializable {
         this.storeInfo = storeInfo;
     }
 
-    public String getStoreDeviceStatistic() {
+    public StoreDeviceStatisticBean getStoreDeviceStatistic() {
         return storeDeviceStatistic;
     }
 
-    public void setStoreDeviceStatistic(String storeDeviceStatistic) {
+    public void setStoreDeviceStatistic(StoreDeviceStatisticBean storeDeviceStatistic) {
         this.storeDeviceStatistic = storeDeviceStatistic;
     }
 
-    public String getRevenueInfo() {
+    public RevenueInfoBean getRevenueInfo() {
         return revenueInfo;
     }
 
-    public void setRevenueInfo(String revenueInfo) {
+    public void setRevenueInfo(RevenueInfoBean revenueInfo) {
         this.revenueInfo = revenueInfo;
     }
 
-    public String getChargesInfo() {
+    public ChargesInfoBean getChargesInfo() {
         return chargesInfo;
     }
 
-    public void setChargesInfo(String chargesInfo) {
+    public void setChargesInfo(ChargesInfoBean chargesInfo) {
         this.chargesInfo = chargesInfo;
     }
 
-    public static class StoreInfoBean implements Serializable{
+    public static class StoreInfoBean implements  Serializable{
         /**
-         * id : 1424543238064443392
-         * storeSn : 572c9fa2ee534184923091e3c897e53f
-         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/08/09/16284725490311628472329941.png
+         * id : 1424918321987588096
+         * storeSn : 857cee007b6f4186903861f5d4653b19
+         * image : http://xiyang-oms.oss-cn-shanghai.aliyuncs.com/2021/08/10/16285619760451628561756228.png
          * name : 门店1
          * childName : 分店1
-         * contactName : 阿斯顿马丁
-         * contactPhone : 18354645445
-         * account : 15277262372828
-         * provinceId : 130000
-         * provinceName : 河北省
-         * cityId : 130800
-         * cityName : 承德市
-         * areaName : 承德县
-         * areaId : 130821
-         * address : 北新区洪湖西路51号
+         * contactName : 阿斯顿
+         * contactPhone : 14738684849
+         * account : 14000000000
+         * provinceId : 140000
+         * provinceName : 山西省
+         * cityId : 140500
+         * cityName : 晋城市
+         * areaName : 沁水县
+         * areaId : 140521
+         * address : 黄山大道重庆高科总部广场西南侧约220米
          * industryId : 1410880790564311040
          * industryName : 水上娱乐
          * level : 0
-         * userId : 1424543238097866752
-         * userTypeId : 1424543238094807041
-         * merchantId : 1424540989594406912
-         * merchantName : 商户1
+         * userId : 1424917244172963840
+         * userTypeId : 1424918322005381122
+         * merchantId : 1424911989959954432
          * businessHours : 00:00~24:00
-         * latitude : 29.607459
-         * longitude : 106.502774
+         * latitude : 29.61397
+         * longitude : 106.49105
          * bdAdminScopeOrganId : 1422085020760354817
          * bdAdminId : 1422085020756160513
          * bdAdminName : bd001
+         * bdOrganName : BD
          * addBdAdminScopeOrganId : 1422085020760354817
          * addBdAdminId : 1422085020756160513
+         * addBdAdminName : bd001
+         * addBdOrganName : BD
          * storeShareRate : 20
          * workerShareRate : 30
-         * deviceShareRate : 40
+         * deviceShareRate : 30
          * merchantShareRate : 10
          * status : 0
          * statusStr : 合作中
@@ -156,11 +158,12 @@ public class StoreDetailModel implements Serializable {
          * visitStatusStr : 待拜访
          * contractStatus : 1
          * maxOrderNum : 0
-         * createTime : 2021-08-09 09:29:09
-         * updateTime : 2021-08-09 09:29:09
+         * createTime : 2021-08-10 10:19:36
+         * updateTime : 2021-08-11 09:51:13
          * delFlag : 0
          * transferStatus : 1
-         * installStatusStr : 无划转信息
+         * transferStatusStr : 无划转信息
+         * installStatusStr : 安装中
          * installStatus : 2
          */
 
@@ -192,9 +195,11 @@ public class StoreDetailModel implements Serializable {
         private String bdAdminScopeOrganId;
         private String bdAdminId;
         private String bdAdminName;
+        private String bdOrganName;
         private String addBdAdminScopeOrganId;
         private String addBdAdminId;
         private String addBdAdminName;
+        private String addBdOrganName;
         private String storeShareRate;
         private String workerShareRate;
         private String deviceShareRate;
@@ -207,7 +212,6 @@ public class StoreDetailModel implements Serializable {
         private String arrearsMoney;
         private String visitStatus;
         private String visitStatusStr;
-        private String lastVisitTime;
         private String contractStatus;
         private String maxOrderNum;
         private String createTime;
@@ -217,22 +221,7 @@ public class StoreDetailModel implements Serializable {
         private String transferStatusStr;
         private String installStatusStr;
         private String installStatus;
-
-        public String getAddBdAdminName() {
-            return addBdAdminName;
-        }
-
-        public void setAddBdAdminName(String addBdAdminName) {
-            this.addBdAdminName = addBdAdminName;
-        }
-
-        public String getTransferStatusStr() {
-            return transferStatusStr;
-        }
-
-        public void setTransferStatusStr(String transferStatusStr) {
-            this.transferStatusStr = transferStatusStr;
-        }
+        private String lastVisitTime;
 
         public String getLastVisitTime() {
             return lastVisitTime;
@@ -240,6 +229,14 @@ public class StoreDetailModel implements Serializable {
 
         public void setLastVisitTime(String lastVisitTime) {
             this.lastVisitTime = lastVisitTime;
+        }
+
+        public String getMerchantName() {
+            return merchantName;
+        }
+
+        public void setMerchantName(String merchantName) {
+            this.merchantName = merchantName;
         }
 
         public String getId() {
@@ -410,14 +407,6 @@ public class StoreDetailModel implements Serializable {
             this.merchantId = merchantId;
         }
 
-        public String getMerchantName() {
-            return merchantName;
-        }
-
-        public void setMerchantName(String merchantName) {
-            this.merchantName = merchantName;
-        }
-
         public String getBusinessHours() {
             return businessHours;
         }
@@ -466,6 +455,14 @@ public class StoreDetailModel implements Serializable {
             this.bdAdminName = bdAdminName;
         }
 
+        public String getBdOrganName() {
+            return bdOrganName;
+        }
+
+        public void setBdOrganName(String bdOrganName) {
+            this.bdOrganName = bdOrganName;
+        }
+
         public String getAddBdAdminScopeOrganId() {
             return addBdAdminScopeOrganId;
         }
@@ -480,6 +477,22 @@ public class StoreDetailModel implements Serializable {
 
         public void setAddBdAdminId(String addBdAdminId) {
             this.addBdAdminId = addBdAdminId;
+        }
+
+        public String getAddBdAdminName() {
+            return addBdAdminName;
+        }
+
+        public void setAddBdAdminName(String addBdAdminName) {
+            this.addBdAdminName = addBdAdminName;
+        }
+
+        public String getAddBdOrganName() {
+            return addBdOrganName;
+        }
+
+        public void setAddBdOrganName(String addBdOrganName) {
+            this.addBdOrganName = addBdOrganName;
         }
 
         public String getStoreShareRate() {
@@ -626,6 +639,14 @@ public class StoreDetailModel implements Serializable {
             this.transferStatus = transferStatus;
         }
 
+        public String getTransferStatusStr() {
+            return transferStatusStr;
+        }
+
+        public void setTransferStatusStr(String transferStatusStr) {
+            this.transferStatusStr = transferStatusStr;
+        }
+
         public String getInstallStatusStr() {
             return installStatusStr;
         }
@@ -640,6 +661,354 @@ public class StoreDetailModel implements Serializable {
 
         public void setInstallStatus(String installStatus) {
             this.installStatus = installStatus;
+        }
+    }
+
+    public static class StoreDeviceStatisticBean implements Serializable{
+        /**
+         * bindNumber : 1
+         * operationNumber : 0
+         * onLineNumber : 0
+         * offLineNumber : 1
+         * lostNumber : 1
+         * lastBindTime : null
+         * waitAddNumber : 4
+         * waitRecycleNumber : 0
+         * waitSwapNumber : 0
+         */
+
+        private String bindNumber;
+        private String operationNumber;
+        private String onLineNumber;
+        private String offLineNumber;
+        private String lostNumber;
+        private String lastBindTime;
+        private String waitAddNumber;
+        private String waitRecycleNumber;
+        private String waitSwapNumber;
+
+        public String getBindNumber() {
+            return bindNumber;
+        }
+
+        public void setBindNumber(String bindNumber) {
+            this.bindNumber = bindNumber;
+        }
+
+        public String getOperationNumber() {
+            return operationNumber;
+        }
+
+        public void setOperationNumber(String operationNumber) {
+            this.operationNumber = operationNumber;
+        }
+
+        public String getOnLineNumber() {
+            return onLineNumber;
+        }
+
+        public void setOnLineNumber(String onLineNumber) {
+            this.onLineNumber = onLineNumber;
+        }
+
+        public String getOffLineNumber() {
+            return offLineNumber;
+        }
+
+        public void setOffLineNumber(String offLineNumber) {
+            this.offLineNumber = offLineNumber;
+        }
+
+        public String getLostNumber() {
+            return lostNumber;
+        }
+
+        public void setLostNumber(String lostNumber) {
+            this.lostNumber = lostNumber;
+        }
+
+        public String getLastBindTime() {
+            return lastBindTime;
+        }
+
+        public void setLastBindTime(String lastBindTime) {
+            this.lastBindTime = lastBindTime;
+        }
+
+        public String getWaitAddNumber() {
+            return waitAddNumber;
+        }
+
+        public void setWaitAddNumber(String waitAddNumber) {
+            this.waitAddNumber = waitAddNumber;
+        }
+
+        public String getWaitRecycleNumber() {
+            return waitRecycleNumber;
+        }
+
+        public void setWaitRecycleNumber(String waitRecycleNumber) {
+            this.waitRecycleNumber = waitRecycleNumber;
+        }
+
+        public String getWaitSwapNumber() {
+            return waitSwapNumber;
+        }
+
+        public void setWaitSwapNumber(String waitSwapNumber) {
+            this.waitSwapNumber = waitSwapNumber;
+        }
+    }
+
+    public static class RevenueInfoBean implements Serializable{
+        /**
+         * totalRevenue : 0
+         * totalOrderNumber : 0
+         * todayRevenue : 0
+         * todayOrderNumber : 0
+         * lastMonthMovablePinNumber : 0
+         * lastMonthOnlineNumber : 0
+         * thisMonthMovablePinNumber : 0
+         * thisMonthOnlineNumber : 0
+         * thirtyDayVisitNumber : 0
+         * thisMonthVisited : null
+         * thisMonthVisitTime : null
+         * lastMonthLogo : null
+         * logo : null
+         */
+
+        private String totalRevenue;
+        private String totalOrderNumber;
+        private String todayRevenue;
+        private String todayOrderNumber;
+        private String lastMonthMovablePinNumber;
+        private String lastMonthOnlineNumber;
+        private String thisMonthMovablePinNumber;
+        private String thisMonthOnlineNumber;
+        private String thirtyDayVisitNumber;
+        private String thisMonthVisited;
+        private String thisMonthVisitTime;
+        private String lastMonthLogo;
+        private String logo;
+
+        public String getTotalRevenue() {
+            return totalRevenue;
+        }
+
+        public void setTotalRevenue(String totalRevenue) {
+            this.totalRevenue = totalRevenue;
+        }
+
+        public String getTotalOrderNumber() {
+            return totalOrderNumber;
+        }
+
+        public void setTotalOrderNumber(String totalOrderNumber) {
+            this.totalOrderNumber = totalOrderNumber;
+        }
+
+        public String getTodayRevenue() {
+            return todayRevenue;
+        }
+
+        public void setTodayRevenue(String todayRevenue) {
+            this.todayRevenue = todayRevenue;
+        }
+
+        public String getTodayOrderNumber() {
+            return todayOrderNumber;
+        }
+
+        public void setTodayOrderNumber(String todayOrderNumber) {
+            this.todayOrderNumber = todayOrderNumber;
+        }
+
+        public String getLastMonthMovablePinNumber() {
+            return lastMonthMovablePinNumber;
+        }
+
+        public void setLastMonthMovablePinNumber(String lastMonthMovablePinNumber) {
+            this.lastMonthMovablePinNumber = lastMonthMovablePinNumber;
+        }
+
+        public String getLastMonthOnlineNumber() {
+            return lastMonthOnlineNumber;
+        }
+
+        public void setLastMonthOnlineNumber(String lastMonthOnlineNumber) {
+            this.lastMonthOnlineNumber = lastMonthOnlineNumber;
+        }
+
+        public String getThisMonthMovablePinNumber() {
+            return thisMonthMovablePinNumber;
+        }
+
+        public void setThisMonthMovablePinNumber(String thisMonthMovablePinNumber) {
+            this.thisMonthMovablePinNumber = thisMonthMovablePinNumber;
+        }
+
+        public String getThisMonthOnlineNumber() {
+            return thisMonthOnlineNumber;
+        }
+
+        public void setThisMonthOnlineNumber(String thisMonthOnlineNumber) {
+            this.thisMonthOnlineNumber = thisMonthOnlineNumber;
+        }
+
+        public String getThirtyDayVisitNumber() {
+            return thirtyDayVisitNumber;
+        }
+
+        public void setThirtyDayVisitNumber(String thirtyDayVisitNumber) {
+            this.thirtyDayVisitNumber = thirtyDayVisitNumber;
+        }
+
+        public String getThisMonthVisited() {
+            return thisMonthVisited;
+        }
+
+        public void setThisMonthVisited(String thisMonthVisited) {
+            this.thisMonthVisited = thisMonthVisited;
+        }
+
+        public String getThisMonthVisitTime() {
+            return thisMonthVisitTime;
+        }
+
+        public void setThisMonthVisitTime(String thisMonthVisitTime) {
+            this.thisMonthVisitTime = thisMonthVisitTime;
+        }
+
+        public String getLastMonthLogo() {
+            return lastMonthLogo;
+        }
+
+        public void setLastMonthLogo(String lastMonthLogo) {
+            this.lastMonthLogo = lastMonthLogo;
+        }
+
+        public String getLogo() {
+            return logo;
+        }
+
+        public void setLogo(String logo) {
+            this.logo = logo;
+        }
+    }
+
+    public static class ChargesInfoBean implements Serializable{
+        /**
+         * firstHour : null
+         * systemRenewal : null
+         * systemDayCap : null
+         * pricingUnit : null
+         * freeTime : null
+         * customUnitPrice : null
+         * customUnitCap : null
+         * storeShareRatio : null
+         * employeeShareRatio : 0
+         * deviceShareRatio : 0
+         * merchantShareRatio : 0
+         */
+
+        private String firstHour;
+        private String systemRenewal;
+        private String systemDayCap;
+        private String pricingUnit;
+        private String freeTime;
+        private String customUnitPrice;
+        private String customUnitCap;
+        private String storeShareRatio;
+        private String employeeShareRatio;
+        private String deviceShareRatio;
+        private String merchantShareRatio;
+
+        public String getFirstHour() {
+            return firstHour;
+        }
+
+        public void setFirstHour(String firstHour) {
+            this.firstHour = firstHour;
+        }
+
+        public String getSystemRenewal() {
+            return systemRenewal;
+        }
+
+        public void setSystemRenewal(String systemRenewal) {
+            this.systemRenewal = systemRenewal;
+        }
+
+        public String getSystemDayCap() {
+            return systemDayCap;
+        }
+
+        public void setSystemDayCap(String systemDayCap) {
+            this.systemDayCap = systemDayCap;
+        }
+
+        public String getPricingUnit() {
+            return pricingUnit;
+        }
+
+        public void setPricingUnit(String pricingUnit) {
+            this.pricingUnit = pricingUnit;
+        }
+
+        public String getFreeTime() {
+            return freeTime;
+        }
+
+        public void setFreeTime(String freeTime) {
+            this.freeTime = freeTime;
+        }
+
+        public String getCustomUnitPrice() {
+            return customUnitPrice;
+        }
+
+        public void setCustomUnitPrice(String customUnitPrice) {
+            this.customUnitPrice = customUnitPrice;
+        }
+
+        public String getCustomUnitCap() {
+            return customUnitCap;
+        }
+
+        public void setCustomUnitCap(String customUnitCap) {
+            this.customUnitCap = customUnitCap;
+        }
+
+        public String getStoreShareRatio() {
+            return storeShareRatio;
+        }
+
+        public void setStoreShareRatio(String storeShareRatio) {
+            this.storeShareRatio = storeShareRatio;
+        }
+
+        public String getEmployeeShareRatio() {
+            return employeeShareRatio;
+        }
+
+        public void setEmployeeShareRatio(String employeeShareRatio) {
+            this.employeeShareRatio = employeeShareRatio;
+        }
+
+        public String getDeviceShareRatio() {
+            return deviceShareRatio;
+        }
+
+        public void setDeviceShareRatio(String deviceShareRatio) {
+            this.deviceShareRatio = deviceShareRatio;
+        }
+
+        public String getMerchantShareRatio() {
+            return merchantShareRatio;
+        }
+
+        public void setMerchantShareRatio(String merchantShareRatio) {
+            this.merchantShareRatio = merchantShareRatio;
         }
     }
 }

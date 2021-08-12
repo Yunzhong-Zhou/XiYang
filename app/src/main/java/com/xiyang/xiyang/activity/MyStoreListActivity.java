@@ -24,6 +24,8 @@ import com.xiyang.xiyang.popupwindow.PopupWindow_List4;
 import com.xiyang.xiyang.utils.CommonUtil;
 import com.xiyang.xiyang.utils.Constant;
 import com.xiyang.xiyang.utils.SearchDialog;
+import com.xiyang.xiyang.utils.SelectCityDialog;
+import com.xiyang.xiyang.utils.SelectIndustryDialog;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -47,16 +49,15 @@ public class MyStoreListActivity extends BaseActivity {
     CommonAdapter<MyStoreListModel.RecordsBean> mAdapter;
 
     //筛选
-    private LinearLayout linearLayout1, linearLayout2, linearLayout3;
-    private TextView textView1, textView2, textView3;
-    private View view1, view2, view3;
+    private LinearLayout linearLayout1, linearLayout2, linearLayout3, linearLayout4;
+    private TextView textView1, textView2, textView3, textView4;
+    private View view1, view2, view3, view4;
     private LinearLayout pop_view;
     int page = 1;
 
     List<String> list_status = new ArrayList<>();
-    String status = "",keyword="",shopId="";
+    String status = "", keyword = "", instudyId = "", provinceId = "", cityId = "", areaId = "",shopId="";
     int i1 = 0;
-    int i2 = 0;
 
 
     @Override
@@ -80,6 +81,11 @@ public class MyStoreListActivity extends BaseActivity {
                 params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("keyword", keyword);
+                params.put("instudyId", instudyId);
+                params.put("provinceId", provinceId);
+                params.put("cityId", cityId);
+                params.put("areaId", areaId);
+                params.put("shopId",shopId);
                 requestList(params);
             }
 
@@ -91,21 +97,34 @@ public class MyStoreListActivity extends BaseActivity {
                 params.put("pageSize", "10");
                 params.put("status", status);
                 params.put("keyword", keyword);
+                params.put("instudyId", instudyId);
+                params.put("provinceId", provinceId);
+                params.put("cityId", cityId);
+                params.put("areaId", areaId);
+                params.put("shopId",shopId);
                 requestListMore(params);
             }
         });
         linearLayout1 = findViewByID_My(R.id.linearLayout1);
         linearLayout2 = findViewByID_My(R.id.linearLayout2);
         linearLayout3 = findViewByID_My(R.id.linearLayout3);
+        linearLayout4 = findViewByID_My(R.id.linearLayout4);
+
         linearLayout1.setOnClickListener(this);
         linearLayout2.setOnClickListener(this);
         linearLayout3.setOnClickListener(this);
+        linearLayout4.setOnClickListener(this);
+
         textView1 = findViewByID_My(R.id.textView1);
         textView2 = findViewByID_My(R.id.textView2);
         textView3 = findViewByID_My(R.id.textView3);
+        textView4 = findViewByID_My(R.id.textView4);
+
         view1 = findViewByID_My(R.id.view1);
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
+        view4 = findViewByID_My(R.id.view4);
+
         pop_view = findViewByID_My(R.id.pop_view);
     }
 
@@ -247,16 +266,22 @@ public class MyStoreListActivity extends BaseActivity {
                 textView1.setTextColor(getResources().getColor(R.color.green));
                 textView2.setTextColor(getResources().getColor(R.color.black3));
                 textView3.setTextColor(getResources().getColor(R.color.black3));
+                textView4.setTextColor(getResources().getColor(R.color.black3));
                 textView1.setCompoundDrawables(null, null, drawable1, null);
                 textView2.setCompoundDrawables(null, null, drawable2, null);
                 textView3.setCompoundDrawables(null, null, drawable2, null);
 //                view1.setVisibility(View.VISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyStoreListActivity.this,0,list_status,i1,pop_view) {
+                new PopupWindow_List4(MyStoreListActivity.this, 0, list_status, i1, pop_view) {
                     @Override
                     public void onReturn(String keys, int item) {
-                        status = item+"";
+                        textView1.setText(keys);
+
+                        i1 = item;
+                        if (item == 0) status = "";
+                        else status = item + "";
+
                         requestServer();
                     }
                 };
@@ -265,16 +290,22 @@ public class MyStoreListActivity extends BaseActivity {
                 textView1.setTextColor(getResources().getColor(R.color.black3));
                 textView2.setTextColor(getResources().getColor(R.color.green));
                 textView3.setTextColor(getResources().getColor(R.color.black3));
+                textView4.setTextColor(getResources().getColor(R.color.black3));
                 textView1.setCompoundDrawables(null, null, drawable2, null);
                 textView2.setCompoundDrawables(null, null, drawable1, null);
                 textView3.setCompoundDrawables(null, null, drawable2, null);
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyStoreListActivity.this,1,list_status,i2,pop_view) {
+
+                new SelectCityDialog(MyStoreListActivity.this, dialog) {
                     @Override
-                    public void onReturn(String keys, int item) {
-                        status = item+"";
+                    public void onCallBack(String province, String city, String district, String pId, String cId, String aId) {
+                        textView2.setText(district);
+
+                        provinceId = pId;
+                        cityId = cId;
+                        areaId = aId;
                         requestServer();
                     }
                 };
@@ -283,22 +314,31 @@ public class MyStoreListActivity extends BaseActivity {
                 textView1.setTextColor(getResources().getColor(R.color.black3));
                 textView2.setTextColor(getResources().getColor(R.color.black3));
                 textView3.setTextColor(getResources().getColor(R.color.green));
+                textView4.setTextColor(getResources().getColor(R.color.black3));
                 textView1.setCompoundDrawables(null, null, drawable2, null);
                 textView2.setCompoundDrawables(null, null, drawable2, null);
                 textView3.setCompoundDrawables(null, null, drawable1, null);
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List4(MyStoreListActivity.this,2,list_status,i1,pop_view) {
+                new SelectIndustryDialog(MyStoreListActivity.this, dialog) {
                     @Override
-                    public void onReturn(String keys, int item) {
-                        status = item+"";
+                    public void onCallBack(String string_hangye, String id) {
+                        textView3.setText(string_hangye);
+                        instudyId = id;
+
                         requestServer();
                     }
                 };
                 break;
             case R.id.linearLayout4:
-
+                textView1.setTextColor(getResources().getColor(R.color.black3));
+                textView2.setTextColor(getResources().getColor(R.color.black3));
+                textView3.setTextColor(getResources().getColor(R.color.black3));
+                textView4.setTextColor(getResources().getColor(R.color.green));
+                textView1.setCompoundDrawables(null, null, drawable2, null);
+                textView2.setCompoundDrawables(null, null, drawable2, null);
+                textView3.setCompoundDrawables(null, null, drawable2, null);
                 new SearchDialog(MyStoreListActivity.this, dialog) {
                     @Override
                     public void onFailure(String keys) {
@@ -349,6 +389,12 @@ public class MyStoreListActivity extends BaseActivity {
         params.put("page", page + "");
         params.put("pageSize", "10");
         params.put("status", status);
+        params.put("keyword", keyword);
+        params.put("instudyId", instudyId);
+        params.put("provinceId", provinceId);
+        params.put("cityId", cityId);
+        params.put("areaId", areaId);
+        params.put("shopId",shopId);
         requestList(params);
     }
 }

@@ -323,15 +323,15 @@ public class StoreDetailActivity extends BaseActivity {
                  * 设备信息
                  */
                 list_shebei.clear();
-                list_shebei.add(new KeyValueModel("绑定设备", response.getDeviceNumber() + "台"));
-                list_shebei.add(new KeyValueModel("上线设备", response.getRunDeviceNumber() + "台"));
-                list_shebei.add(new KeyValueModel("在线设备", response.getRunDeviceNumber() + "台"));
-                list_shebei.add(new KeyValueModel("离线设备", response.getOffLineDeviceNumber() + "台"));
-//                list_shebei.add(new KeyValueModel("丢失设备", response.get+"台"));
-//                list_shebei.add(new KeyValueModel("最新绑定设备时间", response.get));
-//                list_shebei.add(new KeyValueModel("待新增设备", response.get+"台"));
-//                list_shebei.add(new KeyValueModel("待回收设备", response.get+"台"));
-//                list_shebei.add(new KeyValueModel("待转出设备", response.get+"台"));
+                list_shebei.add(new KeyValueModel("绑定设备", response.getStoreDeviceStatistic().getBindNumber() + "台"));
+                list_shebei.add(new KeyValueModel("上线设备", response.getStoreDeviceStatistic().getOperationNumber() + "台"));
+                list_shebei.add(new KeyValueModel("在线设备", response.getStoreDeviceStatistic().getOnLineNumber() + "台"));
+                list_shebei.add(new KeyValueModel("离线设备", response.getStoreDeviceStatistic().getOffLineNumber() + "台"));
+                list_shebei.add(new KeyValueModel("丢失设备", response.getStoreDeviceStatistic().getLostNumber() + "台"));
+                list_shebei.add(new KeyValueModel("最新绑定设备时间", response.getStoreDeviceStatistic().getLastBindTime()));
+                list_shebei.add(new KeyValueModel("待新增设备", response.getStoreDeviceStatistic().getWaitAddNumber() + "台"));
+                list_shebei.add(new KeyValueModel("待回收设备", response.getStoreDeviceStatistic().getWaitRecycleNumber() + "台"));
+                list_shebei.add(new KeyValueModel("待转出设备", response.getStoreDeviceStatistic().getWaitSwapNumber() + "台"));
                 mAdapter_shebei = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_shebei) {
                     @Override
@@ -346,19 +346,19 @@ public class StoreDetailActivity extends BaseActivity {
                  * 营收信息
                  */
                 list_yingshou.clear();
-                list_yingshou.add(new KeyValueModel("总营收", response.getRevenue()));
-//                list_yingshou.add(new KeyValueModel("总订单数", response.get));
-//                list_yingshou.add(new KeyValueModel("当日营收", response.get));
-//                list_yingshou.add(new KeyValueModel("当日订单数", response.get));
-//                list_yingshou.add(new KeyValueModel("上月动销天数", response.get));
-//                list_yingshou.add(new KeyValueModel("上月在线天数", response.get));
-//                list_yingshou.add(new KeyValueModel("本月动销天数", response.get));
-//                list_yingshou.add(new KeyValueModel("本月在线天数", response.get));
-//                list_yingshou.add(new KeyValueModel("30天拜访天数", response.get));
-//                list_yingshou.add(new KeyValueModel("本月是否拜访", response.get));
-//                list_yingshou.add(new KeyValueModel("本月拜访时间", response.get));
-//                list_yingshou.add(new KeyValueModel("上月未标识", response.get));
-//                list_yingshou.add(new KeyValueModel("最新头腰标识", response.get));
+                list_yingshou.add(new KeyValueModel("总营收", "￥ " + response.getRevenueInfo().getTotalRevenue()));
+                list_yingshou.add(new KeyValueModel("总订单数", response.getRevenueInfo().getTotalOrderNumber()));
+                list_yingshou.add(new KeyValueModel("当日营收", "￥ " + response.getRevenueInfo().getTodayRevenue()));
+                list_yingshou.add(new KeyValueModel("当日订单数", response.getRevenueInfo().getTodayOrderNumber()));
+                list_yingshou.add(new KeyValueModel("上月动销天数", response.getRevenueInfo().getLastMonthMovablePinNumber()));
+                list_yingshou.add(new KeyValueModel("上月在线天数", response.getRevenueInfo().getLastMonthOnlineNumber()));
+                list_yingshou.add(new KeyValueModel("本月动销天数", response.getRevenueInfo().getThisMonthMovablePinNumber()));
+                list_yingshou.add(new KeyValueModel("本月在线天数", response.getRevenueInfo().getThisMonthOnlineNumber()));
+                list_yingshou.add(new KeyValueModel("30天拜访天数", response.getRevenueInfo().getThirtyDayVisitNumber()));
+                list_yingshou.add(new KeyValueModel("本月是否拜访", response.getRevenueInfo().getThisMonthVisited()));
+                list_yingshou.add(new KeyValueModel("本月拜访时间", response.getRevenueInfo().getThisMonthVisitTime()));
+                list_yingshou.add(new KeyValueModel("上月未标识", response.getRevenueInfo().getLastMonthLogo()));
+                list_yingshou.add(new KeyValueModel("最新头腰标识", response.getRevenueInfo().getLogo()));
                 mAdapter_yingshou = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_yingshou) {
                     @Override
@@ -373,17 +373,17 @@ public class StoreDetailActivity extends BaseActivity {
                  * 收费标准
                  */
                 list_shoufei.clear();
-//                list_shoufei.add(new KeyValueModel("首小时", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("系统续时", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("系统每日封顶", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("计费单元", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("免费时长", response.getStoreInfo().get));
-//                list_shoufei.add(new KeyValueModel("自定义单价", response.getStoreInfo().get));
-                list_shoufei.add(new KeyValueModel("自定义封顶", response.getStoreInfo().getMaxOrderNum()));
-                list_shoufei.add(new KeyValueModel("门店分成比例", response.getStoreInfo().getStoreShareRate() + "%"));
-                list_shoufei.add(new KeyValueModel("员工分成比例", response.getStoreInfo().getWorkerShareRate() + "%"));
-                list_shoufei.add(new KeyValueModel("设备分成比例", response.getStoreInfo().getDeviceShareRate() + "%"));
-                list_shoufei.add(new KeyValueModel("商户分成比例", response.getStoreInfo().getMerchantShareRate() + "%"));
+                list_shoufei.add(new KeyValueModel("首小时", response.getChargesInfo().getFirstHour()));
+                list_shoufei.add(new KeyValueModel("系统续时", response.getChargesInfo().getSystemRenewal()));
+                list_shoufei.add(new KeyValueModel("系统每日封顶", response.getChargesInfo().getSystemDayCap()));
+                list_shoufei.add(new KeyValueModel("计费单元", response.getChargesInfo().getPricingUnit()));
+                list_shoufei.add(new KeyValueModel("免费时长", response.getChargesInfo().getFreeTime()));
+                list_shoufei.add(new KeyValueModel("自定义单价", response.getChargesInfo().getCustomUnitPrice()));
+                list_shoufei.add(new KeyValueModel("自定义封顶", response.getChargesInfo().getCustomUnitCap()));
+                list_shoufei.add(new KeyValueModel("门店分成比例", response.getChargesInfo().getStoreShareRatio() + "%"));
+                list_shoufei.add(new KeyValueModel("员工分成比例", response.getChargesInfo().getEmployeeShareRatio() + "%"));
+                list_shoufei.add(new KeyValueModel("设备分成比例", response.getChargesInfo().getDeviceShareRatio() + "%"));
+                list_shoufei.add(new KeyValueModel("商户分成比例", response.getChargesInfo().getMerchantShareRatio() + "%"));
 
                 mAdapter_shoufei = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_shoufei) {

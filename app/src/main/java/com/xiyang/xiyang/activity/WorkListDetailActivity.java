@@ -233,18 +233,18 @@ public class WorkListDetailActivity extends BaseActivity {
                  */
 
                 tv_jieshou.setVisibility(View.GONE);
-                if (response.getTakeOverFlag() == 0) {//未接工单
+                if (response.getTakeOverFlag().equals("0")) {//未接工单
                     sl_tab.setVisibility(View.GONE);
                     tv_jieshou.setText("接手");
                     tv_jieshou.setVisibility(View.VISIBLE);
                 } else {
                     sl_tab.setVisibility(View.VISIBLE);
-                    if (response.getStatus() == 1 && localUserInfo.getUserJob().equals("BD") && response.isCurrentUser()) {
+                    if (response.getStatus().equals("1") && localUserInfo.getUserJob().equals("BD") && response.isCurrentUser()) {
                         tv_jieshou.setText("处理工单");
                         tv_jieshou.setVisibility(View.VISIBLE);
                     }
 
-                    if (response.getStatus() == 1 && !localUserInfo.getUserJob().equals("BD") && response.isCurrentUser()) {
+                    if (response.getStatus().equals("1") && !localUserInfo.getUserJob().equals("BD") && response.isCurrentUser()) {
                         titleView.showRightTxtBtn("立即指派", v -> {
                             Bundle bundle = new Bundle();
                             bundle.putString("id", model.getId());
@@ -268,20 +268,20 @@ public class WorkListDetailActivity extends BaseActivity {
                         .error(R.mipmap.zanwutupian)//加载失败
                         .into(imageView1);//加载图片
                 switch (model.getType()) {//类型 1-设备工单,2-订单工单,3-任务工单,4-其它,、
-                    case 1:
+                    case "1":
                         //设备故障
                         textView1.setText("设备故障");
 
                         break;
-                    case 2:
+                    case "2":
                         //订单故障
                         textView1.setText("订单故障");
                         break;
-                    case 3:
+                    case "3":
                         //任务工单
                         textView1.setText("任务工单");
                         break;
-                    case 4:
+                    case "4":
                         //其他故障
                         textView1.setText("其他故障");
                         break;
@@ -290,17 +290,17 @@ public class WorkListDetailActivity extends BaseActivity {
                 textView2.setText(response.getStoreName());
                 textView3.setText(response.getCreateTime());
                 switch (model.getStatus()) {
-                    case 1:
+                    case "1":
                         //待处理
                         textView4.setText("待处理");
                         textView4.setTextColor(getResources().getColor(R.color.black3));
                         break;
-                    case 2:
+                    case "2":
                         //处理中
                         textView4.setText("处理中");
                         textView4.setTextColor(getResources().getColor(R.color.black3));
                         break;
-                    case 3:
+                    case "3":
                         //完成
                         textView4.setText("完成");
                         textView4.setTextColor(getResources().getColor(R.color.green));
@@ -311,28 +311,28 @@ public class WorkListDetailActivity extends BaseActivity {
                 list_info.add(new KeyValueModel("工单ID", response.getId()));
                 list_info.add(new KeyValueModel("门店名称", response.getStoreName()));
                 switch (model.getType()) {//类型 1-设备工单,2-订单工单,3-任务工单,4-其它,、
-                    case 1:
+                    case "1":
                         //设备故障
                         list_info.add(new KeyValueModel("工单类型", "设备故障"));
                         break;
-                    case 2:
+                    case "2":
                         //订单故障
                         list_info.add(new KeyValueModel("工单类型", "订单故障"));
                         break;
-                    case 3:
+                    case "3":
                         //任务工单
                         list_info.add(new KeyValueModel("工单类型", "任务工单"));
                         break;
-                    case 4:
+                    case "4":
                         //其他故障
                         list_info.add(new KeyValueModel("工单类型", "其他故障"));
                         break;
                 }
                 list_info.add(new KeyValueModel("工单原因", response.getFailureReason()));
-//                list_info.add(new KeyValueModel("反馈渠道", response.get()));
+//                list_info.add(new KeyValueModel("反馈渠道", response.get));
                 list_info.add(new KeyValueModel("工单创建人", response.getCreateName()));
                 list_info.add(new KeyValueModel("创建人类型", response.getUserTypeName()));
-//                list_info.add(new KeyValueModel("所属城市", response.getCreatedUserCity()));
+//                list_info.add(new KeyValueModel("所属城市", response.get));
                 list_info.add(new KeyValueModel("创建时间", response.getCreateTime()));
                 list_info.add(new KeyValueModel("工单内容", response.getRemark()));
                 mAdapter_info = new CommonAdapter<KeyValueModel>

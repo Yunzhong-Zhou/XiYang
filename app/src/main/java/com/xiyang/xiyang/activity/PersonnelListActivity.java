@@ -47,7 +47,6 @@ public class PersonnelListActivity extends BaseActivity {
     List<String> list_time = new ArrayList<>();
     String sort = "desc", status = "", keyWord = "";
     int i1 = 0;
-    int i2 = 0;
 
     @Override
     protected void onResume() {
@@ -192,6 +191,7 @@ public class PersonnelListActivity extends BaseActivity {
                 titleView.setTitle("采购审批列表");
                 break;
         }
+
         list_time.add(getString(R.string.app_type_jiangxu));
         list_time.add(getString(R.string.app_type_shengxu));
     }
@@ -368,13 +368,14 @@ public class PersonnelListActivity extends BaseActivity {
                 textView1.setTextColor(getResources().getColor(R.color.green));
                 textView2.setTextColor(getResources().getColor(R.color.black3));
                 textView1.setCompoundDrawables(null, null, drawable1, null);
-                textView2.setCompoundDrawables(null, null, drawable2, null);
+//                textView2.setCompoundDrawables(null, null, drawable2, null);
 //                view1.setVisibility(View.VISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                showPopupWindow1(pop_view);
-                new PopupWindow_List2(PersonnelListActivity.this, 1, list_time, i2, pop_view) {
+                new PopupWindow_List2(PersonnelListActivity.this, 0, list_time, i1, pop_view) {
                     @Override
                     public void onFailure(String keys, int item) {
+                        i1 = item;
                         if (item == 0) {
                             sort = "desc";
                         } else {
@@ -387,7 +388,7 @@ public class PersonnelListActivity extends BaseActivity {
             case R.id.linearLayout2:
                 textView1.setTextColor(getResources().getColor(R.color.black3));
                 textView2.setTextColor(getResources().getColor(R.color.green));
-//                textView1.setCompoundDrawables(null, null, drawable2, null);
+                textView1.setCompoundDrawables(null, null, drawable2, null);
 //                textView2.setCompoundDrawables(null, null, drawable1, null);
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.VISIBLE);

@@ -3,10 +3,12 @@ package com.xiyang.xiyang.activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -46,12 +48,15 @@ public class ApproveContractListActivity extends BaseActivity {
     LinearLayout ll_tab1, ll_tab2, ll_tab3;
     View view1, view2, view3;
     private LinearLayout pop_view;
+    List<String> list_type = new ArrayList<>();
     List<String> list_status = new ArrayList<>();
+    List<String> list_time = new ArrayList<>();
 
     int page = 1;
-    String status = "", title = "", startTime = "", endTIme = "";
-    int i1 = 0;
-    int i2 = 0;
+    String status = "", title = "", startTime = "", endTIme = "", type = "", keyword = "";
+    int i1 = 0, i2 = 0, i3 = 0;
+    EditText editText1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,10 +118,22 @@ public class ApproveContractListActivity extends BaseActivity {
         view2 = findViewByID_My(R.id.view2);
         view3 = findViewByID_My(R.id.view3);
         pop_view = findViewByID_My(R.id.pop_view);
+
+        editText1 = findViewByID_My(R.id.editText1);
     }
 
     @Override
     protected void initData() {
+        list_type.add("全部");
+        list_type.add("签约合同");
+        list_type.add("新增合同");
+        list_type.add("回收合同");
+        list_type.add("换绑合同");
+        list_type.add("修改合同");
+        list_type.add("续签合同");
+        list_type.add("取消合同");
+        list_type.add("调价合同");
+
         //签约状态 1正常2待签约3待审核4签约成功5签约失败
         list_status.clear();
         list_status.add("全部");
@@ -125,6 +142,9 @@ public class ApproveContractListActivity extends BaseActivity {
         list_status.add("待审核");
         list_status.add("签约成功");
         list_status.add("签约失败");
+
+        list_time.add(getString(R.string.app_type_jiangxu));
+        list_time.add(getString(R.string.app_type_shengxu));
     }
 
     @Override
@@ -204,7 +224,7 @@ public class ApproveContractListActivity extends BaseActivity {
                                 public void onClick(View v) {
                                     Bundle bundle = new Bundle();
                                     bundle.putString("id", model.getId());
-                                    bundle.putString("typeStr",model.getType());
+                                    bundle.putString("typeStr", model.getType());
                                     CommonUtil.gotoActivityWithData(ApproveContractListActivity.this, ApproveDetailActivity.class, bundle, false);
                                 }
                             });
@@ -273,6 +293,17 @@ public class ApproveContractListActivity extends BaseActivity {
                 item = 3;
                 changeUI();
                 break;
+            case R.id.tv_search:
+                //搜索
+                //关闭软键盘
+                KeyboardUtils.hideSoftInput(editText1);
+                if (!editText1.getText().toString().trim().equals("")) {
+                    keyword = editText1.getText().toString().trim();
+                    requestServer();
+                } else {
+                    myToast("请输入需要搜索的内容");
+                }
+                break;
         }
     }
 
@@ -293,10 +324,11 @@ public class ApproveContractListActivity extends BaseActivity {
 //                view1.setVisibility(View.VISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                view3.setVisibility(View.INVISIBLE);
-                new PopupWindow_List3(ApproveContractListActivity.this, 0, list_status, i1, pop_view) {
+                new PopupWindow_List3(ApproveContractListActivity.this, 0, list_type, i1, pop_view) {
                     @Override
                     public void onFailure(String keys, int item) {
-                        status = item + "";
+                        i1 = item;
+                        type = item + "";
                         requestServer();
                     }
                 };
@@ -314,6 +346,7 @@ public class ApproveContractListActivity extends BaseActivity {
                 new PopupWindow_List3(ApproveContractListActivity.this, 1, list_status, i2, pop_view) {
                     @Override
                     public void onFailure(String keys, int item) {
+                        i2 = item;
                         status = item + "";
                         requestServer();
                     }
@@ -329,9 +362,10 @@ public class ApproveContractListActivity extends BaseActivity {
 //                view1.setVisibility(View.INVISIBLE);
 //                view2.setVisibility(View.INVISIBLE);
 //                view3.setVisibility(View.VISIBLE);
-                new PopupWindow_List3(ApproveContractListActivity.this, 2, list_status, i2, pop_view) {
+                new PopupWindow_List3(ApproveContractListActivity.this, 2, list_time, i2, pop_view) {
                     @Override
                     public void onFailure(String keys, int item) {
+                        i3 = item;
                         status = item + "";
                         requestServer();
                     }
@@ -340,6 +374,7 @@ public class ApproveContractListActivity extends BaseActivity {
 
         }
     }
+
     @Override
     protected void updateView() {
         titleView.setVisibility(View.GONE);

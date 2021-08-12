@@ -24,9 +24,9 @@ public class WorkListDetailModel implements Serializable {
      */
 
     private String id;
-    private int type;
-    private int status;
-    private int takeOverFlag;
+    private String type;
+    private String status;
+    private String takeOverFlag;
     private String failureReason;
     private String storeName;
     private String storeImage;
@@ -72,27 +72,27 @@ public class WorkListDetailModel implements Serializable {
         this.id = id;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public int getTakeOverFlag() {
+    public String getTakeOverFlag() {
         return takeOverFlag;
     }
 
-    public void setTakeOverFlag(int takeOverFlag) {
+    public void setTakeOverFlag(String takeOverFlag) {
         this.takeOverFlag = takeOverFlag;
     }
 
