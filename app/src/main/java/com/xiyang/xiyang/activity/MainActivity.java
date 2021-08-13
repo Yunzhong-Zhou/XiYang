@@ -37,6 +37,7 @@ import com.xiyang.xiyang.okhttp.OkhttpUtil;
 import com.xiyang.xiyang.utils.CommonUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -258,9 +259,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
         //更新
-        /*Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put("type", "1");
-        RequestUpgrade(params);//检查更新*/
+        RequestUpgrade(params);//检查更新
     }
 
     @Override

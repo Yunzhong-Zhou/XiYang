@@ -162,8 +162,10 @@ public class DeviceDetailActivity extends BaseActivity {
                  * 基本信息
                  */
                 list_jiben.clear();
-                list_jiben.add(new KeyValueModel("SN号", response.getHostName()));
-                list_jiben.add(new KeyValueModel("位置", response.getStoreName()));
+                list_jiben.add(new KeyValueModel("主机名称", response.getHostName()));
+                list_jiben.add(new KeyValueModel("主机序列号", response.getId()));
+                list_jiben.add(new KeyValueModel("4G模组ID", response.getId()));
+//                list_jiben.add(new KeyValueModel("位置", response.getStoreName()+"·"+response.));
                 list_jiben.add(new KeyValueModel("安装时间", response.getInstallTime()));
                 list_jiben.add(new KeyValueModel("网络类型", response.getNetwork()));
                 list_jiben.add(new KeyValueModel("区域", response.getStoreRegion()));

@@ -373,17 +373,19 @@ public class StoreDetailActivity extends BaseActivity {
                  * 收费标准
                  */
                 list_shoufei.clear();
-                list_shoufei.add(new KeyValueModel("首小时", response.getChargesInfo().getFirstHour()));
-                list_shoufei.add(new KeyValueModel("系统续时", response.getChargesInfo().getSystemRenewal()));
-                list_shoufei.add(new KeyValueModel("系统每日封顶", response.getChargesInfo().getSystemDayCap()));
-                list_shoufei.add(new KeyValueModel("计费单元", response.getChargesInfo().getPricingUnit()));
-                list_shoufei.add(new KeyValueModel("免费时长", response.getChargesInfo().getFreeTime()));
-                list_shoufei.add(new KeyValueModel("自定义单价", response.getChargesInfo().getCustomUnitPrice()));
-                list_shoufei.add(new KeyValueModel("自定义封顶", response.getChargesInfo().getCustomUnitCap()));
-                list_shoufei.add(new KeyValueModel("门店分成比例", response.getChargesInfo().getStoreShareRatio() + "%"));
-                list_shoufei.add(new KeyValueModel("员工分成比例", response.getChargesInfo().getEmployeeShareRatio() + "%"));
-                list_shoufei.add(new KeyValueModel("设备分成比例", response.getChargesInfo().getDeviceShareRatio() + "%"));
-                list_shoufei.add(new KeyValueModel("商户分成比例", response.getChargesInfo().getMerchantShareRatio() + "%"));
+                if (response.getChargesInfo() !=null){
+                    list_shoufei.add(new KeyValueModel("首小时", response.getChargesInfo().getFirstHour()));
+                    list_shoufei.add(new KeyValueModel("系统续时", response.getChargesInfo().getSystemRenewal()));
+                    list_shoufei.add(new KeyValueModel("系统每日封顶", response.getChargesInfo().getSystemDayCap()));
+                    list_shoufei.add(new KeyValueModel("计费单元", response.getChargesInfo().getPricingUnit()));
+                    list_shoufei.add(new KeyValueModel("免费时长", response.getChargesInfo().getFreeTime()));
+                    list_shoufei.add(new KeyValueModel("自定义单价", response.getChargesInfo().getCustomUnitPrice()));
+                    list_shoufei.add(new KeyValueModel("自定义封顶", response.getChargesInfo().getCustomUnitCap()));
+                    list_shoufei.add(new KeyValueModel("门店分成比例", response.getChargesInfo().getStoreShareRatio() + "%"));
+                    list_shoufei.add(new KeyValueModel("员工分成比例", response.getChargesInfo().getEmployeeShareRatio() + "%"));
+                    list_shoufei.add(new KeyValueModel("设备分成比例", response.getChargesInfo().getDeviceShareRatio() + "%"));
+                    list_shoufei.add(new KeyValueModel("商户分成比例", response.getChargesInfo().getMerchantShareRatio() + "%"));
+                }
 
                 mAdapter_shoufei = new CommonAdapter<KeyValueModel>
                         (StoreDetailActivity.this, R.layout.item_keyvalue, list_shoufei) {
